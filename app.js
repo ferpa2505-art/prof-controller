@@ -453,12 +453,29 @@ async function importJSON(file) {
   }
 }
 
-/* ---------- Importação CSV (Data;Conta;Moeda;Saldo) ---------- */
+* ---------- Importação CSV (Data;Conta;Moeda;Saldo) ---------- */
+
+// Detecta o separador da primeira linha: ; ou tabulação ou ,
+function detectDelimiter(line) {
+  const counts = { ';': 0, '\t': 0, ',': 0 };
+  for (const ch of line) { if (ch in counts) counts[ch]++; }
+  if (counts[';'] > 0) return ';';
+  if (counts['\t'] > 0) return '\t';
+  return ',';
+}
+
 function parseCSV(text) {
+  // Remove BOM (caractere invisível que o Excel adiciona no início)
   text = text.replace(/^\uFEFF/, '');
   const lines = text.split(/\r?\n/).filter((l) => l.trim());
   const rows = [];
-  for (const line of lines) {
+  let delimiter = ';';
+  for (let li = 0; li < lines.length; li++) {
+    const line = lines[li];
+    if (li === 0) delimiter = detectDelimiter(line); // detecta o separador
+    const trimmed = line.trim();
+    // Ignora linhas de comentário (#) e a linha de total geral (GRAND TOTAL)
+    if (trimmed.startsWith('#') || /^grand\s*total/i.test(trimmed)) continue;
     const cells = [];
     let cur = '';
     let inQuotes = false;
@@ -471,7 +488,7 @@ function parseCSV(text) {
         } else cur += ch;
       } else if (ch === '"') {
         inQuotes = true;
-      } else if (ch === ';') {
+      } else if (ch === delimiter) {
         cells.push(cur); cur = '';
       } else {
         cur += ch;
@@ -484,11 +501,12 @@ function parseCSV(text) {
 }
 
 function normalizeDate(d) {
-  d = d.trim();
-  // AAAA-MM-DD
-  if (/^\d{4}-\d{2}-\d{2}$/.test(d)) return d;
-  // DD/MM/AAAA ou DD-MM-AAAA
-  const m = d.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+  d = String(d || '').trim();
+  // AAAA-MM-DD ou AAAA/MM/DD
+  let m = d.match(/^(\d{4})[\/\-\.](\d{1,2})[\/\-\.](\d{1,2})$/);
+  if (m) return `${m[1]}-${m[2].padStart(2, '0')}-${m[3].padStart(2, '0')}`;
+  // DD/MM/AAAA, DD-MM-AAAA ou DD.MM.AAAA
+  m = d.match(/^(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{4})$/);
   if (m) return `${m[3]}-${m[2].padStart(2, '0')}-${m[1].padStart(2, '0')}`;
   return null;
 }
@@ -496,25 +514,38 @@ function normalizeDate(d) {
 async function importCSV(file) {
   try {
     const rows = parseCSV(await file.text());
-    if (rows.length < 2) throw new Error('vazio');
+    if (rows.length < 2) throw new Error('CSV vazio');
+
     const header = rows[0].map((h) => h.trim().toLowerCase());
-    const iDate = header.findIndex((h) => h === 'data' || h.includes('date'));
-    const iAccount = header.findIndex((h) => h === 'conta' || h.includes('account'));
+    const iDate = header.findIndex((h) => h === 'data' || h.startsWith('date'));
+    const iAccount = header.findIndex((h) => h === 'conta' || h.includes('account') || h.includes('cont'));
     const iCurrency = header.findIndex((h) => h === 'moeda' || h.includes('currency'));
-    const iValue = header.findIndex((h) => h === 'saldo' || h.includes('balance') || h === 'valor');
-    if (iDate < 0 || iAccount < 0 || iValue < 0) throw new Error('formato');
+    const iValue = header.findIndex(
+      (h) => h === 'saldo' || h.includes('balance') || h === 'valor'
+    );
+    if (iDate < 0 || iAccount < 0 || iValue < 0) {
+      throw new Error('Cabeçalho não reconhecido: ' + header.join(' | '));
+    }
 
     let imported = 0;
     let created = 0;
+
     for (let r = 1; r < rows.length; r++) {
       const row = rows[r];
-      if (row.length < 2) continue;
-      const date = normalizeDate(row[iDate] || '');
+      if (!row || row.length < 2) continue;
+
       const accountName = (row[iAccount] || '').trim();
+      // Pula a linha de total geral (não é uma conta real)
+      if (/^grand\s*total$/i.test(accountName)) continue;
+
+      const date = normalizeDate(row[iDate] || '');
       const currency = ((row[iCurrency] || '').trim() || 'EUR').toUpperCase();
-      let clean = (row[iValue] || '').trim();
+
+      // Número: aceita "14296.13", "14.296,13" e "14296,13"
+      let clean = (row[iValue] || '').trim().replace(/\s/g, '');
       if (clean.includes(',')) clean = clean.replace(/\./g, '').replace(',', '.');
       const value = Number(clean);
+
       if (!date || !accountName || isNaN(value)) continue;
 
       let account = state.accounts.find(
@@ -526,6 +557,7 @@ async function importCSV(file) {
         await put('accounts', account);
         created++;
       }
+
       const existing = state.balances.find((b) => b.date === date && b.accountId === account.id);
       const balance = { id: existing ? existing.id : uid(), date, accountId: account.id, value };
       if (existing) state.balances = state.balances.map((b) => (b.id === existing.id ? balance : b));
@@ -533,9 +565,11 @@ async function importCSV(file) {
       await put('balances', balance);
       imported++;
     }
+
     renderAll();
     showToast(t('toast.csvImported').replace('{n}', imported + (created ? ' (' + created + ' novas contas)' : '')));
   } catch (e) {
+    console.error('Erro na importação CSV:', e); // mostra o motivo REAL no console (F12)
     showToast(t('toast.invalidCSV'));
   }
 }
