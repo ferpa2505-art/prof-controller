@@ -7,14 +7,14 @@
   <title>ProF Controller</title>
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="styles.css">
-  <link rel="icon" href="icons/icon-192.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
 </head>
 <body>
   <header class="topbar">
     <h1>ProF Controller</h1>
     <div class="topbar-actions">
-      <select id="langSelect" aria-label="Idioma / Language / Idioma"></select>
-      <select id="themeSelect" aria-label="Tema / Theme / Tema"></select>
+      <select id="langSelect" aria-label="Idioma"></select>
+      <select id="themeSelect" aria-label="Tema"></select>
     </div>
   </header>
 
@@ -32,6 +32,7 @@
         <div class="card">
           <h3 data-i18n="dashboard.totalEquity">Patrimônio Total</h3>
           <p id="totalEquity" class="big-number">—</p>
+          <p id="totalEquityBase" class="sub-number"></p>
         </div>
         <div class="card">
           <h3 data-i18n="dashboard.accounts">Contas</h3>
@@ -40,6 +41,10 @@
         <div class="card">
           <h3 data-i18n="dashboard.currencies">Moedas</h3>
           <p id="currencyCount" class="big-number">0</p>
+        </div>
+        <div class="card">
+          <h3 data-i18n="dashboard.baseCurrency">Moeda base</h3>
+          <p id="baseCurrencyLabel" class="big-number">EUR</p>
         </div>
       </div>
     </section>
@@ -83,6 +88,7 @@
       <h2 data-i18n="settings.title">Configurações</h2>
       <div class="settings-group">
         <h3 data-i18n="settings.baseCurrency">Moeda base</h3>
+        <p class="hint" data-i18n="settings.baseCurrencyHint">Moeda usada para consolidar patrimônio e relatórios.</p>
         <select id="baseCurrencySelect"></select>
       </div>
       <div class="settings-group">
@@ -90,9 +96,13 @@
         <button id="btnExportJSON" class="secondary-btn" data-i18n="settings.exportJSON">Exportar backup (JSON)</button>
         <button id="btnExportCSV" class="secondary-btn" data-i18n="settings.exportCSV">Exportar planilha (CSV)</button>
         <button id="btnImportJSON" class="secondary-btn" data-i18n="settings.importJSON">Importar backup</button>
-        <button id="btnImportCSV" class="secondary-btn" data-i18n="settings.importCSV">Importar planilha (CSV)</button>
-<input type="file" id="importCSVFile" accept=".csv" hidden>
         <input type="file" id="importFile" accept=".json" hidden>
+      </div>
+      <div class="settings-group">
+        <h3 data-i18n="settings.importCSV">Importar planilha (CSV)</h3>
+        <p class="hint" data-i18n="settings.importCSVHint">Formato: Data;Conta;Moeda;Saldo (AAAA-MM-DD).</p>
+        <button id="btnImportCSV" class="secondary-btn" data-i18n="settings.importCSV">Importar planilha (CSV)</button>
+        <input type="file" id="importCSVFile" accept=".csv" hidden>
       </div>
     </section>
   </main>
