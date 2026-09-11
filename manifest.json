@@ -1,7 +1,7 @@
 {
   "name": "ProF Controller",
   "short_name": "ProF",
-  "description": "Controle de capital, patrimônio e saldos diários por conta e moeda.",
+  "description": "Sistema de gestão patrimonial: contas, saldos diários multi-moeda, imóveis, veículos e NAV.",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#1a1a2e",
