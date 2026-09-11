@@ -453,7 +453,7 @@ async function importJSON(file) {
   }
 }
 
-* ---------- Importação CSV (Data;Conta;Moeda;Saldo) ---------- */
+/* ---------- Importação CSV (Data;Conta;Moeda;Saldo) ---------- */
 
 // Detecta o separador da primeira linha: ; ou tabulação ou ,
 function detectDelimiter(line) {
