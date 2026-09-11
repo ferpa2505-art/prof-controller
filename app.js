@@ -1,6 +1,7 @@
 /* ============================================================
-   ProF Controller — Fase 1 (MVP)
-   Contas, moedas, saldo diário, backup JSON/CSV, i18n, offline
+   ProF Controller — Fase 1 (Fundação)
+   Gestão patrimonial: contas, 5 moedas, saldos diários,
+   moeda base configurável, importação CSV, i18n, offline.
    ============================================================ */
 
 /* ---------- i18n: pt-BR (padrão), en, es ---------- */
@@ -9,6 +10,7 @@ const I18N = {
     'dashboard.totalEquity': 'Patrimônio Total',
     'dashboard.accounts': 'Contas',
     'dashboard.currencies': 'Moedas',
+    'dashboard.baseCurrency': 'Moeda base',
     'accounts.title': 'Contas',
     'accounts.add': '+ Nova conta',
     'accounts.name': 'Nome',
@@ -20,34 +22,38 @@ const I18N = {
     'accounts.type.wallet': 'Carteira',
     'accounts.type.broker': 'Corretora',
     'accounts.type.cash': 'Caixa',
+    'accounts.type.liquidity': 'Liquidez',
     'balances.title': 'Saldos Diários',
     'balances.add': '+ Registrar saldo',
     'balances.date': 'Data',
     'balances.balance': 'Saldo',
     'settings.title': 'Configurações',
     'settings.baseCurrency': 'Moeda base',
+    'settings.baseCurrencyHint': 'Moeda usada para consolidar patrimônio e relatórios.',
     'settings.backup': 'Backup dos dados',
     'settings.exportJSON': 'Exportar backup (JSON)',
     'settings.exportCSV': 'Exportar planilha (CSV)',
     'settings.importJSON': 'Importar backup',
+    'settings.importCSV': 'Importar planilha (CSV)',
+    'settings.importCSVHint': 'Formato: Data;Conta;Moeda;Saldo (AAAA-MM-DD).',
     'toast.saved': 'Salvo com sucesso.',
     'toast.exported': 'Arquivo exportado.',
     'toast.imported': 'Backup importado.',
     'toast.invalidFile': 'Arquivo inválido.',
+    'toast.csvImported': '{n} saldos importados.',
+    'toast.invalidCSV': 'Arquivo CSV inválido.',
     'modal.addAccount': 'Nova conta',
     'modal.editAccount': 'Editar conta',
     'modal.addBalance': 'Registrar saldo diário',
     'modal.save': 'Salvar',
     'modal.cancel': 'Cancelar',
     'modal.delete': 'Excluir'
-     'settings.importCSV': 'Importar planilha (CSV)',
-'toast.csvImported': '{n} saldos importados.
-'toast.invalidCSV': 'Arquivo CSV inválido.'
   },
   'en': {
     'dashboard.totalEquity': 'Total Equity',
     'dashboard.accounts': 'Accounts',
     'dashboard.currencies': 'Currencies',
+    'dashboard.baseCurrency': 'Base currency',
     'accounts.title': 'Accounts',
     'accounts.add': '+ New account',
     'accounts.name': 'Name',
@@ -59,34 +65,38 @@ const I18N = {
     'accounts.type.wallet': 'Wallet',
     'accounts.type.broker': 'Broker',
     'accounts.type.cash': 'Cash',
+    'accounts.type.liquidity': 'Liquidity',
     'balances.title': 'Daily Balances',
     'balances.add': '+ Record balance',
     'balances.date': 'Date',
     'balances.balance': 'Balance',
     'settings.title': 'Settings',
     'settings.baseCurrency': 'Base currency',
+    'settings.baseCurrencyHint': 'Currency used to consolidate equity and reports.',
     'settings.backup': 'Data backup',
     'settings.exportJSON': 'Export backup (JSON)',
     'settings.exportCSV': 'Export spreadsheet (CSV)',
     'settings.importJSON': 'Import backup',
+    'settings.importCSV': 'Import spreadsheet (CSV)',
+    'settings.importCSVHint': 'Format: Date;Account;Currency;Balance (YYYY-MM-DD).',
     'toast.saved': 'Saved successfully.',
-    'toast. exported': 'File exported.',
+    'toast.exported': 'File exported.',
     'toast.imported': 'Backup imported.',
     'toast.invalidFile': 'Invalid file.',
+    'toast.csvImported': '{n} balances imported.',
+    'toast.invalidCSV': 'Invalid CSV file.',
     'modal.addAccount': 'New account',
     'modal.editAccount': 'Edit account',
     'modal.addBalance': 'Record daily balance',
     'modal.save': 'Save',
     'modal.cancel': 'Cancel',
     'modal.delete': 'Delete'
-     'settings.importCSV': 'Import spreadsheet (CSV)',
-'toast.csvImported': '{n} balances imported.',
-'toast.invalidCSV': 'Invalid CSV file.
   },
   'es': {
     'dashboard.totalEquity': 'Patrimonio Total',
     'dashboard.accounts': 'Cuentas',
     'dashboard.currencies': 'Monedas',
+    'dashboard.baseCurrency': 'Moneda base',
     'accounts.title': 'Cuentas',
     'accounts.add': '+ Nueva cuenta',
     'accounts.name': 'Nombre',
@@ -98,29 +108,32 @@ const I18N = {
     'accounts.type.wallet': 'Cartera',
     'accounts.type.broker': 'Corredor',
     'accounts.type.cash': 'Efectivo',
+    'accounts.type.liquidity': 'Liquidez',
     'balances.title': 'Saldos Diarios',
     'balances.add': '+ Registrar saldo',
     'balances.date': 'Fecha',
     'balances.balance': 'Saldo',
     'settings.title': 'Configuración',
     'settings.baseCurrency': 'Moneda base',
+    'settings.baseCurrencyHint': 'Moneda usada para consolidar patrimonio e informes.',
     'settings.backup': 'Respaldo de datos',
     'settings.exportJSON': 'Exportar respaldo (JSON)',
     'settings.exportCSV': 'Exportar hoja de cálculo (CSV)',
     'settings.importJSON': 'Importar respaldo',
+    'settings.importCSV': 'Importar hoja de cálculo (CSV)',
+    'settings.importCSVHint': 'Formato: Fecha;Cuenta;Moneda;Saldo (AAAA-MM-DD).',
     'toast.saved': 'Guardado correctamente.',
     'toast.exported': 'Archivo exportado.',
     'toast.imported': 'Respaldo importado.',
     'toast.invalidFile': 'Archivo inválido.',
+    'toast.csvImported': '{n} saldos importados.',
+    'toast.invalidCSV': 'Archivo CSV inválido.',
     'modal.addAccount': 'Nueva cuenta',
     'modal.editAccount': 'Editar cuenta',
     'modal.addBalance': 'Registrar saldo diario',
     'modal.save': 'Guardar',
     'modal.cancel': 'Cancelar',
     'modal.delete': 'Eliminar'
-     'settings.importCSV': 'Importar hoja de cálculo (CSV)',
-'toast.csvImported': '{n} saldos importados.
-'toast.invalidCSV': 'Archivo CSV inválido.'
   }
 };
 
@@ -128,14 +141,19 @@ const I18N = {
 const DB_NAME = 'prof-controller';
 const DB_VERSION = 1;
 let db = null;
-let state = { accounts: [], balances: [], settings: { lang: 'pt-BR', theme: 'default', baseCurrency: 'BRL' } };
+let state = {
+  accounts: [],
+  balances: [],
+  settings: { lang: 'pt-BR', theme: 'default', baseCurrency: 'EUR' }
+};
 
 const CURRENCIES = [
-  { code: 'BRL', symbol: 'R$', decimals: 2 },
-  { code: 'USD', symbol: 'US$', decimals: 2 },
   { code: 'EUR', symbol: '€', decimals: 2 },
+  { code: 'CHF', symbol: 'CHF ', decimals: 2 },
+  { code: 'USD', symbol: 'US$', decimals: 2 },
+  { code: 'JPY', symbol: '¥', decimals: 0 },
   { code: 'GBP', symbol: '£', decimals: 2 },
-  { code: 'BTC', symbol: '₿', decimals: 8 }
+  { code: 'BRL', symbol: 'R$', decimals: 2 }
 ];
 
 function openDB() {
@@ -143,26 +161,24 @@ function openDB() {
     const req = indexedDB.open(DB_NAME, DB_VERSION);
     req.onupgradeneeded = (e) => {
       const d = e.target.result;
-      if (!d.objectStoreNames.contains('accounts')) {
-        d.createObjectStore('accounts', { keyPath: 'id' });
-      }
+      // Fase 1
+      if (!d.objectStoreNames.contains('accounts')) d.createObjectStore('accounts', { keyPath: 'id' });
       if (!d.objectStoreNames.contains('balances')) {
         const s = d.createObjectStore('balances', { keyPath: 'id' });
         s.createIndex('date', 'date');
         s.createIndex('accountId', 'accountId');
       }
-      if (!d.objectStoreNames.contains('settings')) {
-        d.createObjectStore('settings', { keyPath: 'key' });
-      }
+      if (!d.objectStoreNames.contains('settings')) d.createObjectStore('settings', { keyPath: 'key' });
+      // Preparado para fases futuras (patrimônio)
+      ['fx', 'receitas', 'lancamentos', 'imoveis', 'veiculos', 'posicoes', 'nav', 'orcamentos']
+        .forEach((name) => { if (!d.objectStoreNames.contains(name)) d.createObjectStore(name, { keyPath: 'id' }); });
     };
     req.onsuccess = () => { db = req.result; resolve(db); };
     req.onerror = () => reject(req.error);
   });
 }
 
-function tx(store, mode) {
-  return db.transaction(store, mode).objectStore(store);
-}
+function tx(store, mode) { return db.transaction(store, mode).objectStore(store); }
 
 async function loadAll() {
   state.accounts = await getAll('accounts');
@@ -178,7 +194,6 @@ function getAll(store) {
     req.onerror = () => reject(req.error);
   });
 }
-
 function put(store, value) {
   return new Promise((resolve, reject) => {
     const req = tx(store, 'readwrite').put(value);
@@ -186,7 +201,6 @@ function put(store, value) {
     req.onerror = () => reject(req.error);
   });
 }
-
 function del(store, id) {
   return new Promise((resolve, reject) => {
     const req = tx(store, 'readwrite').delete(id);
@@ -196,19 +210,13 @@ function del(store, id) {
 }
 
 /* ---------- Utilidades ---------- */
-function uid() {
-  return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
-}
-function todayISO() {
-  return new Date().toISOString().slice(0, 10);
-}
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+function todayISO() { return new Date().toISOString().slice(0, 10); }
 function t(key) {
   const lang = state.settings.lang || 'pt-BR';
   return (I18N[lang] && I18N[lang][key]) || I18N['pt-BR'][key] || key;
 }
-function currency(code) {
-  return CURRENCIES.find((c) => c.code === code) || { code, symbol: code, decimals: 2 };
-}
+function currency(code) { return CURRENCIES.find((c) => c.code === code) || { code, symbol: code + ' ', decimals: 2 }; }
 function fmtMoney(value, code) {
   const c = currency(code);
   return c.symbol + ' ' + Number(value).toLocaleString('pt-BR', { minimumFractionDigits: c.decimals, maximumFractionDigits: c.decimals });
@@ -219,13 +227,14 @@ function showToast(msg) {
   el.classList.remove('hidden');
   setTimeout(() => el.classList.add('hidden'), 2500);
 }
+function escapeHtml(str) {
+  return String(str).replace(/[&<>"']/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+}
 
 /* ---------- i18n / tema ---------- */
 function applyLang() {
   document.documentElement.lang = state.settings.lang;
-  document.querySelectorAll('[data-i18n]').forEach((el) => {
-    el.textContent = t(el.dataset.i18n);
-  });
+  document.querySelectorAll('[data-i18n]').forEach((el) => { el.textContent = t(el.dataset.i18n); });
   document.getElementById('langSelect').value = state.settings.lang;
   renderAll();
 }
@@ -235,18 +244,28 @@ function applyTheme() {
 }
 
 /* ---------- Renderização ---------- */
-function renderAll() {
-  renderDashboard();
-  renderAccounts();
-  renderBalances();
-  renderSettings();
-}
+function renderAll() { renderDashboard(); renderAccounts(); renderBalances(); renderSettings(); }
 
 function renderDashboard() {
-  const total = state.accounts.reduce((sum, a) => sum + (Number(a.initialBalance) || 0), 0);
-  document.getElementById('totalEquity').textContent = fmtMoney(total, state.settings.baseCurrency);
+  const base = state.settings.baseCurrency;
+  // Total por moeda (soma dos saldos iniciais das contas)
+  const byCurrency = {};
+  state.accounts.forEach((a) => {
+    byCurrency[a.currency] = (byCurrency[a.currency] || 0) + (Number(a.initialBalance) || 0);
+  });
+  // Sem tabela de câmbio na Fase 1, mostramos o total na moeda base apenas se houver 1 moeda;
+  // caso contrário, mostramos o breakdown por moeda.
+  const keys = Object.keys(byCurrency);
+  if (keys.length === 1) {
+    document.getElementById('totalEquity').textContent = fmtMoney(byCurrency[keys[0]], keys[0]);
+    document.getElementById('totalEquityBase').textContent = '';
+  } else {
+    document.getElementById('totalEquity').textContent = '—';
+    document.getElementById('totalEquityBase').textContent = keys.map((k) => fmtMoney(byCurrency[k], k)).join(' · ');
+  }
   document.getElementById('accountCount').textContent = state.accounts.length;
   document.getElementById('currencyCount').textContent = new Set(state.accounts.map((a) => a.currency)).size;
+  document.getElementById('baseCurrencyLabel').textContent = base;
 }
 
 function renderAccounts() {
@@ -287,12 +306,8 @@ function renderBalances() {
 
 function renderSettings() {
   const sel = document.getElementById('baseCurrencySelect');
-  sel.innerHTML = CURRENCIES.map((c) => `<option value="${c.code}">${c.code} (${c.symbol})</option>`).join('');
+  sel.innerHTML = CURRENCIES.map((c) => `<option value="${c.code}">${c.code} (${c.symbol.trim()})</option>`).join('');
   sel.value = state.settings.baseCurrency;
-}
-
-function escapeHtml(str) {
-  return String(str).replace(/[&<>"']/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
 }
 
 /* ---------- Modais ---------- */
@@ -300,9 +315,7 @@ function openModal(html) {
   document.getElementById('modalBody').innerHTML = html;
   document.getElementById('modal').classList.remove('hidden');
 }
-function closeModal() {
-  document.getElementById('modal').classList.add('hidden');
-}
+function closeModal() { document.getElementById('modal').classList.add('hidden'); }
 
 function openAccountModal(id) {
   const a = id ? state.accounts.find((x) => x.id === id) : null;
@@ -313,6 +326,7 @@ function openAccountModal(id) {
     <label>${t('accounts.type')}</label>
     <select id="accType">
       <option value="bank" ${a && a.type === 'bank' ? 'selected' : ''}>${t('accounts.type.bank')}</option>
+      <option value="liquidity" ${a && a.type === 'liquidity' ? 'selected' : ''}>${t('accounts.type.liquidity')}</option>
       <option value="wallet" ${a && a.type === 'wallet' ? 'selected' : ''}>${t('accounts.type.wallet')}</option>
       <option value="broker" ${a && a.type === 'broker' ? 'selected' : ''}>${t('accounts.type.broker')}</option>
       <option value="cash" ${a && a.type === 'cash' ? 'selected' : ''}>${t('accounts.type.cash')}</option>
@@ -337,11 +351,8 @@ async function saveAccount(id) {
     currency: document.getElementById('accCurrency').value,
     initialBalance: Number(document.getElementById('accBalance').value) || 0
   };
-  if (id) {
-    state.accounts = state.accounts.map((x) => (x.id === id ? account : x));
-  } else {
-    state.accounts.push(account);
-  }
+  if (id) state.accounts = state.accounts.map((x) => (x.id === id ? account : x));
+  else state.accounts.push(account);
   await put('accounts', account);
   closeModal();
   renderAll();
@@ -379,11 +390,8 @@ async function saveBalance() {
   if (!date || !accountId || isNaN(value)) return;
   const existing = state.balances.find((x) => x.date === date && x.accountId === accountId);
   const balance = { id: existing ? existing.id : uid(), date, accountId, value };
-  if (existing) {
-    state.balances = state.balances.map((x) => (x.id === existing.id ? balance : x));
-  } else {
-    state.balances.push(balance);
-  }
+  if (existing) state.balances = state.balances.map((x) => (x.id === existing.id ? balance : x));
+  else state.balances.push(balance);
   await put('balances', balance);
   closeModal();
   renderAll();
@@ -410,81 +418,6 @@ async function exportJSON() {
 }
 
 function exportCSV() {
-   function parseCSV(text) {
-  text = text.replace(/^\uFEFF/, '');
-  const lines = text.split(/\r?\n/).filter((l) => l.trim());
-  const rows = [];
-  for (const line of lines) {
-    const cells = [];
-    let cur = '';
-    let inQuotes = false;
-    for (let i = 0; i < line.length; i++) {
-      const ch = line[i];
-      if (inQuotes) {
-        if (ch === '"') {
-          if (line[i + 1] === '"') { cur += '"'; i++; }
-          else inQuotes = false;
-        } else cur += ch;
-      } else if (ch === '"') {
-        inQuotes = true;
-      } else if (ch === ';') {
-        cells.push(cur); cur = '';
-      } else {
-        cur += ch;
-      }
-    }
-    cells.push(cur);
-    rows.push(cells);
-  }
-  return rows;
-}
-
-async function importCSV(file) {
-  try {
-    const rows = parseCSV(await file.text());
-    if (rows.length < 2) throw new Error('vazio');
-    const header = rows[0].map((h) => h.trim().toLowerCase());
-    const iDate = header.findIndex((h) => h === 'data' || h.includes('date'));
-    const iAccount = header.findIndex((h) => h === 'conta' || h.includes('account'));
-    const iCurrency = header.findIndex((h) => h === 'moeda' || h.includes('currency'));
-    const iValue = header.findIndex((h) => h === 'saldo' || h.includes('balance') || h === 'valor');
-    if (iDate < 0 || iAccount < 0 || iValue < 0) throw new Error('formato');
-
-    let imported = 0;
-    let created = 0;
-    for (let r = 1; r < rows.length; r++) {
-      const row = rows[r];
-      if (row.length < 2) continue;
-      const date = (row[iDate] || '').trim();
-      const accountName = (row[iAccount] || '').trim();
-      const currency = ((row[iCurrency] || '').trim() || 'BRL').toUpperCase();
-      let clean = (row[iValue] || '').trim();
-      if (clean.includes(',')) clean = clean.replace(/\./g, '').replace(',', '.');
-      const value = Number(clean);
-      if (!date || !accountName || isNaN(value)) continue;
-
-      let account = state.accounts.find(
-        (a) => a.name.toLowerCase() === accountName.toLowerCase() && a.currency === currency
-      );
-      if (!account) {
-        account = { id: uid(), name: accountName, type: 'bank', currency, initialBalance: 0 };
-        state.accounts.push(account);
-        await put('accounts', account);
-        created++;
-      }
-      const existing = state.balances.find((b) => b.date === date && b.accountId === account.id);
-      const balance = { id: existing ? existing.id : uid(), date, accountId: account.id, value };
-      if (existing) state.balances = state.balances.map((b) => (b.id === existing.id ? balance : b));
-      else state.balances.push(balance);
-      await put('balances', balance);
-      imported++;
-    }
-    renderAll();
-    showToast(t('toast.csvImported').replace('{n}', imported + (created ? ' (' + created + ' novas contas)' : '')));
-  } catch (e) {
-    showToast(t('toast.invalidCSV'));
-  }
-}
   const header = ['Data', 'Conta', 'Moeda', 'Saldo'];
   const rows = state.balances.map((b) => {
     const acc = state.accounts.find((a) => a.id === b.accountId);
@@ -520,6 +453,93 @@ async function importJSON(file) {
   }
 }
 
+/* ---------- Importação CSV (Data;Conta;Moeda;Saldo) ---------- */
+function parseCSV(text) {
+  text = text.replace(/^\uFEFF/, '');
+  const lines = text.split(/\r?\n/).filter((l) => l.trim());
+  const rows = [];
+  for (const line of lines) {
+    const cells = [];
+    let cur = '';
+    let inQuotes = false;
+    for (let i = 0; i < line.length; i++) {
+      const ch = line[i];
+      if (inQuotes) {
+        if (ch === '"') {
+          if (line[i + 1] === '"') { cur += '"'; i++; }
+          else inQuotes = false;
+        } else cur += ch;
+      } else if (ch === '"') {
+        inQuotes = true;
+      } else if (ch === ';') {
+        cells.push(cur); cur = '';
+      } else {
+        cur += ch;
+      }
+    }
+    cells.push(cur);
+    rows.push(cells);
+  }
+  return rows;
+}
+
+function normalizeDate(d) {
+  d = d.trim();
+  // AAAA-MM-DD
+  if (/^\d{4}-\d{2}-\d{2}$/.test(d)) return d;
+  // DD/MM/AAAA ou DD-MM-AAAA
+  const m = d.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+  if (m) return `${m[3]}-${m[2].padStart(2, '0')}-${m[1].padStart(2, '0')}`;
+  return null;
+}
+
+async function importCSV(file) {
+  try {
+    const rows = parseCSV(await file.text());
+    if (rows.length < 2) throw new Error('vazio');
+    const header = rows[0].map((h) => h.trim().toLowerCase());
+    const iDate = header.findIndex((h) => h === 'data' || h.includes('date'));
+    const iAccount = header.findIndex((h) => h === 'conta' || h.includes('account'));
+    const iCurrency = header.findIndex((h) => h === 'moeda' || h.includes('currency'));
+    const iValue = header.findIndex((h) => h === 'saldo' || h.includes('balance') || h === 'valor');
+    if (iDate < 0 || iAccount < 0 || iValue < 0) throw new Error('formato');
+
+    let imported = 0;
+    let created = 0;
+    for (let r = 1; r < rows.length; r++) {
+      const row = rows[r];
+      if (row.length < 2) continue;
+      const date = normalizeDate(row[iDate] || '');
+      const accountName = (row[iAccount] || '').trim();
+      const currency = ((row[iCurrency] || '').trim() || 'EUR').toUpperCase();
+      let clean = (row[iValue] || '').trim();
+      if (clean.includes(',')) clean = clean.replace(/\./g, '').replace(',', '.');
+      const value = Number(clean);
+      if (!date || !accountName || isNaN(value)) continue;
+
+      let account = state.accounts.find(
+        (a) => a.name.toLowerCase() === accountName.toLowerCase() && a.currency === currency
+      );
+      if (!account) {
+        account = { id: uid(), name: accountName, type: 'bank', currency, initialBalance: 0 };
+        state.accounts.push(account);
+        await put('accounts', account);
+        created++;
+      }
+      const existing = state.balances.find((b) => b.date === date && b.accountId === account.id);
+      const balance = { id: existing ? existing.id : uid(), date, accountId: account.id, value };
+      if (existing) state.balances = state.balances.map((b) => (b.id === existing.id ? balance : b));
+      else state.balances.push(balance);
+      await put('balances', balance);
+      imported++;
+    }
+    renderAll();
+    showToast(t('toast.csvImported').replace('{n}', imported + (created ? ' (' + created + ' novas contas)' : '')));
+  } catch (e) {
+    showToast(t('toast.invalidCSV'));
+  }
+}
+
 /* ---------- Eventos ---------- */
 function bindEvents() {
   document.getElementById('langSelect').addEventListener('change', async (e) => {
@@ -546,21 +566,19 @@ function bindEvents() {
     if (e.target.files[0]) importJSON(e.target.files[0]);
     e.target.value = '';
   });
-  document.getElementById('modalClose').addEventListener('click', closeModal);
-  document.getElementById('modal').addEventListener('click', (e) => {
-    if (e.target.id === 'modal') closeModal();
+  document.getElementById('btnImportCSV').addEventListener('click', () => document.getElementById('importCSVFile').click());
+  document.getElementById('importCSVFile').addEventListener('change', (e) => {
+    if (e.target.files[0]) importCSV(e.target.files[0]);
+    e.target.value = '';
   });
+  document.getElementById('modalClose').addEventListener('click', closeModal);
+  document.getElementById('modal').addEventListener('click', (e) => { if (e.target.id === 'modal') closeModal(); });
   document.querySelectorAll('.tab').forEach((btn) => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.tab').forEach((b) => b.classList.remove('active'));
       document.querySelectorAll('.tab-panel').forEach((p) => p.classList.remove('active'));
       btn.classList.add('active');
       document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
-       document.getElementById('btnImportCSV').addEventListener('click', () => document.getElementById('importCSVFile').click());
-document.getElementById('importCSVFile').addEventListener('change', (e) => {
-  if (e.target.files[0]) importCSV(e.target.files[0]);
-  e.target.value = '';
-});
     });
   });
 }
