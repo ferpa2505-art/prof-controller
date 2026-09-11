@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1a1a2e">
+  <title>ProF Controller</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="icons/icon-192.png">
+</head>
+<body>
+  <header class="topbar">
+    <h1>ProF Controller</h1>
+    <div class="topbar-actions">
+      <select id="langSelect" aria-label="Idioma / Language / Idioma"></select>
+      <select id="themeSelect" aria-label="Tema / Theme / Tema"></select>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-tab="dashboard">Dashboard</button>
+    <button class="tab" data-tab="accounts">Contas</button>
+    <button class="tab" data-tab="balances">Saldos Diários</button>
+    <button class="tab" data-tab="settings">Configurações</button>
+  </nav>
+
+  <main>
+    <!-- DASHBOARD -->
+    <section id="tab-dashboard" class="tab-panel active">
+      <div class="cards">
+        <div class="card">
+          <h3 data-i18n="dashboard.totalEquity">Patrimônio Total</h3>
+          <p id="totalEquity" class="big-number">—</p>
+        </div>
+        <div class="card">
+          <h3 data-i18n="dashboard.accounts">Contas</h3>
+          <p id="accountCount" class="big-number">0</p>
+        </div>
+        <div class="card">
+          <h3 data-i18n="dashboard.currencies">Moedas</h3>
+          <p id="currencyCount" class="big-number">0</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTAS -->
+    <section id="tab-accounts" class="tab-panel">
+      <div class="panel-header">
+        <h2 data-i18n="accounts.title">Contas</h2>
+        <button id="btnAddAccount" class="primary-btn" data-i18n="accounts.add">+ Nova conta</button>
+      </div>
+      <table id="accountsTable">
+        <thead>
+          <tr>
+            <th data-i18n="accounts.name">Nome</th>
+            <th data-i18n="accounts.type">Tipo</th>
+            <th data-i18n="accounts.currency">Moeda</th>
+            <th data-i18n="accounts.initialBalance">Saldo inicial</th>
+            <th data-i18n="accounts.actions">Ações</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <!-- SALDOS DIÁRIOS -->
+    <section id="tab-balances" class="tab-panel">
+      <div class="panel-header">
+        <h2 data-i18n="balances.title">Saldos Diários</h2>
+        <button id="btnAddBalance" class="primary-btn" data-i18n="balances.add">+ Registrar saldo</button>
+      </div>
+      <div class="table-scroll">
+        <table id="balancesTable">
+          <thead><tr></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- CONFIGURAÇÕES -->
+    <section id="tab-settings" class="tab-panel">
+      <h2 data-i18n="settings.title">Configurações</h2>
+      <div class="settings-group">
+        <h3 data-i18n="settings.baseCurrency">Moeda base</h3>
+        <select id="baseCurrencySelect"></select>
+      </div>
+      <div class="settings-group">
+        <h3 data-i18n="settings.backup">Backup dos dados</h3>
+        <button id="btnExportJSON" class="secondary-btn" data-i18n="settings.exportJSON">Exportar backup (JSON)</button>
+        <button id="btnExportCSV" class="secondary-btn" data-i18n="settings.exportCSV">Exportar planilha (CSV)</button>
+        <button id="btnImportJSON" class="secondary-btn" data-i18n="settings.importJSON">Importar backup</button>
+        <input type="file" id="importFile" accept=".json" hidden>
+      </div>
+    </section>
+  </main>
+
+  <div id="modal" class="modal hidden">
+    <div class="modal-content">
+      <span id="modalClose" class="modal-close">&times;</span>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
