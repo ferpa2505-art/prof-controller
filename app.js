@@ -40,6 +40,9 @@ const I18N = {
     'modal.save': 'Salvar',
     'modal.cancel': 'Cancelar',
     'modal.delete': 'Excluir'
+     'settings.importCSV': 'Importar planilha (CSV)',
+'toast.csvImported': '{n} saldos importados.
+'toast.invalidCSV': 'Arquivo CSV inválido.'
   },
   'en': {
     'dashboard.totalEquity': 'Total Equity',
@@ -67,7 +70,7 @@ const I18N = {
     'settings.exportCSV': 'Export spreadsheet (CSV)',
     'settings.importJSON': 'Import backup',
     'toast.saved': 'Saved successfully.',
-    'toast.exported': 'File exported.',
+    'toast. exported': 'File exported.',
     'toast.imported': 'Backup imported.',
     'toast.invalidFile': 'Invalid file.',
     'modal.addAccount': 'New account',
@@ -76,6 +79,9 @@ const I18N = {
     'modal.save': 'Save',
     'modal.cancel': 'Cancel',
     'modal.delete': 'Delete'
+     'settings.importCSV': 'Import spreadsheet (CSV)',
+'toast.csvImported': '{n} balances imported.',
+'toast.invalidCSV': 'Invalid CSV file.
   },
   'es': {
     'dashboard.totalEquity': 'Patrimonio Total',
@@ -112,6 +118,9 @@ const I18N = {
     'modal.save': 'Guardar',
     'modal.cancel': 'Cancelar',
     'modal.delete': 'Eliminar'
+     'settings.importCSV': 'Importar hoja de cálculo (CSV)',
+'toast.csvImported': '{n} saldos importados.
+'toast.invalidCSV': 'Archivo CSV inválido.'
   }
 };
 
@@ -401,6 +410,81 @@ async function exportJSON() {
 }
 
 function exportCSV() {
+   function parseCSV(text) {
+  text = text.replace(/^\uFEFF/, '');
+  const lines = text.split(/\r?\n/).filter((l) => l.trim());
+  const rows = [];
+  for (const line of lines) {
+    const cells = [];
+    let cur = '';
+    let inQuotes = false;
+    for (let i = 0; i < line.length; i++) {
+      const ch = line[i];
+      if (inQuotes) {
+        if (ch === '"') {
+          if (line[i + 1] === '"') { cur += '"'; i++; }
+          else inQuotes = false;
+        } else cur += ch;
+      } else if (ch === '"') {
+        inQuotes = true;
+      } else if (ch === ';') {
+        cells.push(cur); cur = '';
+      } else {
+        cur += ch;
+      }
+    }
+    cells.push(cur);
+    rows.push(cells);
+  }
+  return rows;
+}
+
+async function importCSV(file) {
+  try {
+    const rows = parseCSV(await file.text());
+    if (rows.length < 2) throw new Error('vazio');
+    const header = rows[0].map((h) => h.trim().toLowerCase());
+    const iDate = header.findIndex((h) => h === 'data' || h.includes('date'));
+    const iAccount = header.findIndex((h) => h === 'conta' || h.includes('account'));
+    const iCurrency = header.findIndex((h) => h === 'moeda' || h.includes('currency'));
+    const iValue = header.findIndex((h) => h === 'saldo' || h.includes('balance') || h === 'valor');
+    if (iDate < 0 || iAccount < 0 || iValue < 0) throw new Error('formato');
+
+    let imported = 0;
+    let created = 0;
+    for (let r = 1; r < rows.length; r++) {
+      const row = rows[r];
+      if (row.length < 2) continue;
+      const date = (row[iDate] || '').trim();
+      const accountName = (row[iAccount] || '').trim();
+      const currency = ((row[iCurrency] || '').trim() || 'BRL').toUpperCase();
+      let clean = (row[iValue] || '').trim();
+      if (clean.includes(',')) clean = clean.replace(/\./g, '').replace(',', '.');
+      const value = Number(clean);
+      if (!date || !accountName || isNaN(value)) continue;
+
+      let account = state.accounts.find(
+        (a) => a.name.toLowerCase() === accountName.toLowerCase() && a.currency === currency
+      );
+      if (!account) {
+        account = { id: uid(), name: accountName, type: 'bank', currency, initialBalance: 0 };
+        state.accounts.push(account);
+        await put('accounts', account);
+        created++;
+      }
+      const existing = state.balances.find((b) => b.date === date && b.accountId === account.id);
+      const balance = { id: existing ? existing.id : uid(), date, accountId: account.id, value };
+      if (existing) state.balances = state.balances.map((b) => (b.id === existing.id ? balance : b));
+      else state.balances.push(balance);
+      await put('balances', balance);
+      imported++;
+    }
+    renderAll();
+    showToast(t('toast.csvImported').replace('{n}', imported + (created ? ' (' + created + ' novas contas)' : '')));
+  } catch (e) {
+    showToast(t('toast.invalidCSV'));
+  }
+}
   const header = ['Data', 'Conta', 'Moeda', 'Saldo'];
   const rows = state.balances.map((b) => {
     const acc = state.accounts.find((a) => a.id === b.accountId);
@@ -472,6 +556,11 @@ function bindEvents() {
       document.querySelectorAll('.tab-panel').forEach((p) => p.classList.remove('active'));
       btn.classList.add('active');
       document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+       document.getElementById('btnImportCSV').addEventListener('click', () => document.getElementById('importCSVFile').click());
+document.getElementById('importCSVFile').addEventListener('change', (e) => {
+  if (e.target.files[0]) importCSV(e.target.files[0]);
+  e.target.value = '';
+});
     });
   });
 }
