@@ -22,7 +22,7 @@ const I18N = {
     'tabs.transactions': 'Transações',
     'tabs.budgets': 'Orçamentos',
     'tabs.settings': 'Configurações',
-    'dashboard.totalEquity': 'Patrimônio Total',
+    'dashboard.totalEquity': 'Financeiro',
     'dashboard.accounts': 'Contas',
     'dashboard.currencies': 'Moedas',
     'dashboard.baseCurrency': 'Moeda base',
@@ -94,6 +94,38 @@ const I18N = {
     'dashboard.consolidated': 'Consolidado em {code}',
     'modal.addFx': 'Nova taxa de câmbio',
     'modal.editFx': 'Editar taxa de câmbio',
+    'tabs.portfolio': 'Portfólio',
+    'portfolio.title': 'Portfólio',
+    'portfolio.properties': 'Imóveis',
+    'portfolio.vehicles': 'Veículos',
+    'portfolio.addProperty': '+ Novo imóvel',
+    'portfolio.addVehicle': '+ Novo veículo',
+    'portfolio.name': 'Nome',
+    'portfolio.currency': 'Moeda',
+    'portfolio.value': 'Valor atual',
+    'portfolio.debt': 'Dívida',
+    'portfolio.net': 'Líquido',
+    'portfolio.acquiredDate': 'Data de aquisição',
+    'portfolio.acquiredValue': 'Valor de aquisição',
+    'portfolio.acquiredDebt': 'Dívida inicial (hipoteca/financiamento)',
+    'portfolio.depreciation': 'Depreciação anual (%)',
+    'portfolio.depreciationHint': 'Usada apenas enquanto não houver avaliação mais recente. Qualquer avaliação registrada substitui o cálculo.',
+    'portfolio.valuations': 'Avaliações',
+    'portfolio.addValuation': 'Registrar avaliação',
+    'portfolio.valuationDate': 'Data',
+    'portfolio.emptyProperties': 'Nenhum imóvel cadastrado.',
+    'portfolio.emptyVehicles': 'Nenhum veículo cadastrado.',
+    'portfolio.noValuations': 'Sem avaliações. O valor exibido parte da aquisição.',
+    'portfolio.estimated': 'estimado',
+    'portfolio.total': 'Total',
+    'dashboard.properties': 'Imóveis',
+    'dashboard.vehicles': 'Veículos',
+    'dashboard.debt': 'Dívidas',
+    'dashboard.nav': 'Patrimônio Líquido',
+    'modal.addProperty': 'Novo imóvel',
+    'modal.editProperty': 'Editar imóvel',
+    'modal.addVehicle': 'Novo veículo',
+    'modal.editVehicle': 'Editar veículo',
     'settings.title': 'Configurações',
     'settings.baseCurrency': 'Moeda base',
     'settings.baseCurrencyHint': 'Moeda usada para consolidar patrimônio e relatórios.',
@@ -129,7 +161,7 @@ const I18N = {
     'tabs.transactions': 'Transactions',
     'tabs.budgets': 'Budgets',
     'tabs.settings': 'Settings',
-    'dashboard.totalEquity': 'Total Equity',
+    'dashboard.totalEquity': 'Financial',
     'dashboard.accounts': 'Accounts',
     'dashboard.currencies': 'Currencies',
     'dashboard.baseCurrency': 'Base currency',
@@ -201,6 +233,38 @@ const I18N = {
     'dashboard.consolidated': 'Consolidated in {code}',
     'modal.addFx': 'New exchange rate',
     'modal.editFx': 'Edit exchange rate',
+    'tabs.portfolio': 'Portfolio',
+    'portfolio.title': 'Portfolio',
+    'portfolio.properties': 'Properties',
+    'portfolio.vehicles': 'Vehicles',
+    'portfolio.addProperty': '+ New property',
+    'portfolio.addVehicle': '+ New vehicle',
+    'portfolio.name': 'Name',
+    'portfolio.currency': 'Currency',
+    'portfolio.value': 'Current value',
+    'portfolio.debt': 'Debt',
+    'portfolio.net': 'Net',
+    'portfolio.acquiredDate': 'Acquisition date',
+    'portfolio.acquiredValue': 'Acquisition value',
+    'portfolio.acquiredDebt': 'Initial debt (mortgage/loan)',
+    'portfolio.depreciation': 'Annual depreciation (%)',
+    'portfolio.depreciationHint': 'Used only while there is no newer appraisal. Any recorded appraisal overrides the calculation.',
+    'portfolio.valuations': 'Appraisals',
+    'portfolio.addValuation': 'Record appraisal',
+    'portfolio.valuationDate': 'Date',
+    'portfolio.emptyProperties': 'No properties yet.',
+    'portfolio.emptyVehicles': 'No vehicles yet.',
+    'portfolio.noValuations': 'No appraisals. The value shown starts from acquisition.',
+    'portfolio.estimated': 'estimated',
+    'portfolio.total': 'Total',
+    'dashboard.properties': 'Properties',
+    'dashboard.vehicles': 'Vehicles',
+    'dashboard.debt': 'Debt',
+    'dashboard.nav': 'Net Worth',
+    'modal.addProperty': 'New property',
+    'modal.editProperty': 'Edit property',
+    'modal.addVehicle': 'New vehicle',
+    'modal.editVehicle': 'Edit vehicle',
     'settings.title': 'Settings',
     'settings.baseCurrency': 'Base currency',
     'settings.baseCurrencyHint': 'Currency used to consolidate equity and reports.',
@@ -236,7 +300,7 @@ const I18N = {
     'tabs.transactions': 'Transacciones',
     'tabs.budgets': 'Presupuestos',
     'tabs.settings': 'Configuración',
-    'dashboard.totalEquity': 'Patrimonio Total',
+    'dashboard.totalEquity': 'Financiero',
     'dashboard.accounts': 'Cuentas',
     'dashboard.currencies': 'Monedas',
     'dashboard.baseCurrency': 'Moneda base',
@@ -308,6 +372,38 @@ const I18N = {
     'dashboard.consolidated': 'Consolidado en {code}',
     'modal.addFx': 'Nueva tasa de cambio',
     'modal.editFx': 'Editar tasa de cambio',
+    'tabs.portfolio': 'Portafolio',
+    'portfolio.title': 'Portafolio',
+    'portfolio.properties': 'Inmuebles',
+    'portfolio.vehicles': 'Vehículos',
+    'portfolio.addProperty': '+ Nuevo inmueble',
+    'portfolio.addVehicle': '+ Nuevo vehículo',
+    'portfolio.name': 'Nombre',
+    'portfolio.currency': 'Moneda',
+    'portfolio.value': 'Valor actual',
+    'portfolio.debt': 'Deuda',
+    'portfolio.net': 'Neto',
+    'portfolio.acquiredDate': 'Fecha de adquisición',
+    'portfolio.acquiredValue': 'Valor de adquisición',
+    'portfolio.acquiredDebt': 'Deuda inicial (hipoteca/préstamo)',
+    'portfolio.depreciation': 'Depreciación anual (%)',
+    'portfolio.depreciationHint': 'Se usa solo mientras no haya una tasación más reciente. Cualquier tasación registrada reemplaza el cálculo.',
+    'portfolio.valuations': 'Tasaciones',
+    'portfolio.addValuation': 'Registrar tasación',
+    'portfolio.valuationDate': 'Fecha',
+    'portfolio.emptyProperties': 'Sin inmuebles registrados.',
+    'portfolio.emptyVehicles': 'Sin vehículos registrados.',
+    'portfolio.noValuations': 'Sin tasaciones. El valor mostrado parte de la adquisición.',
+    'portfolio.estimated': 'estimado',
+    'portfolio.total': 'Total',
+    'dashboard.properties': 'Inmuebles',
+    'dashboard.vehicles': 'Vehículos',
+    'dashboard.debt': 'Deudas',
+    'dashboard.nav': 'Patrimonio Neto',
+    'modal.addProperty': 'Nuevo inmueble',
+    'modal.editProperty': 'Editar inmueble',
+    'modal.addVehicle': 'Nuevo vehículo',
+    'modal.editVehicle': 'Editar vehículo',
     'settings.title': 'Configuración',
     'settings.baseCurrency': 'Moneda base',
     'settings.baseCurrencyHint': 'Moneda usada para consolidar patrimonio e informes.',
@@ -411,7 +507,7 @@ function groupLabel(g) {
 
 /* ---------- Estado e persistência (IndexedDB) ---------- */
 const DB_NAME = 'prof-controller';
-const DB_VERSION = 2; // Fase 2: novas stores transactions e budgets
+const DB_VERSION = 3; // Fase 4: novas stores assets e valuations
 let db = null;
 let state = {
   accounts: [],
@@ -419,6 +515,8 @@ let state = {
   transactions: [],
   budgets: [],
   fx: [],
+  assets: [],
+  valuations: [],
   settings: { lang: 'pt-BR', theme: 'default', baseCurrency: 'EUR' },
   ui: { txType: 'all', txAccount: 'all', txMonth: '', budgetMonth: '' }
 };
@@ -457,6 +555,16 @@ function openDB() {
         const s = d.createObjectStore('budgets', { keyPath: 'id' });
         s.createIndex('category', 'category');
       }
+      // Fase 4 — ativos (imóveis e veículos) e suas avaliações datadas
+      if (!d.objectStoreNames.contains('assets')) {
+        const s = d.createObjectStore('assets', { keyPath: 'id' });
+        s.createIndex('type', 'type');
+      }
+      if (!d.objectStoreNames.contains('valuations')) {
+        const s = d.createObjectStore('valuations', { keyPath: 'id' });
+        s.createIndex('assetId', 'assetId');
+        s.createIndex('date', 'date');
+      }
       // Preparado para fases futuras (patrimônio)
       ['fx', 'receitas', 'lancamentos', 'imoveis', 'veiculos', 'posicoes', 'nav', 'orcamentos']
         .forEach((name) => { if (!d.objectStoreNames.contains(name)) d.createObjectStore(name, { keyPath: 'id' }); });
@@ -491,6 +599,8 @@ async function loadAll() {
   state.transactions = await getAll('transactions');
   state.budgets = await getAll('budgets');
   state.fx = await getAll('fx');
+  state.assets = await getAll('assets');
+  state.valuations = await getAll('valuations');
   const settings = await getAll('settings');
   settings.forEach((s) => { state.settings[s.key] = s.value; });
 }
@@ -619,6 +729,76 @@ function consolidate(byCurrency, base, date) {
 }
 
 
+/* ---------- Ativos: imóveis e veículos (Fase 4) ----------
+   O valor parte da avaliação mais recente até a data consultada — mesma
+   lógica de âncora dos saldos e do câmbio. Para veículos, a depreciação
+   anual preenche APENAS o intervalo entre essa âncora e a data pedida.
+   Registrar uma avaliação nova sempre substitui o cálculo: número real
+   vence número estimado. */
+
+function valuationsOf(assetId) {
+  return state.valuations
+    .filter((v) => v.assetId === assetId)
+    .sort((a, b) => a.date.localeCompare(b.date));
+}
+
+// Âncora: a avaliação mais recente até a data, ou a própria aquisição.
+function assetAnchor(asset, date) {
+  const limit = date || todayISO();
+  const list = valuationsOf(asset.id).filter((v) => v.date <= limit);
+  if (list.length) {
+    const last = list[list.length - 1];
+    return { date: last.date, value: Number(last.value) || 0, debt: Number(last.debt) || 0, appraised: true };
+  }
+  return {
+    date: asset.acquiredDate || limit,
+    value: Number(asset.acquiredValue) || 0,
+    debt: Number(asset.acquiredDebt) || 0,
+    appraised: false
+  };
+}
+
+function yearsBetween(from, to) {
+  const ms = new Date(to + 'T00:00:00Z') - new Date(from + 'T00:00:00Z');
+  return ms > 0 ? ms / (365.25 * 24 * 60 * 60 * 1000) : 0;
+}
+
+// Valor do ativo na data. Informa também se o número veio de depreciação.
+function assetValue(asset, date) {
+  const limit = date || todayISO();
+  const anchor = assetAnchor(asset, limit);
+  const rate = Number(asset.depreciation) || 0;
+
+  if (asset.type !== 'vehicle' || rate <= 0) {
+    return { value: anchor.value, estimated: false, anchor };
+  }
+  const years = yearsBetween(anchor.date, limit);
+  if (years <= 0) return { value: anchor.value, estimated: false, anchor };
+
+  const factor = Math.pow(Math.max(0, 1 - rate / 100), years);
+  return { value: anchor.value * factor, estimated: true, anchor };
+}
+
+// A dívida não deprecia: vale o último saldo devedor informado.
+function assetDebt(asset, date) {
+  return assetAnchor(asset, date).debt;
+}
+
+function assetsOfType(type) {
+  return state.assets.filter((a) => a.type === type);
+}
+
+// Totais de uma classe, por moeda, prontos para consolidar.
+function assetTotals(type, date) {
+  const gross = {}, debt = {};
+  assetsOfType(type).forEach((a) => {
+    const code = a.currency;
+    gross[code] = (gross[code] || 0) + assetValue(a, date).value;
+    debt[code] = (debt[code] || 0) + assetDebt(a, date);
+  });
+  return { gross, debt };
+}
+
 function applyLang() {
   document.documentElement.lang = state.settings.lang;
   document.querySelectorAll('[data-i18n]').forEach((el) => { el.textContent = t(el.dataset.i18n); });
@@ -638,6 +818,7 @@ function renderAll() {
   renderTransactions();
   renderBudgets();
   renderFx();
+  renderPortfolio();
   renderSettings();
 }
 
@@ -687,6 +868,26 @@ function renderDashboard() {
   fillSummaryCard('monthIncome', 'monthIncomeSub', inc, base);
   fillSummaryCard('monthExpense', 'monthExpenseSub', exp, base);
   fillSummaryCard('monthResult', 'monthResultSub', net, base);
+
+  // Classes de patrimônio e NAV
+  const hoje = todayISO();
+  const imoveis = assetTotals('property', hoje);
+  const veiculos = assetTotals('vehicle', hoje);
+  const dividas = {};
+  [imoveis.debt, veiculos.debt].forEach((m) => {
+    Object.keys(m).forEach((c) => { dividas[c] = (dividas[c] || 0) + m[c]; });
+  });
+
+  fillSummaryCard('propTotal', 'propTotalSub', imoveis.gross, base);
+  fillSummaryCard('vehTotal', 'vehTotalSub', veiculos.gross, base);
+  fillSummaryCard('debtTotal', 'debtTotalSub', dividas, base);
+
+  // Patrimônio líquido = financeiro + imóveis + veículos - dívidas
+  const nav = equity.total
+    + consolidate(imoveis.gross, base, hoje).total
+    + consolidate(veiculos.gross, base, hoje).total
+    - consolidate(dividas, base, hoje).total;
+  document.getElementById('navTotal').textContent = fmtMoney(nav, base);
 }
 
 function fillSummaryCard(mainId, subId, map, base) {
@@ -1058,6 +1259,172 @@ async function fetchRates() {
   }
 }
 
+/* ---------- Portfólio: imóveis e veículos ---------- */
+function renderPortfolio() {
+  ['property', 'vehicle'].forEach((type) => {
+    const prefix = type === 'property' ? 'prop' : 'veh';
+    const thead = document.querySelector('#' + prefix + 'Table thead tr');
+    const tbody = document.querySelector('#' + prefix + 'Table tbody');
+    const empty = document.getElementById(prefix + 'Empty');
+
+    thead.innerHTML = `
+      <th>${t('portfolio.name')}</th><th>${t('portfolio.currency')}</th>
+      <th>${t('portfolio.value')}</th><th>${t('portfolio.debt')}</th>
+      <th>${t('portfolio.net')}</th><th>${t('accounts.actions')}</th>`;
+
+    const list = assetsOfType(type);
+    tbody.innerHTML = '';
+    if (!list.length) {
+      empty.textContent = t(type === 'property' ? 'portfolio.emptyProperties' : 'portfolio.emptyVehicles');
+      empty.classList.remove('hidden');
+      return;
+    }
+    empty.classList.add('hidden');
+
+    list.forEach((a) => {
+      const v = assetValue(a);
+      const debt = assetDebt(a);
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${escapeHtml(a.name)}</td>
+        <td>${a.currency}</td>
+        <td>${fmtMoney(v.value, a.currency)}${v.estimated ? ` <span class="tag">${t('portfolio.estimated')}</span>` : ''}</td>
+        <td>${debt ? fmtMoney(debt, a.currency) : '—'}</td>
+        <td><strong>${fmtMoney(v.value - debt, a.currency)}</strong></td>
+        <td>
+          <button class="secondary-btn" onclick="openValuationsModal('${a.id}')">${t('portfolio.valuations')}</button>
+          <button class="secondary-btn" onclick="openAssetModal('${type}','${a.id}')">${t('modal.edit')}</button>
+          <button class="secondary-btn" onclick="deleteAsset('${a.id}')">${t('modal.delete')}</button>
+        </td>`;
+      tbody.appendChild(tr);
+    });
+  });
+}
+
+function openAssetModal(type, id) {
+  const a = id ? state.assets.find((x) => x.id === id) : null;
+  const isVehicle = type === 'vehicle';
+  const titulo = a
+    ? t(isVehicle ? 'modal.editVehicle' : 'modal.editProperty')
+    : t(isVehicle ? 'modal.addVehicle' : 'modal.addProperty');
+
+  openModal(`
+    <h2>${titulo}</h2>
+    <label>${t('portfolio.name')}</label>
+    <input id="asName" value="${a ? escapeHtml(a.name) : ''}">
+    <label>${t('portfolio.currency')}</label>
+    <select id="asCurrency">
+      ${CURRENCIES.map((c) => {
+        const sel = a ? a.currency === c.code : c.code === state.settings.baseCurrency;
+        return `<option value="${c.code}" ${sel ? 'selected' : ''}>${c.code}</option>`;
+      }).join('')}
+    </select>
+    <label>${t('portfolio.acquiredDate')}</label>
+    <input id="asDate" type="date" value="${a && a.acquiredDate ? a.acquiredDate : todayISO()}">
+    <label>${t('portfolio.acquiredValue')}</label>
+    <input id="asValue" type="number" step="0.01" min="0" value="${a ? a.acquiredValue : ''}">
+    <label>${t('portfolio.acquiredDebt')}</label>
+    <input id="asDebt" type="number" step="0.01" min="0" value="${a && a.acquiredDebt ? a.acquiredDebt : ''}">
+    ${isVehicle ? `
+      <label>${t('portfolio.depreciation')}</label>
+      <input id="asDepreciation" type="number" step="0.1" min="0" max="100" value="${a && a.depreciation != null ? a.depreciation : 15}">
+      <p class="hint">${t('portfolio.depreciationHint')}</p>` : ''}
+    <button class="primary-btn" onclick="saveAsset('${type}','${a ? a.id : ''}')">${t('modal.save')}</button>
+  `);
+}
+
+async function saveAsset(type, id) {
+  const name = document.getElementById('asName').value.trim();
+  if (!name) return;
+  const depEl = document.getElementById('asDepreciation');
+  const asset = {
+    id: id || uid(),
+    type,
+    name,
+    currency: document.getElementById('asCurrency').value,
+    acquiredDate: document.getElementById('asDate').value || todayISO(),
+    acquiredValue: Number(document.getElementById('asValue').value) || 0,
+    acquiredDebt: Number(document.getElementById('asDebt').value) || 0,
+    depreciation: depEl ? (Number(depEl.value) || 0) : 0
+  };
+  if (id) state.assets = state.assets.map((x) => (x.id === id ? asset : x));
+  else state.assets.push(asset);
+  await put('assets', asset);
+  closeModal();
+  renderAll();
+  showToast(t('toast.saved'));
+}
+
+async function deleteAsset(id) {
+  if (!confirm(t('modal.delete') + '?')) return;
+  for (const v of valuationsOf(id)) await del('valuations', v.id);
+  state.valuations = state.valuations.filter((v) => v.assetId !== id);
+  state.assets = state.assets.filter((x) => x.id !== id);
+  await del('assets', id);
+  renderAll();
+  showToast(t('toast.deleted'));
+}
+
+/* Avaliações de um ativo: histórico datado de valor e saldo devedor. */
+function openValuationsModal(assetId) {
+  const a = state.assets.find((x) => x.id === assetId);
+  if (!a) return;
+  const list = valuationsOf(assetId).slice().reverse();
+
+  openModal(`
+    <h2>${t('portfolio.valuations')} — ${escapeHtml(a.name)}</h2>
+    ${list.length ? `
+      <table class="mini-table">
+        <thead><tr>
+          <th>${t('portfolio.valuationDate')}</th><th>${t('portfolio.value')}</th>
+          <th>${t('portfolio.debt')}</th><th></th>
+        </tr></thead>
+        <tbody>
+          ${list.map((v) => `
+            <tr>
+              <td>${v.date}</td>
+              <td>${fmtMoney(v.value, a.currency)}</td>
+              <td>${v.debt ? fmtMoney(v.debt, a.currency) : '—'}</td>
+              <td><button class="secondary-btn" onclick="deleteValuation('${v.id}','${assetId}')">${t('modal.delete')}</button></td>
+            </tr>`).join('')}
+        </tbody>
+      </table>` : `<p class="hint">${t('portfolio.noValuations')}</p>`}
+
+    <label>${t('portfolio.valuationDate')}</label>
+    <input id="vlDate" type="date" value="${todayISO()}">
+    <label>${t('portfolio.value')} (${a.currency})</label>
+    <input id="vlValue" type="number" step="0.01" min="0">
+    <label>${t('portfolio.debt')} (${a.currency})</label>
+    <input id="vlDebt" type="number" step="0.01" min="0">
+    <button class="primary-btn" onclick="saveValuation('${assetId}')">${t('portfolio.addValuation')}</button>
+  `);
+}
+
+async function saveValuation(assetId) {
+  const date = document.getElementById('vlDate').value;
+  const value = Number(document.getElementById('vlValue').value);
+  const debt = Number(document.getElementById('vlDebt').value) || 0;
+  if (!date || isNaN(value) || value < 0) return;
+
+  // Uma avaliação por ativo e data
+  const existing = state.valuations.find((v) => v.assetId === assetId && v.date === date);
+  const record = { id: existing ? existing.id : uid(), assetId, date, value, debt };
+  if (existing) state.valuations = state.valuations.map((v) => (v.id === record.id ? record : v));
+  else state.valuations.push(record);
+  await put('valuations', record);
+  renderAll();
+  openValuationsModal(assetId); // mantém o modal aberto com a lista atualizada
+  showToast(t('toast.saved'));
+}
+
+async function deleteValuation(id, assetId) {
+  state.valuations = state.valuations.filter((v) => v.id !== id);
+  await del('valuations', id);
+  renderAll();
+  openValuationsModal(assetId);
+  showToast(t('toast.deleted'));
+}
+
 function renderSettings() {
   const sel = document.getElementById('baseCurrencySelect');
   sel.innerHTML = CURRENCIES.map((c) => `<option value="${c.code}">${c.code} (${c.symbol.trim()})</option>`).join('');
@@ -1349,13 +1716,15 @@ function download(filename, content, type) {
 
 async function exportJSON() {
   const data = {
-    version: 3,
+    version: 4,
     exportedAt: new Date().toISOString(),
     accounts: state.accounts,
     balances: state.balances,
     transactions: state.transactions,
     budgets: state.budgets,
     fx: state.fx,
+    assets: state.assets,
+    valuations: state.valuations,
     settings: state.settings
   };
   download(`prof-controller-backup-${todayISO()}.json`, JSON.stringify(data, null, 2), 'application/json');
@@ -1408,6 +1777,8 @@ async function importJSON(file) {
     for (const trn of (data.transactions || [])) await put('transactions', trn);
     for (const bg of (data.budgets || [])) await put('budgets', bg);
     for (const r of (data.fx || [])) await put('fx', r);
+    for (const a of (data.assets || [])) await put('assets', a);
+    for (const v of (data.valuations || [])) await put('valuations', v);
     if (data.settings) {
       for (const [k, v] of Object.entries(data.settings)) {
         if (k === 'ui') continue;
@@ -1581,6 +1952,10 @@ function bindEvents() {
   // Fase 2 — orçamentos
   document.getElementById('btnAddBudget').addEventListener('click', () => openBudgetModal());
   document.getElementById('budgetMonth').addEventListener('change', (e) => { state.ui.budgetMonth = e.target.value; renderBudgets(); });
+
+  // Fase 4 — portfólio
+  document.getElementById('btnAddProperty').addEventListener('click', () => openAssetModal('property'));
+  document.getElementById('btnAddVehicle').addEventListener('click', () => openAssetModal('vehicle'));
 
   // Fase 3 — câmbio
   document.getElementById('btnAddFx').addEventListener('click', () => openFxModal());
