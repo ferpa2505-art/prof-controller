@@ -19,10 +19,12 @@
   </header>
 
   <nav class="tabs">
-    <button class="tab active" data-tab="dashboard">Dashboard</button>
-    <button class="tab" data-tab="accounts">Contas</button>
-    <button class="tab" data-tab="balances">Saldos Diários</button>
-    <button class="tab" data-tab="settings">Configurações</button>
+    <button class="tab active" data-tab="dashboard" data-i18n="tabs.dashboard">Dashboard</button>
+    <button class="tab" data-tab="accounts" data-i18n="tabs.accounts">Contas</button>
+    <button class="tab" data-tab="balances" data-i18n="tabs.balances">Saldos Diários</button>
+    <button class="tab" data-tab="transactions" data-i18n="tabs.transactions">Transações</button>
+    <button class="tab" data-tab="budgets" data-i18n="tabs.budgets">Orçamentos</button>
+    <button class="tab" data-tab="settings" data-i18n="tabs.settings">Configurações</button>
   </nav>
 
   <main>
@@ -47,6 +49,24 @@
           <p id="baseCurrencyLabel" class="big-number">EUR</p>
         </div>
       </div>
+
+      <div class="cards cards-spaced">
+        <div class="card">
+          <h3 data-i18n="dashboard.income">Receitas do mês</h3>
+          <p id="monthIncome" class="big-number amount-in">—</p>
+          <p id="monthIncomeSub" class="sub-number"></p>
+        </div>
+        <div class="card">
+          <h3 data-i18n="dashboard.expense">Despesas do mês</h3>
+          <p id="monthExpense" class="big-number amount-out">—</p>
+          <p id="monthExpenseSub" class="sub-number"></p>
+        </div>
+        <div class="card">
+          <h3 data-i18n="dashboard.result">Resultado do mês</h3>
+          <p id="monthResult" class="big-number">—</p>
+          <p id="monthResultSub" class="sub-number"></p>
+        </div>
+      </div>
     </section>
 
     <!-- CONTAS -->
@@ -55,18 +75,21 @@
         <h2 data-i18n="accounts.title">Contas</h2>
         <button id="btnAddAccount" class="primary-btn" data-i18n="accounts.add">+ Nova conta</button>
       </div>
-      <table id="accountsTable">
-        <thead>
-          <tr>
-            <th data-i18n="accounts.name">Nome</th>
-            <th data-i18n="accounts.type">Tipo</th>
-            <th data-i18n="accounts.currency">Moeda</th>
-            <th data-i18n="accounts.initialBalance">Saldo inicial</th>
-            <th data-i18n="accounts.actions">Ações</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+      <div class="table-scroll">
+        <table id="accountsTable">
+          <thead>
+            <tr>
+              <th data-i18n="accounts.name">Nome</th>
+              <th data-i18n="accounts.type">Tipo</th>
+              <th data-i18n="accounts.currency">Moeda</th>
+              <th data-i18n="accounts.initialBalance">Saldo inicial</th>
+              <th data-i18n="accounts.currentBalance">Saldo atual</th>
+              <th data-i18n="accounts.actions">Ações</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
     </section>
 
     <!-- SALDOS DIÁRIOS -->
@@ -81,6 +104,60 @@
           <tbody></tbody>
         </table>
       </div>
+    </section>
+
+    <!-- TRANSAÇÕES -->
+    <section id="tab-transactions" class="tab-panel">
+      <div class="panel-header">
+        <h2 data-i18n="tx.title">Transações</h2>
+        <div>
+          <button id="btnExportTxCSV" class="secondary-btn" data-i18n="settings.exportCSV">Exportar planilha (CSV)</button>
+          <button id="btnAddTx" class="primary-btn" data-i18n="tx.add">+ Novo lançamento</button>
+        </div>
+      </div>
+
+      <div class="filters">
+        <label>
+          <span data-i18n="tx.type">Tipo</span>
+          <select id="txFilterType"></select>
+        </label>
+        <label>
+          <span data-i18n="tx.account">Conta</span>
+          <select id="txFilterAccount"></select>
+        </label>
+        <label>
+          <span data-i18n="tx.month">Mês</span>
+          <input type="month" id="txFilterMonth">
+        </label>
+        <button id="btnClearTxFilters" class="secondary-btn" data-i18n="tx.clearFilters">Limpar filtros</button>
+      </div>
+
+      <p id="txEmpty" class="empty-state hidden"></p>
+      <div class="table-scroll">
+        <table id="txTable">
+          <thead><tr></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ORÇAMENTOS -->
+    <section id="tab-budgets" class="tab-panel">
+      <div class="panel-header">
+        <h2 data-i18n="budget.title">Orçamentos</h2>
+        <button id="btnAddBudget" class="primary-btn" data-i18n="budget.add">+ Novo orçamento</button>
+      </div>
+      <p class="hint" data-i18n="budget.hint">Cada orçamento tem moeda própria e vale todos os meses.</p>
+
+      <div class="filters">
+        <label>
+          <span data-i18n="budget.month">Mês</span>
+          <input type="month" id="budgetMonth">
+        </label>
+      </div>
+
+      <p id="budgetEmpty" class="empty-state hidden"></p>
+      <div id="budgetList" class="budget-list"></div>
     </section>
 
     <!-- CONFIGURAÇÕES -->
