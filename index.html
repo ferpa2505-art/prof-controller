@@ -24,6 +24,7 @@
     <button class="tab" data-tab="balances" data-i18n="tabs.balances">Saldos Diários</button>
     <button class="tab" data-tab="transactions" data-i18n="tabs.transactions">Transações</button>
     <button class="tab" data-tab="budgets" data-i18n="tabs.budgets">Orçamentos</button>
+    <button class="tab" data-tab="fx" data-i18n="tabs.fx">Câmbio</button>
     <button class="tab" data-tab="settings" data-i18n="tabs.settings">Configurações</button>
   </nav>
 
@@ -49,6 +50,8 @@
           <p id="baseCurrencyLabel" class="big-number">EUR</p>
         </div>
       </div>
+
+      <p id="fxWarning" class="fx-warning hidden"></p>
 
       <div class="cards cards-spaced">
         <div class="card">
@@ -158,6 +161,26 @@
 
       <p id="budgetEmpty" class="empty-state hidden"></p>
       <div id="budgetList" class="budget-list"></div>
+    </section>
+
+    <!-- CÂMBIO -->
+    <section id="tab-fx" class="tab-panel">
+      <div class="panel-header">
+        <h2 data-i18n="fx.title">Câmbio</h2>
+        <div>
+          <button id="btnFetchRates" class="secondary-btn" data-i18n="fx.fetch">Buscar taxas de hoje</button>
+          <button id="btnAddFx" class="primary-btn" data-i18n="fx.add">+ Nova taxa</button>
+        </div>
+      </div>
+      <p class="hint" data-i18n="fx.hint">As taxas são registradas em relação ao euro.</p>
+
+      <p id="fxEmpty" class="empty-state hidden"></p>
+      <div class="table-scroll">
+        <table id="fxTable">
+          <thead><tr></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
     </section>
 
     <!-- CONFIGURAÇÕES -->
