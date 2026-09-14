@@ -77,6 +77,23 @@ const I18N = {
     'budget.over': 'Excedido em',
     'budget.month': 'Mês',
     'budget.empty': 'Nenhum orçamento criado. Use "Novo orçamento" para definir um limite mensal.',
+    'tabs.fx': 'Câmbio',
+    'fx.title': 'Câmbio',
+    'fx.add': '+ Nova taxa',
+    'fx.fetch': 'Buscar taxas de hoje',
+    'fx.hint': 'As taxas são registradas em relação ao euro. Para consolidar o patrimônio, o app usa a taxa mais recente até a data consultada.',
+    'fx.date': 'Data',
+    'fx.currency': 'Moeda',
+    'fx.rate': 'Taxa',
+    'fx.rateLabel': 'Quantas unidades desta moeda valem 1 EUR',
+    'fx.inverse': 'Inverso',
+    'fx.empty': 'Nenhuma taxa registrada. Use "Buscar taxas de hoje" ou cadastre manualmente.',
+    'fx.missing': 'Sem taxa de câmbio para: {list}. O total consolidado ignora essas moedas.',
+    'fx.fetched': '{n} taxas atualizadas.',
+    'fx.fetchError': 'Não foi possível buscar as taxas online. Verifique a conexão ou cadastre manualmente.',
+    'dashboard.consolidated': 'Consolidado em {code}',
+    'modal.addFx': 'Nova taxa de câmbio',
+    'modal.editFx': 'Editar taxa de câmbio',
     'settings.title': 'Configurações',
     'settings.baseCurrency': 'Moeda base',
     'settings.baseCurrencyHint': 'Moeda usada para consolidar patrimônio e relatórios.',
@@ -167,6 +184,23 @@ const I18N = {
     'budget.over': 'Over by',
     'budget.month': 'Month',
     'budget.empty': 'No budgets yet. Use "New budget" to set a monthly limit.',
+    'tabs.fx': 'FX',
+    'fx.title': 'Exchange Rates',
+    'fx.add': '+ New rate',
+    'fx.fetch': "Fetch today's rates",
+    'fx.hint': 'Rates are recorded against the euro. To consolidate equity, the app uses the most recent rate up to the date requested.',
+    'fx.date': 'Date',
+    'fx.currency': 'Currency',
+    'fx.rate': 'Rate',
+    'fx.rateLabel': 'How many units of this currency equal 1 EUR',
+    'fx.inverse': 'Inverse',
+    'fx.empty': 'No rates yet. Use "Fetch today\'s rates" or add one manually.',
+    'fx.missing': 'No exchange rate for: {list}. The consolidated total ignores these currencies.',
+    'fx.fetched': '{n} rates updated.',
+    'fx.fetchError': 'Could not fetch rates online. Check your connection or add them manually.',
+    'dashboard.consolidated': 'Consolidated in {code}',
+    'modal.addFx': 'New exchange rate',
+    'modal.editFx': 'Edit exchange rate',
     'settings.title': 'Settings',
     'settings.baseCurrency': 'Base currency',
     'settings.baseCurrencyHint': 'Currency used to consolidate equity and reports.',
@@ -257,6 +291,23 @@ const I18N = {
     'budget.over': 'Excedido en',
     'budget.month': 'Mes',
     'budget.empty': 'Sin presupuestos. Use "Nuevo presupuesto" para definir un límite mensual.',
+    'tabs.fx': 'Cambio',
+    'fx.title': 'Tipos de Cambio',
+    'fx.add': '+ Nueva tasa',
+    'fx.fetch': 'Buscar tasas de hoy',
+    'fx.hint': 'Las tasas se registran respecto al euro. Para consolidar el patrimonio, el app usa la tasa más reciente hasta la fecha consultada.',
+    'fx.date': 'Fecha',
+    'fx.currency': 'Moneda',
+    'fx.rate': 'Tasa',
+    'fx.rateLabel': 'Cuántas unidades de esta moneda equivalen a 1 EUR',
+    'fx.inverse': 'Inverso',
+    'fx.empty': 'Sin tasas registradas. Use "Buscar tasas de hoy" o registre una manualmente.',
+    'fx.missing': 'Sin tipo de cambio para: {list}. El total consolidado ignora esas monedas.',
+    'fx.fetched': '{n} tasas actualizadas.',
+    'fx.fetchError': 'No se pudieron buscar las tasas en línea. Verifique la conexión o regístrelas manualmente.',
+    'dashboard.consolidated': 'Consolidado en {code}',
+    'modal.addFx': 'Nueva tasa de cambio',
+    'modal.editFx': 'Editar tasa de cambio',
     'settings.title': 'Configuración',
     'settings.baseCurrency': 'Moneda base',
     'settings.baseCurrencyHint': 'Moneda usada para consolidar patrimonio e informes.',
@@ -367,6 +418,7 @@ let state = {
   balances: [],
   transactions: [],
   budgets: [],
+  fx: [],
   settings: { lang: 'pt-BR', theme: 'default', baseCurrency: 'EUR' },
   ui: { txType: 'all', txAccount: 'all', txMonth: '', budgetMonth: '' }
 };
@@ -438,6 +490,7 @@ async function loadAll() {
   state.balances = await getAll('balances');
   state.transactions = await getAll('transactions');
   state.budgets = await getAll('budgets');
+  state.fx = await getAll('fx');
   const settings = await getAll('settings');
   settings.forEach((s) => { state.settings[s.key] = s.value; });
 }
@@ -525,7 +578,47 @@ function currentBalance(account) {
   return base + delta;
 }
 
-/* ---------- i18n / tema ---------- */
+/* ---------- Câmbio (Fase 3) ----------
+   Toda taxa é guardada em relação ao EURO, que funciona como pivô:
+     rate = quantas unidades da moeda valem 1 EUR  (ex.: USD 1,08)
+   Guardar contra um pivô fixo permite trocar a moeda base do app sem
+   invalidar nada, e converter qualquer par: A -> EUR -> B.
+   A taxa usada é a mais recente ATÉ a data consultada — mesma lógica de
+   âncora dos saldos, para que o patrimônio de 2023 não use o câmbio de hoje. */
+const FX_PIVOT = 'EUR';
+
+// Quantas unidades de `code` valem 1 EUR na data informada. null se desconhecido.
+function fxPerEur(code, date) {
+  if (code === FX_PIVOT) return 1;
+  const limit = date || todayISO();
+  const list = state.fx
+    .filter((r) => r.currency === code && r.date <= limit)
+    .sort((a, b) => a.date.localeCompare(b.date));
+  return list.length ? Number(list[list.length - 1].rate) : null;
+}
+
+// Converte um valor entre duas moedas. null quando falta alguma taxa.
+function convert(value, from, to, date) {
+  if (from === to) return Number(value) || 0;
+  const rFrom = fxPerEur(from, date);
+  const rTo = fxPerEur(to, date);
+  if (rFrom == null || rTo == null || !rFrom) return null;
+  return (Number(value) || 0) / rFrom * rTo;
+}
+
+// Soma um mapa {moeda: valor} na moeda base. Devolve o total e o que ficou de fora.
+function consolidate(byCurrency, base, date) {
+  let total = 0;
+  const missing = [];
+  Object.keys(byCurrency).forEach((code) => {
+    const converted = convert(byCurrency[code], code, base, date);
+    if (converted == null) missing.push(code);
+    else total += converted;
+  });
+  return { total, missing };
+}
+
+
 function applyLang() {
   document.documentElement.lang = state.settings.lang;
   document.querySelectorAll('[data-i18n]').forEach((el) => { el.textContent = t(el.dataset.i18n); });
@@ -544,6 +637,7 @@ function renderAll() {
   renderBalances();
   renderTransactions();
   renderBudgets();
+  renderFx();
   renderSettings();
 }
 
@@ -556,16 +650,21 @@ function renderDashboard() {
     byCurrency[a.currency] = (byCurrency[a.currency] || 0) + currentBalance(a);
   });
   const keys = Object.keys(byCurrency).sort();
-  // Sem tabela de câmbio (Fase 3), não consolidamos moedas diferentes.
-  if (keys.length === 1) {
-    document.getElementById('totalEquity').textContent = fmtMoney(byCurrency[keys[0]], keys[0]);
-    document.getElementById('totalEquityBase').textContent = '';
-  } else if (keys.length === 0) {
+  const equity = consolidate(byCurrency, base, todayISO());
+  const warn = document.getElementById('fxWarning');
+  if (!keys.length) {
     document.getElementById('totalEquity').textContent = '—';
     document.getElementById('totalEquityBase').textContent = '';
+    warn.classList.add('hidden');
   } else {
-    document.getElementById('totalEquity').textContent = byCurrency[base] != null ? fmtMoney(byCurrency[base], base) : '—';
-    document.getElementById('totalEquityBase').textContent = keys.filter((k) => k !== base).map((k) => fmtMoney(byCurrency[k], k)).join(' · ');
+    document.getElementById('totalEquity').textContent = fmtMoney(equity.total, base);
+    document.getElementById('totalEquityBase').textContent = keys.map((k) => fmtMoney(byCurrency[k], k)).join(' · ');
+    if (equity.missing.length) {
+      warn.textContent = t('fx.missing').replace('{list}', equity.missing.join(', '));
+      warn.classList.remove('hidden');
+    } else {
+      warn.classList.add('hidden');
+    }
   }
   document.getElementById('accountCount').textContent = state.accounts.length;
   document.getElementById('currencyCount').textContent = new Set(state.accounts.map((a) => a.currency)).size;
@@ -595,8 +694,10 @@ function fillSummaryCard(mainId, subId, map, base) {
   const main = document.getElementById(mainId);
   const sub = document.getElementById(subId);
   if (!codes.length) { main.textContent = fmtMoney(0, base); sub.textContent = ''; return; }
-  main.textContent = fmtMoney(map[base] || 0, base);
-  sub.textContent = codes.filter((c) => c !== base).map((c) => fmtMoney(map[c], c)).join(' · ');
+  const { total } = consolidate(map, base, todayISO());
+  main.textContent = fmtMoney(total, base);
+  // O detalhe por moeda continua visível: o consolidado depende de taxa, o original não.
+  sub.textContent = codes.map((c) => fmtMoney(map[c], c)).join(' · ');
 }
 
 function renderAccounts() {
@@ -776,6 +877,140 @@ function renderBudgets() {
         </div>`;
       list.appendChild(card);
     });
+}
+
+/* ---------- Câmbio: tela e cadastro ---------- */
+function fmtRate(n) {
+  return Number(n).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 6 });
+}
+
+function renderFx() {
+  const thead = document.querySelector('#fxTable thead tr');
+  thead.innerHTML = `
+    <th>${t('fx.date')}</th><th>${t('fx.currency')}</th>
+    <th>1 ${FX_PIVOT} =</th><th>${t('fx.inverse')}</th><th>${t('accounts.actions')}</th>`;
+
+  const tbody = document.querySelector('#fxTable tbody');
+  const empty = document.getElementById('fxEmpty');
+  tbody.innerHTML = '';
+
+  const rows = state.fx.slice().sort((a, b) =>
+    b.date.localeCompare(a.date) || a.currency.localeCompare(b.currency));
+
+  if (!rows.length) {
+    empty.textContent = t('fx.empty');
+    empty.classList.remove('hidden');
+    return;
+  }
+  empty.classList.add('hidden');
+
+  rows.forEach((r) => {
+    const rate = Number(r.rate);
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${r.date}</td>
+      <td>${r.currency}</td>
+      <td><strong>${fmtRate(rate)} ${r.currency}</strong></td>
+      <td>1 ${r.currency} = ${rate ? fmtRate(1 / rate) : '—'} ${FX_PIVOT}</td>
+      <td>
+        <button class="secondary-btn" onclick="openFxModal('${r.id}')">${t('modal.edit')}</button>
+        <button class="secondary-btn" onclick="deleteFx('${r.id}')">${t('modal.delete')}</button>
+      </td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function openFxModal(id) {
+  const r = id ? state.fx.find((x) => x.id === id) : null;
+  openModal(`
+    <h2>${r ? t('modal.editFx') : t('modal.addFx')}</h2>
+    <label>${t('fx.date')}</label>
+    <input id="fxDate" type="date" value="${r ? r.date : todayISO()}">
+    <label>${t('fx.currency')}</label>
+    <select id="fxCurrency">
+      ${CURRENCIES.filter((c) => c.code !== FX_PIVOT).map((c) =>
+        `<option value="${c.code}" ${r && r.currency === c.code ? 'selected' : ''}>${c.code}</option>`).join('')}
+    </select>
+    <label>${t('fx.rateLabel')}</label>
+    <input id="fxRate" type="number" step="0.000001" min="0" value="${r ? r.rate : ''}" oninput="updateFxPreview()">
+    <p class="hint" id="fxPreview"></p>
+    <button class="primary-btn" onclick="saveFx('${r ? r.id : ''}')">${t('modal.save')}</button>
+  `);
+  updateFxPreview();
+}
+
+// Mostra o inverso enquanto você digita, para conferir se não inverteu a taxa.
+function updateFxPreview() {
+  const el = document.getElementById('fxPreview');
+  if (!el) return;
+  const code = document.getElementById('fxCurrency').value;
+  const rate = Number(document.getElementById('fxRate').value);
+  el.textContent = rate > 0
+    ? `1 ${FX_PIVOT} = ${fmtRate(rate)} ${code}  ·  1 ${code} = ${fmtRate(1 / rate)} ${FX_PIVOT}`
+    : '';
+}
+
+async function saveFx(id) {
+  const date = document.getElementById('fxDate').value;
+  const code = document.getElementById('fxCurrency').value;
+  const rate = Number(document.getElementById('fxRate').value);
+  if (!date || !code || isNaN(rate) || rate <= 0) return;
+
+  // Uma taxa por moeda e data
+  const existing = state.fx.find((x) => x.currency === code && x.date === date && x.id !== id);
+  const record = { id: id || (existing ? existing.id : uid()), date, currency: code, rate };
+  if (state.fx.some((x) => x.id === record.id)) {
+    state.fx = state.fx.map((x) => (x.id === record.id ? record : x));
+  } else {
+    state.fx.push(record);
+  }
+  await put('fx', record);
+  closeModal();
+  renderAll();
+  showToast(t('toast.saved'));
+}
+
+async function deleteFx(id) {
+  if (!confirm(t('modal.delete') + '?')) return;
+  state.fx = state.fx.filter((x) => x.id !== id);
+  await del('fx', id);
+  renderAll();
+  showToast(t('toast.deleted'));
+}
+
+/* Busca as taxas do dia no Frankfurter (dados do Banco Central Europeu,
+   gratuito e sem cadastro). Base EUR, que é exatamente o pivô que usamos.
+   Se falhar, o cadastro manual continua disponível. */
+async function fetchRates() {
+  const codes = CURRENCIES.map((c) => c.code).filter((c) => c !== FX_PIVOT);
+  const btn = document.getElementById('btnFetchRates');
+  btn.disabled = true;
+  try {
+    const url = `https://api.frankfurter.app/latest?from=${FX_PIVOT}&to=${codes.join(',')}`;
+    const res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    if (!data || !data.rates) throw new Error('resposta inesperada');
+
+    const date = data.date || todayISO();
+    let n = 0;
+    for (const [code, rate] of Object.entries(data.rates)) {
+      if (!Number(rate)) continue;
+      const existing = state.fx.find((x) => x.currency === code && x.date === date);
+      const record = { id: existing ? existing.id : uid(), date, currency: code, rate: Number(rate) };
+      if (existing) state.fx = state.fx.map((x) => (x.id === record.id ? record : x));
+      else state.fx.push(record);
+      await put('fx', record);
+      n++;
+    }
+    renderAll();
+    showToast(t('fx.fetched').replace('{n}', n));
+  } catch (e) {
+    console.error('Falha ao buscar taxas:', e);
+    showToast(t('fx.fetchError'));
+  } finally {
+    btn.disabled = false;
+  }
 }
 
 function renderSettings() {
@@ -1069,12 +1304,13 @@ function download(filename, content, type) {
 
 async function exportJSON() {
   const data = {
-    version: 2,
+    version: 3,
     exportedAt: new Date().toISOString(),
     accounts: state.accounts,
     balances: state.balances,
     transactions: state.transactions,
     budgets: state.budgets,
+    fx: state.fx,
     settings: state.settings
   };
   download(`prof-controller-backup-${todayISO()}.json`, JSON.stringify(data, null, 2), 'application/json');
@@ -1126,6 +1362,7 @@ async function importJSON(file) {
     for (const b of data.balances) await put('balances', b);
     for (const trn of (data.transactions || [])) await put('transactions', trn);
     for (const bg of (data.budgets || [])) await put('budgets', bg);
+    for (const r of (data.fx || [])) await put('fx', r);
     if (data.settings) {
       for (const [k, v] of Object.entries(data.settings)) {
         if (k === 'ui') continue;
@@ -1299,6 +1536,10 @@ function bindEvents() {
   // Fase 2 — orçamentos
   document.getElementById('btnAddBudget').addEventListener('click', () => openBudgetModal());
   document.getElementById('budgetMonth').addEventListener('change', (e) => { state.ui.budgetMonth = e.target.value; renderBudgets(); });
+
+  // Fase 3 — câmbio
+  document.getElementById('btnAddFx').addEventListener('click', () => openFxModal());
+  document.getElementById('btnFetchRates').addEventListener('click', fetchRates);
 
   document.getElementById('btnExportJSON').addEventListener('click', exportJSON);
   document.getElementById('btnExportCSV').addEventListener('click', exportCSV);
