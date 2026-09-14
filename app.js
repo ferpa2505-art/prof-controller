@@ -154,6 +154,10 @@ const I18N = {
     'modal.edit': 'Editar',
     'modal.cancel': 'Cancelar',
     'modal.delete': 'Excluir'
+     nav: { title: 'Evolução do Patrimônio', hint: 'Série mensal consolidada na moeda base. Moedas sem taxa ficam de fora.',
+       empty: 'Sem dados suficientes para o gráfico.', financial: 'Financeiro', properties: 'Imóveis',
+       vehicles: 'Veículos', debt: 'Dívidas', net: 'Patrimônio Líquido' }
+     
   },
   'en': {
     'tabs.dashboard': 'Dashboard',
@@ -294,6 +298,9 @@ const I18N = {
     'modal.edit': 'Edit',
     'modal.cancel': 'Cancel',
     'modal.delete': 'Delete'
+     nav: { title: 'Net Worth Evolution', hint: 'Monthly series consolidated in the base currency. Currencies without a rate are excluded.',
+       empty: 'Not enough data for the chart.', financial: 'Financial', properties: 'Properties',
+       vehicles: 'Vehicles', debt: 'Debt', net: 'Net Worth' }
   },
   'es': {
     'tabs.dashboard': 'Panel',
@@ -434,6 +441,9 @@ const I18N = {
     'modal.edit': 'Editar',
     'modal.cancel': 'Cancelar',
     'modal.delete': 'Eliminar'
+     nav: { title: 'Evolución del Patrimonio', hint: 'Serie mensual consolidada en la moneda base. Las monedas sin tasa quedan fuera.',
+       empty: 'Datos insuficientes para el gráfico.', financial: 'Financiero', properties: 'Inmuebles',
+       vehicles: 'Vehículos', debt: 'Deudas', net: 'Patrimonio Neto' }
   }
 };
 
