@@ -978,26 +978,74 @@ async function deleteFx(id) {
   showToast(t('toast.deleted'));
 }
 
-/* Busca as taxas do dia no Frankfurter (dados do Banco Central Europeu,
-   gratuito e sem cadastro). Base EUR, que é exatamente o pivô que usamos.
-   Se falhar, o cadastro manual continua disponível. */
+/* Fontes de taxa, tentadas em ordem até uma responder. Todas são gratuitas,
+   sem cadastro e com CORS liberado. Ter mais de uma evita que a mudança de
+   endereço ou a queda de um serviço deixe o app sem câmbio. */
+const FX_SOURCES = [
+  {
+    name: 'frankfurter.dev',
+    url: () => `https://api.frankfurter.dev/v1/latest?base=${FX_PIVOT}`,
+    parse: (d) => (d && d.rates) ? { date: d.date || todayISO(), rates: d.rates } : null
+  },
+  {
+    name: 'jsDelivr currency-api',
+    url: () => `https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/${FX_PIVOT.toLowerCase()}.json`,
+    parse: (d) => {
+      const key = FX_PIVOT.toLowerCase();
+      if (!d || !d[key]) return null;
+      const rates = {};
+      CURRENCIES.forEach((c) => {
+        const v = d[key][c.code.toLowerCase()];
+        if (c.code !== FX_PIVOT && Number(v)) rates[c.code] = Number(v);
+      });
+      return { date: d.date || todayISO(), rates };
+    }
+  },
+  {
+    name: 'open.er-api.com',
+    url: () => `https://open.er-api.com/v6/latest/${FX_PIVOT}`,
+    parse: (d) => (d && d.rates) ? { date: todayISO(), rates: d.rates } : null
+  },
+  {
+    name: 'frankfurter.app',
+    url: () => `https://api.frankfurter.app/latest?from=${FX_PIVOT}`,
+    parse: (d) => (d && d.rates) ? { date: d.date || todayISO(), rates: d.rates } : null
+  }
+];
+
 async function fetchRates() {
-  const codes = CURRENCIES.map((c) => c.code).filter((c) => c !== FX_PIVOT);
   const btn = document.getElementById('btnFetchRates');
   btn.disabled = true;
-  try {
-    const url = `https://api.frankfurter.app/latest?from=${FX_PIVOT}&to=${codes.join(',')}`;
-    const res = await fetch(url, { cache: 'no-store' });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const data = await res.json();
-    if (!data || !data.rates) throw new Error('resposta inesperada');
+  const conhecidas = CURRENCIES.map((c) => c.code);
+  let resultado = null;
+  let ultimoErro = '';
 
-    const date = data.date || todayISO();
+  try {
+    for (const source of FX_SOURCES) {
+      try {
+        const res = await fetch(source.url(), { cache: 'no-store' });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const parsed = source.parse(await res.json());
+        if (!parsed || !Object.keys(parsed.rates).length) throw new Error('resposta sem taxas');
+        resultado = parsed;
+        console.log('Taxas obtidas de', source.name, '-', parsed.date);
+        break;
+      } catch (e) {
+        ultimoErro = source.name + ': ' + (e && e.message ? e.message : e);
+        console.warn('Fonte de cambio indisponivel -', ultimoErro);
+      }
+    }
+
+    if (!resultado) {
+      showToast(t('fx.fetchError') + ' (' + ultimoErro + ')');
+      return;
+    }
+
     let n = 0;
-    for (const [code, rate] of Object.entries(data.rates)) {
-      if (!Number(rate)) continue;
-      const existing = state.fx.find((x) => x.currency === code && x.date === date);
-      const record = { id: existing ? existing.id : uid(), date, currency: code, rate: Number(rate) };
+    for (const [code, rate] of Object.entries(resultado.rates)) {
+      if (!conhecidas.includes(code) || code === FX_PIVOT || !Number(rate)) continue;
+      const existing = state.fx.find((x) => x.currency === code && x.date === resultado.date);
+      const record = { id: existing ? existing.id : uid(), date: resultado.date, currency: code, rate: Number(rate) };
       if (existing) state.fx = state.fx.map((x) => (x.id === record.id ? record : x));
       else state.fx.push(record);
       await put('fx', record);
@@ -1005,9 +1053,6 @@ async function fetchRates() {
     }
     renderAll();
     showToast(t('fx.fetched').replace('{n}', n));
-  } catch (e) {
-    console.error('Falha ao buscar taxas:', e);
-    showToast(t('fx.fetchError'));
   } finally {
     btn.disabled = false;
   }
