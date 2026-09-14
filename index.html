@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#1a1a2e">
   <title>ProF Controller</title>
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="styles.css?v=11">
+  <link rel="stylesheet" href="styles.css?v=12">
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 </head>
 <body>
@@ -17,7 +17,6 @@
       <select id="themeSelect" aria-label="Tema"></select>
     </div>
   </header>
-
   <nav class="tabs">
     <button class="tab active" data-tab="dashboard" data-i18n="tabs.dashboard">Dashboard</button>
     <button class="tab" data-tab="accounts" data-i18n="tabs.accounts">Contas</button>
@@ -28,7 +27,6 @@
     <button class="tab" data-tab="portfolio" data-i18n="tabs.portfolio">Portfólio</button>
     <button class="tab" data-tab="settings" data-i18n="tabs.settings">Configurações</button>
   </nav>
-
   <main>
     <!-- DASHBOARD -->
     <section id="tab-dashboard" class="tab-panel active">
@@ -51,7 +49,6 @@
           <p id="baseCurrencyLabel" class="big-number">EUR</p>
         </div>
       </div>
-
       <div class="cards cards-spaced">
         <div class="card">
           <h3 data-i18n="dashboard.properties">Imóveis</h3>
@@ -73,9 +70,7 @@
           <p id="navTotal" class="big-number">—</p>
         </div>
       </div>
-
       <p id="fxWarning" class="fx-warning hidden"></p>
-
       <div class="cards cards-spaced">
         <div class="card">
           <h3 data-i18n="dashboard.income">Receitas do mês</h3>
@@ -93,8 +88,21 @@
           <p id="monthResultSub" class="sub-number"></p>
         </div>
       </div>
+      <!-- FASE 5: Dashboard de NAV -->
+      <div class="cards cards-spaced">
+        <div class="card nav-card">
+          <div class="nav-head">
+            <h3 data-i18n="nav.title">Evolução do Patrimônio</h3>
+            <div class="nav-legend" id="navLegend"></div>
+          </div>
+          <p class="hint" data-i18n="nav.hint">Série mensal consolidada na moeda base. Moedas sem taxa ficam de fora.</p>
+          <div id="navChart" class="nav-chart">
+            <div id="navTip" class="nav-tip hidden"></div>
+          </div>
+          <p id="navEmpty" class="empty-state hidden"></p>
+        </div>
+      </div>
     </section>
-
     <!-- CONTAS -->
     <section id="tab-accounts" class="tab-panel">
       <div class="panel-header">
@@ -117,7 +125,6 @@
         </table>
       </div>
     </section>
-
     <!-- SALDOS DIÁRIOS -->
     <section id="tab-balances" class="tab-panel">
       <div class="panel-header">
@@ -131,7 +138,6 @@
         </table>
       </div>
     </section>
-
     <!-- TRANSAÇÕES -->
     <section id="tab-transactions" class="tab-panel">
       <div class="panel-header">
@@ -141,7 +147,6 @@
           <button id="btnAddTx" class="primary-btn" data-i18n="tx.add">+ Novo lançamento</button>
         </div>
       </div>
-
       <div class="filters">
         <label>
           <span data-i18n="tx.type">Tipo</span>
@@ -157,7 +162,6 @@
         </label>
         <button id="btnClearTxFilters" class="secondary-btn" data-i18n="tx.clearFilters">Limpar filtros</button>
       </div>
-
       <p id="txEmpty" class="empty-state hidden"></p>
       <div class="table-scroll">
         <table id="txTable">
@@ -166,7 +170,6 @@
         </table>
       </div>
     </section>
-
     <!-- ORÇAMENTOS -->
     <section id="tab-budgets" class="tab-panel">
       <div class="panel-header">
@@ -174,18 +177,15 @@
         <button id="btnAddBudget" class="primary-btn" data-i18n="budget.add">+ Novo orçamento</button>
       </div>
       <p class="hint" data-i18n="budget.hint">Cada orçamento tem moeda própria e vale todos os meses.</p>
-
       <div class="filters">
         <label>
           <span data-i18n="budget.month">Mês</span>
           <input type="month" id="budgetMonth">
         </label>
       </div>
-
       <p id="budgetEmpty" class="empty-state hidden"></p>
       <div id="budgetList" class="budget-list"></div>
     </section>
-
     <!-- CÂMBIO -->
     <section id="tab-fx" class="tab-panel">
       <div class="panel-header">
@@ -196,7 +196,6 @@
         </div>
       </div>
       <p class="hint" data-i18n="fx.hint">As taxas são registradas em relação ao euro.</p>
-
       <p id="fxEmpty" class="empty-state hidden"></p>
       <div class="table-scroll">
         <table id="fxTable">
@@ -205,7 +204,6 @@
         </table>
       </div>
     </section>
-
     <!-- PORTFÓLIO -->
     <section id="tab-portfolio" class="tab-panel">
       <div class="panel-header">
@@ -219,7 +217,6 @@
           <tbody></tbody>
         </table>
       </div>
-
       <div class="panel-header panel-header-spaced">
         <h2 data-i18n="portfolio.vehicles">Veículos</h2>
         <button id="btnAddVehicle" class="primary-btn" data-i18n="portfolio.addVehicle">+ Novo veículo</button>
@@ -232,7 +229,6 @@
         </table>
       </div>
     </section>
-
     <!-- CONFIGURAÇÕES -->
     <section id="tab-settings" class="tab-panel">
       <h2 data-i18n="settings.title">Configurações</h2>
@@ -256,16 +252,13 @@
       </div>
     </section>
   </main>
-
   <div id="modal" class="modal hidden">
     <div class="modal-content">
       <span id="modalClose" class="modal-close">&times;</span>
       <div id="modalBody"></div>
     </div>
   </div>
-
   <div id="toast" class="toast hidden"></div>
-
-  <script src="app.js?v=11"></script>
+  <script src="app.js?v=12"></script>
 </body>
 </html>
