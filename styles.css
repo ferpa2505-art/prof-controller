@@ -205,4 +205,11 @@ th { background: var(--surface); color: var(--muted); font-weight: 600; white-sp
   position: absolute; pointer-events: none; z-index: 10;
   background: var(--primary); color: #fff;
   padding: 8px 12px; border-radius: 8px; font-size: 12px; line-height: 1.5;
+  box-shadow: 0 4px 12px rgba(0,0,0,.2); white-space: nowrap;
+}
+.nav-tip.hidden { display: none; }
+.nav-tip b { color: var(--accent); }
+@media (max-width: 600px) {
+  .nav-chart svg { min-width: 420px; }
+}
  
