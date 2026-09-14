@@ -183,3 +183,26 @@ th { background: var(--surface); color: var(--muted); font-weight: 600; white-sp
 .mini-table { margin-bottom: 16px; }
 .mini-table th, .mini-table td { padding: 8px 10px; font-size: 13px; }
 .mini-table .secondary-btn { padding: 3px 8px; font-size: 12px; margin: 0; }
+
+/* ===== Fase 5 — Dashboard de NAV ===== */
+.nav-card { grid-column: 1 / -1; }
+.nav-head {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  gap: 12px; flex-wrap: wrap; margin-bottom: 8px;
+}
+.nav-head h3 { font-size: 15px; margin: 0; }
+.nav-legend { display: flex; flex-wrap: wrap; gap: 12px; }
+.nav-legend label {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 12px; color: var(--muted); cursor: pointer; user-select: none;
+}
+.nav-legend input { accent-color: var(--accent); cursor: pointer; }
+.nav-legend .swatch { width: 10px; height: 10px; border-radius: 3px; display: inline-block; flex: none; }
+.nav-chart { position: relative; margin-top: 12px; overflow-x: auto; }
+.nav-chart svg { display: block; min-width: 480px; width: 100%; height: auto; }
+.nav-chart.hidden { display: none; }
+.nav-tip {
+  position: absolute; pointer-events: none; z-index: 10;
+  background: var(--primary); color: #fff;
+  padding: 8px 12px; border-radius: 8px; font-size: 12px; line-height: 1.5;
+ 
