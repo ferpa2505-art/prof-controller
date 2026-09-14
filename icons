@@ -1,4 +1,1 @@
-git mv icon-192.png icons/icon-192.png
-git mv icon-512.png icons/icon-512.png
-git commit -m "Move icons to icons folder"
-git push
+
