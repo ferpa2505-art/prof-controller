@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#1a1a2e">
   <title>ProF Controller</title>
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="styles.css?v=8">
+  <link rel="stylesheet" href="styles.css?v=9">
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 </head>
 <body>
@@ -25,6 +25,7 @@
     <button class="tab" data-tab="transactions" data-i18n="tabs.transactions">Transações</button>
     <button class="tab" data-tab="budgets" data-i18n="tabs.budgets">Orçamentos</button>
     <button class="tab" data-tab="fx" data-i18n="tabs.fx">Câmbio</button>
+    <button class="tab" data-tab="portfolio" data-i18n="tabs.portfolio">Portfólio</button>
     <button class="tab" data-tab="settings" data-i18n="tabs.settings">Configurações</button>
   </nav>
 
@@ -33,7 +34,7 @@
     <section id="tab-dashboard" class="tab-panel active">
       <div class="cards">
         <div class="card">
-          <h3 data-i18n="dashboard.totalEquity">Patrimônio Total</h3>
+          <h3 data-i18n="dashboard.totalEquity">Financeiro</h3>
           <p id="totalEquity" class="big-number">—</p>
           <p id="totalEquityBase" class="sub-number"></p>
         </div>
@@ -48,6 +49,28 @@
         <div class="card">
           <h3 data-i18n="dashboard.baseCurrency">Moeda base</h3>
           <p id="baseCurrencyLabel" class="big-number">EUR</p>
+        </div>
+      </div>
+
+      <div class="cards cards-spaced">
+        <div class="card">
+          <h3 data-i18n="dashboard.properties">Imóveis</h3>
+          <p id="propTotal" class="big-number">—</p>
+          <p id="propTotalSub" class="sub-number"></p>
+        </div>
+        <div class="card">
+          <h3 data-i18n="dashboard.vehicles">Veículos</h3>
+          <p id="vehTotal" class="big-number">—</p>
+          <p id="vehTotalSub" class="sub-number"></p>
+        </div>
+        <div class="card">
+          <h3 data-i18n="dashboard.debt">Dívidas</h3>
+          <p id="debtTotal" class="big-number amount-out">—</p>
+          <p id="debtTotalSub" class="sub-number"></p>
+        </div>
+        <div class="card card-highlight">
+          <h3 data-i18n="dashboard.nav">Patrimônio Líquido</h3>
+          <p id="navTotal" class="big-number">—</p>
         </div>
       </div>
 
@@ -183,6 +206,33 @@
       </div>
     </section>
 
+    <!-- PORTFÓLIO -->
+    <section id="tab-portfolio" class="tab-panel">
+      <div class="panel-header">
+        <h2 data-i18n="portfolio.properties">Imóveis</h2>
+        <button id="btnAddProperty" class="primary-btn" data-i18n="portfolio.addProperty">+ Novo imóvel</button>
+      </div>
+      <p id="propEmpty" class="empty-state hidden"></p>
+      <div class="table-scroll">
+        <table id="propTable">
+          <thead><tr></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div class="panel-header panel-header-spaced">
+        <h2 data-i18n="portfolio.vehicles">Veículos</h2>
+        <button id="btnAddVehicle" class="primary-btn" data-i18n="portfolio.addVehicle">+ Novo veículo</button>
+      </div>
+      <p id="vehEmpty" class="empty-state hidden"></p>
+      <div class="table-scroll">
+        <table id="vehTable">
+          <thead><tr></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
     <!-- CONFIGURAÇÕES -->
     <section id="tab-settings" class="tab-panel">
       <h2 data-i18n="settings.title">Configurações</h2>
@@ -216,6 +266,6 @@
 
   <div id="toast" class="toast hidden"></div>
 
-  <script src="app.js?v=8"></script>
+  <script src="app.js?v=9"></script>
 </body>
 </html>
