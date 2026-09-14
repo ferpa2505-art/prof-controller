@@ -768,7 +768,9 @@ function valuationsOf(assetId) {
 // Âncora: a avaliação mais recente até a data, ou a própria aquisição.
 function assetAnchor(asset, date) {
   const limit = date || todayISO();
-  const list = valuationsOf(asset.id).filter((v) => v.date <= limit);
+  // Avaliações de valor zero são descartadas: ou vieram do bug antigo, ou não
+  // dizem nada útil sobre o ativo. Sem isto, um registro zerado esconde o bem.
+  const list = valuationsOf(asset.id).filter((v) => v.date <= limit && Number(v.value) > 0);
   if (list.length) {
     const last = list[list.length - 1];
     return { date: last.date, value: Number(last.value) || 0, debt: Number(last.debt) || 0, appraised: true };
