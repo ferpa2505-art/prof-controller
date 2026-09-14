@@ -154,10 +154,6 @@ const I18N = {
     'modal.edit': 'Editar',
     'modal.cancel': 'Cancelar',
     'modal.delete': 'Excluir'
-     nav: { title: 'Evolução do Patrimônio', hint: 'Série mensal consolidada na moeda base. Moedas sem taxa ficam de fora.',
-       empty: 'Sem dados suficientes para o gráfico.', financial: 'Financeiro', properties: 'Imóveis',
-       vehicles: 'Veículos', debt: 'Dívidas', net: 'Patrimônio Líquido' }
-     
   },
   'en': {
     'tabs.dashboard': 'Dashboard',
@@ -298,9 +294,6 @@ const I18N = {
     'modal.edit': 'Edit',
     'modal.cancel': 'Cancel',
     'modal.delete': 'Delete'
-     nav: { title: 'Net Worth Evolution', hint: 'Monthly series consolidated in the base currency. Currencies without a rate are excluded.',
-       empty: 'Not enough data for the chart.', financial: 'Financial', properties: 'Properties',
-       vehicles: 'Vehicles', debt: 'Debt', net: 'Net Worth' }
   },
   'es': {
     'tabs.dashboard': 'Panel',
@@ -441,9 +434,6 @@ const I18N = {
     'modal.edit': 'Editar',
     'modal.cancel': 'Cancelar',
     'modal.delete': 'Eliminar'
-     nav: { title: 'Evolución del Patrimonio', hint: 'Serie mensual consolidada en la moneda base. Las monedas sin tasa quedan fuera.',
-       empty: 'Datos insuficientes para el gráfico.', financial: 'Financiero', properties: 'Inmuebles',
-       vehicles: 'Vehículos', debt: 'Deudas', net: 'Patrimonio Neto' }
   }
 };
 
@@ -2020,178 +2010,7 @@ function bindEvents() {
     });
   });
 }
-/* ================= FASE 5 — Dashboard de NAV ================= */
-function yearsBetween(a, b) { return (new Date(b) - new Date(a)) / (365.25 * 86400000); }
 
-function lastBalanceAt(accountId, date) {
-  return state.balances
-    .filter((b) => b.accountId === accountId && b.date <= date)
-    .sort((a, b) => (a.date < b.date ? 1 : -1))[0] || null;
-}
-
-function accountBalanceAt(account, date) {
-  const anchor = lastBalanceAt(account.id, date);
-  let value = anchor ? anchor.value : 0;
-  const anchorDate = anchor ? anchor.date : '0000-00-00';
-  for (const tx of state.transactions) {
-    if (tx.accountId !== account.id || tx.date > date || tx.date <= anchorDate) continue;
-    if (tx.type === 'income') value += tx.value;
-    else if (tx.type === 'expense') value -= tx.value;
-    else if (tx.type === 'transfer') value -= tx.value;
-  }
-  for (const tx of state.transactions) {
-    if (tx.type !== 'transfer' || !tx.toAccountId || tx.toAccountId !== account.id) continue;
-    if (tx.date > date || tx.date <= anchorDate) continue;
-    value += (tx.toValue != null ? tx.toValue : tx.value);
-  }
-  return value;
-}
-
-function fxRateAt(currency, date) {
-  if (currency === 'EUR') return 1; // pivô
-  const recs = state.fx.filter((f) => f.currency === currency && f.date <= date)
-    .sort((a, b) => (a.date < b.date ? 1 : -1));
-  return recs.length ? recs[0].rate : null;
-}
-
-function toBase(amount, currency, date) {
-  if (amount == null) return 0;
-  if (currency === state.settings.baseCurrency) return amount;
-  const rC = fxRateAt(currency, date);
-  const rB = fxRateAt(state.settings.baseCurrency, date);
-  if (rC == null || rB == null) return null; // sem taxa -> fora do total
-  return (amount / rC) * rB;
-}
-
-function assetAt(asset, date) {
-  const vals = state.valuations.filter((v) => v.assetId === asset.id && v.date <= date)
-    .sort((a, b) => (a.date < b.date ? 1 : -1));
-  let baseDate = asset.acquiredDate, baseValue = asset.acquiredValue, baseDebt = asset.acquiredDebt;
-  if (vals.length) { baseDate = vals[0].date; baseValue = vals[0].value; baseDebt = vals[0].debt; }
-  let value = baseValue || 0;
-  if (asset.type === 'vehicle' && asset.depreciation && baseDate && value > 0) {
-    value = value * Math.pow(1 - asset.depreciation / 100, yearsBetween(baseDate, date));
-  }
-  return { value, debt: baseDebt || 0 };
-}
-
-function buildNAVSeries() {
-  const dates = [];
-  state.balances.forEach((b) => dates.push(b.date));
-  state.transactions.forEach((t) => dates.push(t.date));
-  state.fx.forEach((f) => dates.push(f.date));
-  state.assets.forEach((a) => dates.push(a.acquiredDate));
-  state.valuations.forEach((v) => dates.push(v.date));
-  const valid = dates.filter(Boolean).map((d) => new Date(d + 'T00:00:00'));
-  if (!valid.length) return null;
-  const min = new Date(Math.min(...valid));
-  const max = new Date(Math.max(...valid));
-  const today = new Date();
-  const points = [];
-  const cur = new Date(min.getFullYear(), min.getMonth(), 1);
-  while (cur <= max) {
-    const end = new Date(cur.getFullYear(), cur.getMonth() + 1, 0);
-    if (end >= min) points.push(end.toISOString().slice(0, 10));
-    cur.setMonth(cur.getMonth() + 1);
-  }
-  if (today > max) points.push(today.toISOString().slice(0, 10));
-  const out = [];
-  for (const D of points) {
-    let financial = 0, properties = 0, vehicles = 0, debt = 0;
-    for (const acct of state.accounts) {
-      const v = toBase(accountBalanceAt(acct, D), acct.currency, D);
-      if (v != null) financial += v;
-    }
-    for (const a of state.assets) {
-      const at = assetAt(a, D);
-      const val = toBase(at.value, a.currency, D);
-      const dbt = toBase(at.debt, a.currency, D);
-      if (val == null) continue;
-      if (a.type === 'property') properties += val; else vehicles += val;
-      if (dbt != null) debt += dbt;
-    }
-    out.push({ date: D, financial, properties, vehicles, debt, net: financial + properties + vehicles - debt });
-  }
-  return { points: out };
-}
-
-function renderNAV() {
-  const wrap = document.getElementById('navChart');
-  const tip = document.getElementById('navTip');
-  const empty = document.getElementById('navEmpty');
-  const legend = document.getElementById('navLegend');
-  if (!wrap) return;
-  const series = buildNAVSeries();
-  if (!series || series.points.length < 2) {
-    wrap.classList.add('hidden'); empty.classList.remove('hidden');
-    empty.textContent = t('nav.empty'); return;
-  }
-  wrap.classList.remove('hidden'); empty.classList.add('hidden');
-  const classes = [
-    { key: 'net', label: t('nav.net'), color: '#e94560' },
-    { key: 'financial', label: t('nav.financial'), color: '#2563eb' },
-    { key: 'properties', label: t('nav.properties'), color: '#16a34a' },
-    { key: 'vehicles', label: t('nav.vehicles'), color: '#f59e0b' },
-    { key: 'debt', label: t('nav.debt'), color: '#b91c1c' },
-  ];
-  const visible = {};
-  legend.innerHTML = '';
-  classes.forEach((c) => {
-    visible[c.key] = true;
-    const lab = document.createElement('label');
-    lab.innerHTML = `<input type="checkbox" checked data-k="${c.key}"><span class="swatch" style="background:${c.color}"></span>${c.label}`;
-    lab.querySelector('input').addEventListener('change', (e) => { visible[e.target.dataset.k] = e.target.checked; draw(); });
-    legend.appendChild(lab);
-  });
-  const W = 720, H = 320, padL = 64, padR = 16, padT = 16, padB = 34;
-  function draw() {
-    const pts = series.points;
-    const all = classes.filter((c) => visible[c.key]);
-    let min = Infinity, max = -Infinity;
-    pts.forEach((p) => all.forEach((c) => { const v = p[c.key]; if (v < min) min = v; if (v > max) max = v; }));
-    if (!isFinite(min)) min = 0;
-    if (min === max) max = min + 1;
-    const range = max - min; min -= range * 0.05; max += range * 0.05;
-    const X = (i) => padL + (i / (pts.length - 1)) * (W - padL - padR);
-    const Y = (v) => padT + (1 - (v - min) / (max - min)) * (H - padT - padB);
-    let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${t('nav.title')}">`;
-    for (let g = 0; g <= 4; g++) {
-      const val = min + (max - min) * g / 4, y = Y(val);
-      svg += `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="var(--border)" stroke-width="1"/>`;
-      svg += `<text x="${padL - 8}" y="${y + 4}" text-anchor="end" font-size="11" fill="var(--muted)">${fmtMoney(val)}</text>`;
-    }
-    const step = Math.max(1, Math.floor(pts.length / 6));
-    pts.forEach((p, i) => {
-      if (i % step !== 0 && i !== pts.length - 1) return;
-      svg += `<text x="${X(i)}" y="${H - 10}" text-anchor="middle" font-size="10" fill="var(--muted)">${p.date.slice(0, 7)}</text>`;
-    });
-    all.forEach((c) => {
-      let d = '';
-      pts.forEach((p, i) => { d += (i ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(p[c.key]).toFixed(1) + ' '; });
-      svg += `<path d="${d}" fill="none" stroke="${c.color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
-    });
-    pts.forEach((p, i) => {
-      svg += `<circle cx="${X(i)}" cy="${Y(p.net)}" r="3" fill="#e94560" data-i="${i}"/>`;
-    });
-    svg += '</svg>';
-    wrap.innerHTML = svg;
-    wrap.querySelectorAll('circle').forEach((c) => {
-      c.addEventListener('mouseenter', () => {
-        const p = pts[+c.dataset.i];
-        let html = `<b>${p.date}</b>`;
-        classes.forEach((cc) => { if (visible[cc.key]) html += `<br>${cc.label}: ${fmtMoney(p[cc.key])}`; });
-        tip.innerHTML = html; tip.classList.remove('hidden');
-      });
-      c.addEventListener('mousemove', (e) => {
-        const r = wrap.getBoundingClientRect();
-        tip.style.left = Math.min(e.clientX - r.left + 12, r.width - 140) + 'px';
-        tip.style.top = (e.clientY - r.top - 10) + 'px';
-      });
-      c.addEventListener('mouseleave', () => tip.classList.add('hidden'));
-    });
-  }
-  draw();
-}
 /* ---------- Inicialização ---------- */
 async function init() {
   // 1) Interface primeiro. Abas, tema e idioma não dependem do banco de dados,
