@@ -410,8 +410,25 @@ function openDB() {
         .forEach((name) => { if (!d.objectStoreNames.contains(name)) d.createObjectStore(name, { keyPath: 'id' }); });
     };
     req.onsuccess = () => { db = req.result; resolve(db); };
-    req.onerror = () => reject(req.error);
+    req.onerror = () => reject(req.error || new Error('Falha ao abrir o banco'));
+    // Dispara quando o app está aberto em OUTRA aba/janela segurando a versão antiga
+    // do banco. Sem isto, a promessa ficaria pendente para sempre e o app travaria.
+    req.onblocked = () => reject(new Error('BLOCKED'));
+    // Rede de segurança: se nada acontecer, avisa em vez de travar calado.
+    setTimeout(() => { if (!db) reject(new Error('TIMEOUT')); }, 8000);
   });
+}
+
+// Aviso fixo no topo quando algo impede o app de iniciar.
+function showFatal(msg) {
+  let el = document.getElementById('fatalBanner');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'fatalBanner';
+    el.className = 'fatal-banner';
+    document.body.prepend(el);
+  }
+  el.textContent = msg;
 }
 
 function tx(store, mode) { return db.transaction(store, mode).objectStore(store); }
@@ -427,6 +444,8 @@ async function loadAll() {
 
 function getAll(store) {
   return new Promise((resolve, reject) => {
+    // Se a store ainda não existe (banco antigo), devolve vazio em vez de quebrar o app
+    if (!db || !db.objectStoreNames.contains(store)) { resolve([]); return; }
     const req = tx(store, 'readonly').getAll();
     req.onsuccess = () => resolve(req.result || []);
     req.onerror = () => reject(req.error);
@@ -434,6 +453,7 @@ function getAll(store) {
 }
 function put(store, value) {
   return new Promise((resolve, reject) => {
+    if (!db) { resolve(); return; }
     const req = tx(store, 'readwrite').put(value);
     req.onsuccess = () => resolve();
     req.onerror = () => reject(req.error);
@@ -441,6 +461,7 @@ function put(store, value) {
 }
 function del(store, id) {
   return new Promise((resolve, reject) => {
+    if (!db) { resolve(); return; }
     const req = tx(store, 'readwrite').delete(id);
     req.onsuccess = () => resolve();
     req.onerror = () => reject(req.error);
@@ -1305,17 +1326,36 @@ function bindEvents() {
 
 /* ---------- Inicialização ---------- */
 async function init() {
-  await openDB();
-  await loadAll();
-  state.ui.budgetMonth = currentMonth();
+  // 1) Interface primeiro. Abas, tema e idioma não dependem do banco de dados,
+  //    então passam a funcionar mesmo que o IndexedDB falhe em abrir.
   const langSel = document.getElementById('langSelect');
   langSel.innerHTML = Object.keys(I18N).map((l) => `<option value="${l}">${l}</option>`).join('');
   const themeSel = document.getElementById('themeSelect');
   themeSel.innerHTML = ['default', 'dark', 'green', 'blue'].map((th) => `<option value="${th}">${th}</option>`).join('');
-  applyLang();
   applyTheme();
   bindEvents();
+
+  // 2) Depois os dados. Qualquer falha aqui vira aviso na tela, nunca tela travada.
+  try {
+    await openDB();
+    await loadAll();
+  } catch (e) {
+    console.error('Falha ao iniciar o banco de dados:', e);
+    if (e && e.message === 'BLOCKED') {
+      showFatal('O ProF Controller está aberto em outra aba ou na janela do app instalado, e isso impede a atualização do banco de dados. Feche as outras janelas e recarregue esta página.');
+    } else if (e && e.message === 'TIMEOUT') {
+      showFatal('O banco de dados local não respondeu. Feche as outras abas do app e recarregue a página.');
+    } else {
+      showFatal('Não foi possível abrir o banco de dados local: ' + (e && e.message ? e.message : e));
+    }
+    return; // a navegação por abas e o tema continuam funcionando
+  }
+
+  state.ui.budgetMonth = currentMonth();
+  applyLang();
+  applyTheme();
   renderAll();
+
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./service-worker.js').catch(() => {});
   }
