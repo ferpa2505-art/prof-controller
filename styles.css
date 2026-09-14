@@ -6,6 +6,8 @@
   --primary: #1a1a2e;
   --accent: #e94560;
   --border: #e5e7eb;
+  --positive: #15803d;
+  --negative: #b91c1c;
 }
 [data-theme="dark"] {
   --bg: #0f0f1a;
@@ -13,6 +15,8 @@
   --text: #f5f6fa;
   --muted: #9ca3af;
   --border: #2d2d44;
+  --positive: #4ade80;
+  --negative: #f87171;
 }
 [data-theme="green"] {
   --bg: #f0fdf4;
@@ -34,6 +38,7 @@ body {
   color: var(--text);
   min-height: 100vh;
 }
+.hidden { display: none; }
 .topbar {
   display: flex; justify-content: space-between; align-items: center;
   padding: 16px 24px; background: var(--primary); color: #fff;
@@ -45,17 +50,20 @@ body {
 .tabs {
   display: flex; gap: 4px; padding: 12px 24px 0; background: var(--surface);
   border-bottom: 1px solid var(--border);
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
 }
 .tab {
   padding: 10px 18px; border: none; background: transparent;
   color: var(--muted); cursor: pointer; font-size: 14px;
-  border-bottom: 2px solid transparent;
+  border-bottom: 2px solid transparent; white-space: nowrap;
 }
 .tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+.tab:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 main { padding: 24px; max-width: 1100px; margin: 0 auto; }
 .tab-panel { display: none; }
 .tab-panel.active { display: block; }
 .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+.cards-spaced { margin-top: 16px; }
 .card {
   background: var(--surface); border: 1px solid var(--border);
   border-radius: 12px; padding: 20px;
@@ -64,7 +72,8 @@ main { padding: 24px; max-width: 1100px; margin: 0 auto; }
 .big-number { font-size: 26px; font-weight: 700; }
 .sub-number { font-size: 13px; color: var(--muted); margin-top: 4px; }
 .panel-header {
-  display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 12px; flex-wrap: wrap; margin-bottom: 16px;
 }
 .panel-header h2 { font-size: 18px; }
 .primary-btn, .secondary-btn {
@@ -75,13 +84,53 @@ main { padding: 24px; max-width: 1100px; margin: 0 auto; }
   background: var(--surface); color: var(--text); border: 1px solid var(--border);
   margin-right: 8px;
 }
+.primary-btn:focus-visible, .secondary-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 table { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: 12px; overflow: hidden; }
 th, td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); font-size: 14px; }
-th { background: var(--surface); color: var(--muted); font-weight: 600; }
+th { background: var(--surface); color: var(--muted); font-weight: 600; white-space: nowrap; }
 .table-scroll { overflow-x: auto; }
+
+/* Filtros (transações e orçamentos) */
+.filters {
+  display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; margin-bottom: 16px;
+}
+.filters label { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--muted); }
+.filters select, .filters input {
+  padding: 8px; border-radius: 6px; border: 1px solid var(--border);
+  background: var(--surface); color: var(--text); font-size: 14px;
+}
+.empty-state {
+  background: var(--surface); border: 1px dashed var(--border); border-radius: 12px;
+  padding: 24px; color: var(--muted); font-size: 14px; text-align: center;
+}
+
+/* Valores */
+.amount-in { color: var(--positive); font-weight: 600; }
+.amount-out { color: var(--negative); font-weight: 600; }
+.amount-neutral { color: var(--muted); font-weight: 600; }
+
+/* Orçamentos */
+.budget-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+.budget-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 20px;
+}
+.budget-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
+.budget-head h3 { font-size: 15px; }
+.budget-head .hint { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.budget-actions { white-space: nowrap; }
+.budget-actions .secondary-btn { padding: 4px 10px; font-size: 12px; margin-right: 4px; }
+.progress { background: var(--border); border-radius: 999px; height: 8px; overflow: hidden; }
+.progress > span { display: block; height: 100%; background: var(--accent); border-radius: 999px; }
+.progress > span.over { background: var(--negative); }
+.budget-figures {
+  display: flex; flex-wrap: wrap; gap: 12px;
+  margin-top: 12px; font-size: 13px; color: var(--muted);
+}
+
 .settings-group { margin-bottom: 24px; }
 .settings-group h3 { margin-bottom: 8px; font-size: 15px; }
-.settings-group .hint { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+.hint { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
 .settings-group select { padding: 8px; border-radius: 6px; border: 1px solid var(--border); }
 .modal {
   position: fixed; inset: 0; background: rgba(0,0,0,.5);
@@ -91,11 +140,13 @@ th { background: var(--surface); color: var(--muted); font-weight: 600; }
 .modal-content {
   background: var(--surface); border-radius: 12px; padding: 24px;
   width: 90%; max-width: 420px; position: relative;
+  max-height: 90vh; overflow-y: auto;
 }
 .modal-close { position: absolute; top: 12px; right: 16px; cursor: pointer; font-size: 22px; }
 .modal-content label { display: block; margin: 12px 0 4px; font-size: 13px; color: var(--muted); }
 .modal-content input, .modal-content select {
-  width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border); font-size: 14px;
+  width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border);
+  background: var(--surface); color: var(--text); font-size: 14px;
 }
 .modal-content .primary-btn { margin-top: 16px; width: 100%; }
 .toast {
@@ -104,3 +155,10 @@ th { background: var(--surface); color: var(--muted); font-weight: 600; }
   font-size: 14px; z-index: 200;
 }
 .toast.hidden { display: none; }
+
+@media (max-width: 600px) {
+  main { padding: 16px; }
+  .topbar { padding: 12px 16px; }
+  .tabs { padding: 12px 16px 0; }
+  .big-number { font-size: 22px; }
+}
