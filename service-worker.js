@@ -1,4 +1,4 @@
-const CACHE = 'prof-controller-v5'; // SEMPRE incremente ao publicar mudanças
+const CACHE = 'prof-controller-v6'; // SEMPRE incremente ao publicar mudanças
 const ASSETS = [
   './',
   './index.html',
@@ -22,6 +22,10 @@ self.addEventListener('activate', (e) => {
 });
 self.addEventListener('fetch', (e) => {
   if (e.request.method !== 'GET') return;
+
+  // Requisições para outros domínios (ex.: API de câmbio) passam direto,
+  // sem cache: taxa financeira antiga é pior do que taxa nenhuma.
+  if (new URL(e.request.url).origin !== self.location.origin) return;
 
   // Página principal e app.js: REDE PRIMEIRO, cache só como fallback
   if (e.request.mode === 'navigate' || e.request.url.includes('/app.js')) {
