@@ -137,6 +137,7 @@ const I18N = {
     'settings.importCSVHint': 'Formato: Data;Conta;Moeda;Saldo (AAAA-MM-DD).',
     'toast.saved': 'Salvo com sucesso.',
     'toast.deleted': 'Excluído.',
+    'toast.invalidValue': 'Informe um valor válido (ex.: 620.000,00).',
     'toast.exported': 'Arquivo exportado.',
     'toast.imported': 'Backup importado.',
     'toast.invalidFile': 'Arquivo inválido.',
@@ -276,6 +277,7 @@ const I18N = {
     'settings.importCSVHint': 'Format: Date;Account;Currency;Balance (YYYY-MM-DD).',
     'toast.saved': 'Saved successfully.',
     'toast.deleted': 'Deleted.',
+    'toast.invalidValue': 'Enter a valid amount (e.g. 620,000.00).',
     'toast.exported': 'File exported.',
     'toast.imported': 'Backup imported.',
     'toast.invalidFile': 'Invalid file.',
@@ -415,6 +417,7 @@ const I18N = {
     'settings.importCSVHint': 'Formato: Fecha;Cuenta;Moneda;Saldo (AAAA-MM-DD).',
     'toast.saved': 'Guardado correctamente.',
     'toast.deleted': 'Eliminado.',
+    'toast.invalidValue': 'Introduzca un importe válido (ej.: 620.000,00).',
     'toast.exported': 'Archivo exportado.',
     'toast.imported': 'Respaldo importado.',
     'toast.invalidFile': 'Archivo inválido.',
@@ -645,6 +648,26 @@ function fmtMoney(value, code) {
   const c = currency(code);
   return c.symbol + ' ' + Number(value).toLocaleString('pt-BR', { minimumFractionDigits: c.decimals, maximumFractionDigits: c.decimals });
 }
+/* Lê um campo de dinheiro aceitando os dois formatos que um teclado
+   brasileiro produz: "620.000,50", "620000.50", "620000,50" e "620.000".
+   Devolve null quando o campo está vazio ou ilegível — null e zero são
+   coisas diferentes, e confundir os dois foi o que apagou um imóvel. */
+function parseMoney(raw) {
+  let v = String(raw == null ? '' : raw).trim().replace(/\s/g, '');
+  if (!v) return null;
+  v = v.replace(/[^\d.,-]/g, '');
+  if (!v || v === '-') return null;
+  if (v.includes(',')) {
+    // Vírgula presente: ela é o decimal, pontos são separadores de milhar
+    v = v.replace(/\./g, '').replace(',', '.');
+  } else if (/^-?\d{1,3}(\.\d{3})+$/.test(v)) {
+    // Só pontos e todos separando grupos de 3: são milhares ("620.000")
+    v = v.replace(/\./g, '');
+  }
+  const n = Number(v);
+  return isNaN(n) ? null : n;
+}
+
 function showToast(msg) {
   const el = document.getElementById('toast');
   el.textContent = msg;
@@ -1133,7 +1156,7 @@ function openFxModal(id) {
         `<option value="${c.code}" ${r && r.currency === c.code ? 'selected' : ''}>${c.code}</option>`).join('')}
     </select>
     <label>${t('fx.rateLabel')}</label>
-    <input id="fxRate" type="number" step="0.000001" min="0" value="${r ? r.rate : ''}" oninput="updateFxPreview()">
+    <input id="fxRate" type="text" inputmode="decimal" value="${r ? r.rate : ''}" oninput="updateFxPreview()">
     <p class="hint" id="fxPreview"></p>
     <button class="primary-btn" onclick="saveFx('${r ? r.id : ''}')">${t('modal.save')}</button>
   `);
@@ -1145,7 +1168,7 @@ function updateFxPreview() {
   const el = document.getElementById('fxPreview');
   if (!el) return;
   const code = document.getElementById('fxCurrency').value;
-  const rate = Number(document.getElementById('fxRate').value);
+  const rate = parseMoney(document.getElementById('fxRate').value) || 0;
   el.textContent = rate > 0
     ? `1 ${FX_PIVOT} = ${fmtRate(rate)} ${code}  ·  1 ${code} = ${fmtRate(1 / rate)} ${FX_PIVOT}`
     : '';
@@ -1154,8 +1177,8 @@ function updateFxPreview() {
 async function saveFx(id) {
   const date = document.getElementById('fxDate').value;
   const code = document.getElementById('fxCurrency').value;
-  const rate = Number(document.getElementById('fxRate').value);
-  if (!date || !code || isNaN(rate) || rate <= 0) return;
+  const rate = parseMoney(document.getElementById('fxRate').value);
+  if (!date || !code || rate == null || rate <= 0) { showToast(t('toast.invalidValue')); return; }
 
   // Uma taxa por moeda e data
   const existing = state.fx.find((x) => x.currency === code && x.date === date && x.id !== id);
@@ -1322,9 +1345,9 @@ function openAssetModal(type, id) {
     <label>${t('portfolio.acquiredDate')}</label>
     <input id="asDate" type="date" value="${a && a.acquiredDate ? a.acquiredDate : todayISO()}">
     <label>${t('portfolio.acquiredValue')}</label>
-    <input id="asValue" type="number" step="0.01" min="0" value="${a ? a.acquiredValue : ''}">
+    <input id="asValue" type="text" inputmode="decimal" value="${a ? a.acquiredValue : ''}">
     <label>${t('portfolio.acquiredDebt')}</label>
-    <input id="asDebt" type="number" step="0.01" min="0" value="${a && a.acquiredDebt ? a.acquiredDebt : ''}">
+    <input id="asDebt" type="text" inputmode="decimal" value="${a && a.acquiredDebt ? a.acquiredDebt : ''}">
     ${isVehicle ? `
       <label>${t('portfolio.depreciation')}</label>
       <input id="asDepreciation" type="number" step="0.1" min="0" max="100" value="${a && a.depreciation != null ? a.depreciation : 15}">
@@ -1343,9 +1366,9 @@ async function saveAsset(type, id) {
     name,
     currency: document.getElementById('asCurrency').value,
     acquiredDate: document.getElementById('asDate').value || todayISO(),
-    acquiredValue: Number(document.getElementById('asValue').value) || 0,
-    acquiredDebt: Number(document.getElementById('asDebt').value) || 0,
-    depreciation: depEl ? (Number(depEl.value) || 0) : 0
+    acquiredValue: parseMoney(document.getElementById('asValue').value) || 0,
+    acquiredDebt: parseMoney(document.getElementById('asDebt').value) || 0,
+    depreciation: depEl ? (parseMoney(depEl.value) || 0) : 0
   };
   if (id) state.assets = state.assets.map((x) => (x.id === id ? asset : x));
   else state.assets.push(asset);
@@ -1393,18 +1416,19 @@ function openValuationsModal(assetId) {
     <label>${t('portfolio.valuationDate')}</label>
     <input id="vlDate" type="date" value="${todayISO()}">
     <label>${t('portfolio.value')} (${a.currency})</label>
-    <input id="vlValue" type="number" step="0.01" min="0">
+    <input id="vlValue" type="text" inputmode="decimal">
     <label>${t('portfolio.debt')} (${a.currency})</label>
-    <input id="vlDebt" type="number" step="0.01" min="0">
+    <input id="vlDebt" type="text" inputmode="decimal">
     <button class="primary-btn" onclick="saveValuation('${assetId}')">${t('portfolio.addValuation')}</button>
   `);
 }
 
 async function saveValuation(assetId) {
   const date = document.getElementById('vlDate').value;
-  const value = Number(document.getElementById('vlValue').value);
-  const debt = Number(document.getElementById('vlDebt').value) || 0;
-  if (!date || isNaN(value) || value < 0) return;
+  const value = parseMoney(document.getElementById('vlValue').value);
+  const debt = parseMoney(document.getElementById('vlDebt').value) || 0;
+  // Campo vazio ou ilegível NÃO vale zero: salvar zero aqui apagaria o ativo do total.
+  if (!date || value == null || value <= 0) { showToast(t('toast.invalidValue')); return; }
 
   // Uma avaliação por ativo e data
   const existing = state.valuations.find((v) => v.assetId === assetId && v.date === date);
@@ -1457,7 +1481,7 @@ function openAccountModal(id) {
       ${CURRENCIES.map((c) => `<option value="${c.code}" ${a && a.currency === c.code ? 'selected' : ''}>${c.code}</option>`).join('')}
     </select>
     <label>${t('accounts.initialBalance')}</label>
-    <input id="accBalance" type="number" step="0.01" value="${a ? a.initialBalance : '0'}">
+    <input id="accBalance" type="text" inputmode="decimal" value="${a ? a.initialBalance : '0'}">
     <button class="primary-btn" onclick="saveAccount('${a ? a.id : ''}')">${t('modal.save')}</button>
   `);
 }
@@ -1470,7 +1494,7 @@ async function saveAccount(id) {
     name,
     type: document.getElementById('accType').value,
     currency: document.getElementById('accCurrency').value,
-    initialBalance: Number(document.getElementById('accBalance').value) || 0
+    initialBalance: parseMoney(document.getElementById('accBalance').value) || 0
   };
   if (id) state.accounts = state.accounts.map((x) => (x.id === id ? account : x));
   else state.accounts.push(account);
@@ -1503,7 +1527,7 @@ function openBalanceModal() {
       ${state.accounts.map((a) => `<option value="${a.id}">${escapeHtml(a.name)} (${a.currency})</option>`).join('')}
     </select>
     <label>${t('balances.balance')}</label>
-    <input id="balValue" type="number" step="0.01">
+    <input id="balValue" type="text" inputmode="decimal">
     <button class="primary-btn" onclick="saveBalance()">${t('modal.save')}</button>
   `);
 }
@@ -1511,8 +1535,8 @@ function openBalanceModal() {
 async function saveBalance() {
   const date = document.getElementById('balDate').value;
   const accountId = document.getElementById('balAccount').value;
-  const value = Number(document.getElementById('balValue').value);
-  if (!date || !accountId || isNaN(value)) return;
+  const value = parseMoney(document.getElementById('balValue').value);
+  if (!date || !accountId || value == null) { showToast(t('toast.invalidValue')); return; }
   const existing = state.balances.find((x) => x.date === date && x.accountId === accountId);
   const balance = { id: existing ? existing.id : uid(), date, accountId, value };
   if (existing) state.balances = state.balances.map((x) => (x.id === existing.id ? balance : x));
@@ -1571,11 +1595,11 @@ function openTxModal(id) {
     <input id="txDescription" value="${trn ? escapeHtml(trn.description || '') : ''}">
 
     <label>${t('tx.value')}</label>
-    <input id="txValue" type="number" step="0.01" min="0" value="${trn ? trn.value : ''}">
+    <input id="txValue" type="text" inputmode="decimal" value="${trn ? trn.value : ''}">
 
     <div id="txToValueWrap" class="hidden">
       <label>${t('tx.receivedValue')}</label>
-      <input id="txToValue" type="number" step="0.01" min="0" value="${trn && trn.toValue != null ? trn.toValue : ''}">
+      <input id="txToValue" type="text" inputmode="decimal" value="${trn && trn.toValue != null ? trn.toValue : ''}">
       <p class="hint">${t('tx.receivedHint')}</p>
     </div>
 
@@ -1613,8 +1637,8 @@ async function saveTx(id) {
   const type = document.getElementById('txType').value;
   const date = document.getElementById('txDate').value;
   const accountId = document.getElementById('txAccount').value;
-  const value = Number(document.getElementById('txValue').value);
-  if (!date || !accountId || isNaN(value) || value <= 0) return;
+  const value = parseMoney(document.getElementById('txValue').value);
+  if (!date || !accountId || value == null || value <= 0) { showToast(t('toast.invalidValue')); return; }
 
   const trn = {
     id: id || uid(),
@@ -1630,7 +1654,7 @@ async function saveTx(id) {
     if (!toAccountId || toAccountId === accountId) return;
     trn.toAccountId = toAccountId;
     const toValueEl = document.getElementById('txToValue');
-    const toValue = Number(toValueEl.value);
+    const toValue = parseMoney(toValueEl.value);
     trn.toValue = (accountCurrency(accountId) !== accountCurrency(toAccountId) && toValue > 0) ? toValue : value;
     trn.category = null;
   } else {
@@ -1668,7 +1692,7 @@ function openBudgetModal(id) {
       }).join('')}
     </select>
     <label>${t('budget.limit')}</label>
-    <input id="bgAmount" type="number" step="0.01" min="0" value="${b ? b.amount : ''}">
+    <input id="bgAmount" type="text" inputmode="decimal" value="${b ? b.amount : ''}">
     <button class="primary-btn" onclick="saveBudget('${b ? b.id : ''}')">${t('modal.save')}</button>
   `);
 }
@@ -1676,8 +1700,8 @@ function openBudgetModal(id) {
 async function saveBudget(id) {
   const category = document.getElementById('bgCategory').value;
   const bgCurrency = document.getElementById('bgCurrency').value;
-  const amount = Number(document.getElementById('bgAmount').value);
-  if (!category || isNaN(amount) || amount <= 0) return;
+  const amount = parseMoney(document.getElementById('bgAmount').value);
+  if (!category || amount == null || amount <= 0) { showToast(t('toast.invalidValue')); return; }
 
   // Um orçamento por categoria + moeda
   const duplicate = state.budgets.find((x) => x.category === category && x.currency === bgCurrency && x.id !== id);
