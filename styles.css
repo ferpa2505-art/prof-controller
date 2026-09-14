@@ -173,3 +173,13 @@ th { background: var(--surface); color: var(--muted); font-weight: 600; white-sp
   background: var(--surface); color: var(--negative);
   border: 1px solid var(--negative); border-radius: 8px;
 }
+
+.panel-header-spaced { margin-top: 32px; }
+.card-highlight { border-color: var(--accent); }
+.tag {
+  display: inline-block; font-size: 11px; padding: 2px 6px; border-radius: 999px;
+  background: var(--border); color: var(--muted); vertical-align: middle;
+}
+.mini-table { margin-bottom: 16px; }
+.mini-table th, .mini-table td { padding: 8px 10px; font-size: 13px; }
+.mini-table .secondary-btn { padding: 3px 8px; font-size: 12px; margin: 0; }
