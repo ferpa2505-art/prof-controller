@@ -1,4 +1,4 @@
-const CACHE = 'prof-controller-v4'; // SEMPRE incremente ao publicar mudanças
+const CACHE = 'prof-controller-v5'; // SEMPRE incremente ao publicar mudanças
 const ASSETS = [
   './',
   './index.html',
