@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#1a1a2e">
   <title>ProF Controller</title>
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="styles.css?v=16">
+  <link rel="stylesheet" href="styles.css?v=17">
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 </head>
 <body>
@@ -25,6 +25,7 @@
     <button class="tab" data-tab="budgets" data-i18n="tabs.budgets">Orçamentos</button>
     <button class="tab" data-tab="fx" data-i18n="tabs.fx">Câmbio</button>
     <button class="tab" data-tab="portfolio" data-i18n="tabs.portfolio">Portfólio</button>
+    <button class="tab" data-tab="bills" data-i18n="tabs.bills">A Pagar / Receber</button>
     <button class="tab" data-tab="settings" data-i18n="tabs.settings">Configurações</button>
   </nav>
   <main>
@@ -46,7 +47,7 @@
         </div>
         <div class="card">
           <h3 data-i18n="dashboard.baseCurrency">Moeda base</h3>
-          <p id="baseCurrencyLabel" class="big-number">EUR</p>
+          <select id="dashBaseCurrency" class="base-select"></select>
         </div>
       </div>
       <div class="cards cards-spaced">
@@ -70,6 +71,17 @@
           <p id="navTotal" class="big-number">—</p>
         </div>
       </div>
+      <div class="cards cards-spaced">
+        <div class="card nav-card">
+          <div class="nav-head">
+            <h3 data-i18n="cash.title">Entradas e Saídas</h3>
+          </div>
+          <p class="hint" id="cashNote"></p>
+          <div id="cashChart" class="nav-chart"></div>
+          <p id="cashEmpty" class="empty-state hidden"></p>
+        </div>
+      </div>
+
       <p id="fxWarning" class="fx-warning hidden"></p>
       <div class="cards cards-spaced">
         <div class="card">
@@ -230,6 +242,33 @@
         </table>
       </div>
     </section>
+    <!-- A PAGAR / RECEBER -->
+    <section id="tab-bills" class="tab-panel">
+      <div class="panel-header">
+        <h2 data-i18n="bill.title">Contas a Pagar e a Receber</h2>
+        <button id="btnAddBill" class="primary-btn" data-i18n="bill.add">+ Novo título</button>
+      </div>
+
+      <div class="filters">
+        <label><span data-i18n="bill.kind">Tipo</span><select id="billKind"></select></label>
+        <label><span data-i18n="bill.filterStatus">Situação</span><select id="billStatus"></select></label>
+        <label><span data-i18n="bill.from">De</span><input type="date" id="billFrom"></label>
+        <label><span data-i18n="bill.to">Até</span><input type="date" id="billTo"></label>
+      </div>
+
+      <h3 class="section-sub" data-i18n="bill.installments">Parcelas</h3>
+      <p id="billEmpty" class="empty-state hidden"></p>
+      <div class="table-scroll">
+        <table id="billTable"><thead><tr></tr></thead><tbody></tbody></table>
+      </div>
+
+      <h3 class="section-sub" data-i18n="bill.schedules">Títulos cadastrados</h3>
+      <p id="scheduleEmpty" class="empty-state hidden"></p>
+      <div class="table-scroll">
+        <table id="scheduleTable"><thead><tr></tr></thead><tbody></tbody></table>
+      </div>
+    </section>
+
     <!-- CONFIGURAÇÕES -->
     <section id="tab-settings" class="tab-panel">
       <h2 data-i18n="settings.title">Configurações</h2>
@@ -260,6 +299,6 @@
     </div>
   </div>
   <div id="toast" class="toast hidden"></div>
-  <script src="app.js?v=16"></script>
+  <script src="app.js?v=17"></script>
 </body>
 </html>
