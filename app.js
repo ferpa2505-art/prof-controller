@@ -839,6 +839,37 @@ function assetDebt(asset, date) {
   return assetAnchor(asset, date).debt;
 }
 
+/* Saldo de TODAS as contas em uma passagem só. A versão por conta varria a
+   lista inteira de saldos e lançamentos a cada chamada: com 77 contas e 2.772
+   saldos isso vira centenas de milhares de comparações por renderização. */
+function currentBalancesAll() {
+  const anchors = {};
+  state.balances.forEach((b) => {
+    const cur = anchors[b.accountId];
+    if (!cur || b.date > cur.date) anchors[b.accountId] = b;
+  });
+  const acc = {};
+  state.accounts.forEach((a) => {
+    const an = anchors[a.id];
+    acc[a.id] = {
+      total: an ? Number(an.value) : Number(a.initialBalance) || 0,
+      since: an ? an.date : null
+    };
+  });
+  state.transactions.forEach((trn) => {
+    const envolvidas = new Set([trn.accountId, trn.toAccountId].filter(Boolean));
+    envolvidas.forEach((accId) => {
+      const rec = acc[accId];
+      if (!rec) return;
+      if (rec.since && trn.date <= rec.since) return;
+      rec.total += signedAmount(trn, accId);
+    });
+  });
+  const out = {};
+  state.accounts.forEach((a) => { out[a.id] = acc[a.id].total; });
+  return out;
+}
+
 function assetsOfType(type) {
   return state.assets.filter((a) => a.type === type);
 }
@@ -883,8 +914,9 @@ function renderDashboard() {
 
   // Patrimônio: soma dos saldos ATUAIS das contas, por moeda.
   const byCurrency = {};
+  const saldos = currentBalancesAll();
   state.accounts.forEach((a) => {
-    byCurrency[a.currency] = (byCurrency[a.currency] || 0) + currentBalance(a);
+    byCurrency[a.currency] = (byCurrency[a.currency] || 0) + saldos[a.id];
   });
   const keys = Object.keys(byCurrency).sort();
   const equity = consolidate(byCurrency, base, todayISO());
@@ -959,21 +991,20 @@ function fillSummaryCard(mainId, subId, map, base) {
 
 function renderAccounts() {
   const tbody = document.querySelector('#accountsTable tbody');
-  tbody.innerHTML = '';
-  state.accounts.forEach((a) => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
+  const saldos = currentBalancesAll();
+  // Uma única escrita no DOM em vez de uma por linha
+  tbody.innerHTML = state.accounts.map((a) => `
+    <tr>
       <td>${escapeHtml(a.name)}</td>
       <td>${t('accounts.type.' + a.type)}</td>
       <td>${a.currency}</td>
       <td>${fmtMoney(a.initialBalance, a.currency)}</td>
-      <td><strong>${fmtMoney(currentBalance(a), a.currency)}</strong></td>
+      <td><strong>${fmtMoney(saldos[a.id], a.currency)}</strong></td>
       <td>
         <button class="secondary-btn" onclick="openAccountModal('${a.id}')">${t('modal.edit')}</button>
         <button class="secondary-btn" onclick="deleteAccount('${a.id}')">${t('modal.delete')}</button>
-      </td>`;
-    tbody.appendChild(tr);
-  });
+      </td>
+    </tr>`).join('');
 }
 
 function renderBalances() {
@@ -981,17 +1012,19 @@ function renderBalances() {
   const tbody = document.querySelector('#balancesTable tbody');
   thead.innerHTML = `<th>${t('balances.date')}</th>` +
     state.accounts.map((a) => `<th>${escapeHtml(a.name)}</th>`).join('');
-  tbody.innerHTML = '';
+  // Índice date|accountId construído uma vez. Antes, cada célula fazia um find
+  // na lista inteira: 2.772 células x 2.772 saldos = 7,7 milhões de comparações.
+  const indice = new Map();
+  state.balances.forEach((b) => indice.set(b.date + '|' + b.accountId, b));
+
   const dates = [...new Set(state.balances.map((b) => b.date))].sort();
-  dates.forEach((date) => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td><strong>${date}</strong></td>` +
-      state.accounts.map((a) => {
-        const b = state.balances.find((x) => x.date === date && x.accountId === a.id);
-        return `<td>${b ? fmtMoney(b.value, a.currency) : '—'}</td>`;
-      }).join('');
-    tbody.appendChild(tr);
-  });
+  tbody.innerHTML = dates.map((date) =>
+    `<tr><td><strong>${date}</strong></td>` +
+    state.accounts.map((a) => {
+      const b = indice.get(date + '|' + a.id);
+      return `<td>${b ? fmtMoney(b.value, a.currency) : '—'}</td>`;
+    }).join('') + '</tr>'
+  ).join('');
 }
 
 /* ---------- Transações ---------- */
@@ -1040,8 +1073,9 @@ function renderTransactions() {
     empty.classList.add('hidden');
   }
 
-  rows.forEach((trn) => {
-    const acc = accountById(trn.accountId);
+  const contasPorId = new Map(state.accounts.map((a) => [a.id, a]));
+  const linhas = rows.map((trn) => {
+    const acc = contasPorId.get(trn.accountId);
     const code = acc ? acc.currency : state.settings.baseCurrency;
     let accountCell = acc ? escapeHtml(acc.name) : '—';
     let amountClass = 'amount-neutral';
@@ -1051,7 +1085,7 @@ function renderTransactions() {
     if (trn.type === 'income') { amountClass = 'amount-in'; amountText = '+ ' + amountText; }
     if (trn.type === 'expense') { amountClass = 'amount-out'; amountText = '− ' + amountText; }
     if (trn.type === 'transfer') {
-      const to = accountById(trn.toAccountId);
+      const to = contasPorId.get(trn.toAccountId);
       accountCell += ' → ' + (to ? escapeHtml(to.name) : '—');
       categoryCell = '—';
       if (to && trn.toValue != null && to.currency !== code) {
@@ -1059,20 +1093,21 @@ function renderTransactions() {
       }
     }
 
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>${trn.date}</td>
-      <td>${t('tx.' + trn.type)}</td>
-      <td>${accountCell}</td>
-      <td>${categoryCell}</td>
-      <td>${escapeHtml(trn.description || '')}</td>
-      <td class="${amountClass}">${amountText}</td>
-      <td>
-        <button class="secondary-btn" onclick="openTxModal('${trn.id}')">${t('modal.edit')}</button>
-        <button class="secondary-btn" onclick="deleteTx('${trn.id}')">${t('modal.delete')}</button>
-      </td>`;
-    tbody.appendChild(tr);
+    return `
+      <tr>
+        <td>${trn.date}</td>
+        <td>${t('tx.' + trn.type)}</td>
+        <td>${accountCell}</td>
+        <td>${categoryCell}</td>
+        <td>${escapeHtml(trn.description || '')}</td>
+        <td class="${amountClass}">${amountText}</td>
+        <td>
+          <button class="secondary-btn" onclick="openTxModal('${trn.id}')">${t('modal.edit')}</button>
+          <button class="secondary-btn" onclick="deleteTx('${trn.id}')">${t('modal.delete')}</button>
+        </td>
+      </tr>`;
   });
+  tbody.innerHTML = linhas.join('');
 }
 
 /* ---------- Orçamentos ---------- */
@@ -2089,11 +2124,40 @@ function buildNAVSeries() {
   }
   const hojeISO = todayISO();
   if (!points.length || points[points.length - 1] < hojeISO) points.push(hojeISO);
+  /* Índice por conta, montado uma vez. Sem ele, cada ponto da série varria a
+     lista inteira de saldos e lançamentos para cada conta: com 77 contas e 36
+     pontos isso passa de nove milhões de comparações. */
+  const idxSaldos = new Map();
+  const idxLanc = new Map();
+  state.accounts.forEach((a) => { idxSaldos.set(a.id, []); idxLanc.set(a.id, []); });
+  state.balances.forEach((b) => { const l = idxSaldos.get(b.accountId); if (l) l.push(b); });
+  state.transactions.forEach((trn) => {
+    new Set([trn.accountId, trn.toAccountId].filter(Boolean)).forEach((accId) => {
+      const l = idxLanc.get(accId); if (l) l.push(trn);
+    });
+  });
+  idxSaldos.forEach((l) => l.sort((x, y) => x.date.localeCompare(y.date)));
+  idxLanc.forEach((l) => l.sort((x, y) => x.date.localeCompare(y.date)));
+
+  const saldoEm = (acct, D) => {
+    const saldos = idxSaldos.get(acct.id) || [];
+    let anchor = null;
+    for (const b of saldos) { if (b.date <= D) anchor = b; else break; }
+    let valor = anchor ? Number(anchor.value) : Number(acct.initialBalance) || 0;
+    const desde = anchor ? anchor.date : null;
+    for (const trn of (idxLanc.get(acct.id) || [])) {
+      if (trn.date > D) break;
+      if (desde && trn.date <= desde) continue;
+      valor += signedAmount(trn, acct.id);
+    }
+    return valor;
+  };
+
   const out = [];
   for (const D of points) {
     let financial = 0, properties = 0, vehicles = 0, debt = 0;
     for (const acct of state.accounts) {
-      const v = toBase(accountBalanceAt(acct, D), acct.currency, D);
+      const v = toBase(saldoEm(acct, D), acct.currency, D);
       if (v != null) financial += v;
     }
     for (const a of state.assets) {
