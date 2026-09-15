@@ -205,6 +205,10 @@ const I18N = {
     'bill.account': 'Conta',
     'bill.category': 'Categoria',
     'bill.principal': 'Valor total (sem juros)',
+    'bill.principalPer': 'Valor de cada parcela',
+    'bill.amountMode': 'O valor informado é',
+    'bill.asTotal': 'O total do título',
+    'bill.asInstallment': 'O valor de cada parcela',
     'bill.startDate': 'Primeiro vencimento',
     'bill.frequency': 'Recorrência',
     'bill.limit': 'Até quando',
@@ -438,6 +442,10 @@ const I18N = {
     'bill.account': 'Account',
     'bill.category': 'Category',
     'bill.principal': 'Total amount (before interest)',
+    'bill.principalPer': 'Amount per installment',
+    'bill.amountMode': 'The amount entered is',
+    'bill.asTotal': 'The total of the bill',
+    'bill.asInstallment': 'The amount of each installment',
     'bill.startDate': 'First due date',
     'bill.frequency': 'Recurrence',
     'bill.limit': 'Limited by',
@@ -670,6 +678,10 @@ const I18N = {
     'bill.account': 'Cuenta',
     'bill.category': 'Categoría',
     'bill.principal': 'Importe total (sin intereses)',
+    'bill.principalPer': 'Importe de cada cuota',
+    'bill.amountMode': 'El importe indicado es',
+    'bill.asTotal': 'El total del título',
+    'bill.asInstallment': 'El importe de cada cuota',
     'bill.startDate': 'Primer vencimiento',
     'bill.frequency': 'Recurrencia',
     'bill.limit': 'Limitado por',
@@ -1154,6 +1166,17 @@ function installmentValue(sch) {
   if (!i || sch.interestType === 'none' || n <= 0) return P / Math.max(n, 1);
   if (sch.interestType === 'simple') return P * (1 + i * n) / n;
   return P * i / (1 - Math.pow(1 + i, -n));
+}
+
+/* Caminho inverso: o usuário informa quanto quer receber POR PARCELA e o
+   sistema descobre o principal correspondente. Um aluguel de 4.500 por mês
+   durante 40 meses é um título de 180.000, não de 4.500. */
+function principalFromInstallment(parcela, n, tipo, taxaPct) {
+  const i = (Number(taxaPct) || 0) / 100;
+  const p = Number(parcela) || 0;
+  if (!i || tipo === 'none' || n <= 0) return p * Math.max(n, 1);
+  if (tipo === 'simple') return p * n / (1 + i * n);
+  return p * (1 - Math.pow(1 + i, -n)) / i;
 }
 
 // Juros de mora, contados a partir do vencimento. A taxa é ao mês.
@@ -2088,8 +2111,13 @@ function openBillModal(id) {
       <select id="blCategory">${categoryOptions(kind === 'receivable' ? 'income' : 'expense', b ? b.category : null)}</select>
     </div>
 
-    <label>${t('bill.principal')}</label>
-    <input id="blPrincipal" type="text" inputmode="decimal" value="${b ? b.principal : ''}" oninput="updateBillPreview()">
+    <label>${t('bill.amountMode')}</label>
+    <select id="blAmountMode" onchange="onBillAmountModeChange()">
+      <option value="total" ${!b || b.amountMode !== 'installment' ? 'selected' : ''}>${t('bill.asTotal')}</option>
+      <option value="installment" ${b && b.amountMode === 'installment' ? 'selected' : ''}>${t('bill.asInstallment')}</option>
+    </select>
+    <label id="blPrincipalLabel">${t('bill.principal')}</label>
+    <input id="blPrincipal" type="text" inputmode="decimal" value="${b ? (b.amountMode === 'installment' ? installmentValue(b).toFixed(2) : b.principal) : ''}" oninput="updateBillPreview()">
 
     <label>${t('bill.startDate')}</label>
     <input id="blStart" type="date" value="${b ? b.startDate : todayISO()}">
@@ -2135,12 +2163,20 @@ function openBillModal(id) {
     <button class="primary-btn" onclick="saveSchedule('${b ? b.id : ''}')">${t('modal.save')}</button>
   `);
   onBillLimitChange();
+  onBillAmountModeChange();
 }
 
 function onBillKindChange() {
   const kind = document.getElementById('blKind').value;
   const sel = document.getElementById('blCategory');
   sel.innerHTML = categoryOptions(kind === 'receivable' ? 'income' : 'expense', sel.value);
+}
+
+function onBillAmountModeChange() {
+  const modo = document.getElementById('blAmountMode').value;
+  const rotulo = document.getElementById('blPrincipalLabel');
+  if (rotulo) rotulo.textContent = t(modo === 'installment' ? 'bill.principalPer' : 'bill.principal');
+  updateBillPreview();
 }
 
 function onBillLimitChange() {
@@ -2170,12 +2206,16 @@ function lerFormularioBill() {
   const el = (x) => document.getElementById(x);
   if (!el('blKind')) return null;
   const porContagem = el('blLimit').value === 'count';
-  return {
+  const modo = el('blAmountMode') ? el('blAmountMode').value : 'total';
+  const informado = parseMoney(el('blPrincipal').value) || 0;
+
+  const dados = {
     kind: el('blKind').value,
     description: el('blDescription').value.trim(),
     accountId: el('blAccount').value,
     category: el('blCategory').value,
-    principal: parseMoney(el('blPrincipal').value) || 0,
+    amountMode: modo,
+    principal: informado,
     startDate: el('blStart').value || todayISO(),
     frequency: el('blFrequency').value,
     count: porContagem ? Math.max(1, Number(el('blCount').value) || 1) : null,
@@ -2185,6 +2225,14 @@ function lerFormularioBill() {
     lateType: el('blLateType').value,
     lateRate: parseMoney(el('blLateRate').value) || 0
   };
+
+  // O que se grava é sempre o principal. Se o usuário informou o valor da
+  // parcela, ele é convertido aqui — assim o resto do sistema não muda.
+  if (modo === 'installment') {
+    const n = scheduleCount(dados);
+    dados.principal = principalFromInstallment(informado, n, dados.interestType, dados.interestRate);
+  }
+  return dados;
 }
 
 async function saveSchedule(id) {
