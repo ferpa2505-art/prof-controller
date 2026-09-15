@@ -212,4 +212,3 @@ th { background: var(--surface); color: var(--muted); font-weight: 600; white-sp
 @media (max-width: 600px) {
   .nav-chart svg { min-width: 420px; }
 }
- 
