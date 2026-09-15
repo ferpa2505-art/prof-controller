@@ -135,6 +135,23 @@ const I18N = {
     'portfolio.emptyVehicles': 'Nenhum veículo cadastrado.',
     'portfolio.noValuations': 'Sem avaliações. O valor exibido parte da aquisição.',
     'portfolio.estimated': 'estimado',
+    'portfolio.vehicleKind': 'Tipo de veículo',
+    'portfolio.vk.car': 'Carro',
+    'portfolio.vk.motorcycle': 'Moto',
+    'portfolio.vk.boat': 'Barco',
+    'portfolio.vk.helicopter': 'Helicóptero',
+    'portfolio.vk.plane': 'Avião',
+    'portfolio.tax': 'Imposto',
+    'portfolio.taxAmount': 'Valor do imposto',
+    'portfolio.taxPeriod': 'Periodicidade do imposto',
+    'portfolio.taxNone': 'Sem imposto',
+    'portfolio.taxMonthly': 'Mensal',
+    'portfolio.taxAnnual': 'Anual',
+    'portfolio.taxPerYear': '/ano',
+    'portfolio.taxPerMonth': '/mês',
+    'portfolio.taxTotal': 'Impostos ao ano',
+    'portfolio.taxBill': 'Gerar conta a pagar',
+    'portfolio.taxHint': 'O valor informado vira uma conta a pagar recorrente quando você clicar em "Gerar conta a pagar" na linha do bem.',
     'portfolio.total': 'Total',
     'dashboard.properties': 'Imóveis',
     'dashboard.vehicles': 'Veículos',
@@ -420,6 +437,23 @@ const I18N = {
     'portfolio.emptyVehicles': 'No vehicles yet.',
     'portfolio.noValuations': 'No appraisals. The value shown starts from acquisition.',
     'portfolio.estimated': 'estimated',
+    'portfolio.vehicleKind': 'Vehicle type',
+    'portfolio.vk.car': 'Car',
+    'portfolio.vk.motorcycle': 'Motorcycle',
+    'portfolio.vk.boat': 'Boat',
+    'portfolio.vk.helicopter': 'Helicopter',
+    'portfolio.vk.plane': 'Plane',
+    'portfolio.tax': 'Tax',
+    'portfolio.taxAmount': 'Tax amount',
+    'portfolio.taxPeriod': 'Tax frequency',
+    'portfolio.taxNone': 'No tax',
+    'portfolio.taxMonthly': 'Monthly',
+    'portfolio.taxAnnual': 'Annual',
+    'portfolio.taxPerYear': '/year',
+    'portfolio.taxPerMonth': '/month',
+    'portfolio.taxTotal': 'Taxes per year',
+    'portfolio.taxBill': 'Create payable',
+    'portfolio.taxHint': 'The amount becomes a recurring payable when you click "Create payable" on the asset row.',
     'portfolio.total': 'Total',
     'dashboard.properties': 'Properties',
     'dashboard.vehicles': 'Vehicles',
@@ -704,6 +738,23 @@ const I18N = {
     'portfolio.emptyVehicles': 'Sin vehículos registrados.',
     'portfolio.noValuations': 'Sin tasaciones. El valor mostrado parte de la adquisición.',
     'portfolio.estimated': 'estimado',
+    'portfolio.vehicleKind': 'Tipo de vehículo',
+    'portfolio.vk.car': 'Coche',
+    'portfolio.vk.motorcycle': 'Moto',
+    'portfolio.vk.boat': 'Barco',
+    'portfolio.vk.helicopter': 'Helicóptero',
+    'portfolio.vk.plane': 'Avión',
+    'portfolio.tax': 'Impuesto',
+    'portfolio.taxAmount': 'Importe del impuesto',
+    'portfolio.taxPeriod': 'Periodicidad del impuesto',
+    'portfolio.taxNone': 'Sin impuesto',
+    'portfolio.taxMonthly': 'Mensual',
+    'portfolio.taxAnnual': 'Anual',
+    'portfolio.taxPerYear': '/año',
+    'portfolio.taxPerMonth': '/mes',
+    'portfolio.taxTotal': 'Impuestos al año',
+    'portfolio.taxBill': 'Crear cuenta por pagar',
+    'portfolio.taxHint': 'El importe se convierte en una cuenta por pagar recurrente al pulsar "Crear cuenta por pagar" en la fila del bien.',
     'portfolio.total': 'Total',
     'dashboard.properties': 'Inmuebles',
     'dashboard.vehicles': 'Vehículos',
@@ -1485,6 +1536,16 @@ function allInstallments(de, ate) {
    Registrar uma avaliação nova sempre substitui o cálculo: número real
    vence número estimado. */
 
+const VEHICLE_KINDS = ['car', 'motorcycle', 'boat', 'helicopter', 'plane'];
+
+/* Imposto do bem, normalizado para o ano. Mensal x12 para dar para comparar
+   um IPVA anual com um condomínio mensal na mesma régua. */
+function assetAnnualTax(a) {
+  const v = Number(a.taxAmount) || 0;
+  if (!v || !a.taxPeriod || a.taxPeriod === 'none') return 0;
+  return a.taxPeriod === 'monthly' ? v * 12 : v;
+}
+
 function valuationsOf(assetId) {
   return state.valuations
     .filter((v) => v.assetId === assetId)
@@ -2076,7 +2137,8 @@ function renderPortfolio() {
     thead.innerHTML = `
       <th>${t('portfolio.name')}</th><th>${t('portfolio.currency')}</th>
       <th>${t('portfolio.value')}</th><th>${t('portfolio.debt')}</th>
-      <th>${t('portfolio.net')}</th><th>${t('accounts.actions')}</th>`;
+      <th>${t('portfolio.net')}</th><th>${t('portfolio.tax')}</th>
+      <th>${t('accounts.actions')}</th>`;
 
     const list = assetsOfType(type);
     tbody.innerHTML = '';
@@ -2087,17 +2149,33 @@ function renderPortfolio() {
     }
     empty.classList.add('hidden');
 
+    const totalImposto = {};
+    list.forEach((a) => {
+      const anual = assetAnnualTax(a);
+      if (anual > 0) totalImposto[a.currency] = (totalImposto[a.currency] || 0) + anual;
+    });
+    const elTax = document.getElementById(prefix + 'Tax');
+    if (elTax) {
+      const codes = Object.keys(totalImposto).sort();
+      elTax.textContent = codes.length
+        ? t('portfolio.taxTotal') + ': ' + codes.map((c) => fmtMoney(totalImposto[c], c)).join(' · ')
+        : '';
+    }
+
     list.forEach((a) => {
       const v = assetValue(a);
       const debt = assetDebt(a);
+      const imposto = assetAnnualTax(a) > 0;
       const tr = document.createElement('tr');
       tr.innerHTML = `
-        <td>${escapeHtml(a.name)}</td>
+        <td>${escapeHtml(a.name)}${a.type === 'vehicle' && a.vehicleKind ? ` <span class="tag">${t('portfolio.vk.' + a.vehicleKind)}</span>` : ''}</td>
         <td>${a.currency}</td>
         <td>${fmtMoney(v.value, a.currency)}${v.estimated ? ` <span class="tag">${t('portfolio.estimated')}</span>` : ''}</td>
         <td>${debt ? fmtMoney(debt, a.currency) : '—'}</td>
         <td><strong>${fmtMoney(v.value - debt, a.currency)}</strong></td>
+        <td>${imposto ? fmtMoney(Number(a.taxAmount), a.currency) + ' <span class="tag">' + t(a.taxPeriod === 'monthly' ? 'portfolio.taxPerMonth' : 'portfolio.taxPerYear') + '</span>' : '—'}</td>
         <td>
+          ${imposto ? `<button class="secondary-btn" onclick="billFromTax('${a.id}')">${t('portfolio.taxBill')}</button>` : ''}
           <button class="secondary-btn" onclick="openValuationsModal('${a.id}')">${t('portfolio.valuations')}</button>
           <button class="secondary-btn" onclick="openAssetModal('${type}','${a.id}')">${t('modal.edit')}</button>
           <button class="secondary-btn" onclick="deleteAsset('${a.id}')">${t('modal.delete')}</button>
@@ -2132,9 +2210,22 @@ function openAssetModal(type, id) {
     <label>${t('portfolio.acquiredDebt')}</label>
     <input id="asDebt" type="text" inputmode="decimal" value="${a && a.acquiredDebt ? a.acquiredDebt : ''}">
     ${isVehicle ? `
+      <label>${t('portfolio.vehicleKind')}</label>
+      <select id="asVehicleKind">
+        ${VEHICLE_KINDS.map((k) => `<option value="${k}" ${a && a.vehicleKind === k ? 'selected' : ''}>${t('portfolio.vk.' + k)}</option>`).join('')}
+      </select>
       <label>${t('portfolio.depreciation')}</label>
       <input id="asDepreciation" type="number" step="0.1" min="0" max="100" value="${a && a.depreciation != null ? a.depreciation : 15}">
       <p class="hint">${t('portfolio.depreciationHint')}</p>` : ''}
+    <label>${t('portfolio.taxPeriod')}</label>
+    <select id="asTaxPeriod">
+      <option value="none" ${!a || !a.taxPeriod || a.taxPeriod === 'none' ? 'selected' : ''}>${t('portfolio.taxNone')}</option>
+      <option value="monthly" ${a && a.taxPeriod === 'monthly' ? 'selected' : ''}>${t('portfolio.taxMonthly')}</option>
+      <option value="annual" ${a && a.taxPeriod === 'annual' ? 'selected' : ''}>${t('portfolio.taxAnnual')}</option>
+    </select>
+    <label>${t('portfolio.taxAmount')}</label>
+    <input id="asTaxAmount" type="text" inputmode="decimal" value="${a && a.taxAmount ? a.taxAmount : ''}">
+    <p class="hint">${t('portfolio.taxHint')}</p>
     <button class="primary-btn" onclick="saveAsset('${type}','${a ? a.id : ''}')">${t('modal.save')}</button>
   `);
 }
@@ -2151,7 +2242,10 @@ async function saveAsset(type, id) {
     acquiredDate: document.getElementById('asDate').value || todayISO(),
     acquiredValue: parseMoney(document.getElementById('asValue').value) || 0,
     acquiredDebt: parseMoney(document.getElementById('asDebt').value) || 0,
-    depreciation: depEl ? (parseMoney(depEl.value) || 0) : 0
+    depreciation: depEl ? (parseMoney(depEl.value) || 0) : 0,
+    vehicleKind: type === 'vehicle' ? (document.getElementById('asVehicleKind') || {}).value || 'car' : null,
+    taxPeriod: document.getElementById('asTaxPeriod').value,
+    taxAmount: parseMoney(document.getElementById('asTaxAmount').value) || 0
   };
   if (id) state.assets = state.assets.map((x) => (x.id === id ? asset : x));
   else state.assets.push(asset);
@@ -2340,9 +2434,26 @@ function renderBills() {
   }
 }
 
-function openBillModal(id) {
+/* Abre o cadastro de conta a pagar já preenchido com o imposto do bem.
+   Reaproveita o formulário testado em vez de inventar um atalho paralelo. */
+function billFromTax(assetId) {
+  const a = state.assets.find((x) => x.id === assetId);
+  if (!a) return;
+  openBillModal(null, {
+    kind: 'payable',
+    description: t('portfolio.tax') + ' — ' + a.name,
+    category: a.type === 'property' ? 'impostosPropriedade' : 'impostos',
+    amountMode: 'installment',
+    principal: Number(a.taxAmount) || 0,
+    frequency: a.taxPeriod === 'monthly' ? 'monthly' : 'annual',
+    count: a.taxPeriod === 'monthly' ? 120 : 20
+  });
+}
+
+function openBillModal(id, prefill) {
   if (!state.accounts.length) { showToast(t('bill.noAccounts')); return; }
-  const b = id ? state.schedules.find((x) => x.id === id) : null;
+  const b = id ? state.schedules.find((x) => x.id === id) : (prefill || null);
+  const novo = !id; // prefill preenche, mas o título ainda não existe
   const kind = b ? b.kind : 'receivable';
   openModal(`
     <h2>${b ? t('modal.editBill') : t('modal.addBill')}</h2>
@@ -2371,10 +2482,10 @@ function openBillModal(id) {
       <option value="installment" ${b && b.amountMode === 'installment' ? 'selected' : ''}>${t('bill.asInstallment')}</option>
     </select>
     <label id="blPrincipalLabel">${t('bill.principal')}</label>
-    <input id="blPrincipal" type="text" inputmode="decimal" value="${b ? (b.amountMode === 'installment' ? installmentValue(b).toFixed(2) : b.principal) : ''}" oninput="updateBillPreview()">
+    <input id="blPrincipal" type="text" inputmode="decimal" value="${b ? (b.amountMode === 'installment' && !novo ? installmentValue(b).toFixed(2) : b.principal) : ''}" oninput="updateBillPreview()">
 
     <label>${t('bill.startDate')}</label>
-    <input id="blStart" type="date" value="${b ? b.startDate : todayISO()}">
+    <input id="blStart" type="date" value="${b && b.startDate ? b.startDate : todayISO()}">
 
     <label>${t('bill.frequency')}</label>
     <select id="blFrequency" onchange="updateBillPreview()">
@@ -2414,7 +2525,7 @@ function openBillModal(id) {
     <input id="blLateRate" type="text" inputmode="decimal" value="${b && b.lateRate ? b.lateRate : ''}">
 
     <p class="hint" id="blPreview"></p>
-    <button class="primary-btn" onclick="saveSchedule('${b ? b.id : ''}')">${t('modal.save')}</button>
+    <button class="primary-btn" onclick="saveSchedule('${b && b.id ? b.id : ''}')">${t('modal.save')}</button>
   `);
   onBillLimitChange();
   onBillAmountModeChange();
