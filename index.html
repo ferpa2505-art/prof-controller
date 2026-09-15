@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#1a1a2e">
   <title>ProF Controller</title>
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="styles.css?v=21">
+  <link rel="stylesheet" href="styles.css?v=22">
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 </head>
 <body>
@@ -232,6 +232,7 @@
         <h2 data-i18n="portfolio.properties">Imóveis</h2>
         <button id="btnAddProperty" class="primary-btn" data-i18n="portfolio.addProperty">+ Novo imóvel</button>
       </div>
+      <p id="propTax" class="hint"></p>
       <p id="propEmpty" class="empty-state hidden"></p>
       <div class="table-scroll">
         <table id="propTable">
@@ -243,6 +244,7 @@
         <h2 data-i18n="portfolio.vehicles">Veículos</h2>
         <button id="btnAddVehicle" class="primary-btn" data-i18n="portfolio.addVehicle">+ Novo veículo</button>
       </div>
+      <p id="vehTax" class="hint"></p>
       <p id="vehEmpty" class="empty-state hidden"></p>
       <div class="table-scroll">
         <table id="vehTable">
@@ -336,6 +338,6 @@
     </div>
   </div>
   <div id="toast" class="toast hidden"></div>
-  <script src="app.js?v=21"></script>
+  <script src="app.js?v=22"></script>
 </body>
 </html>
