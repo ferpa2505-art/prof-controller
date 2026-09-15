@@ -953,16 +953,18 @@ function applyTheme() {
 }
 
 /* ---------- Renderização ---------- */
+/* Cada seção é renderizada isoladamente. Se uma falhar — por elemento ausente
+   num HTML defasado, por exemplo — as outras continuam aparecendo, em vez de a
+   tela inteira ficar em branco. */
 function renderAll() {
-  renderDashboard();
-  renderAccounts();
-  renderBalances();
-  renderTransactions();
-  renderBudgets();
-  renderFx();
-  renderPortfolio();
-  renderNAV();
-  renderSettings();
+  const etapas = [
+    ['dashboard', renderDashboard], ['contas', renderAccounts], ['saldos', renderBalances],
+    ['transações', renderTransactions], ['orçamentos', renderBudgets], ['câmbio', renderFx],
+    ['portfólio', renderPortfolio], ['gráfico', renderNAV], ['configurações', renderSettings]
+  ];
+  etapas.forEach(([nome, fn]) => {
+    try { fn(); } catch (e) { console.error('Falha ao renderizar ' + nome + ':', e); }
+  });
 }
 
 function renderDashboard() {
@@ -2067,78 +2069,88 @@ async function importCSV(file) {
 }
 
 /* ---------- Eventos ---------- */
+/* Liga um evento só se o elemento existir. Um index.html defasado (ou um
+   elemento renomeado) não pode derrubar o app inteiro: sem esta guarda, o
+   primeiro getElementById nulo interrompe TODA a ligação de eventos. */
+function on(id, evento, handler) {
+  const el = document.getElementById(id);
+  if (!el) { console.warn('Elemento ausente no HTML:', id, '— verifique se o index.html está atualizado.'); return false; }
+  el.addEventListener(evento, handler);
+  return true;
+}
+
 function bindEvents() {
   // Os botões de idioma são recriados a cada render, então o clique é capturado
   // no contêiner, que é fixo.
-  document.getElementById('navControls').addEventListener('click', (e) => {
+  on('navControls', 'click', (e) => {
     const btn = e.target.closest('[data-view]');
     if (!btn) return;
     state.ui.navView = btn.dataset.view;
     renderNAV();
   });
-  document.getElementById('navControls').addEventListener('change', (e) => {
+  on('navControls', 'change', (e) => {
     if (e.target.id !== 'navBreak') return;
     state.ui.navBreak = e.target.value;
     renderNAV();
   });
 
-  document.getElementById('langButtons').addEventListener('click', async (e) => {
+  on('langButtons', 'click', async (e) => {
     const btn = e.target.closest('[data-lang]');
     if (!btn) return;
     state.settings.lang = btn.dataset.lang;
     await put('settings', { key: 'lang', value: btn.dataset.lang });
     applyLang();
   });
-  document.getElementById('themeSelect').addEventListener('change', async (e) => {
+  on('themeSelect', 'change', async (e) => {
     state.settings.theme = e.target.value;
     await put('settings', { key: 'theme', value: e.target.value });
     applyTheme();
   });
-  document.getElementById('baseCurrencySelect').addEventListener('change', async (e) => {
+  on('baseCurrencySelect', 'change', async (e) => {
     state.settings.baseCurrency = e.target.value;
     await put('settings', { key: 'baseCurrency', value: e.target.value });
     renderAll();
   });
-  document.getElementById('btnAddAccount').addEventListener('click', () => openAccountModal());
-  document.getElementById('btnAddBalance').addEventListener('click', openBalanceModal);
+  on('btnAddAccount', 'click', () => openAccountModal());
+  on('btnAddBalance', 'click', openBalanceModal);
 
   // Fase 2 — transações
-  document.getElementById('btnAddTx').addEventListener('click', () => openTxModal());
-  document.getElementById('btnExportTxCSV').addEventListener('click', exportTransactionsCSV);
-  document.getElementById('txFilterType').addEventListener('change', (e) => { state.ui.txType = e.target.value; renderTransactions(); });
-  document.getElementById('txFilterAccount').addEventListener('change', (e) => { state.ui.txAccount = e.target.value; renderTransactions(); });
-  document.getElementById('txFilterMonth').addEventListener('change', (e) => { state.ui.txMonth = e.target.value; renderTransactions(); });
-  document.getElementById('btnClearTxFilters').addEventListener('click', () => {
+  on('btnAddTx', 'click', () => openTxModal());
+  on('btnExportTxCSV', 'click', exportTransactionsCSV);
+  on('txFilterType', 'change', (e) => { state.ui.txType = e.target.value; renderTransactions(); });
+  on('txFilterAccount', 'change', (e) => { state.ui.txAccount = e.target.value; renderTransactions(); });
+  on('txFilterMonth', 'change', (e) => { state.ui.txMonth = e.target.value; renderTransactions(); });
+  on('btnClearTxFilters', 'click', () => {
     state.ui.txType = 'all'; state.ui.txAccount = 'all'; state.ui.txMonth = '';
     renderTransactions();
   });
 
   // Fase 2 — orçamentos
-  document.getElementById('btnAddBudget').addEventListener('click', () => openBudgetModal());
-  document.getElementById('budgetMonth').addEventListener('change', (e) => { state.ui.budgetMonth = e.target.value; renderBudgets(); });
+  on('btnAddBudget', 'click', () => openBudgetModal());
+  on('budgetMonth', 'change', (e) => { state.ui.budgetMonth = e.target.value; renderBudgets(); });
 
   // Fase 4 — portfólio
-  document.getElementById('btnAddProperty').addEventListener('click', () => openAssetModal('property'));
-  document.getElementById('btnAddVehicle').addEventListener('click', () => openAssetModal('vehicle'));
+  on('btnAddProperty', 'click', () => openAssetModal('property'));
+  on('btnAddVehicle', 'click', () => openAssetModal('vehicle'));
 
   // Fase 3 — câmbio
-  document.getElementById('btnAddFx').addEventListener('click', () => openFxModal());
-  document.getElementById('btnFetchRates').addEventListener('click', fetchRates);
+  on('btnAddFx', 'click', () => openFxModal());
+  on('btnFetchRates', 'click', fetchRates);
 
-  document.getElementById('btnExportJSON').addEventListener('click', exportJSON);
-  document.getElementById('btnExportCSV').addEventListener('click', exportCSV);
-  document.getElementById('btnImportJSON').addEventListener('click', () => document.getElementById('importFile').click());
-  document.getElementById('importFile').addEventListener('change', (e) => {
+  on('btnExportJSON', 'click', exportJSON);
+  on('btnExportCSV', 'click', exportCSV);
+  on('btnImportJSON', 'click', () => document.getElementById('importFile').click());
+  on('importFile', 'change', (e) => {
     if (e.target.files[0]) importJSON(e.target.files[0]);
     e.target.value = '';
   });
-  document.getElementById('btnImportCSV').addEventListener('click', () => document.getElementById('importCSVFile').click());
-  document.getElementById('importCSVFile').addEventListener('change', (e) => {
+  on('btnImportCSV', 'click', () => document.getElementById('importCSVFile').click());
+  on('importCSVFile', 'change', (e) => {
     if (e.target.files[0]) importCSV(e.target.files[0]);
     e.target.value = '';
   });
-  document.getElementById('modalClose').addEventListener('click', closeModal);
-  document.getElementById('modal').addEventListener('click', (e) => { if (e.target.id === 'modal') closeModal(); });
+  on('modalClose', 'click', closeModal);
+  on('modal', 'click', (e) => { if (e.target.id === 'modal') closeModal(); });
   document.querySelectorAll('.tab').forEach((btn) => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.tab').forEach((b) => b.classList.remove('active'));
@@ -2340,9 +2352,7 @@ function renderNAVPie(wrap, legend, empty) {
   }
 
   // Tabela ao lado, porque fatia fina não cabe rótulo
-  let y = 46;
-  svg += `<text x="360" y="26" font-size="12" fill="var(--muted)">${t('nav.breakdown')}: ${
-    t(state.ui.navBreak === 'class' ? 'nav.byClass' : state.ui.navBreak === 'account' ? 'nav.byAccount' : 'nav.byCurrency')}</text>`;
+  let y = 34;
   fatias.forEach((f) => {
     const pct = (f.value / total) * 100;
     svg += `<rect x="360" y="${y - 10}" width="11" height="11" rx="2" fill="${f.color}"/>`;
@@ -2367,7 +2377,7 @@ function renderNAVPie(wrap, legend, empty) {
   }
   svg += '</svg>';
   wrap.innerHTML = `<div id="navTip" class="nav-tip hidden"></div>` + svg;
-  legend.innerHTML = `<span class="hint">${t('nav.pieNote').replace('{code}', base)}</span>`;
+  legend.innerHTML = '';
 }
 
 function renderNAVControls() {
@@ -2399,7 +2409,12 @@ function renderNAV() {
   const legend = document.getElementById('navLegend');
   if (!wrap) return;
   renderNAVControls();
-  document.getElementById('navTitle').textContent = t(state.ui.navView === 'pie' ? 'nav.pieTitle' : 'nav.title');
+  const ehPizza = state.ui.navView === 'pie';
+  const titulo = document.getElementById('navTitle');
+  if (titulo) titulo.textContent = t(ehPizza ? 'nav.pieTitle' : 'nav.title');
+  // A explicação muda com a visão: a da série mensal não vale para a pizza
+  const dica = document.getElementById('navHint');
+  if (dica) dica.textContent = ehPizza ? t('nav.pieNote').replace('{code}', state.settings.baseCurrency) : t('nav.hint');
   if (state.ui.navView === 'pie') { renderNAVPie(wrap, legend, empty); return; }
 
   const series = buildNAVSeries();
@@ -2481,7 +2496,12 @@ async function init() {
   const themeSel = document.getElementById('themeSelect');
   themeSel.innerHTML = ['default', 'dark', 'green', 'blue'].map((th) => `<option value="${th}">${th}</option>`).join('');
   applyTheme();
-  bindEvents();
+  try {
+    bindEvents();
+  } catch (e) {
+    console.error('Falha ao ligar os eventos da interface:', e);
+    showFatal('Parte da interface não pôde ser inicializada. Se você acabou de publicar, confirme que o index.html também foi atualizado. Detalhe: ' + (e && e.message ? e.message : e));
+  }
 
   // 2) Depois os dados. Qualquer falha aqui vira aviso na tela, nunca tela travada.
   try {
