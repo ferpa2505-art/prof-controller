@@ -188,7 +188,78 @@ const I18N = {
     'nav.byAccount': 'Conta / bem',
     'nav.others': 'Outros',
     'nav.pieTitle': 'Composição do Patrimônio',
-    'nav.pieNote': 'Fatias em {code}, na data de hoje. Dívidas não entram no gráfico.'
+    'nav.pieNote': 'Fatias em {code}, na data de hoje. Dívidas não entram no gráfico.',
+    'tabs.bills': 'A Pagar / Receber',
+    'bill.title': 'Contas a Pagar e a Receber',
+    'bill.add': '+ Novo título',
+    'bill.schedules': 'Títulos cadastrados',
+    'bill.installments': 'Parcelas',
+    'bill.kind': 'Tipo',
+    'bill.receivable': 'A receber',
+    'bill.payable': 'A pagar',
+    'bill.description': 'Descrição',
+    'bill.account': 'Conta',
+    'bill.category': 'Categoria',
+    'bill.principal': 'Valor total (sem juros)',
+    'bill.startDate': 'Primeiro vencimento',
+    'bill.frequency': 'Recorrência',
+    'bill.limit': 'Até quando',
+    'bill.byCount': 'Número de parcelas',
+    'bill.byEnd': 'Data final',
+    'bill.count': 'Parcelas',
+    'bill.endDate': 'Data final',
+    'bill.interest': 'Juros do parcelamento',
+    'bill.interestType': 'Tipo de juros',
+    'bill.interestRate': 'Taxa por parcela (%)',
+    'bill.late': 'Juros de mora',
+    'bill.lateType': 'Tipo de mora',
+    'bill.lateRate': 'Taxa ao mês (%)',
+    'bill.none': 'Sem juros',
+    'bill.simple': 'Simples',
+    'bill.compound': 'Compostos',
+    'bill.preview': 'Prévia',
+    'bill.previewText': '{n}x de {valor} · total {total}',
+    'bill.dueDate': 'Vencimento',
+    'bill.value': 'Valor',
+    'bill.lateAmount': 'Mora',
+    'bill.amount': 'Total',
+    'bill.status': 'Situação',
+    'bill.open': 'Em aberto',
+    'bill.overdue': 'Vencida',
+    'bill.paid': 'Paga',
+    'bill.pay': 'Quitar',
+    'bill.unpay': 'Desfazer',
+    'bill.all': 'Todas',
+    'bill.filterStatus': 'Situação',
+    'bill.from': 'De',
+    'bill.to': 'Até',
+    'bill.emptySchedules': 'Nenhum título cadastrado.',
+    'bill.emptyInstallments': 'Nenhuma parcela neste filtro.',
+    'bill.confirmPay': 'Quitar parcela',
+    'bill.paidDate': 'Data do pagamento',
+    'bill.paidValue': 'Valor pago',
+    'bill.payNote': 'A quitação vira um lançamento na conta e move o saldo.',
+    'bill.totalOpen': 'A receber em aberto',
+    'bill.totalDue': 'A pagar em aberto',
+    'bill.noAccounts': 'Cadastre uma conta antes de criar títulos.',
+    'bill.freq.once': 'Única',
+    'bill.freq.daily': 'Diária',
+    'bill.freq.weekly': 'Semanal',
+    'bill.freq.biweekly': 'Quinzenal',
+    'bill.freq.monthly': 'Mensal',
+    'bill.freq.bimonthly': 'Bimestral',
+    'bill.freq.quarterly': 'Trimestral',
+    'bill.freq.semiannual': 'Semestral',
+    'bill.freq.annual': 'Anual',
+    'cash.title': 'Entradas e Saídas',
+    'cash.in': 'Entradas',
+    'cash.out': 'Saídas',
+    'cash.realized': 'realizado',
+    'cash.forecast': 'previsto',
+    'cash.note': 'Barras cheias são o realizado; as riscadas, o previsto pelas parcelas em aberto. Valores em {code}.',
+    'cash.empty': 'Sem movimento no período.',
+    'modal.addBill': 'Novo título',
+    'modal.editBill': 'Editar título'
 
   },
   'en': {
@@ -346,7 +417,78 @@ const I18N = {
     'nav.byAccount': 'Account / asset',
     'nav.others': 'Others',
     'nav.pieTitle': 'Wealth Composition',
-    'nav.pieNote': 'Slices in {code}, as of today. Debt is not shown in the chart.'
+    'nav.pieNote': 'Slices in {code}, as of today. Debt is not shown in the chart.',
+    'tabs.bills': 'Payables / Receivables',
+    'bill.title': 'Payables and Receivables',
+    'bill.add': '+ New bill',
+    'bill.schedules': 'Registered bills',
+    'bill.installments': 'Installments',
+    'bill.kind': 'Type',
+    'bill.receivable': 'Receivable',
+    'bill.payable': 'Payable',
+    'bill.description': 'Description',
+    'bill.account': 'Account',
+    'bill.category': 'Category',
+    'bill.principal': 'Total amount (before interest)',
+    'bill.startDate': 'First due date',
+    'bill.frequency': 'Recurrence',
+    'bill.limit': 'Limited by',
+    'bill.byCount': 'Number of installments',
+    'bill.byEnd': 'End date',
+    'bill.count': 'Installments',
+    'bill.endDate': 'End date',
+    'bill.interest': 'Financing interest',
+    'bill.interestType': 'Interest type',
+    'bill.interestRate': 'Rate per installment (%)',
+    'bill.late': 'Late interest',
+    'bill.lateType': 'Late interest type',
+    'bill.lateRate': 'Monthly rate (%)',
+    'bill.none': 'No interest',
+    'bill.simple': 'Simple',
+    'bill.compound': 'Compound',
+    'bill.preview': 'Preview',
+    'bill.previewText': '{n}x of {valor} · total {total}',
+    'bill.dueDate': 'Due date',
+    'bill.value': 'Amount',
+    'bill.lateAmount': 'Late fee',
+    'bill.amount': 'Total',
+    'bill.status': 'Status',
+    'bill.open': 'Open',
+    'bill.overdue': 'Overdue',
+    'bill.paid': 'Paid',
+    'bill.pay': 'Settle',
+    'bill.unpay': 'Undo',
+    'bill.all': 'All',
+    'bill.filterStatus': 'Status',
+    'bill.from': 'From',
+    'bill.to': 'To',
+    'bill.emptySchedules': 'No bills registered.',
+    'bill.emptyInstallments': 'No installments for this filter.',
+    'bill.confirmPay': 'Settle installment',
+    'bill.paidDate': 'Payment date',
+    'bill.paidValue': 'Amount paid',
+    'bill.payNote': 'Settling creates an entry in the account and moves the balance.',
+    'bill.totalOpen': 'Open receivables',
+    'bill.totalDue': 'Open payables',
+    'bill.noAccounts': 'Create an account before adding bills.',
+    'bill.freq.once': 'One-off',
+    'bill.freq.daily': 'Daily',
+    'bill.freq.weekly': 'Weekly',
+    'bill.freq.biweekly': 'Biweekly',
+    'bill.freq.monthly': 'Monthly',
+    'bill.freq.bimonthly': 'Bimonthly',
+    'bill.freq.quarterly': 'Quarterly',
+    'bill.freq.semiannual': 'Semiannual',
+    'bill.freq.annual': 'Annual',
+    'cash.title': 'Money In and Out',
+    'cash.in': 'In',
+    'cash.out': 'Out',
+    'cash.realized': 'actual',
+    'cash.forecast': 'forecast',
+    'cash.note': 'Solid bars are actuals; hatched bars are forecast from open installments. Values in {code}.',
+    'cash.empty': 'No movement in the period.',
+    'modal.addBill': 'New bill',
+    'modal.editBill': 'Edit bill'
   },
   'es': {
     'tabs.dashboard': 'Panel',
@@ -503,7 +645,78 @@ const I18N = {
     'nav.byAccount': 'Cuenta / bien',
     'nav.others': 'Otros',
     'nav.pieTitle': 'Composición del Patrimonio',
-    'nav.pieNote': 'Porciones en {code}, a fecha de hoy. Las deudas no entran en el gráfico.'
+    'nav.pieNote': 'Porciones en {code}, a fecha de hoy. Las deudas no entran en el gráfico.',
+    'tabs.bills': 'Por Pagar / Cobrar',
+    'bill.title': 'Cuentas por Pagar y por Cobrar',
+    'bill.add': '+ Nuevo título',
+    'bill.schedules': 'Títulos registrados',
+    'bill.installments': 'Cuotas',
+    'bill.kind': 'Tipo',
+    'bill.receivable': 'Por cobrar',
+    'bill.payable': 'Por pagar',
+    'bill.description': 'Descripción',
+    'bill.account': 'Cuenta',
+    'bill.category': 'Categoría',
+    'bill.principal': 'Importe total (sin intereses)',
+    'bill.startDate': 'Primer vencimiento',
+    'bill.frequency': 'Recurrencia',
+    'bill.limit': 'Limitado por',
+    'bill.byCount': 'Número de cuotas',
+    'bill.byEnd': 'Fecha final',
+    'bill.count': 'Cuotas',
+    'bill.endDate': 'Fecha final',
+    'bill.interest': 'Intereses de financiación',
+    'bill.interestType': 'Tipo de interés',
+    'bill.interestRate': 'Tasa por cuota (%)',
+    'bill.late': 'Intereses de mora',
+    'bill.lateType': 'Tipo de mora',
+    'bill.lateRate': 'Tasa mensual (%)',
+    'bill.none': 'Sin intereses',
+    'bill.simple': 'Simples',
+    'bill.compound': 'Compuestos',
+    'bill.preview': 'Vista previa',
+    'bill.previewText': '{n}x de {valor} · total {total}',
+    'bill.dueDate': 'Vencimiento',
+    'bill.value': 'Importe',
+    'bill.lateAmount': 'Mora',
+    'bill.amount': 'Total',
+    'bill.status': 'Estado',
+    'bill.open': 'Pendiente',
+    'bill.overdue': 'Vencida',
+    'bill.paid': 'Pagada',
+    'bill.pay': 'Liquidar',
+    'bill.unpay': 'Deshacer',
+    'bill.all': 'Todas',
+    'bill.filterStatus': 'Estado',
+    'bill.from': 'Desde',
+    'bill.to': 'Hasta',
+    'bill.emptySchedules': 'Sin títulos registrados.',
+    'bill.emptyInstallments': 'Sin cuotas para este filtro.',
+    'bill.confirmPay': 'Liquidar cuota',
+    'bill.paidDate': 'Fecha de pago',
+    'bill.paidValue': 'Importe pagado',
+    'bill.payNote': 'La liquidación genera un movimiento en la cuenta y mueve el saldo.',
+    'bill.totalOpen': 'Por cobrar pendiente',
+    'bill.totalDue': 'Por pagar pendiente',
+    'bill.noAccounts': 'Cree una cuenta antes de añadir títulos.',
+    'bill.freq.once': 'Única',
+    'bill.freq.daily': 'Diaria',
+    'bill.freq.weekly': 'Semanal',
+    'bill.freq.biweekly': 'Quincenal',
+    'bill.freq.monthly': 'Mensual',
+    'bill.freq.bimonthly': 'Bimestral',
+    'bill.freq.quarterly': 'Trimestral',
+    'bill.freq.semiannual': 'Semestral',
+    'bill.freq.annual': 'Anual',
+    'cash.title': 'Entradas y Salidas',
+    'cash.in': 'Entradas',
+    'cash.out': 'Salidas',
+    'cash.realized': 'realizado',
+    'cash.forecast': 'previsto',
+    'cash.note': 'Las barras llenas son lo realizado; las rayadas, lo previsto por las cuotas pendientes. Valores en {code}.',
+    'cash.empty': 'Sin movimiento en el período.',
+    'modal.addBill': 'Nuevo título',
+    'modal.editBill': 'Editar título'
   }
 };
 
@@ -580,7 +793,7 @@ function groupLabel(g) {
 
 /* ---------- Estado e persistência (IndexedDB) ---------- */
 const DB_NAME = 'prof-controller';
-const DB_VERSION = 3; // Fase 4: novas stores assets e valuations
+const DB_VERSION = 4; // Fase 6: títulos a pagar/receber e suas quitações
 let db = null;
 let state = {
   accounts: [],
@@ -588,10 +801,13 @@ let state = {
   transactions: [],
   budgets: [],
   fx: [],
+  schedules: [],
+  payments: [],
   assets: [],
   valuations: [],
   settings: { lang: 'pt-BR', theme: 'default', baseCurrency: 'EUR' },
-  ui: { txType: 'all', txAccount: 'all', txMonth: '', budgetMonth: '', navView: 'pie', navBreak: 'currency' }
+  ui: { txType: 'all', txAccount: 'all', txMonth: '', budgetMonth: '', navView: 'pie', navBreak: 'currency',
+        billKind: 'all', billStatus: 'open', billFrom: '', billTo: '' }
 };
 
 const CURRENCIES = [
@@ -628,6 +844,18 @@ function openDB() {
         const s = d.createObjectStore('budgets', { keyPath: 'id' });
         s.createIndex('category', 'category');
       }
+      // Fase 6 — títulos (a pagar/receber) e as quitações de suas parcelas
+      if (!d.objectStoreNames.contains('schedules')) {
+        const s = d.createObjectStore('schedules', { keyPath: 'id' });
+        s.createIndex('kind', 'kind');
+        s.createIndex('accountId', 'accountId');
+      }
+      if (!d.objectStoreNames.contains('payments')) {
+        const s = d.createObjectStore('payments', { keyPath: 'id' });
+        s.createIndex('scheduleId', 'scheduleId');
+        s.createIndex('paidDate', 'paidDate');
+      }
+
       // Fase 4 — ativos (imóveis e veículos) e suas avaliações datadas
       if (!d.objectStoreNames.contains('assets')) {
         const s = d.createObjectStore('assets', { keyPath: 'id' });
@@ -672,6 +900,8 @@ async function loadAll() {
   state.transactions = await getAll('transactions');
   state.budgets = await getAll('budgets');
   state.fx = await getAll('fx');
+  state.schedules = await getAll('schedules');
+  state.payments = await getAll('payments');
   state.assets = await getAll('assets');
   state.valuations = await getAll('valuations');
   const settings = await getAll('settings');
@@ -827,6 +1057,118 @@ function consolidate(byCurrency, base, date) {
 }
 
 
+/* ---------- Títulos a pagar e a receber (Fase 6) ----------
+   Um título é uma PREVISÃO; o lançamento é o fato consumado. As parcelas são
+   calculadas sob demanda a partir do título — gravar todas seria inviável numa
+   recorrência diária de vários anos. O que se grava é a quitação. */
+
+const FREQUENCIES = [
+  { key: 'once', days: 0, months: 0 },
+  { key: 'daily', days: 1 },
+  { key: 'weekly', days: 7 },
+  { key: 'biweekly', days: 14 },
+  { key: 'monthly', months: 1 },
+  { key: 'bimonthly', months: 2 },
+  { key: 'quarterly', months: 3 },
+  { key: 'semiannual', months: 6 },
+  { key: 'annual', months: 12 }
+];
+const MAX_PARCELAS = 600; // trava de segurança para recorrências longas
+
+// Soma n períodos a uma data ISO. Em meses, o dia é ajustado ao último dia
+// válido: 31/01 + 1 mês vira 28/02, não 03/03.
+function addPeriod(iso, freqKey, n) {
+  const f = FREQUENCIES.find((x) => x.key === freqKey) || FREQUENCIES[0];
+  const [y, m, d] = iso.split('-').map(Number);
+  if (f.days) {
+    const base = Date.UTC(y, m - 1, d) + f.days * n * 86400000;
+    return new Date(base).toISOString().slice(0, 10);
+  }
+  if (f.months) {
+    const alvoMes = m - 1 + f.months * n;
+    const ultimo = new Date(Date.UTC(y, alvoMes + 1, 0)).getUTCDate();
+    return new Date(Date.UTC(y, alvoMes, Math.min(d, ultimo))).toISOString().slice(0, 10);
+  }
+  return iso;
+}
+
+function diasEntre(de, ate) {
+  return Math.floor((new Date(ate + 'T00:00:00Z') - new Date(de + 'T00:00:00Z')) / 86400000);
+}
+
+// Quantas parcelas o título tem: por número fixo ou até a data limite.
+function scheduleCount(sch) {
+  if (sch.frequency === 'once') return 1;
+  if (Number(sch.count) > 0) return Math.min(Number(sch.count), MAX_PARCELAS);
+  if (sch.endDate) {
+    let n = 0, data = sch.startDate;
+    while (data <= sch.endDate && n < MAX_PARCELAS) { n++; data = addPeriod(sch.startDate, sch.frequency, n); }
+    return Math.max(n, 1);
+  }
+  return 1;
+}
+
+/* Valor da parcela.
+   Juros simples: o montante é P*(1 + i*n), dividido igualmente.
+   Juros compostos: Tabela Price, que é como funciona um parcelamento real —
+   parcela fixa em que cada uma amortiza um pedaço e paga juros sobre o saldo. */
+function installmentValue(sch) {
+  const n = scheduleCount(sch);
+  const P = Number(sch.principal) || 0;
+  const i = (Number(sch.interestRate) || 0) / 100;
+  if (!i || sch.interestType === 'none' || n <= 0) return P / Math.max(n, 1);
+  if (sch.interestType === 'simple') return P * (1 + i * n) / n;
+  return P * i / (1 - Math.pow(1 + i, -n));
+}
+
+// Juros de mora, contados a partir do vencimento. A taxa é ao mês.
+function lateInterest(sch, valorParcela, vencimento, referencia) {
+  if (!sch.lateType || sch.lateType === 'none') return 0;
+  const taxa = (Number(sch.lateRate) || 0) / 100;
+  if (taxa <= 0) return 0;
+  const dias = diasEntre(vencimento, referencia || todayISO());
+  if (dias <= 0) return 0;
+  const meses = dias / 30;
+  return sch.lateType === 'simple'
+    ? valorParcela * taxa * meses
+    : valorParcela * (Math.pow(1 + taxa, meses) - 1);
+}
+
+function paymentFor(scheduleId, seq) {
+  return state.payments.find((p) => p.scheduleId === scheduleId && p.seq === seq) || null;
+}
+
+/* Parcelas de um título, opcionalmente limitadas a uma janela de datas. */
+function scheduleInstallments(sch, de, ate) {
+  const n = scheduleCount(sch);
+  const valor = installmentValue(sch);
+  const hoje = todayISO();
+  const out = [];
+  for (let seq = 1; seq <= n; seq++) {
+    const venc = addPeriod(sch.startDate, sch.frequency, seq - 1);
+    if (de && venc < de) continue;
+    if (ate && venc > ate) break;
+    const pago = paymentFor(sch.id, seq);
+    const mora = pago ? 0 : lateInterest(sch, valor, venc, hoje);
+    out.push({
+      scheduleId: sch.id, seq, total: n, dueDate: venc,
+      value: valor, late: mora, amount: valor + mora,
+      payment: pago,
+      status: pago ? 'paid' : (venc < hoje ? 'overdue' : 'open')
+    });
+  }
+  return out;
+}
+
+// Todas as parcelas de todos os títulos numa janela.
+function allInstallments(de, ate) {
+  const out = [];
+  state.schedules.forEach((sch) => {
+    scheduleInstallments(sch, de, ate).forEach((p) => out.push({ ...p, schedule: sch }));
+  });
+  return out.sort((a, b) => a.dueDate.localeCompare(b.dueDate));
+}
+
 /* ---------- Ativos: imóveis e veículos (Fase 4) ----------
    O valor parte da avaliação mais recente até a data consultada — mesma
    lógica de âncora dos saldos e do câmbio. Para veículos, a depreciação
@@ -960,7 +1302,7 @@ function renderAll() {
   const etapas = [
     ['dashboard', renderDashboard], ['contas', renderAccounts], ['saldos', renderBalances],
     ['transações', renderTransactions], ['orçamentos', renderBudgets], ['câmbio', renderFx],
-    ['portfólio', renderPortfolio], ['gráfico', renderNAV], ['configurações', renderSettings]
+    ['portfólio', renderPortfolio], ['gráfico', renderNAV], ['fluxo', renderCashflow], ['títulos', renderBills], ['configurações', renderSettings]
   ];
   etapas.forEach(([nome, fn]) => {
     try { fn(); } catch (e) { console.error('Falha ao renderizar ' + nome + ':', e); }
@@ -995,7 +1337,10 @@ function renderDashboard() {
   }
   document.getElementById('accountCount').textContent = state.accounts.length;
   document.getElementById('currencyCount').textContent = new Set(state.accounts.map((a) => a.currency)).size;
-  document.getElementById('baseCurrencyLabel').textContent = base;
+  const seletorBase = document.getElementById('dashBaseCurrency');
+  if (seletorBase) {
+    seletorBase.innerHTML = CURRENCIES.map((c) => `<option value="${c.code}" ${c.code === base ? 'selected' : ''}>${c.code}</option>`).join('');
+  }
 
   // Resumo do mês corrente, por moeda (transferências não entram).
   const m = currentMonth();
@@ -1575,6 +1920,334 @@ async function deleteValuation(id, assetId) {
   showToast(t('toast.deleted'));
 }
 
+/* ---------- Tela de títulos a pagar e receber ---------- */
+function janelaBills() {
+  const de = state.ui.billFrom || addPeriod(todayISO(), 'monthly', -2);
+  const ate = state.ui.billTo || addPeriod(todayISO(), 'monthly', 6);
+  return { de, ate };
+}
+
+function renderBills() {
+  const { de, ate } = janelaBills();
+  const fDe = document.getElementById('billFrom');
+  const fAte = document.getElementById('billTo');
+  if (fDe) fDe.value = de;
+  if (fAte) fAte.value = ate;
+
+  const selKind = document.getElementById('billKind');
+  if (selKind) {
+    selKind.innerHTML = `<option value="all">${t('bill.all')}</option>
+      <option value="receivable">${t('bill.receivable')}</option>
+      <option value="payable">${t('bill.payable')}</option>`;
+    selKind.value = state.ui.billKind;
+  }
+  const selSt = document.getElementById('billStatus');
+  if (selSt) {
+    selSt.innerHTML = `<option value="all">${t('bill.all')}</option>
+      <option value="open">${t('bill.open')}</option>
+      <option value="overdue">${t('bill.overdue')}</option>
+      <option value="paid">${t('bill.paid')}</option>`;
+    selSt.value = state.ui.billStatus;
+  }
+
+  // ----- parcelas -----
+  let parcelas = allInstallments(de, ate);
+  if (state.ui.billKind !== 'all') parcelas = parcelas.filter((p) => p.schedule.kind === state.ui.billKind);
+  if (state.ui.billStatus === 'open') parcelas = parcelas.filter((p) => p.status !== 'paid');
+  else if (state.ui.billStatus !== 'all') parcelas = parcelas.filter((p) => p.status === state.ui.billStatus);
+
+  const thead = document.querySelector('#billTable thead tr');
+  if (thead) thead.innerHTML = `
+    <th>${t('bill.dueDate')}</th><th>${t('bill.description')}</th><th>${t('bill.kind')}</th>
+    <th>${t('bill.account')}</th><th>${t('bill.value')}</th><th>${t('bill.lateAmount')}</th>
+    <th>${t('bill.amount')}</th><th>${t('bill.status')}</th><th>${t('accounts.actions')}</th>`;
+
+  const tbody = document.querySelector('#billTable tbody');
+  const vazio = document.getElementById('billEmpty');
+  if (tbody) {
+    if (!parcelas.length) {
+      tbody.innerHTML = '';
+      if (vazio) { vazio.textContent = t('bill.emptyInstallments'); vazio.classList.remove('hidden'); }
+    } else {
+      if (vazio) vazio.classList.add('hidden');
+      tbody.innerHTML = parcelas.map((p) => {
+        const conta = accountById(p.schedule.accountId);
+        const moeda = conta ? conta.currency : state.settings.baseCurrency;
+        const entrada = p.schedule.kind === 'receivable';
+        const acoes = p.status === 'paid'
+          ? `<button class="secondary-btn" onclick="undoPayment('${p.scheduleId}',${p.seq})">${t('bill.unpay')}</button>`
+          : `<button class="secondary-btn" onclick="openPayModal('${p.scheduleId}',${p.seq})">${t('bill.pay')}</button>`;
+        return `<tr>
+          <td>${p.dueDate}</td>
+          <td>${escapeHtml(p.schedule.description || '')} <span class="tag">${p.seq}/${p.total}</span></td>
+          <td>${t(entrada ? 'bill.receivable' : 'bill.payable')}</td>
+          <td>${conta ? escapeHtml(conta.name) : '—'}</td>
+          <td class="${entrada ? 'amount-in' : 'amount-out'}">${fmtMoney(p.value, moeda)}</td>
+          <td>${p.late > 0.004 ? fmtMoney(p.late, moeda) : '—'}</td>
+          <td><strong>${fmtMoney(p.amount, moeda)}</strong></td>
+          <td><span class="status status-${p.status}">${t('bill.' + p.status)}</span></td>
+          <td>${acoes}</td>
+        </tr>`;
+      }).join('');
+    }
+  }
+
+  // ----- títulos -----
+  const th2 = document.querySelector('#scheduleTable thead tr');
+  if (th2) th2.innerHTML = `
+    <th>${t('bill.description')}</th><th>${t('bill.kind')}</th><th>${t('bill.account')}</th>
+    <th>${t('bill.frequency')}</th><th>${t('bill.count')}</th><th>${t('bill.amount')}</th>
+    <th>${t('accounts.actions')}</th>`;
+  const tb2 = document.querySelector('#scheduleTable tbody');
+  const vazio2 = document.getElementById('scheduleEmpty');
+  if (tb2) {
+    if (!state.schedules.length) {
+      tb2.innerHTML = '';
+      if (vazio2) { vazio2.textContent = t('bill.emptySchedules'); vazio2.classList.remove('hidden'); }
+    } else {
+      if (vazio2) vazio2.classList.add('hidden');
+      tb2.innerHTML = state.schedules.map((sch) => {
+        const conta = accountById(sch.accountId);
+        const moeda = conta ? conta.currency : state.settings.baseCurrency;
+        const n = scheduleCount(sch);
+        const parcela = installmentValue(sch);
+        return `<tr>
+          <td>${escapeHtml(sch.description || '')}</td>
+          <td>${t(sch.kind === 'receivable' ? 'bill.receivable' : 'bill.payable')}</td>
+          <td>${conta ? escapeHtml(conta.name) : '—'}</td>
+          <td>${t('bill.freq.' + sch.frequency)}</td>
+          <td>${n}x ${fmtMoney(parcela, moeda)}</td>
+          <td><strong>${fmtMoney(parcela * n, moeda)}</strong></td>
+          <td>
+            <button class="secondary-btn" onclick="openBillModal('${sch.id}')">${t('modal.edit')}</button>
+            <button class="secondary-btn" onclick="deleteSchedule('${sch.id}')">${t('modal.delete')}</button>
+          </td>
+        </tr>`;
+      }).join('');
+    }
+  }
+}
+
+function openBillModal(id) {
+  if (!state.accounts.length) { showToast(t('bill.noAccounts')); return; }
+  const b = id ? state.schedules.find((x) => x.id === id) : null;
+  const kind = b ? b.kind : 'receivable';
+  openModal(`
+    <h2>${b ? t('modal.editBill') : t('modal.addBill')}</h2>
+    <label>${t('bill.kind')}</label>
+    <select id="blKind" onchange="onBillKindChange()">
+      <option value="receivable" ${kind === 'receivable' ? 'selected' : ''}>${t('bill.receivable')}</option>
+      <option value="payable" ${kind === 'payable' ? 'selected' : ''}>${t('bill.payable')}</option>
+    </select>
+
+    <label>${t('bill.description')}</label>
+    <input id="blDescription" value="${b ? escapeHtml(b.description || '') : ''}">
+
+    <label>${t('bill.account')}</label>
+    <select id="blAccount">
+      ${state.accounts.map((a) => `<option value="${a.id}" ${b && b.accountId === a.id ? 'selected' : ''}>${escapeHtml(a.name)} (${a.currency})</option>`).join('')}
+    </select>
+
+    <div id="blCategoryWrap">
+      <label>${t('bill.category')}</label>
+      <select id="blCategory">${categoryOptions(kind === 'receivable' ? 'income' : 'expense', b ? b.category : null)}</select>
+    </div>
+
+    <label>${t('bill.principal')}</label>
+    <input id="blPrincipal" type="text" inputmode="decimal" value="${b ? b.principal : ''}" oninput="updateBillPreview()">
+
+    <label>${t('bill.startDate')}</label>
+    <input id="blStart" type="date" value="${b ? b.startDate : todayISO()}">
+
+    <label>${t('bill.frequency')}</label>
+    <select id="blFrequency" onchange="updateBillPreview()">
+      ${FREQUENCIES.map((f) => `<option value="${f.key}" ${b && b.frequency === f.key ? 'selected' : ''}>${t('bill.freq.' + f.key)}</option>`).join('')}
+    </select>
+
+    <label>${t('bill.limit')}</label>
+    <select id="blLimit" onchange="onBillLimitChange()">
+      <option value="count" ${!b || !b.endDate ? 'selected' : ''}>${t('bill.byCount')}</option>
+      <option value="end" ${b && b.endDate ? 'selected' : ''}>${t('bill.byEnd')}</option>
+    </select>
+    <div id="blCountWrap">
+      <label>${t('bill.count')}</label>
+      <input id="blCount" type="number" min="1" step="1" value="${b && b.count ? b.count : 1}" oninput="updateBillPreview()">
+    </div>
+    <div id="blEndWrap" class="hidden">
+      <label>${t('bill.endDate')}</label>
+      <input id="blEnd" type="date" value="${b && b.endDate ? b.endDate : ''}" onchange="updateBillPreview()">
+    </div>
+
+    <label>${t('bill.interestType')}</label>
+    <select id="blInterestType" onchange="updateBillPreview()">
+      <option value="none" ${!b || b.interestType === 'none' ? 'selected' : ''}>${t('bill.none')}</option>
+      <option value="simple" ${b && b.interestType === 'simple' ? 'selected' : ''}>${t('bill.simple')}</option>
+      <option value="compound" ${b && b.interestType === 'compound' ? 'selected' : ''}>${t('bill.compound')}</option>
+    </select>
+    <label>${t('bill.interestRate')}</label>
+    <input id="blInterestRate" type="text" inputmode="decimal" value="${b && b.interestRate ? b.interestRate : ''}" oninput="updateBillPreview()">
+
+    <label>${t('bill.lateType')}</label>
+    <select id="blLateType">
+      <option value="none" ${!b || b.lateType === 'none' ? 'selected' : ''}>${t('bill.none')}</option>
+      <option value="simple" ${b && b.lateType === 'simple' ? 'selected' : ''}>${t('bill.simple')}</option>
+      <option value="compound" ${b && b.lateType === 'compound' ? 'selected' : ''}>${t('bill.compound')}</option>
+    </select>
+    <label>${t('bill.lateRate')}</label>
+    <input id="blLateRate" type="text" inputmode="decimal" value="${b && b.lateRate ? b.lateRate : ''}">
+
+    <p class="hint" id="blPreview"></p>
+    <button class="primary-btn" onclick="saveSchedule('${b ? b.id : ''}')">${t('modal.save')}</button>
+  `);
+  onBillLimitChange();
+}
+
+function onBillKindChange() {
+  const kind = document.getElementById('blKind').value;
+  const sel = document.getElementById('blCategory');
+  sel.innerHTML = categoryOptions(kind === 'receivable' ? 'income' : 'expense', sel.value);
+}
+
+function onBillLimitChange() {
+  const modo = document.getElementById('blLimit').value;
+  document.getElementById('blCountWrap').classList.toggle('hidden', modo !== 'count');
+  document.getElementById('blEndWrap').classList.toggle('hidden', modo !== 'end');
+  updateBillPreview();
+}
+
+// Mostra quantas parcelas saem e quanto dá no total, antes de salvar.
+function updateBillPreview() {
+  const el = document.getElementById('blPreview');
+  if (!el) return;
+  const rascunho = lerFormularioBill();
+  if (!rascunho || !rascunho.principal) { el.textContent = ''; return; }
+  const conta = accountById(rascunho.accountId);
+  const moeda = conta ? conta.currency : state.settings.baseCurrency;
+  const n = scheduleCount(rascunho);
+  const parcela = installmentValue(rascunho);
+  el.textContent = t('bill.previewText')
+    .replace('{n}', n)
+    .replace('{valor}', fmtMoney(parcela, moeda))
+    .replace('{total}', fmtMoney(parcela * n, moeda));
+}
+
+function lerFormularioBill() {
+  const el = (x) => document.getElementById(x);
+  if (!el('blKind')) return null;
+  const porContagem = el('blLimit').value === 'count';
+  return {
+    kind: el('blKind').value,
+    description: el('blDescription').value.trim(),
+    accountId: el('blAccount').value,
+    category: el('blCategory').value,
+    principal: parseMoney(el('blPrincipal').value) || 0,
+    startDate: el('blStart').value || todayISO(),
+    frequency: el('blFrequency').value,
+    count: porContagem ? Math.max(1, Number(el('blCount').value) || 1) : null,
+    endDate: porContagem ? null : (el('blEnd').value || null),
+    interestType: el('blInterestType').value,
+    interestRate: parseMoney(el('blInterestRate').value) || 0,
+    lateType: el('blLateType').value,
+    lateRate: parseMoney(el('blLateRate').value) || 0
+  };
+}
+
+async function saveSchedule(id) {
+  const dados = lerFormularioBill();
+  if (!dados) return;
+  if (!dados.description) { showToast(t('toast.invalidValue')); return; }
+  if (!dados.principal || dados.principal <= 0) { showToast(t('toast.invalidValue')); return; }
+  const sch = { id: id || uid(), ...dados };
+  if (id) state.schedules = state.schedules.map((x) => (x.id === id ? sch : x));
+  else state.schedules.push(sch);
+  await put('schedules', sch);
+  closeModal();
+  renderAll();
+  showToast(t('toast.saved'));
+}
+
+async function deleteSchedule(id) {
+  if (!confirm(t('modal.delete') + '?')) return;
+  // Apagar o título desfaz as quitações e os lançamentos que elas geraram
+  for (const p of state.payments.filter((x) => x.scheduleId === id)) {
+    if (p.transactionId) {
+      state.transactions = state.transactions.filter((tr) => tr.id !== p.transactionId);
+      await del('transactions', p.transactionId);
+    }
+    await del('payments', p.id);
+  }
+  state.payments = state.payments.filter((x) => x.scheduleId !== id);
+  state.schedules = state.schedules.filter((x) => x.id !== id);
+  await del('schedules', id);
+  renderAll();
+  showToast(t('toast.deleted'));
+}
+
+/* ----- quitação ----- */
+function openPayModal(scheduleId, seq) {
+  const sch = state.schedules.find((x) => x.id === scheduleId);
+  if (!sch) return;
+  const parcela = scheduleInstallments(sch).find((p) => p.seq === seq);
+  if (!parcela) return;
+  const conta = accountById(sch.accountId);
+  const moeda = conta ? conta.currency : state.settings.baseCurrency;
+  openModal(`
+    <h2>${t('bill.confirmPay')}</h2>
+    <p class="hint">${escapeHtml(sch.description || '')} · ${seq}/${parcela.total} · ${t('bill.dueDate')}: ${parcela.dueDate}</p>
+    <label>${t('bill.paidDate')}</label>
+    <input id="pyDate" type="date" value="${todayISO()}">
+    <label>${t('bill.paidValue')} (${moeda})</label>
+    <input id="pyValue" type="text" inputmode="decimal" value="${parcela.amount.toFixed(2)}">
+    <p class="hint">${t('bill.value')}: ${fmtMoney(parcela.value, moeda)}${parcela.late > 0.004 ? ' · ' + t('bill.lateAmount') + ': ' + fmtMoney(parcela.late, moeda) : ''}</p>
+    <p class="hint">${t('bill.payNote')}</p>
+    <button class="primary-btn" onclick="confirmPayment('${scheduleId}',${seq})">${t('bill.pay')}</button>
+  `);
+}
+
+async function confirmPayment(scheduleId, seq) {
+  const sch = state.schedules.find((x) => x.id === scheduleId);
+  if (!sch) return;
+  const data = document.getElementById('pyDate').value;
+  const valor = parseMoney(document.getElementById('pyValue').value);
+  if (!data || valor == null || valor <= 0) { showToast(t('toast.invalidValue')); return; }
+
+  const parcela = scheduleInstallments(sch).find((p) => p.seq === seq);
+  // A quitação vira lançamento de verdade: é ele que move o saldo da conta
+  const trn = {
+    id: uid(),
+    type: sch.kind === 'receivable' ? 'income' : 'expense',
+    date: data,
+    accountId: sch.accountId,
+    category: sch.category,
+    description: (sch.description || '') + ' (' + seq + '/' + (parcela ? parcela.total : '?') + ')',
+    value: valor
+  };
+  state.transactions.push(trn);
+  await put('transactions', trn);
+
+  const pg = { id: uid(), scheduleId, seq, paidDate: data, paidValue: valor, transactionId: trn.id };
+  state.payments.push(pg);
+  await put('payments', pg);
+
+  closeModal();
+  renderAll();
+  showToast(t('toast.saved'));
+}
+
+async function undoPayment(scheduleId, seq) {
+  const pg = paymentFor(scheduleId, seq);
+  if (!pg) return;
+  if (!confirm(t('bill.unpay') + '?')) return;
+  if (pg.transactionId) {
+    state.transactions = state.transactions.filter((tr) => tr.id !== pg.transactionId);
+    await del('transactions', pg.transactionId);
+  }
+  state.payments = state.payments.filter((x) => x.id !== pg.id);
+  await del('payments', pg.id);
+  renderAll();
+  showToast(t('toast.deleted'));
+}
+
 function renderSettings() {
   const sel = document.getElementById('baseCurrencySelect');
   sel.innerHTML = CURRENCIES.map((c) => `<option value="${c.code}">${c.code} (${c.symbol.trim()})</option>`).join('');
@@ -1866,13 +2539,15 @@ function download(filename, content, type) {
 
 async function exportJSON() {
   const data = {
-    version: 4,
+    version: 5,
     exportedAt: new Date().toISOString(),
     accounts: state.accounts,
     balances: state.balances,
     transactions: state.transactions,
     budgets: state.budgets,
     fx: state.fx,
+    schedules: state.schedules,
+    payments: state.payments,
     assets: state.assets,
     valuations: state.valuations,
     settings: state.settings
@@ -1927,6 +2602,8 @@ async function importJSON(file) {
     for (const trn of (data.transactions || [])) await put('transactions', trn);
     for (const bg of (data.budgets || [])) await put('budgets', bg);
     for (const r of (data.fx || [])) await put('fx', r);
+    for (const sc of (data.schedules || [])) await put('schedules', sc);
+    for (const pg of (data.payments || [])) await put('payments', pg);
     for (const a of (data.assets || [])) await put('assets', a);
     for (const v of (data.valuations || [])) await put('valuations', v);
     if (data.settings) {
@@ -2082,6 +2759,20 @@ function on(id, evento, handler) {
 function bindEvents() {
   // Os botões de idioma são recriados a cada render, então o clique é capturado
   // no contêiner, que é fixo.
+  // Fase 6 — títulos a pagar e receber
+  on('btnAddBill', 'click', () => openBillModal());
+  on('billKind', 'change', (e) => { state.ui.billKind = e.target.value; renderBills(); });
+  on('billStatus', 'change', (e) => { state.ui.billStatus = e.target.value; renderBills(); });
+  on('billFrom', 'change', (e) => { state.ui.billFrom = e.target.value; renderBills(); });
+  on('billTo', 'change', (e) => { state.ui.billTo = e.target.value; renderBills(); });
+
+  // Moeda base direto do dashboard
+  on('dashBaseCurrency', 'change', async (e) => {
+    state.settings.baseCurrency = e.target.value;
+    await put('settings', { key: 'baseCurrency', value: e.target.value });
+    renderAll();
+  });
+
   on('navControls', 'click', (e) => {
     const btn = e.target.closest('[data-view]');
     if (!btn) return;
@@ -2378,6 +3069,117 @@ function renderNAVPie(wrap, legend, empty) {
   svg += '</svg>';
   wrap.innerHTML = `<div id="navTip" class="nav-tip hidden"></div>` + svg;
   legend.innerHTML = '';
+}
+
+/* Série mensal de entradas e saídas, separando o que já aconteceu do que está
+   previsto. Realizado vem dos lançamentos; previsto, das parcelas em aberto. */
+function buildCashflowSeries(mesesAtras, mesesFrente) {
+  const base = state.settings.baseCurrency;
+  const hoje = todayISO();
+  const meses = [];
+  for (let k = -mesesAtras; k <= mesesFrente; k++) {
+    meses.push(addPeriod(hoje.slice(0, 8) + '01', 'monthly', k).slice(0, 7));
+  }
+  const mapa = {};
+  meses.forEach((m) => { mapa[m] = { month: m, inReal: 0, outReal: 0, inPrev: 0, outPrev: 0 }; });
+
+  state.transactions.forEach((trn) => {
+    const m = monthOf(trn.date);
+    if (!mapa[m]) return;
+    const v = convert(trn.value, accountCurrency(trn.accountId), base, trn.date);
+    if (v == null) return;
+    if (trn.type === 'income') mapa[m].inReal += v;
+    else if (trn.type === 'expense') mapa[m].outReal += v;
+  });
+
+  allInstallments(meses[0] + '-01', meses[meses.length - 1] + '-31').forEach((p) => {
+    if (p.status === 'paid') return; // já virou lançamento, contaria duas vezes
+    const m = monthOf(p.dueDate);
+    if (!mapa[m]) return;
+    const conta = accountById(p.schedule.accountId);
+    const v = convert(p.amount, conta ? conta.currency : base, base, p.dueDate);
+    if (v == null) return;
+    if (p.schedule.kind === 'receivable') mapa[m].inPrev += v;
+    else mapa[m].outPrev += v;
+  });
+
+  return meses.map((m) => mapa[m]);
+}
+
+function renderCashflow() {
+  const painel = document.getElementById('tab-dashboard');
+  if (painel && !painel.classList.contains('active')) return;
+  const wrap = document.getElementById('cashChart');
+  const vazio = document.getElementById('cashEmpty');
+  const nota = document.getElementById('cashNote');
+  if (!wrap) return;
+
+  const base = state.settings.baseCurrency;
+  if (nota) nota.textContent = t('cash.note').replace('{code}', base);
+
+  const pontos = buildCashflowSeries(5, 6);
+  const maximo = Math.max(...pontos.map((p) => Math.max(p.inReal + p.inPrev, p.outReal + p.outPrev)), 0);
+  if (maximo <= 0) {
+    wrap.classList.add('hidden');
+    if (vazio) { vazio.textContent = t('cash.empty'); vazio.classList.remove('hidden'); }
+    return;
+  }
+  wrap.classList.remove('hidden');
+  if (vazio) vazio.classList.add('hidden');
+
+  const W = 720, H = 300, padL = 70, padR = 12, padT = 14, padB = 46;
+  const larguraMes = (W - padL - padR) / pontos.length;
+  const larguraBarra = Math.max(6, larguraMes / 2 - 6);
+  const Y = (v) => padT + (1 - v / maximo) * (H - padT - padB);
+  const mesAtual = todayISO().slice(0, 7);
+
+  let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${t('cash.title')}">`;
+  svg += `<defs>
+    <pattern id="hachIn" width="5" height="5" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+      <rect width="5" height="5" fill="#dcfce7"/><line x1="0" y1="0" x2="0" y2="5" stroke="#16a34a" stroke-width="2.5"/>
+    </pattern>
+    <pattern id="hachOut" width="5" height="5" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+      <rect width="5" height="5" fill="#fee2e2"/><line x1="0" y1="0" x2="0" y2="5" stroke="#b91c1c" stroke-width="2.5"/>
+    </pattern>
+  </defs>`;
+
+  for (let g = 0; g <= 4; g++) {
+    const val = maximo * g / 4, y = Y(val);
+    svg += `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="var(--border)"/>`;
+    svg += `<text x="${padL - 8}" y="${y + 4}" text-anchor="end" font-size="10" fill="var(--muted)">${fmtMoney(val, base)}</text>`;
+  }
+
+  pontos.forEach((p, i) => {
+    const x0 = padL + i * larguraMes;
+    const xIn = x0 + larguraMes / 2 - larguraBarra - 2;
+    const xOut = x0 + larguraMes / 2 + 2;
+    const base0 = Y(0);
+
+    // entradas: realizado na base, previsto empilhado em cima
+    if (p.inReal > 0) svg += `<rect x="${xIn.toFixed(1)}" y="${Y(p.inReal).toFixed(1)}" width="${larguraBarra.toFixed(1)}" height="${(base0 - Y(p.inReal)).toFixed(1)}" fill="#16a34a" rx="2"/>`;
+    if (p.inPrev > 0) svg += `<rect x="${xIn.toFixed(1)}" y="${Y(p.inReal + p.inPrev).toFixed(1)}" width="${larguraBarra.toFixed(1)}" height="${(Y(p.inReal) - Y(p.inReal + p.inPrev)).toFixed(1)}" fill="url(#hachIn)" stroke="#16a34a" stroke-width="0.6" rx="2"/>`;
+    if (p.outReal > 0) svg += `<rect x="${xOut.toFixed(1)}" y="${Y(p.outReal).toFixed(1)}" width="${larguraBarra.toFixed(1)}" height="${(base0 - Y(p.outReal)).toFixed(1)}" fill="#b91c1c" rx="2"/>`;
+    if (p.outPrev > 0) svg += `<rect x="${xOut.toFixed(1)}" y="${Y(p.outReal + p.outPrev).toFixed(1)}" width="${larguraBarra.toFixed(1)}" height="${(Y(p.outReal) - Y(p.outReal + p.outPrev)).toFixed(1)}" fill="url(#hachOut)" stroke="#b91c1c" stroke-width="0.6" rx="2"/>`;
+
+    const destaque = p.month === mesAtual;
+    svg += `<text x="${(x0 + larguraMes / 2).toFixed(1)}" y="${H - 28}" text-anchor="middle" font-size="9" ${destaque ? 'font-weight="700"' : ''} fill="var(--${destaque ? 'text' : 'muted'})">${p.month.slice(5)}/${p.month.slice(2, 4)}</text>`;
+  });
+
+  // legenda
+  const itens = [
+    { cor: '#16a34a', txt: t('cash.in') + ' (' + t('cash.realized') + ')' },
+    { cor: 'url(#hachIn)', txt: t('cash.in') + ' (' + t('cash.forecast') + ')' },
+    { cor: '#b91c1c', txt: t('cash.out') + ' (' + t('cash.realized') + ')' },
+    { cor: 'url(#hachOut)', txt: t('cash.out') + ' (' + t('cash.forecast') + ')' }
+  ];
+  let lx = padL;
+  itens.forEach((it) => {
+    svg += `<rect x="${lx}" y="${H - 14}" width="10" height="10" rx="2" fill="${it.cor}" stroke="var(--border)" stroke-width="0.5"/>`;
+    svg += `<text x="${lx + 15}" y="${H - 5}" font-size="10" fill="var(--muted)">${it.txt}</text>`;
+    lx += 165;
+  });
+  svg += '</svg>';
+  wrap.innerHTML = svg;
 }
 
 function renderNAVControls() {
