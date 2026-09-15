@@ -212,3 +212,29 @@ th { background: var(--surface); color: var(--muted); font-weight: 600; white-sp
 @media (max-width: 600px) {
   .nav-chart svg { min-width: 420px; }
 }
+ 
+
+/* Botões de idioma com bandeiras */
+.lang-buttons { display: inline-flex; gap: 6px; margin-right: 8px; vertical-align: middle; }
+.lang-btn {
+  display: inline-flex; align-items: center; gap: 3px;
+  padding: 4px 6px; border-radius: 6px; cursor: pointer;
+  background: rgba(255,255,255,.12); border: 1px solid transparent; line-height: 0;
+}
+.lang-btn:hover { background: rgba(255,255,255,.25); }
+.lang-btn.active { background: #fff; border-color: #fff; }
+.lang-btn .flag { width: 22px; height: 16px; border-radius: 2px; display: block; }
+.lang-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+/* Alternância entre pizza e linha */
+.nav-controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin: 8px 0; }
+.nav-toggle { display: inline-flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.nav-toggle button {
+  padding: 6px 14px; border: none; background: var(--surface);
+  color: var(--muted); cursor: pointer; font-size: 13px;
+}
+.nav-toggle button.active { background: var(--accent); color: #fff; font-weight: 600; }
+.nav-controls select {
+  padding: 6px 8px; border-radius: 6px; border: 1px solid var(--border);
+  background: var(--surface); color: var(--text); font-size: 13px;
+}
