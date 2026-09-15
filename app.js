@@ -324,6 +324,11 @@ const I18N = {
     'inv.totalReturn': 'Rentabilidade',
     'inv.noAccounts': 'Cadastre uma conta antes de criar posições.',
     'inv.noAccount': 'Sem conta vinculada',
+    'inv.dupTitle': 'Possível duplicidade no patrimônio',
+    'inv.dupText': '{valor} em "{posicao}" nunca saiu do saldo da conta {conta}. O mesmo dinheiro está sendo contado duas vezes: uma no Financeiro e outra em Investimentos.',
+    'inv.dupFix': 'Descontar da conta',
+    'inv.dupHint': 'Se esse dinheiro nunca esteve nessa conta, a correção é outra: edite a posição e escolha "Sem conta vinculada".',
+    'inv.dupFixed': 'Corrigido. O valor saiu do saldo da conta.',
     'inv.initial': 'Valor já aplicado (opcional)',
     'inv.initialQty': 'Quantidade já possuída',
     'inv.deduct': 'Descontar este valor da conta vinculada',
@@ -626,6 +631,11 @@ const I18N = {
     'inv.totalReturn': 'Return',
     'inv.noAccounts': 'Create an account before adding positions.',
     'inv.noAccount': 'No linked account',
+    'inv.dupTitle': 'Possible double counting',
+    'inv.dupText': '{valor} in "{posicao}" never left the balance of account {conta}. The same money is counted twice: once in Financial and once in Investments.',
+    'inv.dupFix': 'Deduct from the account',
+    'inv.dupHint': 'If that money was never in this account, the fix is different: edit the position and choose "No linked account".',
+    'inv.dupFixed': 'Fixed. The amount left the account balance.',
     'inv.initial': 'Amount already invested (optional)',
     'inv.initialQty': 'Quantity already held',
     'inv.deduct': 'Deduct this amount from the linked account',
@@ -927,6 +937,11 @@ const I18N = {
     'inv.totalReturn': 'Rentabilidade',
     'inv.noAccounts': 'Cree una cuenta antes de añadir posiciones.',
     'inv.noAccount': 'Sin cuenta vinculada',
+    'inv.dupTitle': 'Posible duplicidad en el patrimonio',
+    'inv.dupText': '{valor} en "{posicao}" nunca salió del saldo de la cuenta {conta}. El mismo dinero se cuenta dos veces: en Financiero y en Inversiones.',
+    'inv.dupFix': 'Descontar de la cuenta',
+    'inv.dupHint': 'Si ese dinero nunca estuvo en esa cuenta, la corrección es otra: edite la posición y elija "Sin cuenta vinculada".',
+    'inv.dupFixed': 'Corregido. El importe salió del saldo de la cuenta.',
     'inv.initial': 'Importe ya invertido (opcional)',
     'inv.initialQty': 'Cantidad ya poseída',
     'inv.deduct': 'Descontar este importe de la cuenta vinculada',
@@ -2740,6 +2755,28 @@ function renderInvestments() {
     }).join('');
   }
 
+  // aviso de duplicidade
+  const caixa = document.getElementById('invDup');
+  if (caixa) {
+    const suspeitas = state.positions
+      .map((pos) => ({ pos, valor: positionUndeducted(pos) }))
+      .filter((x) => x.valor > 0);
+    if (!suspeitas.length) {
+      caixa.classList.add('hidden');
+      caixa.innerHTML = '';
+    } else {
+      caixa.classList.remove('hidden');
+      caixa.innerHTML = `<h4>${t('inv.dupTitle')}</h4>` + suspeitas.map(({ pos, valor }) => {
+        const conta = accountById(pos.accountId);
+        return `<p>${t('inv.dupText')
+          .replace('{valor}', fmtMoney(valor, pos.currency))
+          .replace('{posicao}', escapeHtml(pos.name))
+          .replace('{conta}', conta ? escapeHtml(conta.name) : '—')}
+          <button class="primary-btn inline-btn" onclick="fixDuplication('${pos.id}')">${t('inv.dupFix')}</button></p>`;
+      }).join('') + `<p class="hint">${t('inv.dupHint')}</p>`;
+    }
+  }
+
   // resumo consolidado
   const tot = investmentTotals(hoje);
   const valor = consolidate(tot.value, base, hoje).total;
@@ -2754,6 +2791,67 @@ function renderInvestments() {
     elR.textContent = fmtMoney(lucro, base) + (custo > 0 ? ' · ' + ((lucro / custo) * 100).toFixed(1) + '%' : '');
     elR.className = 'big-number ' + (lucro > 0.004 ? 'amount-in' : lucro < -0.004 ? 'amount-out' : '');
   }
+}
+
+/* Quanto desta posição foi aplicado SEM sair do saldo da conta vinculada.
+   É exatamente esse valor que aparece duas vezes no patrimônio. */
+function positionUndeducted(pos) {
+  if (!pos.accountId) return 0;
+  const movs = invMovesOf(pos.id);
+  const semLancamento = movs
+    .filter((m) => m.type === 'buy' && !m.transactionId)
+    .reduce((soma, m) => soma + (Number(m.amount) || 0), 0);
+  if (semLancamento > 0) return semLancamento;
+  // Caso da posição criada só com cotação: tem valor, mas custo zero e
+  // nenhum aporte — o dinheiro segue inteiro no saldo da conta.
+  if (!movs.length) {
+    const valor = positionValue(pos);
+    if (valor > 0) return valor;
+  }
+  return 0;
+}
+
+// Corrige criando o aporte que faltava e tirando o dinheiro da conta.
+async function fixDuplication(positionId) {
+  const pos = state.positions.find((x) => x.id === positionId);
+  if (!pos) return;
+  const valor = positionUndeducted(pos);
+  if (valor <= 0) return;
+
+  const trn = {
+    id: uid(), type: 'expense', date: todayISO(), accountId: pos.accountId,
+    category: 'investimentos', description: t('inv.buy') + ' — ' + pos.name, value: valor
+  };
+  state.transactions.push(trn);
+  await put('transactions', trn);
+
+  const pendentes = invMovesOf(pos.id).filter((m) => m.type === 'buy' && !m.transactionId);
+  if (pendentes.length) {
+    // vincula o lançamento ao primeiro aporte sem lançamento
+    const m = { ...pendentes[0], transactionId: trn.id };
+    state.invmoves = state.invmoves.map((x) => (x.id === m.id ? m : x));
+    await put('invmoves', m);
+    // os demais viram lançamentos próprios na próxima passada
+    for (const outro of pendentes.slice(1)) {
+      const t2 = {
+        id: uid(), type: 'expense', date: todayISO(), accountId: pos.accountId,
+        category: 'investimentos', description: t('inv.buy') + ' — ' + pos.name, value: Number(outro.amount) || 0
+      };
+      state.transactions.push(t2);
+      await put('transactions', t2);
+      const mm = { ...outro, transactionId: t2.id };
+      state.invmoves = state.invmoves.map((x) => (x.id === mm.id ? mm : x));
+      await put('invmoves', mm);
+    }
+  } else {
+    // não havia aporte nenhum: cria um, com o custo correto
+    const mov = { id: uid(), positionId: pos.id, type: 'buy', date: todayISO(), quantity: 0, amount: valor, transactionId: trn.id };
+    state.invmoves.push(mov);
+    await put('invmoves', mov);
+  }
+
+  renderAll();
+  showToast(t('inv.dupFixed'));
 }
 
 function openPositionModal(id) {
