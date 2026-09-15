@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#1a1a2e">
   <title>ProF Controller</title>
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="styles.css?v=19">
+  <link rel="stylesheet" href="styles.css?v=20">
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 </head>
 <body>
@@ -26,6 +26,7 @@
     <button class="tab" data-tab="fx" data-i18n="tabs.fx">Câmbio</button>
     <button class="tab" data-tab="portfolio" data-i18n="tabs.portfolio">Portfólio</button>
     <button class="tab" data-tab="bills" data-i18n="tabs.bills">A Pagar / Receber</button>
+    <button class="tab" data-tab="investments" data-i18n="tabs.investments">Investimentos</button>
     <button class="tab" data-tab="settings" data-i18n="tabs.settings">Configurações</button>
   </nav>
   <main>
@@ -51,6 +52,11 @@
         </div>
       </div>
       <div class="cards cards-spaced">
+        <div class="card">
+          <h3 data-i18n="dashboard.investments">Investimentos</h3>
+          <p id="invTotal" class="big-number">—</p>
+          <p id="invTotalSub" class="sub-number"></p>
+        </div>
         <div class="card">
           <h3 data-i18n="dashboard.properties">Imóveis</h3>
           <p id="propTotal" class="big-number">—</p>
@@ -272,6 +278,34 @@
       </div>
     </section>
 
+    <!-- INVESTIMENTOS -->
+    <section id="tab-investments" class="tab-panel">
+      <div class="panel-header">
+        <h2 data-i18n="inv.title">Carteira de Investimentos</h2>
+        <button id="btnAddPosition" class="primary-btn" data-i18n="inv.add">+ Nova posição</button>
+      </div>
+
+      <div class="cards">
+        <div class="card">
+          <h3 data-i18n="inv.totalValue">Valor da carteira</h3>
+          <p id="invTotalValue" class="big-number">—</p>
+        </div>
+        <div class="card">
+          <h3 data-i18n="inv.totalCost">Custo total</h3>
+          <p id="invTotalCost" class="big-number">—</p>
+        </div>
+        <div class="card">
+          <h3 data-i18n="inv.totalReturn">Rentabilidade</h3>
+          <p id="invTotalReturn" class="big-number">—</p>
+        </div>
+      </div>
+
+      <p id="invEmpty" class="empty-state hidden"></p>
+      <div class="table-scroll">
+        <table id="invTable"><thead><tr></tr></thead><tbody></tbody></table>
+      </div>
+    </section>
+
     <!-- CONFIGURAÇÕES -->
     <section id="tab-settings" class="tab-panel">
       <h2 data-i18n="settings.title">Configurações</h2>
@@ -302,6 +336,6 @@
     </div>
   </div>
   <div id="toast" class="toast hidden"></div>
-  <script src="app.js?v=19"></script>
+  <script src="app.js?v=20"></script>
 </body>
 </html>
