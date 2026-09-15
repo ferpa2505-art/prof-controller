@@ -6,12 +6,15 @@
   <meta name="theme-color" content="#1a1a2e">
   <title>ProF Controller</title>
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="styles.css?v=23">
+  <link rel="stylesheet" href="styles.css?v=24">
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 </head>
 <body>
   <header class="topbar">
-    <h1>ProF Controller</h1>
+    <h1 class="brand">
+      <img src="icon-192.png" alt="ProF Controller" class="brand-logo">
+      <span class="brand-name">ProF Controller</span>
+    </h1>
     <div class="topbar-actions">
       <div id="langButtons" class="lang-buttons" role="group" aria-label="Idioma"></div>
       <select id="themeSelect" aria-label="Tema"></select>
@@ -81,6 +84,11 @@
         <div class="card nav-card">
           <div class="nav-head">
             <h3 data-i18n="cash.title">Entradas e Saídas</h3>
+            <div class="nav-controls">
+              <label class="inline-label"><span data-i18n="cash.grain">Agrupar por</span>
+                <select id="cashGrain"></select></label>
+              <button id="btnUpdateAll" class="secondary-btn" data-i18n="inv.updateAll">Atualizar tudo</button>
+            </div>
           </div>
           <p class="hint" id="cashNote"></p>
           <div id="cashChart" class="nav-chart"></div>
@@ -339,6 +347,6 @@
     </div>
   </div>
   <div id="toast" class="toast hidden"></div>
-  <script src="app.js?v=23"></script>
+  <script src="app.js?v=24"></script>
 </body>
 </html>
