@@ -249,3 +249,6 @@ th { background: var(--surface); color: var(--muted); font-weight: 600; white-sp
   font-size: 22px; font-weight: 700; padding: 2px 6px; border-radius: 6px;
   border: 1px solid var(--border); background: var(--surface); color: var(--text);
 }
+
+.checkline { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: 13px; color: var(--text); }
+.checkline input { width: auto; }
