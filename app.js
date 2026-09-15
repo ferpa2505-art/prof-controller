@@ -283,6 +283,10 @@ const I18N = {
     'cash.forecast': 'previsto',
     'cash.note': 'Barras cheias são o realizado; as riscadas, o previsto pelas parcelas em aberto. Valores em {code}.',
     'cash.empty': 'Sem movimento no período.',
+    'cash.grain': 'Agrupar por',
+    'cash.daily': 'Diário',
+    'cash.weekly': 'Semanal',
+    'cash.monthly': 'Mensal',
     'modal.addBill': 'Novo título',
     'modal.editBill': 'Editar título',
     'tabs.investments': 'Investimentos',
@@ -324,6 +328,28 @@ const I18N = {
     'inv.totalReturn': 'Rentabilidade',
     'inv.noAccounts': 'Cadastre uma conta antes de criar posições.',
     'inv.noAccount': 'Sem conta vinculada',
+    'inv.class': 'Classe',
+    'inv.classFixed': 'Renda fixa',
+    'inv.classVariable': 'Renda variável',
+    'inv.type': 'Tipo de ativo',
+    'inv.ty.stock': 'Ação',
+    'inv.ty.fii': 'FII',
+    'inv.ty.etf': 'ETF',
+    'inv.ty.bdr': 'BDR',
+    'inv.ty.treasury': 'Tesouro Direto',
+    'inv.ty.cdb': 'CDB / LCI / LCA',
+    'inv.ty.fund': 'Fundo',
+    'inv.ty.crypto': 'Cripto',
+    'inv.ty.other': 'Outro',
+    'inv.isin': 'ISIN',
+    'inv.ticker': 'Código de negociação (ticker)',
+    'inv.tickerHint': 'O ISIN fica guardado para seu controle. A atualização automática, quando possível, usa o ticker.',
+    'inv.updateAll': 'Atualizar tudo',
+    'inv.updating': 'Atualizando…',
+    'inv.updateDone': 'Câmbio: {fx}. Cotações: {q}.',
+    'inv.updateNoTicker': 'nenhuma posição com ticker',
+    'inv.updateFail': 'não foi possível buscar',
+    'inv.updateOk': '{n} atualizadas',
     'inv.dupTitle': 'Possível duplicidade no patrimônio',
     'inv.dupText': '{valor} em "{posicao}" nunca saiu do saldo da conta {conta}. O mesmo dinheiro está sendo contado duas vezes: uma no Financeiro e outra em Investimentos.',
     'inv.dupFix': 'Descontar da conta',
@@ -590,6 +616,10 @@ const I18N = {
     'cash.forecast': 'forecast',
     'cash.note': 'Solid bars are actuals; hatched bars are forecast from open installments. Values in {code}.',
     'cash.empty': 'No movement in the period.',
+    'cash.grain': 'Group by',
+    'cash.daily': 'Daily',
+    'cash.weekly': 'Weekly',
+    'cash.monthly': 'Monthly',
     'modal.addBill': 'New bill',
     'modal.editBill': 'Edit bill',
     'tabs.investments': 'Investments',
@@ -631,6 +661,28 @@ const I18N = {
     'inv.totalReturn': 'Return',
     'inv.noAccounts': 'Create an account before adding positions.',
     'inv.noAccount': 'No linked account',
+    'inv.class': 'Class',
+    'inv.classFixed': 'Fixed income',
+    'inv.classVariable': 'Variable income',
+    'inv.type': 'Asset type',
+    'inv.ty.stock': 'Stock',
+    'inv.ty.fii': 'REIT',
+    'inv.ty.etf': 'ETF',
+    'inv.ty.bdr': 'BDR',
+    'inv.ty.treasury': 'Government bond',
+    'inv.ty.cdb': 'Bank note',
+    'inv.ty.fund': 'Fund',
+    'inv.ty.crypto': 'Crypto',
+    'inv.ty.other': 'Other',
+    'inv.isin': 'ISIN',
+    'inv.ticker': 'Trading symbol (ticker)',
+    'inv.tickerHint': 'The ISIN is stored for your records. Automatic updates, where possible, use the ticker.',
+    'inv.updateAll': 'Update all',
+    'inv.updating': 'Updating…',
+    'inv.updateDone': 'FX: {fx}. Prices: {q}.',
+    'inv.updateNoTicker': 'no position with a ticker',
+    'inv.updateFail': 'could not fetch',
+    'inv.updateOk': '{n} updated',
     'inv.dupTitle': 'Possible double counting',
     'inv.dupText': '{valor} in "{posicao}" never left the balance of account {conta}. The same money is counted twice: once in Financial and once in Investments.',
     'inv.dupFix': 'Deduct from the account',
@@ -896,6 +948,10 @@ const I18N = {
     'cash.forecast': 'previsto',
     'cash.note': 'Las barras llenas son lo realizado; las rayadas, lo previsto por las cuotas pendientes. Valores en {code}.',
     'cash.empty': 'Sin movimiento en el período.',
+    'cash.grain': 'Agrupar por',
+    'cash.daily': 'Diario',
+    'cash.weekly': 'Semanal',
+    'cash.monthly': 'Mensual',
     'modal.addBill': 'Nuevo título',
     'modal.editBill': 'Editar título',
     'tabs.investments': 'Inversiones',
@@ -937,6 +993,28 @@ const I18N = {
     'inv.totalReturn': 'Rentabilidade',
     'inv.noAccounts': 'Cree una cuenta antes de añadir posiciones.',
     'inv.noAccount': 'Sin cuenta vinculada',
+    'inv.class': 'Clase',
+    'inv.classFixed': 'Renta fija',
+    'inv.classVariable': 'Renta variable',
+    'inv.type': 'Tipo de activo',
+    'inv.ty.stock': 'Acción',
+    'inv.ty.fii': 'REIT',
+    'inv.ty.etf': 'ETF',
+    'inv.ty.bdr': 'BDR',
+    'inv.ty.treasury': 'Deuda pública',
+    'inv.ty.cdb': 'Depósito bancario',
+    'inv.ty.fund': 'Fondo',
+    'inv.ty.crypto': 'Cripto',
+    'inv.ty.other': 'Otro',
+    'inv.isin': 'ISIN',
+    'inv.ticker': 'Código de negociación (ticker)',
+    'inv.tickerHint': 'El ISIN se guarda para su control. La actualización automática, cuando es posible, usa el ticker.',
+    'inv.updateAll': 'Actualizar todo',
+    'inv.updating': 'Actualizando…',
+    'inv.updateDone': 'Cambio: {fx}. Cotizaciones: {q}.',
+    'inv.updateNoTicker': 'ninguna posición con ticker',
+    'inv.updateFail': 'no se pudo consultar',
+    'inv.updateOk': '{n} actualizadas',
     'inv.dupTitle': 'Posible duplicidad en el patrimonio',
     'inv.dupText': '{valor} en "{posicao}" nunca salió del saldo de la cuenta {conta}. El mismo dinero se cuenta dos veces: en Financiero y en Inversiones.',
     'inv.dupFix': 'Descontar de la cuenta',
@@ -1043,7 +1121,7 @@ let state = {
   assets: [],
   valuations: [],
   settings: { lang: 'pt-BR', theme: 'default', baseCurrency: 'EUR' },
-  ui: { txType: 'all', txAccount: 'all', txMonth: '', budgetMonth: '', navView: 'pie', navBreak: 'currency',
+  ui: { txType: 'all', txAccount: 'all', txMonth: '', budgetMonth: '', navView: 'pie', navBreak: 'currency', cashGrain: 'monthly',
         billKind: 'all', billStatus: 'open', billFrom: '', billTo: '' }
 };
 
@@ -1551,6 +1629,7 @@ function allInstallments(de, ate) {
    Registrar uma avaliação nova sempre substitui o cálculo: número real
    vence número estimado. */
 
+const INV_TYPES = ['stock', 'fii', 'etf', 'bdr', 'treasury', 'cdb', 'fund', 'crypto', 'other'];
 const VEHICLE_KINDS = ['car', 'motorcycle', 'boat', 'helicopter', 'plane'];
 
 /* Imposto do bem, normalizado para o ano. Mensal x12 para dar para comparar
@@ -2711,6 +2790,80 @@ async function undoPayment(scheduleId, seq) {
   showToast(t('toast.deleted'));
 }
 
+/* Fontes de cotação por TICKER. Não existe API pública gratuita indexada por
+   ISIN — os provedores que fazem isso são pagos. O ISIN fica guardado para seu
+   controle; a busca automática, quando funciona, é pelo ticker. */
+const QUOTE_SOURCES = [
+  {
+    name: 'brapi.dev',
+    url: (tk) => `https://brapi.dev/api/quote/${encodeURIComponent(tk)}`,
+    parse: (d) => (d && d.results && d.results[0] && Number(d.results[0].regularMarketPrice)) || null
+  },
+  {
+    name: 'awesomeapi',
+    url: (tk) => `https://economia.awesomeapi.com.br/json/last/${encodeURIComponent(tk)}-BRL`,
+    parse: (d) => {
+      if (!d) return null;
+      const chave = Object.keys(d)[0];
+      return (chave && Number(d[chave].bid)) || null;
+    }
+  }
+];
+
+async function fetchQuoteFor(ticker) {
+  for (const fonte of QUOTE_SOURCES) {
+    try {
+      const res = await fetch(fonte.url(ticker), { cache: 'no-store' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const preco = fonte.parse(await res.json());
+      if (preco && preco > 0) { console.log('Cotação de', ticker, 'obtida em', fonte.name, preco); return preco; }
+      throw new Error('sem preço na resposta');
+    } catch (e) {
+      console.warn('Cotação indisponível —', ticker, fonte.name + ':', e && e.message ? e.message : e);
+    }
+  }
+  return null;
+}
+
+/* Botão único do dashboard: atualiza câmbio e cotações. Cada parte reporta o
+   que conseguiu, para não sobrar dúvida sobre o que foi atualizado. */
+async function updateEverything() {
+  const btn = document.getElementById('btnUpdateAll');
+  if (btn) { btn.disabled = true; btn.textContent = t('inv.updating'); }
+  let resumoFx = t('inv.updateFail');
+  try {
+    const antes = state.fx.length;
+    await fetchRates();
+    resumoFx = t('inv.updateOk').replace('{n}', Math.max(state.fx.length - antes, 0) || state.fx.length);
+  } catch (e) {
+    console.warn('Câmbio não atualizado:', e);
+  }
+
+  const comTicker = state.positions.filter((p) => p.ticker && p.kind === 'quote');
+  let resumoQ;
+  if (!comTicker.length) {
+    resumoQ = t('inv.updateNoTicker');
+  } else {
+    let n = 0;
+    for (const pos of comTicker) {
+      const preco = await fetchQuoteFor(pos.ticker);
+      if (preco == null) continue;
+      const hoje = todayISO();
+      const existente = state.quotes.find((q) => q.positionId === pos.id && q.date === hoje);
+      const registro = { id: existente ? existente.id : uid(), positionId: pos.id, date: hoje, value: preco };
+      if (existente) state.quotes = state.quotes.map((q) => (q.id === registro.id ? registro : q));
+      else state.quotes.push(registro);
+      await put('quotes', registro);
+      n++;
+    }
+    resumoQ = n ? t('inv.updateOk').replace('{n}', n) : t('inv.updateFail');
+  }
+
+  renderAll();
+  if (btn) { btn.disabled = false; btn.textContent = t('inv.updateAll'); }
+  showToast(t('inv.updateDone').replace('{fx}', resumoFx).replace('{q}', resumoQ));
+}
+
 /* ---------- Tela da carteira de investimentos ---------- */
 function renderInvestments() {
   const base = state.settings.baseCurrency;
@@ -2718,7 +2871,7 @@ function renderInvestments() {
 
   const thead = document.querySelector('#invTable thead tr');
   if (thead) thead.innerHTML = `
-    <th>${t('inv.name')}</th><th>${t('inv.account')}</th><th>${t('inv.quantity')}</th>
+    <th>${t('inv.name')}</th><th>${t('inv.type')}</th><th>${t('inv.account')}</th><th>${t('inv.quantity')}</th>
     <th>${t('inv.price')}</th><th>${t('inv.cost')}</th><th>${t('inv.value')}</th>
     <th>${t('inv.return')}</th><th>${t('accounts.actions')}</th>`;
 
@@ -2738,7 +2891,8 @@ function renderInvestments() {
       const conta = accountById(pos.accountId);
       const classe = r.profit > 0.004 ? 'amount-in' : (r.profit < -0.004 ? 'amount-out' : 'amount-neutral');
       return `<tr>
-        <td>${escapeHtml(pos.name)}</td>
+        <td>${escapeHtml(pos.name)}${pos.ticker ? ` <span class="tag">${escapeHtml(pos.ticker)}</span>` : ''}</td>
+        <td>${pos.assetType ? t('inv.ty.' + pos.assetType) : '—'}</td>
         <td>${conta ? escapeHtml(conta.name) : '—'}</td>
         <td>${pos.kind === 'quote' ? st.quantity.toLocaleString('pt-BR', { maximumFractionDigits: 8 }) : '—'}</td>
         <td>${cot ? fmtMoney(cot.value, pos.currency) : '—'}</td>
@@ -2872,6 +3026,20 @@ function openPositionModal(id) {
       <option value="value" ${p && p.kind === 'value' ? 'selected' : ''}>${t('inv.kindValue')}</option>
     </select>
     <p class="hint">${t('inv.kindHint')}</p>
+    <label>${t('inv.class')}</label>
+    <select id="poClass">
+      <option value="variable" ${!p || p.assetClass !== 'fixed' ? 'selected' : ''}>${t('inv.classVariable')}</option>
+      <option value="fixed" ${p && p.assetClass === 'fixed' ? 'selected' : ''}>${t('inv.classFixed')}</option>
+    </select>
+    <label>${t('inv.type')}</label>
+    <select id="poType">
+      ${INV_TYPES.map((k) => `<option value="${k}" ${p && p.assetType === k ? 'selected' : ''}>${t('inv.ty.' + k)}</option>`).join('')}
+    </select>
+    <label>${t('inv.ticker')}</label>
+    <input id="poTicker" value="${p && p.ticker ? escapeHtml(p.ticker) : ''}" placeholder="PETR4">
+    <label>${t('inv.isin')}</label>
+    <input id="poIsin" value="${p && p.isin ? escapeHtml(p.isin) : ''}" placeholder="BRPETRACNPR6">
+    <p class="hint">${t('inv.tickerHint')}</p>
     <label>${t('inv.currency')}</label>
     <select id="poCurrency">
       ${CURRENCIES.map((c) => {
@@ -2913,7 +3081,11 @@ async function savePosition(id) {
     name: nome,
     accountId: document.getElementById('poAccount').value || null,
     kind: document.getElementById('poKind').value,
-    currency: document.getElementById('poCurrency').value
+    currency: document.getElementById('poCurrency').value,
+    assetClass: document.getElementById('poClass').value,
+    assetType: document.getElementById('poType').value,
+    ticker: document.getElementById('poTicker').value.trim().toUpperCase(),
+    isin: document.getElementById('poIsin').value.trim().toUpperCase()
   };
   if (id) state.positions = state.positions.map((x) => (x.id === id ? pos : x));
   else state.positions.push(pos);
@@ -3645,6 +3817,8 @@ function bindEvents() {
   // Fase 6 — títulos a pagar e receber
   on('btnAddBill', 'click', () => openBillModal());
   on('btnAddPosition', 'click', () => openPositionModal());
+  on('btnUpdateAll', 'click', updateEverything);
+  on('cashGrain', 'change', (e) => { state.ui.cashGrain = e.target.value; renderCashflow(); });
   on('billKind', 'change', (e) => { state.ui.billKind = e.target.value; renderBills(); });
   on('billStatus', 'change', (e) => { state.ui.billStatus = e.target.value; renderBills(); });
   on('billFrom', 'change', (e) => { state.ui.billFrom = e.target.value; renderBills(); });
@@ -3980,18 +4154,43 @@ function renderNAVPie(wrap, legend, empty) {
 
 /* Série mensal de entradas e saídas, separando o que já aconteceu do que está
    previsto. Realizado vem dos lançamentos; previsto, das parcelas em aberto. */
-function buildCashflowSeries(mesesAtras, mesesFrente) {
+/* Agrupa por dia, semana ou mês. A chave de agrupamento muda; o resto do
+   cálculo é o mesmo — realizado vem dos lançamentos, previsto das parcelas. */
+function cashBucket(data, grao) {
+  if (grao === 'daily') return data;
+  if (grao === 'weekly') {
+    // segunda-feira da semana daquela data
+    const d = new Date(data + 'T00:00:00Z');
+    const dia = (d.getUTCDay() + 6) % 7;
+    return new Date(d.getTime() - dia * 86400000).toISOString().slice(0, 10);
+  }
+  return data.slice(0, 7);
+}
+
+function cashLabel(chave, grao) {
+  if (grao === 'monthly') return chave.slice(5) + '/' + chave.slice(2, 4);
+  return chave.slice(8) + '/' + chave.slice(5, 7);
+}
+
+function buildCashflowSeries(atras, frente, grao) {
+  const g = grao || state.ui.cashGrain || 'monthly';
   const base = state.settings.baseCurrency;
   const hoje = todayISO();
   const meses = [];
-  for (let k = -mesesAtras; k <= mesesFrente; k++) {
-    meses.push(addPeriod(hoje.slice(0, 8) + '01', 'monthly', k).slice(0, 7));
+
+  if (g === 'monthly') {
+    for (let k = -atras; k <= frente; k++) meses.push(addPeriod(hoje.slice(0, 8) + '01', 'monthly', k).slice(0, 7));
+  } else {
+    const passo = g === 'weekly' ? 'weekly' : 'daily';
+    const inicio = cashBucket(addPeriod(hoje, passo, -atras), g);
+    for (let k = 0; k <= atras + frente; k++) meses.push(cashBucket(addPeriod(inicio, passo, k), g));
   }
+
   const mapa = {};
   meses.forEach((m) => { mapa[m] = { month: m, inReal: 0, outReal: 0, inPrev: 0, outPrev: 0 }; });
 
   state.transactions.forEach((trn) => {
-    const m = monthOf(trn.date);
+    const m = cashBucket(trn.date, g);
     if (!mapa[m]) return;
     const v = convert(trn.value, accountCurrency(trn.accountId), base, trn.date);
     if (v == null) return;
@@ -3999,9 +4198,11 @@ function buildCashflowSeries(mesesAtras, mesesFrente) {
     else if (trn.type === 'expense') mapa[m].outReal += v;
   });
 
-  allInstallments(meses[0] + '-01', meses[meses.length - 1] + '-31').forEach((p) => {
+  const deISO = g === 'monthly' ? meses[0] + '-01' : meses[0];
+  const ateISO = g === 'monthly' ? meses[meses.length - 1] + '-31' : meses[meses.length - 1];
+  allInstallments(deISO, ateISO).forEach((p) => {
     if (p.status === 'paid') return; // já virou lançamento, contaria duas vezes
-    const m = monthOf(p.dueDate);
+    const m = cashBucket(p.dueDate, g);
     if (!mapa[m]) return;
     const conta = accountById(p.schedule.accountId);
     const v = convert(p.amount, conta ? conta.currency : base, base, p.dueDate);
@@ -4024,7 +4225,17 @@ function renderCashflow() {
   const base = state.settings.baseCurrency;
   if (nota) nota.textContent = t('cash.note').replace('{code}', base);
 
-  const pontos = buildCashflowSeries(5, 6);
+  const g = state.ui.cashGrain || 'monthly';
+  const janelas = { daily: [14, 14], weekly: [8, 8], monthly: [5, 6] };
+  const [atras, frente] = janelas[g];
+  const pontos = buildCashflowSeries(atras, frente, g);
+
+  const sel = document.getElementById('cashGrain');
+  if (sel) {
+    sel.innerHTML = ['daily', 'weekly', 'monthly']
+      .map((k) => `<option value="${k}" ${g === k ? 'selected' : ''}>${t('cash.' + k)}</option>`).join('');
+    sel.value = g;
+  }
   const maximo = Math.max(...pontos.map((p) => Math.max(p.inReal + p.inPrev, p.outReal + p.outPrev)), 0);
   if (maximo <= 0) {
     wrap.classList.add('hidden');
@@ -4038,7 +4249,7 @@ function renderCashflow() {
   const larguraMes = (W - padL - padR) / pontos.length;
   const larguraBarra = Math.max(6, larguraMes / 2 - 6);
   const Y = (v) => padT + (1 - v / maximo) * (H - padT - padB);
-  const mesAtual = todayISO().slice(0, 7);
+  const atual = cashBucket(todayISO(), g);
 
   let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${t('cash.title')}">`;
   svg += `<defs>
@@ -4068,8 +4279,8 @@ function renderCashflow() {
     if (p.outReal > 0) svg += `<rect x="${xOut.toFixed(1)}" y="${Y(p.outReal).toFixed(1)}" width="${larguraBarra.toFixed(1)}" height="${(base0 - Y(p.outReal)).toFixed(1)}" fill="#b91c1c" rx="2"/>`;
     if (p.outPrev > 0) svg += `<rect x="${xOut.toFixed(1)}" y="${Y(p.outReal + p.outPrev).toFixed(1)}" width="${larguraBarra.toFixed(1)}" height="${(Y(p.outReal) - Y(p.outReal + p.outPrev)).toFixed(1)}" fill="url(#hachOut)" stroke="#b91c1c" stroke-width="0.6" rx="2"/>`;
 
-    const destaque = p.month === mesAtual;
-    svg += `<text x="${(x0 + larguraMes / 2).toFixed(1)}" y="${H - 28}" text-anchor="middle" font-size="9" ${destaque ? 'font-weight="700"' : ''} fill="var(--${destaque ? 'text' : 'muted'})">${p.month.slice(5)}/${p.month.slice(2, 4)}</text>`;
+    const destaque = p.month === atual;
+    svg += `<text x="${(x0 + larguraMes / 2).toFixed(1)}" y="${H - 28}" text-anchor="middle" font-size="9" ${destaque ? 'font-weight="700"' : ''} fill="var(--${destaque ? 'text' : 'muted'})">${cashLabel(p.month, g)}</text>`;
   });
 
   // legenda
