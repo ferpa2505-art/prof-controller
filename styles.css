@@ -252,3 +252,11 @@ th { background: var(--surface); color: var(--muted); font-weight: 600; white-sp
 
 .checkline { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: 13px; color: var(--text); }
 .checkline input { width: auto; }
+
+.dup-warning {
+  margin: 16px 0; padding: 16px; border-radius: 10px; font-size: 14px; line-height: 1.5;
+  background: var(--surface); border: 1px solid var(--negative); color: var(--text);
+}
+.dup-warning h4 { color: var(--negative); font-size: 14px; margin-bottom: 8px; }
+.dup-warning p { margin-bottom: 8px; }
+.inline-btn { padding: 4px 12px; font-size: 12px; margin-left: 6px; vertical-align: middle; }
