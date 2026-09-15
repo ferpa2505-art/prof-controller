@@ -267,7 +267,49 @@ const I18N = {
     'cash.note': 'Barras cheias são o realizado; as riscadas, o previsto pelas parcelas em aberto. Valores em {code}.',
     'cash.empty': 'Sem movimento no período.',
     'modal.addBill': 'Novo título',
-    'modal.editBill': 'Editar título'
+    'modal.editBill': 'Editar título',
+    'tabs.investments': 'Investimentos',
+    'inv.title': 'Carteira de Investimentos',
+    'inv.add': '+ Nova posição',
+    'inv.name': 'Nome',
+    'inv.account': 'Conta / corretora',
+    'inv.kind': 'Forma de acompanhar',
+    'inv.kindQuote': 'Quantidade × cotação',
+    'inv.kindValue': 'Valor total atualizado',
+    'inv.kindHint': 'Use cotação para ações, fundos e cripto. Use valor total para renda fixa, onde não há quantidade.',
+    'inv.currency': 'Moeda',
+    'inv.quantity': 'Quantidade',
+    'inv.price': 'Cotação',
+    'inv.value': 'Valor atual',
+    'inv.cost': 'Custo',
+    'inv.return': 'Rentabilidade',
+    'inv.empty': 'Nenhuma posição cadastrada.',
+    'inv.quotes': 'Cotações',
+    'inv.addQuote': 'Registrar cotação',
+    'inv.quoteDate': 'Data',
+    'inv.quotePrice': 'Cotação unitária',
+    'inv.quoteValue': 'Valor total na data',
+    'inv.noQuotes': 'Sem cotações. A posição vale o custo enquanto não houver uma.',
+    'inv.moves': 'Aportes e resgates',
+    'inv.move': 'Movimentar',
+    'inv.buy': 'Aporte',
+    'inv.sell': 'Resgate',
+    'inv.moveType': 'Tipo',
+    'inv.moveDate': 'Data',
+    'inv.moveQty': 'Quantidade',
+    'inv.moveAmount': 'Valor em dinheiro',
+    'inv.moveAccount': 'Conta de origem / destino',
+    'inv.createLaunch': 'Gerar lançamento na conta',
+    'inv.launchHint': 'Desmarque apenas ao cadastrar uma posição que já existe e cujo dinheiro já saiu da conta.',
+    'inv.noMoves': 'Sem movimentações.',
+    'inv.totalValue': 'Valor da carteira',
+    'inv.totalCost': 'Custo total',
+    'inv.totalReturn': 'Rentabilidade',
+    'inv.noAccounts': 'Cadastre uma conta antes de criar posições.',
+    'dashboard.investments': 'Investimentos',
+    'modal.addPosition': 'Nova posição',
+    'modal.editPosition': 'Editar posição',
+    'modal.move': 'Aporte ou resgate'
 
   },
   'en': {
@@ -504,7 +546,49 @@ const I18N = {
     'cash.note': 'Solid bars are actuals; hatched bars are forecast from open installments. Values in {code}.',
     'cash.empty': 'No movement in the period.',
     'modal.addBill': 'New bill',
-    'modal.editBill': 'Edit bill'
+    'modal.editBill': 'Edit bill',
+    'tabs.investments': 'Investments',
+    'inv.title': 'Investment Portfolio',
+    'inv.add': '+ New position',
+    'inv.name': 'Name',
+    'inv.account': 'Account / broker',
+    'inv.kind': 'How to track',
+    'inv.kindQuote': 'Quantity × price',
+    'inv.kindValue': 'Updated total value',
+    'inv.kindHint': 'Use price for stocks, funds and crypto. Use total value for fixed income, where there is no quantity.',
+    'inv.currency': 'Currency',
+    'inv.quantity': 'Quantity',
+    'inv.price': 'Price',
+    'inv.value': 'Current value',
+    'inv.cost': 'Cost',
+    'inv.return': 'Return',
+    'inv.empty': 'No positions yet.',
+    'inv.quotes': 'Prices',
+    'inv.addQuote': 'Record price',
+    'inv.quoteDate': 'Date',
+    'inv.quotePrice': 'Unit price',
+    'inv.quoteValue': 'Total value on the date',
+    'inv.noQuotes': 'No prices recorded. The position is worth its cost until there is one.',
+    'inv.moves': 'Contributions and withdrawals',
+    'inv.move': 'Move',
+    'inv.buy': 'Contribution',
+    'inv.sell': 'Withdrawal',
+    'inv.moveType': 'Type',
+    'inv.moveDate': 'Date',
+    'inv.moveQty': 'Quantity',
+    'inv.moveAmount': 'Cash amount',
+    'inv.moveAccount': 'Source / destination account',
+    'inv.createLaunch': 'Create entry in the account',
+    'inv.launchHint': 'Uncheck only when adding a position that already exists and whose money already left the account.',
+    'inv.noMoves': 'No movements.',
+    'inv.totalValue': 'Portfolio value',
+    'inv.totalCost': 'Total cost',
+    'inv.totalReturn': 'Return',
+    'inv.noAccounts': 'Create an account before adding positions.',
+    'dashboard.investments': 'Investments',
+    'modal.addPosition': 'New position',
+    'modal.editPosition': 'Edit position',
+    'modal.move': 'Contribution or withdrawal'
   },
   'es': {
     'tabs.dashboard': 'Panel',
@@ -740,7 +824,49 @@ const I18N = {
     'cash.note': 'Las barras llenas son lo realizado; las rayadas, lo previsto por las cuotas pendientes. Valores en {code}.',
     'cash.empty': 'Sin movimiento en el período.',
     'modal.addBill': 'Nuevo título',
-    'modal.editBill': 'Editar título'
+    'modal.editBill': 'Editar título',
+    'tabs.investments': 'Inversiones',
+    'inv.title': 'Cartera de Inversiones',
+    'inv.add': '+ Nueva posición',
+    'inv.name': 'Nombre',
+    'inv.account': 'Cuenta / bróker',
+    'inv.kind': 'Forma de seguimiento',
+    'inv.kindQuote': 'Cantidad × cotización',
+    'inv.kindValue': 'Valor total actualizado',
+    'inv.kindHint': 'Use cotización para acciones, fondos y cripto. Use valor total para renta fija, donde no hay cantidad.',
+    'inv.currency': 'Moeda',
+    'inv.quantity': 'Cantidad',
+    'inv.price': 'Cotización',
+    'inv.value': 'Valor actual',
+    'inv.cost': 'Coste',
+    'inv.return': 'Rentabilidade',
+    'inv.empty': 'Sin posiciones registradas.',
+    'inv.quotes': 'Cotizaciones',
+    'inv.addQuote': 'Registrar cotización',
+    'inv.quoteDate': 'Fecha',
+    'inv.quotePrice': 'Cotización unitaria',
+    'inv.quoteValue': 'Valor total en la fecha',
+    'inv.noQuotes': 'Sin cotizaciones. La posición vale su coste mientras no haya una.',
+    'inv.moves': 'Aportes y rescates',
+    'inv.move': 'Mover',
+    'inv.buy': 'Aporte',
+    'inv.sell': 'Rescate',
+    'inv.moveType': 'Tipo',
+    'inv.moveDate': 'Fecha',
+    'inv.moveQty': 'Cantidad',
+    'inv.moveAmount': 'Importe en efectivo',
+    'inv.moveAccount': 'Cuenta de origen / destino',
+    'inv.createLaunch': 'Generar movimiento en la cuenta',
+    'inv.launchHint': 'Desmarque solo al registrar una posición que ya existe y cuyo dinero ya salió de la cuenta.',
+    'inv.noMoves': 'Sin movimientos.',
+    'inv.totalValue': 'Valor de la cartera',
+    'inv.totalCost': 'Coste total',
+    'inv.totalReturn': 'Rentabilidade',
+    'inv.noAccounts': 'Cree una cuenta antes de añadir posiciones.',
+    'dashboard.investments': 'Inversiones',
+    'modal.addPosition': 'Nueva posición',
+    'modal.editPosition': 'Editar posición',
+    'modal.move': 'Aporte o rescate'
   }
 };
 
@@ -817,7 +943,7 @@ function groupLabel(g) {
 
 /* ---------- Estado e persistência (IndexedDB) ---------- */
 const DB_NAME = 'prof-controller';
-const DB_VERSION = 4; // Fase 6: títulos a pagar/receber e suas quitações
+const DB_VERSION = 5; // Fase 7: posições de investimento, cotações e movimentações
 let db = null;
 let state = {
   accounts: [],
@@ -827,6 +953,9 @@ let state = {
   fx: [],
   schedules: [],
   payments: [],
+  positions: [],
+  quotes: [],
+  invmoves: [],
   assets: [],
   valuations: [],
   settings: { lang: 'pt-BR', theme: 'default', baseCurrency: 'EUR' },
@@ -868,6 +997,22 @@ function openDB() {
         const s = d.createObjectStore('budgets', { keyPath: 'id' });
         s.createIndex('category', 'category');
       }
+      // Fase 7 — carteira de investimentos
+      if (!d.objectStoreNames.contains('positions')) {
+        const s = d.createObjectStore('positions', { keyPath: 'id' });
+        s.createIndex('accountId', 'accountId');
+      }
+      if (!d.objectStoreNames.contains('quotes')) {
+        const s = d.createObjectStore('quotes', { keyPath: 'id' });
+        s.createIndex('positionId', 'positionId');
+        s.createIndex('date', 'date');
+      }
+      if (!d.objectStoreNames.contains('invmoves')) {
+        const s = d.createObjectStore('invmoves', { keyPath: 'id' });
+        s.createIndex('positionId', 'positionId');
+        s.createIndex('date', 'date');
+      }
+
       // Fase 6 — títulos (a pagar/receber) e as quitações de suas parcelas
       if (!d.objectStoreNames.contains('schedules')) {
         const s = d.createObjectStore('schedules', { keyPath: 'id' });
@@ -926,6 +1071,9 @@ async function loadAll() {
   state.fx = await getAll('fx');
   state.schedules = await getAll('schedules');
   state.payments = await getAll('payments');
+  state.positions = await getAll('positions');
+  state.quotes = await getAll('quotes');
+  state.invmoves = await getAll('invmoves');
   state.assets = await getAll('assets');
   state.valuations = await getAll('valuations');
   const settings = await getAll('settings');
@@ -1103,6 +1251,91 @@ function consolidate(byCurrency, base, date) {
   return { total, missing };
 }
 
+
+/* ---------- Carteira de investimentos (Fase 7) ----------
+   Dois tipos de posição convivem:
+   - 'quote': quantidade × cotação unitária (ações, fundos, cripto).
+   - 'value': um valor total que é atualizado de tempos em tempos (renda fixa).
+   Em ambos, quantidade e custo vêm das movimentações, e a cotação segue a
+   mesma lógica de âncora do resto do app: vale a mais recente até a data. */
+
+function quotesOf(positionId) {
+  return state.quotes.filter((q) => q.positionId === positionId)
+    .sort((a, b) => a.date.localeCompare(b.date));
+}
+function invMovesOf(positionId) {
+  return state.invmoves.filter((m) => m.positionId === positionId)
+    .sort((a, b) => a.date.localeCompare(b.date));
+}
+
+// Quantidade e custo acumulados até a data. Na venda, o custo sai proporcional
+// à fatia vendida — senão vender metade zeraria a rentabilidade da outra metade.
+function positionStateAt(pos, date) {
+  const limite = date || todayISO();
+  let quantidade = 0, custo = 0;
+  invMovesOf(pos.id).forEach((m) => {
+    if (m.date > limite) return;
+    const q = Number(m.quantity) || 0;
+    const v = Number(m.amount) || 0;
+    if (m.type === 'buy') { quantidade += q; custo += v; return; }
+    if (pos.kind === 'quote' && quantidade > 0) {
+      const fatia = Math.min(q / quantidade, 1);
+      custo -= custo * fatia;
+      quantidade -= q;
+    } else {
+      custo -= v;
+    }
+  });
+  return { quantity: Math.max(quantidade, 0), cost: Math.max(custo, 0) };
+}
+
+// Última cotação até a data.
+function positionQuoteAt(pos, date) {
+  const limite = date || todayISO();
+  const lista = quotesOf(pos.id).filter((q) => q.date <= limite);
+  return lista.length ? lista[lista.length - 1] : null;
+}
+
+/* Valor da posição na data.
+   Sem cotação registrada, a posição vale o que custou — melhor assumir que não
+   rendeu nada do que inventar um número. */
+function positionValue(pos, date) {
+  const limite = date || todayISO();
+  const st = positionStateAt(pos, limite);
+  const cot = positionQuoteAt(pos, limite);
+
+  if (pos.kind === 'quote') {
+    if (!cot) return st.cost;
+    return st.quantity * (Number(cot.value) || 0);
+  }
+  // Valor único: a cotação é o saldo naquele dia; aportes e resgates
+  // posteriores a ela ainda precisam ser somados.
+  if (!cot) return st.cost;
+  let valor = Number(cot.value) || 0;
+  invMovesOf(pos.id).forEach((m) => {
+    if (m.date <= cot.date || m.date > limite) return;
+    valor += (m.type === 'buy' ? 1 : -1) * (Number(m.amount) || 0);
+  });
+  return Math.max(valor, 0);
+}
+
+function positionReturn(pos, date) {
+  const st = positionStateAt(pos, date);
+  const valor = positionValue(pos, date);
+  const lucro = valor - st.cost;
+  return { value: valor, cost: st.cost, profit: lucro, pct: st.cost > 0 ? (lucro / st.cost) * 100 : 0 };
+}
+
+// Total da carteira por moeda, pronto para consolidar.
+function investmentTotals(date) {
+  const valor = {}, custo = {};
+  state.positions.forEach((pos) => {
+    const r = positionReturn(pos, date);
+    valor[pos.currency] = (valor[pos.currency] || 0) + r.value;
+    custo[pos.currency] = (custo[pos.currency] || 0) + r.cost;
+  });
+  return { value: valor, cost: custo };
+}
 
 /* ---------- Títulos a pagar e a receber (Fase 6) ----------
    Um título é uma PREVISÃO; o lançamento é o fato consumado. As parcelas são
@@ -1360,7 +1593,7 @@ function renderAll() {
   const etapas = [
     ['dashboard', renderDashboard], ['contas', renderAccounts], ['saldos', renderBalances],
     ['transações', renderTransactions], ['orçamentos', renderBudgets], ['câmbio', renderFx],
-    ['portfólio', renderPortfolio], ['gráfico', renderNAV], ['fluxo', renderCashflow], ['títulos', renderBills], ['configurações', renderSettings]
+    ['portfólio', renderPortfolio], ['gráfico', renderNAV], ['fluxo', renderCashflow], ['títulos', renderBills], ['investimentos', renderInvestments], ['configurações', renderSettings]
   ];
   etapas.forEach(([nome, fn]) => {
     try { fn(); } catch (e) { console.error('Falha ao renderizar ' + nome + ':', e); }
@@ -1427,12 +1660,15 @@ function renderDashboard() {
     Object.keys(m).forEach((c) => { dividas[c] = (dividas[c] || 0) + m[c]; });
   });
 
+  const carteira = investmentTotals(hoje);
+  fillSummaryCard('invTotal', 'invTotalSub', carteira.value, base);
   fillSummaryCard('propTotal', 'propTotalSub', imoveis.gross, base);
   fillSummaryCard('vehTotal', 'vehTotalSub', veiculos.gross, base);
   fillSummaryCard('debtTotal', 'debtTotalSub', dividas, base);
 
   // Patrimônio líquido = financeiro + imóveis + veículos - dívidas
   const nav = equity.total
+    + consolidate(carteira.value, base, hoje).total
     + consolidate(imoveis.gross, base, hoje).total
     + consolidate(veiculos.gross, base, hoje).total
     - consolidate(dividas, base, hoje).total;
@@ -2331,6 +2567,271 @@ async function undoPayment(scheduleId, seq) {
   showToast(t('toast.deleted'));
 }
 
+/* ---------- Tela da carteira de investimentos ---------- */
+function renderInvestments() {
+  const base = state.settings.baseCurrency;
+  const hoje = todayISO();
+
+  const thead = document.querySelector('#invTable thead tr');
+  if (thead) thead.innerHTML = `
+    <th>${t('inv.name')}</th><th>${t('inv.account')}</th><th>${t('inv.quantity')}</th>
+    <th>${t('inv.price')}</th><th>${t('inv.cost')}</th><th>${t('inv.value')}</th>
+    <th>${t('inv.return')}</th><th>${t('accounts.actions')}</th>`;
+
+  const tbody = document.querySelector('#invTable tbody');
+  const vazio = document.getElementById('invEmpty');
+  if (!tbody) return;
+
+  if (!state.positions.length) {
+    tbody.innerHTML = '';
+    if (vazio) { vazio.textContent = t('inv.empty'); vazio.classList.remove('hidden'); }
+  } else {
+    if (vazio) vazio.classList.add('hidden');
+    tbody.innerHTML = state.positions.map((pos) => {
+      const r = positionReturn(pos, hoje);
+      const st = positionStateAt(pos, hoje);
+      const cot = positionQuoteAt(pos, hoje);
+      const conta = accountById(pos.accountId);
+      const classe = r.profit > 0.004 ? 'amount-in' : (r.profit < -0.004 ? 'amount-out' : 'amount-neutral');
+      return `<tr>
+        <td>${escapeHtml(pos.name)}</td>
+        <td>${conta ? escapeHtml(conta.name) : '—'}</td>
+        <td>${pos.kind === 'quote' ? st.quantity.toLocaleString('pt-BR', { maximumFractionDigits: 8 }) : '—'}</td>
+        <td>${cot ? fmtMoney(cot.value, pos.currency) : '—'}</td>
+        <td>${fmtMoney(r.cost, pos.currency)}</td>
+        <td><strong>${fmtMoney(r.value, pos.currency)}</strong></td>
+        <td class="${classe}">${fmtMoney(r.profit, pos.currency)} · ${r.pct.toFixed(1)}%</td>
+        <td>
+          <button class="secondary-btn" onclick="openMoveModal('${pos.id}')">${t('inv.move')}</button>
+          <button class="secondary-btn" onclick="openQuotesModal('${pos.id}')">${t('inv.quotes')}</button>
+          <button class="secondary-btn" onclick="openPositionModal('${pos.id}')">${t('modal.edit')}</button>
+          <button class="secondary-btn" onclick="deletePosition('${pos.id}')">${t('modal.delete')}</button>
+        </td>
+      </tr>`;
+    }).join('');
+  }
+
+  // resumo consolidado
+  const tot = investmentTotals(hoje);
+  const valor = consolidate(tot.value, base, hoje).total;
+  const custo = consolidate(tot.cost, base, hoje).total;
+  const lucro = valor - custo;
+  const elV = document.getElementById('invTotalValue');
+  const elC = document.getElementById('invTotalCost');
+  const elR = document.getElementById('invTotalReturn');
+  if (elV) elV.textContent = fmtMoney(valor, base);
+  if (elC) elC.textContent = fmtMoney(custo, base);
+  if (elR) {
+    elR.textContent = fmtMoney(lucro, base) + (custo > 0 ? ' · ' + ((lucro / custo) * 100).toFixed(1) + '%' : '');
+    elR.className = 'big-number ' + (lucro > 0.004 ? 'amount-in' : lucro < -0.004 ? 'amount-out' : '');
+  }
+}
+
+function openPositionModal(id) {
+  if (!state.accounts.length) { showToast(t('inv.noAccounts')); return; }
+  const p = id ? state.positions.find((x) => x.id === id) : null;
+  openModal(`
+    <h2>${p ? t('modal.editPosition') : t('modal.addPosition')}</h2>
+    <label>${t('inv.name')}</label>
+    <input id="poName" value="${p ? escapeHtml(p.name) : ''}">
+    <label>${t('inv.account')}</label>
+    <select id="poAccount">
+      ${state.accounts.map((a) => `<option value="${a.id}" ${p && p.accountId === a.id ? 'selected' : ''}>${escapeHtml(a.name)} (${a.currency})</option>`).join('')}
+    </select>
+    <label>${t('inv.kind')}</label>
+    <select id="poKind">
+      <option value="quote" ${!p || p.kind === 'quote' ? 'selected' : ''}>${t('inv.kindQuote')}</option>
+      <option value="value" ${p && p.kind === 'value' ? 'selected' : ''}>${t('inv.kindValue')}</option>
+    </select>
+    <p class="hint">${t('inv.kindHint')}</p>
+    <label>${t('inv.currency')}</label>
+    <select id="poCurrency">
+      ${CURRENCIES.map((c) => {
+        const sel = p ? p.currency === c.code : c.code === state.settings.baseCurrency;
+        return `<option value="${c.code}" ${sel ? 'selected' : ''}>${c.code}</option>`;
+      }).join('')}
+    </select>
+    <button class="primary-btn" onclick="savePosition('${p ? p.id : ''}')">${t('modal.save')}</button>
+  `);
+}
+
+async function savePosition(id) {
+  const nome = document.getElementById('poName').value.trim();
+  if (!nome) { showToast(t('toast.invalidValue')); return; }
+  const pos = {
+    id: id || uid(),
+    name: nome,
+    accountId: document.getElementById('poAccount').value,
+    kind: document.getElementById('poKind').value,
+    currency: document.getElementById('poCurrency').value
+  };
+  if (id) state.positions = state.positions.map((x) => (x.id === id ? pos : x));
+  else state.positions.push(pos);
+  await put('positions', pos);
+  closeModal();
+  renderAll();
+  showToast(t('toast.saved'));
+}
+
+async function deletePosition(id) {
+  if (!confirm(t('modal.delete') + '?')) return;
+  for (const m of invMovesOf(id)) {
+    if (m.transactionId) {
+      state.transactions = state.transactions.filter((tr) => tr.id !== m.transactionId);
+      await del('transactions', m.transactionId);
+    }
+    await del('invmoves', m.id);
+  }
+  for (const q of quotesOf(id)) await del('quotes', q.id);
+  state.invmoves = state.invmoves.filter((m) => m.positionId !== id);
+  state.quotes = state.quotes.filter((q) => q.positionId !== id);
+  state.positions = state.positions.filter((x) => x.id !== id);
+  await del('positions', id);
+  renderAll();
+  showToast(t('toast.deleted'));
+}
+
+/* ----- aportes e resgates ----- */
+function openMoveModal(positionId) {
+  const pos = state.positions.find((x) => x.id === positionId);
+  if (!pos) return;
+  const movs = invMovesOf(positionId).slice().reverse();
+  openModal(`
+    <h2>${t('modal.move')} — ${escapeHtml(pos.name)}</h2>
+    ${movs.length ? `
+      <table class="mini-table">
+        <thead><tr><th>${t('inv.moveDate')}</th><th>${t('inv.moveType')}</th>
+        ${pos.kind === 'quote' ? `<th>${t('inv.moveQty')}</th>` : ''}
+        <th>${t('inv.moveAmount')}</th><th></th></tr></thead>
+        <tbody>${movs.map((m) => `<tr>
+          <td>${m.date}</td>
+          <td>${t(m.type === 'buy' ? 'inv.buy' : 'inv.sell')}</td>
+          ${pos.kind === 'quote' ? `<td>${Number(m.quantity).toLocaleString('pt-BR', { maximumFractionDigits: 8 })}</td>` : ''}
+          <td>${fmtMoney(m.amount, pos.currency)}</td>
+          <td><button class="secondary-btn" onclick="deleteMove('${m.id}','${positionId}')">${t('modal.delete')}</button></td>
+        </tr>`).join('')}</tbody>
+      </table>` : `<p class="hint">${t('inv.noMoves')}</p>`}
+
+    <label>${t('inv.moveType')}</label>
+    <select id="mvType">
+      <option value="buy">${t('inv.buy')}</option>
+      <option value="sell">${t('inv.sell')}</option>
+    </select>
+    <label>${t('inv.moveDate')}</label>
+    <input id="mvDate" type="date" value="${todayISO()}">
+    ${pos.kind === 'quote' ? `
+      <label>${t('inv.moveQty')}</label>
+      <input id="mvQty" type="text" inputmode="decimal">` : ''}
+    <label>${t('inv.moveAmount')} (${pos.currency})</label>
+    <input id="mvAmount" type="text" inputmode="decimal">
+    <label>${t('inv.moveAccount')}</label>
+    <select id="mvAccount">
+      ${state.accounts.map((a) => `<option value="${a.id}" ${pos.accountId === a.id ? 'selected' : ''}>${escapeHtml(a.name)} (${a.currency})</option>`).join('')}
+    </select>
+    <label class="checkline"><input type="checkbox" id="mvLaunch" checked> ${t('inv.createLaunch')}</label>
+    <p class="hint">${t('inv.launchHint')}</p>
+    <button class="primary-btn" onclick="saveMove('${positionId}')">${t('modal.save')}</button>
+  `);
+}
+
+async function saveMove(positionId) {
+  const pos = state.positions.find((x) => x.id === positionId);
+  if (!pos) return;
+  const tipo = document.getElementById('mvType').value;
+  const data = document.getElementById('mvDate').value;
+  const valor = parseMoney(document.getElementById('mvAmount').value);
+  const qtdEl = document.getElementById('mvQty');
+  const qtd = qtdEl ? parseMoney(qtdEl.value) : 0;
+  if (!data || valor == null || valor <= 0) { showToast(t('toast.invalidValue')); return; }
+  if (pos.kind === 'quote' && (qtd == null || qtd <= 0)) { showToast(t('toast.invalidValue')); return; }
+
+  const mov = { id: uid(), positionId, type: tipo, date: data, quantity: qtd || 0, amount: valor };
+
+  // O dinheiro sai (aporte) ou entra (resgate) na conta escolhida
+  if (document.getElementById('mvLaunch').checked) {
+    const contaId = document.getElementById('mvAccount').value;
+    const trn = {
+      id: uid(),
+      type: tipo === 'buy' ? 'expense' : 'income',
+      date: data,
+      accountId: contaId,
+      category: 'investimentos',
+      description: (tipo === 'buy' ? t('inv.buy') : t('inv.sell')) + ' — ' + pos.name,
+      value: valor
+    };
+    state.transactions.push(trn);
+    await put('transactions', trn);
+    mov.transactionId = trn.id;
+  }
+
+  state.invmoves.push(mov);
+  await put('invmoves', mov);
+  closeModal();
+  renderAll();
+  showToast(t('toast.saved'));
+}
+
+async function deleteMove(id, positionId) {
+  const m = state.invmoves.find((x) => x.id === id);
+  if (!m) return;
+  if (m.transactionId) {
+    state.transactions = state.transactions.filter((tr) => tr.id !== m.transactionId);
+    await del('transactions', m.transactionId);
+  }
+  state.invmoves = state.invmoves.filter((x) => x.id !== id);
+  await del('invmoves', id);
+  renderAll();
+  openMoveModal(positionId);
+  showToast(t('toast.deleted'));
+}
+
+/* ----- cotações ----- */
+function openQuotesModal(positionId) {
+  const pos = state.positions.find((x) => x.id === positionId);
+  if (!pos) return;
+  const lista = quotesOf(positionId).slice().reverse();
+  const rotulo = pos.kind === 'quote' ? t('inv.quotePrice') : t('inv.quoteValue');
+  openModal(`
+    <h2>${t('inv.quotes')} — ${escapeHtml(pos.name)}</h2>
+    ${lista.length ? `
+      <table class="mini-table">
+        <thead><tr><th>${t('inv.quoteDate')}</th><th>${rotulo}</th><th></th></tr></thead>
+        <tbody>${lista.map((q) => `<tr>
+          <td>${q.date}</td>
+          <td>${fmtMoney(q.value, pos.currency)}</td>
+          <td><button class="secondary-btn" onclick="deleteQuote('${q.id}','${positionId}')">${t('modal.delete')}</button></td>
+        </tr>`).join('')}</tbody>
+      </table>` : `<p class="hint">${t('inv.noQuotes')}</p>`}
+    <label>${t('inv.quoteDate')}</label>
+    <input id="qtDate" type="date" value="${todayISO()}">
+    <label>${rotulo} (${pos.currency})</label>
+    <input id="qtValue" type="text" inputmode="decimal">
+    <button class="primary-btn" onclick="saveQuote('${positionId}')">${t('inv.addQuote')}</button>
+  `);
+}
+
+async function saveQuote(positionId) {
+  const data = document.getElementById('qtDate').value;
+  const valor = parseMoney(document.getElementById('qtValue').value);
+  if (!data || valor == null || valor <= 0) { showToast(t('toast.invalidValue')); return; }
+  const existente = state.quotes.find((q) => q.positionId === positionId && q.date === data);
+  const registro = { id: existente ? existente.id : uid(), positionId, date: data, value: valor };
+  if (existente) state.quotes = state.quotes.map((q) => (q.id === registro.id ? registro : q));
+  else state.quotes.push(registro);
+  await put('quotes', registro);
+  renderAll();
+  openQuotesModal(positionId);
+  showToast(t('toast.saved'));
+}
+
+async function deleteQuote(id, positionId) {
+  state.quotes = state.quotes.filter((q) => q.id !== id);
+  await del('quotes', id);
+  renderAll();
+  openQuotesModal(positionId);
+  showToast(t('toast.deleted'));
+}
+
 function renderSettings() {
   const sel = document.getElementById('baseCurrencySelect');
   sel.innerHTML = CURRENCIES.map((c) => `<option value="${c.code}">${c.code} (${c.symbol.trim()})</option>`).join('');
@@ -2639,7 +3140,7 @@ function download(filename, content, type) {
 
 async function exportJSON() {
   const data = {
-    version: 5,
+    version: 6,
     exportedAt: new Date().toISOString(),
     accounts: state.accounts,
     balances: state.balances,
@@ -2648,6 +3149,9 @@ async function exportJSON() {
     fx: state.fx,
     schedules: state.schedules,
     payments: state.payments,
+    positions: state.positions,
+    quotes: state.quotes,
+    invmoves: state.invmoves,
     assets: state.assets,
     valuations: state.valuations,
     settings: state.settings
@@ -2706,6 +3210,9 @@ async function importJSON(file) {
     for (const r of (data.fx || [])) await put('fx', r);
     for (const sc of (data.schedules || [])) await put('schedules', sc);
     for (const pg of (data.payments || [])) await put('payments', pg);
+    for (const po of (data.positions || [])) await put('positions', po);
+    for (const qt of (data.quotes || [])) await put('quotes', qt);
+    for (const mv of (data.invmoves || [])) await put('invmoves', mv);
     for (const a of (data.assets || [])) await put('assets', a);
     for (const v of (data.valuations || [])) await put('valuations', v);
     if (data.settings) {
@@ -2863,6 +3370,7 @@ function bindEvents() {
   // no contêiner, que é fixo.
   // Fase 6 — títulos a pagar e receber
   on('btnAddBill', 'click', () => openBillModal());
+  on('btnAddPosition', 'click', () => openPositionModal());
   on('billKind', 'change', (e) => { state.ui.billKind = e.target.value; renderBills(); });
   on('billStatus', 'change', (e) => { state.ui.billStatus = e.target.value; renderBills(); });
   on('billFrom', 'change', (e) => { state.ui.billFrom = e.target.value; renderBills(); });
@@ -3044,10 +3552,14 @@ function buildNAVSeries() {
 
   const out = [];
   for (const D of points) {
-    let financial = 0, properties = 0, vehicles = 0, debt = 0;
+    let financial = 0, properties = 0, vehicles = 0, debt = 0, investments = 0;
     for (const acct of state.accounts) {
       const v = toBase(saldoEm(acct, D), acct.currency, D);
       if (v != null) financial += v;
+    }
+    for (const pos of state.positions) {
+      const v = toBase(positionValue(pos, D), pos.currency, D);
+      if (v != null) investments += v;
     }
     for (const a of state.assets) {
       const at = assetAt(a, D);
@@ -3057,7 +3569,7 @@ function buildNAVSeries() {
       if (a.type === 'property') properties += val; else vehicles += val;
       if (dbt != null) debt += dbt;
     }
-    out.push({ date: D, financial, properties, vehicles, debt, net: financial + properties + vehicles - debt });
+    out.push({ date: D, financial, investments, properties, vehicles, debt, net: financial + investments + properties + vehicles - debt });
   }
   return { points: out };
 }
@@ -3078,8 +3590,10 @@ function buildPieData() {
     state.accounts.forEach((a) => { fin[a.currency] = (fin[a.currency] || 0) + saldos[a.id]; });
     const im = assetTotals('property', hoje);
     const ve = assetTotals('vehicle', hoje);
+    const carteira = investmentTotals(hoje);
     itens = [
       { label: t('nav.financial'), value: consolidate(fin, base, hoje).total },
+      { label: t('dashboard.investments'), value: consolidate(carteira.value, base, hoje).total },
       { label: t('nav.properties'), value: consolidate(im.gross, base, hoje).total },
       { label: t('nav.vehicles'), value: consolidate(ve.gross, base, hoje).total }
     ];
@@ -3087,6 +3601,7 @@ function buildPieData() {
     const porMoeda = {};
     state.accounts.forEach((a) => { porMoeda[a.currency] = (porMoeda[a.currency] || 0) + saldos[a.id]; });
     state.assets.forEach((a) => { porMoeda[a.currency] = (porMoeda[a.currency] || 0) + assetValue(a, hoje).value; });
+    state.positions.forEach((p) => { porMoeda[p.currency] = (porMoeda[p.currency] || 0) + positionValue(p, hoje); });
     Object.keys(porMoeda).forEach((c) => {
       const v = convert(porMoeda[c], c, base, hoje);
       if (v != null) itens.push({ label: c, value: v });
@@ -3099,6 +3614,10 @@ function buildPieData() {
     state.assets.forEach((a) => {
       const v = convert(assetValue(a, hoje).value, a.currency, base, hoje);
       if (v != null) itens.push({ label: a.name, value: v });
+    });
+    state.positions.forEach((p) => {
+      const v = convert(positionValue(p, hoje), p.currency, base, hoje);
+      if (v != null) itens.push({ label: p.name, value: v });
     });
   }
 
@@ -3346,6 +3865,7 @@ function renderNAV() {
   const classes = [
     { key: 'net', label: t('nav.net'), color: '#e94560' },
     { key: 'financial', label: t('nav.financial'), color: '#2563eb' },
+    { key: 'investments', label: t('dashboard.investments'), color: '#8b5cf6' },
     { key: 'properties', label: t('nav.properties'), color: '#16a34a' },
     { key: 'vehicles', label: t('nav.vehicles'), color: '#f59e0b' },
     { key: 'debt', label: t('nav.debt'), color: '#b91c1c' },
