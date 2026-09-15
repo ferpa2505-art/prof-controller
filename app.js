@@ -13,6 +13,24 @@
    apenas cria uma âncora mais recente, sem duplicar valores.
    ============================================================ */
 
+/* ---------- Bandeiras (SVG) ----------
+   Emoji de bandeira (🇧🇷) não é renderizado no Windows: o Chrome mostra as
+   letras "BR". Por isso as bandeiras são desenhadas à mão em SVG. */
+const FLAGS = {
+  br: `<svg viewBox="0 0 28 20" class="flag"><rect width="28" height="20" fill="#009b3a"/><path d="M14 2.5 25.5 10 14 17.5 2.5 10Z" fill="#fedf00"/><circle cx="14" cy="10" r="4.4" fill="#002776"/><path d="M9.8 8.7a11 11 0 0 1 8.5 2.2" stroke="#fff" stroke-width="1.5" fill="none"/></svg>`,
+  pt: `<svg viewBox="0 0 28 20" class="flag"><rect width="28" height="20" fill="#f00"/><rect width="11" height="20" fill="#006600"/><circle cx="11" cy="10" r="4.2" fill="#ffe900" stroke="#fff" stroke-width="0.6"/><circle cx="11" cy="10" r="2.4" fill="#fff" stroke="#003" stroke-width="0.7"/></svg>`,
+  us: `<svg viewBox="0 0 28 20" class="flag"><rect width="28" height="20" fill="#fff"/><g fill="#b22234"><rect width="28" height="1.55"/><rect y="3.1" width="28" height="1.55"/><rect y="6.2" width="28" height="1.55"/><rect y="9.3" width="28" height="1.55"/><rect y="12.4" width="28" height="1.55"/><rect y="15.5" width="28" height="1.55"/><rect y="18.6" width="28" height="1.4"/></g><rect width="12" height="10.85" fill="#3c3b6e"/><g fill="#fff"><circle cx="2.4" cy="2.2" r="0.7"/><circle cx="6" cy="2.2" r="0.7"/><circle cx="9.6" cy="2.2" r="0.7"/><circle cx="4.2" cy="4.5" r="0.7"/><circle cx="7.8" cy="4.5" r="0.7"/><circle cx="2.4" cy="6.8" r="0.7"/><circle cx="6" cy="6.8" r="0.7"/><circle cx="9.6" cy="6.8" r="0.7"/><circle cx="4.2" cy="9.1" r="0.7"/><circle cx="7.8" cy="9.1" r="0.7"/></g></svg>`,
+  gb: `<svg viewBox="0 0 28 20" class="flag"><rect width="28" height="20" fill="#012169"/><path d="M0 0 28 20M28 0 0 20" stroke="#fff" stroke-width="4"/><path d="M0 0 28 20M28 0 0 20" stroke="#c8102e" stroke-width="2.2"/><path d="M14 0v20M0 10h28" stroke="#fff" stroke-width="6.5"/><path d="M14 0v20M0 10h28" stroke="#c8102e" stroke-width="3.8"/></svg>`,
+  es: `<svg viewBox="0 0 28 20" class="flag"><rect width="28" height="20" fill="#c60b1e"/><rect y="5" width="28" height="10" fill="#ffc400"/><rect x="4.5" y="8" width="3.6" height="4.6" rx="0.5" fill="#c60b1e" stroke="#8a0715" stroke-width="0.4"/></svg>`
+};
+
+// Cada idioma e as bandeiras que o representam
+const LANGS = [
+  { code: 'pt-BR', label: 'Português', flags: ['pt', 'br'] },
+  { code: 'en', label: 'English', flags: ['us', 'gb'] },
+  { code: 'es', label: 'Español', flags: ['es'] }
+];
+
 /* ---------- i18n: pt-BR (padrão), en, es ---------- */
 const I18N = {
   'pt-BR': {
@@ -161,7 +179,16 @@ const I18N = {
     'nav.properties': 'Imóveis',
     'nav.vehicles': 'Veículos',
     'nav.debt': 'Dívidas',
-    'nav.net': 'Patrimônio Líquido'
+    'nav.net': 'Patrimônio Líquido',
+    'nav.viewPie': 'Composição',
+    'nav.viewLine': 'Evolução',
+    'nav.breakdown': 'Separar por',
+    'nav.byClass': 'Classe',
+    'nav.byCurrency': 'Moeda',
+    'nav.byAccount': 'Conta / bem',
+    'nav.others': 'Outros',
+    'nav.pieTitle': 'Composição do Patrimônio',
+    'nav.pieNote': 'Fatias em {code}, na data de hoje. Dívidas não entram no gráfico.'
 
   },
   'en': {
@@ -310,7 +337,16 @@ const I18N = {
     'nav.properties': 'Properties',
     'nav.vehicles': 'Vehicles',
     'nav.debt': 'Debt',
-    'nav.net': 'Net Worth'
+    'nav.net': 'Net Worth',
+    'nav.viewPie': 'Composition',
+    'nav.viewLine': 'Evolution',
+    'nav.breakdown': 'Break down by',
+    'nav.byClass': 'Class',
+    'nav.byCurrency': 'Currency',
+    'nav.byAccount': 'Account / asset',
+    'nav.others': 'Others',
+    'nav.pieTitle': 'Wealth Composition',
+    'nav.pieNote': 'Slices in {code}, as of today. Debt is not shown in the chart.'
   },
   'es': {
     'tabs.dashboard': 'Panel',
@@ -458,7 +494,16 @@ const I18N = {
     'nav.properties': 'Inmuebles',
     'nav.vehicles': 'Vehículos',
     'nav.debt': 'Deudas',
-    'nav.net': 'Patrimonio Neto'
+    'nav.net': 'Patrimonio Neto',
+    'nav.viewPie': 'Composición',
+    'nav.viewLine': 'Evolución',
+    'nav.breakdown': 'Separar por',
+    'nav.byClass': 'Clase',
+    'nav.byCurrency': 'Moneda',
+    'nav.byAccount': 'Cuenta / bien',
+    'nav.others': 'Otros',
+    'nav.pieTitle': 'Composición del Patrimonio',
+    'nav.pieNote': 'Porciones en {code}, a fecha de hoy. Las deudas no entran en el gráfico.'
   }
 };
 
@@ -546,7 +591,7 @@ let state = {
   assets: [],
   valuations: [],
   settings: { lang: 'pt-BR', theme: 'default', baseCurrency: 'EUR' },
-  ui: { txType: 'all', txAccount: 'all', txMonth: '', budgetMonth: '' }
+  ui: { txType: 'all', txAccount: 'all', txMonth: '', budgetMonth: '', navView: 'pie', navBreak: 'currency' }
 };
 
 const CURRENCIES = [
@@ -888,9 +933,20 @@ function assetTotals(type, date) {
 function applyLang() {
   document.documentElement.lang = state.settings.lang;
   document.querySelectorAll('[data-i18n]').forEach((el) => { el.textContent = t(el.dataset.i18n); });
-  document.getElementById('langSelect').value = state.settings.lang;
+  renderLangButtons();
   renderAll();
 }
+function renderLangButtons() {
+  const wrap = document.getElementById('langButtons');
+  if (!wrap) return;
+  wrap.innerHTML = LANGS.map((l) => `
+    <button type="button" class="lang-btn ${state.settings.lang === l.code ? 'active' : ''}"
+            data-lang="${l.code}" title="${l.label}" aria-label="${l.label}"
+            aria-pressed="${state.settings.lang === l.code}">
+      ${l.flags.map((f) => FLAGS[f]).join('')}
+    </button>`).join('');
+}
+
 function applyTheme() {
   document.documentElement.dataset.theme = state.settings.theme;
   document.getElementById('themeSelect').value = state.settings.theme;
@@ -2012,9 +2068,25 @@ async function importCSV(file) {
 
 /* ---------- Eventos ---------- */
 function bindEvents() {
-  document.getElementById('langSelect').addEventListener('change', async (e) => {
-    state.settings.lang = e.target.value;
-    await put('settings', { key: 'lang', value: e.target.value });
+  // Os botões de idioma são recriados a cada render, então o clique é capturado
+  // no contêiner, que é fixo.
+  document.getElementById('navControls').addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-view]');
+    if (!btn) return;
+    state.ui.navView = btn.dataset.view;
+    renderNAV();
+  });
+  document.getElementById('navControls').addEventListener('change', (e) => {
+    if (e.target.id !== 'navBreak') return;
+    state.ui.navBreak = e.target.value;
+    renderNAV();
+  });
+
+  document.getElementById('langButtons').addEventListener('click', async (e) => {
+    const btn = e.target.closest('[data-lang]');
+    if (!btn) return;
+    state.settings.lang = btn.dataset.lang;
+    await put('settings', { key: 'lang', value: btn.dataset.lang });
     applyLang();
   });
   document.getElementById('themeSelect').addEventListener('change', async (e) => {
@@ -2173,6 +2245,148 @@ function buildNAVSeries() {
   return { points: out };
 }
 
+const PIE_COLORS = ['#2563eb', '#16a34a', '#f59e0b', '#e94560', '#8b5cf6', '#0891b2', '#db2777', '#64748b'];
+
+/* Fatias da composição na data de hoje, já convertidas para a moeda base.
+   Só valores positivos entram: dívida não é fatia de pizza, aparece no rodapé. */
+function buildPieData() {
+  const base = state.settings.baseCurrency;
+  const hoje = todayISO();
+  const saldos = currentBalancesAll();
+  const modo = state.ui.navBreak || 'currency';
+  let itens = [];
+
+  if (modo === 'class') {
+    const fin = {};
+    state.accounts.forEach((a) => { fin[a.currency] = (fin[a.currency] || 0) + saldos[a.id]; });
+    const im = assetTotals('property', hoje);
+    const ve = assetTotals('vehicle', hoje);
+    itens = [
+      { label: t('nav.financial'), value: consolidate(fin, base, hoje).total },
+      { label: t('nav.properties'), value: consolidate(im.gross, base, hoje).total },
+      { label: t('nav.vehicles'), value: consolidate(ve.gross, base, hoje).total }
+    ];
+  } else if (modo === 'currency') {
+    const porMoeda = {};
+    state.accounts.forEach((a) => { porMoeda[a.currency] = (porMoeda[a.currency] || 0) + saldos[a.id]; });
+    state.assets.forEach((a) => { porMoeda[a.currency] = (porMoeda[a.currency] || 0) + assetValue(a, hoje).value; });
+    Object.keys(porMoeda).forEach((c) => {
+      const v = convert(porMoeda[c], c, base, hoje);
+      if (v != null) itens.push({ label: c, value: v });
+    });
+  } else {
+    state.accounts.forEach((a) => {
+      const v = convert(saldos[a.id], a.currency, base, hoje);
+      if (v != null) itens.push({ label: a.name, value: v });
+    });
+    state.assets.forEach((a) => {
+      const v = convert(assetValue(a, hoje).value, a.currency, base, hoje);
+      if (v != null) itens.push({ label: a.name, value: v });
+    });
+  }
+
+  let pos = itens.filter((i) => i.value > 0).sort((a, b) => b.value - a.value);
+  // Cauda longa vira uma fatia só: oito fatias já é o limite do legível
+  if (pos.length > 8) {
+    const resto = pos.slice(7).reduce((soma, i) => soma + i.value, 0);
+    pos = pos.slice(0, 7).concat([{ label: t('nav.others'), value: resto }]);
+  }
+  pos.forEach((item, i) => { item.color = PIE_COLORS[i % PIE_COLORS.length]; });
+  return pos;
+}
+
+function arcoPizza(cx, cy, r, a0, a1) {
+  const x0 = cx + r * Math.cos(a0), y0 = cy + r * Math.sin(a0);
+  const x1 = cx + r * Math.cos(a1), y1 = cy + r * Math.sin(a1);
+  const grande = (a1 - a0) > Math.PI ? 1 : 0;
+  return `M ${cx} ${cy} L ${x0.toFixed(2)} ${y0.toFixed(2)} A ${r} ${r} 0 ${grande} 1 ${x1.toFixed(2)} ${y1.toFixed(2)} Z`;
+}
+
+function renderNAVPie(wrap, legend, empty) {
+  const base = state.settings.baseCurrency;
+  const hoje = todayISO();
+  const fatias = buildPieData();
+  const total = fatias.reduce((soma, f) => soma + f.value, 0);
+
+  if (!fatias.length || total <= 0) {
+    wrap.classList.add('hidden');
+    empty.classList.remove('hidden');
+    empty.textContent = t('nav.empty');
+    legend.innerHTML = '';
+    return;
+  }
+  wrap.classList.remove('hidden');
+  empty.classList.add('hidden');
+
+  const W = 720, H = 320, cx = 170, cy = 160, r = 128;
+  let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${t('nav.pieTitle')}">`;
+
+  if (fatias.length === 1) {
+    svg += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${fatias[0].color}"/>`;
+  } else {
+    let ang = -Math.PI / 2;
+    fatias.forEach((f) => {
+      const fim = ang + (f.value / total) * Math.PI * 2;
+      svg += `<path d="${arcoPizza(cx, cy, r, ang, fim)}" fill="${f.color}" stroke="var(--surface)" stroke-width="1.5"/>`;
+      const pct = (f.value / total) * 100;
+      if (pct >= 6) {
+        const meio = (ang + fim) / 2;
+        const tx = cx + Math.cos(meio) * r * 0.62;
+        const ty = cy + Math.sin(meio) * r * 0.62;
+        svg += `<text x="${tx.toFixed(1)}" y="${ty.toFixed(1)}" text-anchor="middle" font-size="13" font-weight="600" fill="#fff">${pct.toFixed(1)}%</text>`;
+      }
+      ang = fim;
+    });
+  }
+
+  // Tabela ao lado, porque fatia fina não cabe rótulo
+  let y = 46;
+  svg += `<text x="360" y="26" font-size="12" fill="var(--muted)">${t('nav.breakdown')}: ${
+    t(state.ui.navBreak === 'class' ? 'nav.byClass' : state.ui.navBreak === 'account' ? 'nav.byAccount' : 'nav.byCurrency')}</text>`;
+  fatias.forEach((f) => {
+    const pct = (f.value / total) * 100;
+    svg += `<rect x="360" y="${y - 10}" width="11" height="11" rx="2" fill="${f.color}"/>`;
+    svg += `<text x="378" y="${y}" font-size="12" fill="var(--text)">${escapeHtml(String(f.label)).slice(0, 22)}</text>`;
+    svg += `<text x="${W - 16}" y="${y}" text-anchor="end" font-size="12" fill="var(--muted)">${fmtMoney(f.value, base)} · ${pct.toFixed(1)}%</text>`;
+    y += 24;
+  });
+  svg += `<line x1="360" y1="${y - 8}" x2="${W - 16}" y2="${y - 8}" stroke="var(--border)"/>`;
+  svg += `<text x="378" y="${y + 12}" font-size="12" font-weight="600" fill="var(--text)">${t('portfolio.total')}</text>`;
+  svg += `<text x="${W - 16}" y="${y + 12}" text-anchor="end" font-size="12" font-weight="600" fill="var(--text)">${fmtMoney(total, base)}</text>`;
+
+  const imD = assetTotals('property', hoje).debt;
+  const veD = assetTotals('vehicle', hoje).debt;
+  const dividas = {};
+  [imD, veD].forEach((m) => Object.keys(m).forEach((c) => { dividas[c] = (dividas[c] || 0) + m[c]; }));
+  const totalDivida = consolidate(dividas, base, hoje).total;
+  if (totalDivida > 0) {
+    svg += `<text x="378" y="${y + 32}" font-size="12" fill="var(--muted)">${t('nav.debt')}</text>`;
+    svg += `<text x="${W - 16}" y="${y + 32}" text-anchor="end" font-size="12" fill="#b91c1c">− ${fmtMoney(totalDivida, base)}</text>`;
+    svg += `<text x="378" y="${y + 52}" font-size="12" font-weight="700" fill="var(--text)">${t('nav.net')}</text>`;
+    svg += `<text x="${W - 16}" y="${y + 52}" text-anchor="end" font-size="12" font-weight="700" fill="var(--text)">${fmtMoney(total - totalDivida, base)}</text>`;
+  }
+  svg += '</svg>';
+  wrap.innerHTML = `<div id="navTip" class="nav-tip hidden"></div>` + svg;
+  legend.innerHTML = `<span class="hint">${t('nav.pieNote').replace('{code}', base)}</span>`;
+}
+
+function renderNAVControls() {
+  const box = document.getElementById('navControls');
+  if (!box) return;
+  const v = state.ui.navView;
+  box.innerHTML = `
+    <div class="nav-toggle">
+      <button type="button" data-view="pie" class="${v === 'pie' ? 'active' : ''}">${t('nav.viewPie')}</button>
+      <button type="button" data-view="line" class="${v === 'line' ? 'active' : ''}">${t('nav.viewLine')}</button>
+    </div>
+    ${v === 'pie' ? `
+      <select id="navBreak" aria-label="${t('nav.breakdown')}">
+        <option value="currency" ${state.ui.navBreak === 'currency' ? 'selected' : ''}>${t('nav.byCurrency')}</option>
+        <option value="class" ${state.ui.navBreak === 'class' ? 'selected' : ''}>${t('nav.byClass')}</option>
+        <option value="account" ${state.ui.navBreak === 'account' ? 'selected' : ''}>${t('nav.byAccount')}</option>
+      </select>` : ''}`;
+}
+
 function renderNAV() {
   // Montar o gráfico custa caro com muitas contas. Se o dashboard não está à
   // vista, não há o que desenhar — a troca de aba dispara a renderização.
@@ -2184,6 +2398,10 @@ function renderNAV() {
   const empty = document.getElementById('navEmpty');
   const legend = document.getElementById('navLegend');
   if (!wrap) return;
+  renderNAVControls();
+  document.getElementById('navTitle').textContent = t(state.ui.navView === 'pie' ? 'nav.pieTitle' : 'nav.title');
+  if (state.ui.navView === 'pie') { renderNAVPie(wrap, legend, empty); return; }
+
   const series = buildNAVSeries();
   if (!series || series.points.length < 2) {
     wrap.classList.add('hidden'); empty.classList.remove('hidden');
@@ -2259,8 +2477,7 @@ function renderNAV() {
 async function init() {
   // 1) Interface primeiro. Abas, tema e idioma não dependem do banco de dados,
   //    então passam a funcionar mesmo que o IndexedDB falhe em abrir.
-  const langSel = document.getElementById('langSelect');
-  langSel.innerHTML = Object.keys(I18N).map((l) => `<option value="${l}">${l}</option>`).join('');
+  renderLangButtons();
   const themeSel = document.getElementById('themeSelect');
   themeSel.innerHTML = ['default', 'dark', 'green', 'blue'].map((th) => `<option value="${th}">${th}</option>`).join('');
   applyTheme();
