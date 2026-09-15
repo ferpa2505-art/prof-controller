@@ -156,6 +156,10 @@ const I18N = {
     'toast.saved': 'Salvo com sucesso.',
     'toast.deleted': 'Excluído.',
     'toast.invalidValue': 'Informe um valor válido (ex.: 620.000,00).',
+    'toast.nothingToExport': 'Não há saldos diários para exportar. Use "Registrar saldo de hoje" primeiro.',
+    'balances.snapshot': 'Registrar saldo de hoje',
+    'balances.snapshotDone': 'Saldo de hoje registrado em {n} contas.',
+    'nav.approx': 'Trechos anteriores à taxa de câmbio mais antiga usam essa taxa e são aproximados.',
     'toast.exported': 'Arquivo exportado.',
     'toast.imported': 'Backup importado.',
     'toast.invalidFile': 'Arquivo inválido.',
@@ -385,6 +389,10 @@ const I18N = {
     'toast.saved': 'Saved successfully.',
     'toast.deleted': 'Deleted.',
     'toast.invalidValue': 'Enter a valid amount (e.g. 620,000.00).',
+    'toast.nothingToExport': 'No daily balances to export. Record a balance first.',
+    'balances.snapshot': "Record today's balance",
+    'balances.snapshotDone': "Today's balance recorded for {n} accounts.",
+    'nav.approx': 'Periods before the oldest exchange rate use that rate and are approximate.',
     'toast.exported': 'File exported.',
     'toast.imported': 'Backup imported.',
     'toast.invalidFile': 'Invalid file.',
@@ -613,6 +621,10 @@ const I18N = {
     'toast.saved': 'Guardado correctamente.',
     'toast.deleted': 'Eliminado.',
     'toast.invalidValue': 'Introduzca un importe válido (ej.: 620.000,00).',
+    'toast.nothingToExport': 'No hay saldos diarios para exportar. Use "Registrar saldo de hoy" primero.',
+    'balances.snapshot': 'Registrar saldo de hoy',
+    'balances.snapshotDone': 'Saldo de hoy registrado en {n} cuentas.',
+    'nav.approx': 'Los períodos anteriores a la tasa más antigua usan esa tasa y son aproximados.',
     'toast.exported': 'Archivo exportado.',
     'toast.imported': 'Respaldo importado.',
     'toast.invalidFile': 'Archivo inválido.',
@@ -1042,6 +1054,29 @@ function convert(value, from, to, date) {
   const rTo = fxPerEur(to, date);
   if (rFrom == null || rTo == null || !rFrom) return null;
   return (Number(value) || 0) / rFrom * rTo;
+}
+
+/* Para o GRÁFICO histórico, faltar taxa antiga significa a linha inteira sumir.
+   Nestes casos usamos a taxa mais antiga conhecida, e o gráfico avisa que o
+   trecho é aproximado. O dashboard continua estrito: lá, sem taxa o valor fica
+   de fora, porque ali o número precisa ser exato. */
+let fxAproximou = false;
+
+function fxPerEurApprox(code, date) {
+  const exata = fxPerEur(code, date);
+  if (exata != null) return exata;
+  const lista = state.fx.filter((r) => r.currency === code).sort((a, b) => a.date.localeCompare(b.date));
+  if (!lista.length) return null;
+  fxAproximou = true;
+  return Number(lista[0].rate);
+}
+
+function convertApprox(value, from, to, date) {
+  if (from === to) return Number(value) || 0;
+  const rDe = fxPerEurApprox(from, date);
+  const rPara = fxPerEurApprox(to, date);
+  if (rDe == null || rPara == null || !rDe) return null;
+  return (Number(value) || 0) / rDe * rPara;
 }
 
 // Soma um mapa {moeda: valor} na moeda base. Devolve o total e o que ficou de fora.
@@ -2316,6 +2351,23 @@ async function deleteAccount(id) {
   showToast(t('toast.deleted'));
 }
 
+/* Cria a âncora de hoje para todas as contas. Sem nenhuma âncora, o gráfico de
+   evolução assume que o saldo inicial valeu desde sempre. */
+async function snapshotBalances() {
+  if (!state.accounts.length) { showToast(t('accounts.add')); return; }
+  const hoje = todayISO();
+  const saldos = currentBalancesAll();
+  for (const a of state.accounts) {
+    const existente = state.balances.find((b) => b.date === hoje && b.accountId === a.id);
+    const registro = { id: existente ? existente.id : uid(), date: hoje, accountId: a.id, value: saldos[a.id] };
+    if (existente) state.balances = state.balances.map((b) => (b.id === registro.id ? registro : b));
+    else state.balances.push(registro);
+    await put('balances', registro);
+  }
+  renderAll();
+  showToast(t('balances.snapshotDone').replace('{n}', state.accounts.length));
+}
+
 function openBalanceModal() {
   openModal(`
     <h2>${t('modal.addBalance')}</h2>
@@ -2557,6 +2609,8 @@ async function exportJSON() {
 }
 
 function exportCSV() {
+  // Baixar um arquivo só com cabeçalho parece que funcionou, e não funcionou
+  if (!state.balances.length) { showToast(t('toast.nothingToExport')); return; }
   const header = ['Data', 'Conta', 'Moeda', 'Saldo'];
   const rows = state.balances.map((b) => {
     const acc = accountById(b.accountId);
@@ -2804,6 +2858,7 @@ function bindEvents() {
   });
   on('btnAddAccount', 'click', () => openAccountModal());
   on('btnAddBalance', 'click', openBalanceModal);
+  on('btnSnapshot', 'click', snapshotBalances);
 
   // Fase 2 — transações
   on('btnAddTx', 'click', () => openTxModal());
@@ -2866,7 +2921,7 @@ function fxRateAt(currency, date) {
 
 function toBase(amount, currency, date) {
   if (amount == null) return 0;
-  return convert(amount, currency, state.settings.baseCurrency, date);
+  return convertApprox(amount, currency, state.settings.baseCurrency, date);
 }
 
 // Um bem não existe no patrimônio antes de ter sido adquirido — sem esta
@@ -2877,6 +2932,7 @@ function assetAt(asset, date) {
 }
 
 function buildNAVSeries() {
+  fxAproximou = false;
   const dates = [];
   state.balances.forEach((b) => dates.push(b.date));
   state.transactions.forEach((t) => dates.push(t.date));
@@ -2890,7 +2946,7 @@ function buildNAVSeries() {
   // A série vai até hoje. Antes ela parava na última data com dado e
   // acrescentava hoje como ponto solto, criando um salto na linha.
   const max = new Date(Math.max(Math.max(...valid), today.getTime()));
-  const points = [];
+  let points = [];
   const cur = new Date(min.getFullYear(), min.getMonth(), 1);
   while (cur <= max) {
     const end = new Date(cur.getFullYear(), cur.getMonth() + 1, 0);
@@ -2899,6 +2955,16 @@ function buildNAVSeries() {
   }
   const hojeISO = todayISO();
   if (!points.length || points[points.length - 1] < hojeISO) points.push(hojeISO);
+
+  // Um imóvel comprado em 2014 gera mais de 150 pontos mensais. Acima de 60,
+  // a série é rareada mantendo início e fim, para o gráfico continuar legível.
+  const MAX_PONTOS = 60;
+  if (points.length > MAX_PONTOS) {
+    const passo = Math.ceil(points.length / MAX_PONTOS);
+    const ultimo = points[points.length - 1];
+    points = points.filter((_, i) => i % passo === 0);
+    if (points[points.length - 1] !== ultimo) points.push(ultimo);
+  }
   /* Índice por conta, montado uma vez. Sem ele, cada ponto da série varria a
      lista inteira de saldos e lançamentos para cada conta: com 77 contas e 36
      pontos isso passa de nove milhões de comparações. */
@@ -3217,6 +3283,10 @@ function renderNAV() {
   // A explicação muda com a visão: a da série mensal não vale para a pizza
   const dica = document.getElementById('navHint');
   if (dica) dica.textContent = ehPizza ? t('nav.pieNote').replace('{code}', state.settings.baseCurrency) : t('nav.hint');
+  if (!ehPizza && dica) {
+    // o aviso só pode ser dado depois de montar a série
+    setTimeout(() => { if (fxAproximou) dica.textContent = t('nav.hint') + ' ' + t('nav.approx'); }, 0);
+  }
   if (state.ui.navView === 'pie') { renderNAVPie(wrap, legend, empty); return; }
 
   const series = buildNAVSeries();
