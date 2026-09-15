@@ -306,6 +306,12 @@ const I18N = {
     'inv.totalCost': 'Custo total',
     'inv.totalReturn': 'Rentabilidade',
     'inv.noAccounts': 'Cadastre uma conta antes de criar posições.',
+    'inv.noAccount': 'Sem conta vinculada',
+    'inv.initial': 'Valor já aplicado (opcional)',
+    'inv.initialQty': 'Quantidade já possuída',
+    'inv.deduct': 'Descontar este valor da conta vinculada',
+    'inv.deductHint': 'Marque se o dinheiro ainda está no saldo daquela conta — assim ele sai de lá e passa a contar como investimento, sem duplicar o patrimônio.',
+    'inv.accountHint': 'Só vincule uma conta se o dinheiro passa por ela. Uma posição pode existir sozinha.',
     'dashboard.investments': 'Investimentos',
     'modal.addPosition': 'Nova posição',
     'modal.editPosition': 'Editar posição',
@@ -585,6 +591,12 @@ const I18N = {
     'inv.totalCost': 'Total cost',
     'inv.totalReturn': 'Return',
     'inv.noAccounts': 'Create an account before adding positions.',
+    'inv.noAccount': 'No linked account',
+    'inv.initial': 'Amount already invested (optional)',
+    'inv.initialQty': 'Quantity already held',
+    'inv.deduct': 'Deduct this amount from the linked account',
+    'inv.deductHint': 'Check if the money is still in that account balance — it then moves out of there and counts as an investment, without double counting.',
+    'inv.accountHint': 'Only link an account if the money flows through it. A position can stand alone.',
     'dashboard.investments': 'Investments',
     'modal.addPosition': 'New position',
     'modal.editPosition': 'Edit position',
@@ -863,6 +875,12 @@ const I18N = {
     'inv.totalCost': 'Coste total',
     'inv.totalReturn': 'Rentabilidade',
     'inv.noAccounts': 'Cree una cuenta antes de añadir posiciones.',
+    'inv.noAccount': 'Sin cuenta vinculada',
+    'inv.initial': 'Importe ya invertido (opcional)',
+    'inv.initialQty': 'Cantidad ya poseída',
+    'inv.deduct': 'Descontar este importe de la cuenta vinculada',
+    'inv.deductHint': 'Marque si el dinero sigue en el saldo de esa cuenta — así sale de allí y pasa a contar como inversión, sin duplicar el patrimonio.',
+    'inv.accountHint': 'Vincule una cuenta solo si el dinero pasa por ella. Una posición puede existir sola.',
     'dashboard.investments': 'Inversiones',
     'modal.addPosition': 'Nueva posición',
     'modal.editPosition': 'Editar posición',
@@ -2628,18 +2646,19 @@ function renderInvestments() {
 }
 
 function openPositionModal(id) {
-  if (!state.accounts.length) { showToast(t('inv.noAccounts')); return; }
   const p = id ? state.positions.find((x) => x.id === id) : null;
   openModal(`
     <h2>${p ? t('modal.editPosition') : t('modal.addPosition')}</h2>
     <label>${t('inv.name')}</label>
     <input id="poName" value="${p ? escapeHtml(p.name) : ''}">
     <label>${t('inv.account')}</label>
-    <select id="poAccount">
+    <select id="poAccount" onchange="onPositionAccountChange()">
+      <option value="">${t('inv.noAccount')}</option>
       ${state.accounts.map((a) => `<option value="${a.id}" ${p && p.accountId === a.id ? 'selected' : ''}>${escapeHtml(a.name)} (${a.currency})</option>`).join('')}
     </select>
+    <p class="hint">${t('inv.accountHint')}</p>
     <label>${t('inv.kind')}</label>
-    <select id="poKind">
+    <select id="poKind" onchange="onPositionAccountChange()">
       <option value="quote" ${!p || p.kind === 'quote' ? 'selected' : ''}>${t('inv.kindQuote')}</option>
       <option value="value" ${p && p.kind === 'value' ? 'selected' : ''}>${t('inv.kindValue')}</option>
     </select>
@@ -2651,8 +2670,30 @@ function openPositionModal(id) {
         return `<option value="${c.code}" ${sel ? 'selected' : ''}>${c.code}</option>`;
       }).join('')}
     </select>
+    ${p ? '' : `
+      <div id="poInitialWrap">
+        <label>${t('inv.initial')}</label>
+        <input id="poInitial" type="text" inputmode="decimal">
+        <div id="poInitialQtyWrap">
+          <label>${t('inv.initialQty')}</label>
+          <input id="poInitialQty" type="text" inputmode="decimal">
+        </div>
+        <label class="checkline" id="poDeductWrap"><input type="checkbox" id="poDeduct" checked> ${t('inv.deduct')}</label>
+        <p class="hint">${t('inv.deductHint')}</p>
+      </div>`}
     <button class="primary-btn" onclick="savePosition('${p ? p.id : ''}')">${t('modal.save')}</button>
   `);
+  onPositionAccountChange();
+}
+
+// Sem conta vinculada não há de onde descontar; e renda fixa não tem quantidade.
+function onPositionAccountChange() {
+  const wrapDeduz = document.getElementById('poDeductWrap');
+  const conta = document.getElementById('poAccount');
+  if (wrapDeduz && conta) wrapDeduz.classList.toggle('hidden', !conta.value);
+  const wrapQtd = document.getElementById('poInitialQtyWrap');
+  const kind = document.getElementById('poKind');
+  if (wrapQtd && kind) wrapQtd.classList.toggle('hidden', kind.value !== 'quote');
 }
 
 async function savePosition(id) {
@@ -2661,13 +2702,36 @@ async function savePosition(id) {
   const pos = {
     id: id || uid(),
     name: nome,
-    accountId: document.getElementById('poAccount').value,
+    accountId: document.getElementById('poAccount').value || null,
     kind: document.getElementById('poKind').value,
     currency: document.getElementById('poCurrency').value
   };
   if (id) state.positions = state.positions.map((x) => (x.id === id ? pos : x));
   else state.positions.push(pos);
   await put('positions', pos);
+
+  // Valor já aplicado vira o primeiro aporte. Se o dinheiro ainda está na conta
+  // vinculada, ele sai de lá — é isso que evita contar o mesmo valor duas vezes.
+  const elInicial = document.getElementById('poInitial');
+  const inicial = elInicial ? parseMoney(elInicial.value) : null;
+  if (!id && inicial != null && inicial > 0) {
+    const elQtd = document.getElementById('poInitialQty');
+    const qtd = elQtd ? (parseMoney(elQtd.value) || 0) : 0;
+    const mov = { id: uid(), positionId: pos.id, type: 'buy', date: todayISO(), quantity: qtd, amount: inicial };
+    const deduz = document.getElementById('poDeduct');
+    if (pos.accountId && deduz && deduz.checked) {
+      const trn = {
+        id: uid(), type: 'expense', date: todayISO(), accountId: pos.accountId,
+        category: 'investimentos', description: t('inv.buy') + ' — ' + pos.name, value: inicial
+      };
+      state.transactions.push(trn);
+      await put('transactions', trn);
+      mov.transactionId = trn.id;
+    }
+    state.invmoves.push(mov);
+    await put('invmoves', mov);
+  }
+
   closeModal();
   renderAll();
   showToast(t('toast.saved'));
@@ -2726,9 +2790,10 @@ function openMoveModal(positionId) {
     <input id="mvAmount" type="text" inputmode="decimal">
     <label>${t('inv.moveAccount')}</label>
     <select id="mvAccount">
+      <option value="">${t('inv.noAccount')}</option>
       ${state.accounts.map((a) => `<option value="${a.id}" ${pos.accountId === a.id ? 'selected' : ''}>${escapeHtml(a.name)} (${a.currency})</option>`).join('')}
     </select>
-    <label class="checkline"><input type="checkbox" id="mvLaunch" checked> ${t('inv.createLaunch')}</label>
+    <label class="checkline"><input type="checkbox" id="mvLaunch" ${pos.accountId ? 'checked' : ''}> ${t('inv.createLaunch')}</label>
     <p class="hint">${t('inv.launchHint')}</p>
     <button class="primary-btn" onclick="saveMove('${positionId}')">${t('modal.save')}</button>
   `);
@@ -2748,8 +2813,8 @@ async function saveMove(positionId) {
   const mov = { id: uid(), positionId, type: tipo, date: data, quantity: qtd || 0, amount: valor };
 
   // O dinheiro sai (aporte) ou entra (resgate) na conta escolhida
-  if (document.getElementById('mvLaunch').checked) {
-    const contaId = document.getElementById('mvAccount').value;
+  const contaId = document.getElementById('mvAccount').value;
+  if (contaId && document.getElementById('mvLaunch').checked) {
     const trn = {
       id: uid(),
       type: tipo === 'buy' ? 'expense' : 'income',
