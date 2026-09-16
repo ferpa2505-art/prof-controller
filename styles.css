@@ -564,3 +564,35 @@ body.sec-open { overflow: hidden; }
 .sec-group select { padding: 8px; border-radius: 6px; border: 1px solid var(--border); background: var(--surface); color: var(--text); }
 .danger-btn { color: var(--negative) !important; border-color: color-mix(in srgb, var(--negative) 45%, var(--border)) !important; }
 @media (prefers-reduced-motion: reduce) { .pin-meter span { transition: none; } }
+
+/* ===== Fase 12 — Importador B3 e proventos ===== */
+.div-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.div-actions .secondary-btn, .div-actions .primary-btn { margin: 0; }
+#divCards { margin-bottom: 12px; }
+.div-bars { display: grid; grid-template-columns: repeat(12, 1fr); gap: 6px; align-items: end; height: 120px; padding: 12px; margin-bottom: 12px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px; }
+.div-bar { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; gap: 4px; }
+.div-bar-fill { width: 70%; max-width: 28px; background: var(--positive); border-radius: 4px 4px 0 0; min-height: 0; }
+.div-bar-label { font-size: 10px; color: var(--muted); white-space: nowrap; }
+.div-filters { align-items: flex-end; }
+.div-filters .secondary-btn { margin: 0; }
+.b3-steps { padding-left: 20px; line-height: 1.8; font-size: 14px; margin: 10px 0; }
+.b3-steps a { color: var(--accent); }
+.b3-drop {
+  display: flex !important; flex-direction: column; align-items: center; gap: 6px; padding: 22px; margin: 12px 0 !important;
+  border: 2px dashed var(--border); border-radius: 12px; background: var(--bg); cursor: pointer; text-align: center; color: var(--text) !important;
+}
+.b3-drop:hover, .b3-drop:focus-within { border-color: var(--accent); }
+.b3-drop input { font-size: 13px; max-width: 100%; }
+.b3-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin: 16px 0 10px; }
+.b3-summary div { border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; }
+.b3-summary span { display: block; font-size: 12px; color: var(--muted); }
+.b3-summary strong { font-size: 18px; }
+.b3-bulk { display: flex; gap: 14px; margin: 8px 0; }
+.b3-table td { vertical-align: top; font-size: 13px; }
+.b3-table tr.b3-closed td { opacity: .65; }
+.b3-warn { font-size: 12px; color: #b45309; min-width: 160px; }
+[data-theme="dark"] .b3-warn { color: #fbbf24; }
+.b3-ignored { margin: 12px 0; font-size: 13px; }
+.b3-ignored summary { cursor: pointer; color: var(--muted); }
+.b3-ignored ul { margin: 8px 0 0 18px; line-height: 1.7; }
