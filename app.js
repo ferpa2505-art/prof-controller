@@ -7052,10 +7052,9 @@ async function init() {
   showTab('dashboard');
   startNewsSchedule();
 
+   init();
   if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('./service-worker.js');
   });
 }
-   
-init();
