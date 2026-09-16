@@ -1,5 +1,5 @@
 /* ============================================================
-   ProF Controller — Fases 1 a 10 + assistente de chaves de API
+   ProF Controller — Fases 1 a 11 (11: senha, criptografia e biometria)
 
    Fase 1: contas, moedas, saldos diários, moeda base, importação CSV,
            i18n (pt-BR/en/es), temas, offline.
@@ -366,6 +366,94 @@ const I18N = {
     'modal.move': 'Aporte ou resgate',
     'mkt.lookup': 'Buscar ativo (ticker ou ISIN)',
     'mkt.manual': 'Cadastrar sem busca (renda fixa, CDB ou ativo sem cotação)',
+    'sec.title': 'Segurança e privacidade',
+    'sec.statusOn': 'Proteção ativada',
+    'sec.statusOff': 'Proteção desativada',
+    'sec.offText': 'Seus dados estão guardados abertos neste navegador. Ative a proteção para exigir senha e criptografar tudo.',
+    'sec.onText': 'Seus dados ficam criptografados neste aparelho e só abrem com a sua senha, o código de recuperação ou a biometria cadastrada.',
+    'sec.unsupported': 'Este navegador não oferece os recursos de criptografia necessários.',
+    'sec.offerTitle': 'Proteja seus dados',
+    'sec.offerText': 'O ProF Controller guarda seu patrimônio só neste aparelho. Com a proteção ativada:',
+    'sec.offer1': 'Tudo fica criptografado: sem a senha, ninguém lê seus dados.',
+    'sec.offer2': 'Senha numérica de 4 a 10 dígitos para abrir o app.',
+    'sec.offer3': 'Depois, você pode abrir com Face ID ou digital.',
+    'sec.offer4': 'O app se bloqueia sozinho após alguns minutos sem uso.',
+    'sec.offerWarning': 'Se esquecer a senha, só o código de recuperação abre seus dados. Nem nós conseguimos recuperá-los.',
+    'sec.offerYes': 'Ativar proteção',
+    'sec.offerLater': 'Agora não',
+    'sec.step': 'Passo {a} de {b}',
+    'sec.createTitle': 'Crie sua senha',
+    'sec.newPinTitle': 'Crie uma nova senha',
+    'sec.createHint': 'Use de {min} a {max} números. Recomendamos 6 ou mais: quanto maior, mais difícil de descobrir.',
+    'sec.pin': 'Senha',
+    'sec.pinConfirm': 'Repita a senha',
+    'sec.continue': 'Continuar',
+    'sec.cancel': 'Cancelar',
+    'sec.back': 'Voltar',
+    'sec.strength.weak': 'Fraca: aceita, mas fácil de descobrir por tentativa.',
+    'sec.strength.good': 'Boa.',
+    'sec.strength.strong': 'Forte.',
+    'sec.err.length': 'A senha precisa ter de {min} a {max} números.',
+    'sec.err.repeated': 'Evite números repetidos (ex.: 1111).',
+    'sec.err.sequence': 'Evite sequências (ex.: 1234).',
+    'sec.err.mismatch': 'As senhas não conferem.',
+    'sec.codeTitle': 'Seu código de recuperação',
+    'sec.codeHint': 'Guarde este código fora do celular: papel, gerenciador de senhas ou e-mail pessoal. Ele é a ÚNICA forma de abrir seus dados se você esquecer a senha. Ele não será mostrado de novo.',
+    'sec.codeReplaced': 'Este código substitui o anterior, que deixa de funcionar. Guarde-o em local seguro.',
+    'sec.copy': 'Copiar',
+    'sec.saveTxt': 'Baixar .txt',
+    'sec.copied': 'Código copiado.',
+    'sec.copyFail': 'Não foi possível copiar; anote o código.',
+    'sec.codeSaved': 'Guardei o código em local seguro',
+    'sec.backupFirst': 'Baixar um backup antes de ativar (recomendado)',
+    'sec.codeTxtNote': 'Guarde este arquivo em local seguro e fora deste aparelho.',
+    'sec.activate': 'Ativar proteção',
+    'sec.finish': 'Concluir',
+    'sec.protecting': 'Protegendo…',
+    'sec.encrypting': 'Criptografando seus dados… {p}%',
+    'sec.activateFail': 'Não foi possível concluir. Seus dados continuam intactos. Detalhe:',
+    'sec.activated': 'Proteção ativada. Seus dados estão criptografados.',
+    'sec.lockedTitle': 'ProF Controller bloqueado',
+    'sec.lockedHint': 'Digite sua senha para abrir.',
+    'sec.unlock': 'Desbloquear',
+    'sec.checking': 'Verificando…',
+    'sec.useBio': 'Usar Face ID / digital',
+    'sec.bioWaiting': 'Aguardando confirmação…',
+    'sec.bioFail': 'Não foi possível confirmar a biometria. Use a senha.',
+    'sec.wrong': 'Senha incorreta. {n} tentativa(s) antes de uma espera.',
+    'sec.wrongWait': 'Senha incorreta.',
+    'sec.wrongShort': 'Senha incorreta.',
+    'sec.wait': 'Muitas tentativas. Aguarde {s} s.',
+    'sec.forgot': 'Esqueci minha senha',
+    'sec.recoverTitle': 'Recuperar acesso',
+    'sec.recoverHint': 'Digite o código de recuperação que você guardou ao ativar a proteção. Depois, você cria uma nova senha.',
+    'sec.recoveryCode': 'Código de recuperação',
+    'sec.recWrong': 'Código ou senha incorretos.',
+    'sec.bioTitle': 'Abrir com Face ID ou digital?',
+    'sec.bioHint': 'Na próxima vez, confirme com o rosto ou o dedo em vez de digitar a senha. A senha continua valendo.',
+    'sec.bioEnable': 'Ativar Face ID / digital',
+    'sec.bioOn': 'Biometria ativada.',
+    'sec.bioRemove': 'Remover biometria',
+    'sec.bioRemoveConfirm': 'Remover o desbloqueio por biometria deste aparelho?',
+    'sec.bioNoPrf': 'Este aparelho ou navegador não permite usar a biometria junto com a criptografia. Continue usando a senha.',
+    'sec.autoLock': 'Bloquear automaticamente após',
+    'sec.minutes': '{n} min sem uso',
+    'sec.never': 'Nunca',
+    'sec.lockNow': 'Bloquear agora',
+    'sec.changePin': 'Alterar senha',
+    'sec.newCode': 'Gerar novo código de recuperação',
+    'sec.pinChanged': 'Senha alterada.',
+    'sec.codeUpdated': 'Novo código salvo; o anterior não funciona mais.',
+    'sec.confirmPin': 'Digite sua senha atual para continuar.',
+    'sec.disable': 'Desativar proteção',
+    'sec.disableConfirm': 'Desativar a proteção deixa seus dados abertos neste navegador. Continuar?',
+    'sec.decrypting': 'Removendo a criptografia…',
+    'sec.disabled': 'Proteção desativada.',
+    'sec.exportEnc': 'Exportar backup protegido (recomendado)',
+    'sec.encExported': 'Backup protegido exportado. Ele abre com a senha ou o código de recuperação atuais.',
+    'sec.plainExportWarn': 'Este arquivo sai SEM criptografia: qualquer pessoa com ele verá seus dados. Continuar?',
+    'sec.encImportTitle': 'Backup protegido',
+    'sec.encImportHint': 'Digite a senha ou o código de recuperação que valiam quando este backup foi feito.',
     'apiw.title': 'Configure as fontes de cotação',
     'apiw.intro': 'O ProF Controller usa três serviços gratuitos para buscar cotações. Cada um pede uma chave, criada em poucos minutos. Sem elas, o app funciona, mas sem preços automáticos.',
     'apiw.purpose.finnhub': 'Cotações de ações dos EUA e busca de ativos pelo ISIN.',
@@ -927,6 +1015,94 @@ const I18N = {
     'modal.move': 'Contribution or withdrawal',
     'mkt.lookup': 'Find asset (ticker or ISIN)',
     'mkt.manual': 'Add without search (fixed income, CDs or unlisted assets)',
+    'sec.title': 'Security and privacy',
+    'sec.statusOn': 'Protection on',
+    'sec.statusOff': 'Protection off',
+    'sec.offText': 'Your data is stored unencrypted in this browser. Turn on protection to require a PIN and encrypt everything.',
+    'sec.onText': 'Your data is encrypted on this device and opens only with your PIN, recovery code or enrolled biometrics.',
+    'sec.unsupported': 'This browser lacks the required encryption features.',
+    'sec.offerTitle': 'Protect your data',
+    'sec.offerText': 'ProF Controller keeps your net worth only on this device. With protection on:',
+    'sec.offer1': 'Everything is encrypted: without the PIN, nobody can read your data.',
+    'sec.offer2': 'A numeric PIN of 4 to 10 digits to open the app.',
+    'sec.offer3': 'Later you can open it with Face ID or fingerprint.',
+    'sec.offer4': 'The app locks itself after a few idle minutes.',
+    'sec.offerWarning': 'If you forget the PIN, only the recovery code can open your data. Not even we can recover it.',
+    'sec.offerYes': 'Turn on protection',
+    'sec.offerLater': 'Not now',
+    'sec.step': 'Step {a} of {b}',
+    'sec.createTitle': 'Create your PIN',
+    'sec.newPinTitle': 'Create a new PIN',
+    'sec.createHint': 'Use {min} to {max} digits. We recommend 6 or more: longer is harder to guess.',
+    'sec.pin': 'PIN',
+    'sec.pinConfirm': 'Repeat PIN',
+    'sec.continue': 'Continue',
+    'sec.cancel': 'Cancel',
+    'sec.back': 'Back',
+    'sec.strength.weak': 'Weak: allowed, but easy to guess.',
+    'sec.strength.good': 'Good.',
+    'sec.strength.strong': 'Strong.',
+    'sec.err.length': 'The PIN must have {min} to {max} digits.',
+    'sec.err.repeated': 'Avoid repeated digits (e.g. 1111).',
+    'sec.err.sequence': 'Avoid sequences (e.g. 1234).',
+    'sec.err.mismatch': 'PINs do not match.',
+    'sec.codeTitle': 'Your recovery code',
+    'sec.codeHint': 'Keep this code off your phone: on paper, in a password manager or personal e-mail. It is the ONLY way to open your data if you forget the PIN. It will not be shown again.',
+    'sec.codeReplaced': 'This code replaces the previous one, which stops working. Keep it safe.',
+    'sec.copy': 'Copy',
+    'sec.saveTxt': 'Download .txt',
+    'sec.copied': 'Code copied.',
+    'sec.copyFail': 'Could not copy; write the code down.',
+    'sec.codeSaved': 'I stored the code somewhere safe',
+    'sec.backupFirst': 'Download a backup before turning on (recommended)',
+    'sec.codeTxtNote': 'Keep this file somewhere safe and off this device.',
+    'sec.activate': 'Turn on protection',
+    'sec.finish': 'Finish',
+    'sec.protecting': 'Protecting…',
+    'sec.encrypting': 'Encrypting your data… {p}%',
+    'sec.activateFail': 'Could not finish. Your data is intact. Detail:',
+    'sec.activated': 'Protection on. Your data is encrypted.',
+    'sec.lockedTitle': 'ProF Controller locked',
+    'sec.lockedHint': 'Enter your PIN to open.',
+    'sec.unlock': 'Unlock',
+    'sec.checking': 'Checking…',
+    'sec.useBio': 'Use Face ID / fingerprint',
+    'sec.bioWaiting': 'Waiting for confirmation…',
+    'sec.bioFail': 'Biometric check failed. Use your PIN.',
+    'sec.wrong': 'Wrong PIN. {n} attempt(s) left before a wait.',
+    'sec.wrongWait': 'Wrong PIN.',
+    'sec.wrongShort': 'Wrong PIN.',
+    'sec.wait': 'Too many attempts. Wait {s} s.',
+    'sec.forgot': 'I forgot my PIN',
+    'sec.recoverTitle': 'Recover access',
+    'sec.recoverHint': 'Enter the recovery code you saved when turning on protection. Then create a new PIN.',
+    'sec.recoveryCode': 'Recovery code',
+    'sec.recWrong': 'Wrong code or PIN.',
+    'sec.bioTitle': 'Open with Face ID or fingerprint?',
+    'sec.bioHint': 'Next time, confirm with your face or finger instead of typing the PIN. The PIN still works.',
+    'sec.bioEnable': 'Turn on Face ID / fingerprint',
+    'sec.bioOn': 'Biometrics on.',
+    'sec.bioRemove': 'Remove biometrics',
+    'sec.bioRemoveConfirm': 'Remove biometric unlock from this device?',
+    'sec.bioNoPrf': 'This device or browser cannot combine biometrics with encryption. Keep using your PIN.',
+    'sec.autoLock': 'Lock automatically after',
+    'sec.minutes': '{n} idle min',
+    'sec.never': 'Never',
+    'sec.lockNow': 'Lock now',
+    'sec.changePin': 'Change PIN',
+    'sec.newCode': 'Generate new recovery code',
+    'sec.pinChanged': 'PIN changed.',
+    'sec.codeUpdated': 'New code saved; the previous one no longer works.',
+    'sec.confirmPin': 'Enter your current PIN to continue.',
+    'sec.disable': 'Turn off protection',
+    'sec.disableConfirm': 'Turning off protection leaves your data unencrypted in this browser. Continue?',
+    'sec.decrypting': 'Removing encryption…',
+    'sec.disabled': 'Protection off.',
+    'sec.exportEnc': 'Export protected backup (recommended)',
+    'sec.encExported': 'Protected backup exported. It opens with your current PIN or recovery code.',
+    'sec.plainExportWarn': 'This file is NOT encrypted: anyone who has it will see your data. Continue?',
+    'sec.encImportTitle': 'Protected backup',
+    'sec.encImportHint': 'Enter the PIN or recovery code that was valid when this backup was made.',
     'apiw.title': 'Set up price sources',
     'apiw.intro': 'ProF Controller uses three free services to fetch prices. Each needs a key that takes a few minutes to create. Without them the app works, but without automatic prices.',
     'apiw.purpose.finnhub': 'US stock prices and asset search by ISIN.',
@@ -1487,6 +1663,94 @@ const I18N = {
     'modal.move': 'Aporte o rescate',
     'mkt.lookup': 'Buscar activo (ticker o ISIN)',
     'mkt.manual': 'Registrar sin búsqueda (renta fija, CDB o activo sin cotización)',
+    'sec.title': 'Seguridad y privacidad',
+    'sec.statusOn': 'Protección activada',
+    'sec.statusOff': 'Protección desactivada',
+    'sec.offText': 'Tus datos están guardados sin cifrar en este navegador. Activa la protección para exigir contraseña y cifrarlo todo.',
+    'sec.onText': 'Tus datos están cifrados en este dispositivo y solo se abren con tu contraseña, el código de recuperación o la biometría registrada.',
+    'sec.unsupported': 'Este navegador no ofrece las funciones de cifrado necesarias.',
+    'sec.offerTitle': 'Protege tus datos',
+    'sec.offerText': 'ProF Controller guarda tu patrimonio solo en este dispositivo. Con la protección activada:',
+    'sec.offer1': 'Todo queda cifrado: sin la contraseña, nadie lee tus datos.',
+    'sec.offer2': 'Contraseña numérica de 4 a 10 dígitos para abrir la app.',
+    'sec.offer3': 'Después podrás abrir con Face ID o huella.',
+    'sec.offer4': 'La app se bloquea sola tras unos minutos sin uso.',
+    'sec.offerWarning': 'Si olvidas la contraseña, solo el código de recuperación abre tus datos. Ni nosotros podemos recuperarlos.',
+    'sec.offerYes': 'Activar protección',
+    'sec.offerLater': 'Ahora no',
+    'sec.step': 'Paso {a} de {b}',
+    'sec.createTitle': 'Crea tu contraseña',
+    'sec.newPinTitle': 'Crea una nueva contraseña',
+    'sec.createHint': 'Usa de {min} a {max} números. Recomendamos 6 o más: cuanto más larga, más difícil de adivinar.',
+    'sec.pin': 'Contraseña',
+    'sec.pinConfirm': 'Repite la contraseña',
+    'sec.continue': 'Continuar',
+    'sec.cancel': 'Cancelar',
+    'sec.back': 'Volver',
+    'sec.strength.weak': 'Débil: se acepta, pero es fácil de adivinar.',
+    'sec.strength.good': 'Buena.',
+    'sec.strength.strong': 'Fuerte.',
+    'sec.err.length': 'La contraseña debe tener de {min} a {max} números.',
+    'sec.err.repeated': 'Evita números repetidos (ej.: 1111).',
+    'sec.err.sequence': 'Evita secuencias (ej.: 1234).',
+    'sec.err.mismatch': 'Las contraseñas no coinciden.',
+    'sec.codeTitle': 'Tu código de recuperación',
+    'sec.codeHint': 'Guarda este código fuera del móvil: en papel, un gestor de contraseñas o tu correo personal. Es la ÚNICA forma de abrir tus datos si olvidas la contraseña. No se mostrará de nuevo.',
+    'sec.codeReplaced': 'Este código sustituye al anterior, que deja de funcionar. Guárdalo en un lugar seguro.',
+    'sec.copy': 'Copiar',
+    'sec.saveTxt': 'Descargar .txt',
+    'sec.copied': 'Código copiado.',
+    'sec.copyFail': 'No se pudo copiar; anota el código.',
+    'sec.codeSaved': 'Guardé el código en un lugar seguro',
+    'sec.backupFirst': 'Descargar una copia antes de activar (recomendado)',
+    'sec.codeTxtNote': 'Guarda este archivo en un lugar seguro y fuera de este dispositivo.',
+    'sec.activate': 'Activar protección',
+    'sec.finish': 'Finalizar',
+    'sec.protecting': 'Protegiendo…',
+    'sec.encrypting': 'Cifrando tus datos… {p}%',
+    'sec.activateFail': 'No se pudo completar. Tus datos siguen intactos. Detalle:',
+    'sec.activated': 'Protección activada. Tus datos están cifrados.',
+    'sec.lockedTitle': 'ProF Controller bloqueado',
+    'sec.lockedHint': 'Introduce tu contraseña para abrir.',
+    'sec.unlock': 'Desbloquear',
+    'sec.checking': 'Verificando…',
+    'sec.useBio': 'Usar Face ID / huella',
+    'sec.bioWaiting': 'Esperando confirmación…',
+    'sec.bioFail': 'No se pudo confirmar la biometría. Usa la contraseña.',
+    'sec.wrong': 'Contraseña incorrecta. {n} intento(s) antes de una espera.',
+    'sec.wrongWait': 'Contraseña incorrecta.',
+    'sec.wrongShort': 'Contraseña incorrecta.',
+    'sec.wait': 'Demasiados intentos. Espera {s} s.',
+    'sec.forgot': 'Olvidé mi contraseña',
+    'sec.recoverTitle': 'Recuperar acceso',
+    'sec.recoverHint': 'Introduce el código de recuperación que guardaste al activar la protección. Después crearás una nueva contraseña.',
+    'sec.recoveryCode': 'Código de recuperación',
+    'sec.recWrong': 'Código o contraseña incorrectos.',
+    'sec.bioTitle': '¿Abrir con Face ID o huella?',
+    'sec.bioHint': 'La próxima vez, confirma con tu rostro o dedo en lugar de escribir la contraseña. La contraseña sigue valiendo.',
+    'sec.bioEnable': 'Activar Face ID / huella',
+    'sec.bioOn': 'Biometría activada.',
+    'sec.bioRemove': 'Quitar biometría',
+    'sec.bioRemoveConfirm': '¿Quitar el desbloqueo por biometría de este dispositivo?',
+    'sec.bioNoPrf': 'Este dispositivo o navegador no permite combinar la biometría con el cifrado. Sigue usando la contraseña.',
+    'sec.autoLock': 'Bloquear automáticamente tras',
+    'sec.minutes': '{n} min sin uso',
+    'sec.never': 'Nunca',
+    'sec.lockNow': 'Bloquear ahora',
+    'sec.changePin': 'Cambiar contraseña',
+    'sec.newCode': 'Generar nuevo código de recuperación',
+    'sec.pinChanged': 'Contraseña cambiada.',
+    'sec.codeUpdated': 'Nuevo código guardado; el anterior ya no funciona.',
+    'sec.confirmPin': 'Introduce tu contraseña actual para continuar.',
+    'sec.disable': 'Desactivar protección',
+    'sec.disableConfirm': 'Desactivar la protección deja tus datos sin cifrar en este navegador. ¿Continuar?',
+    'sec.decrypting': 'Quitando el cifrado…',
+    'sec.disabled': 'Protección desactivada.',
+    'sec.exportEnc': 'Exportar copia protegida (recomendado)',
+    'sec.encExported': 'Copia protegida exportada. Se abre con tu contraseña o código de recuperación actuales.',
+    'sec.plainExportWarn': 'Este archivo sale SIN cifrar: cualquiera que lo tenga verá tus datos. ¿Continuar?',
+    'sec.encImportTitle': 'Copia protegida',
+    'sec.encImportHint': 'Introduce la contraseña o el código de recuperación válidos cuando se hizo esta copia.',
     'apiw.title': 'Configura las fuentes de cotización',
     'apiw.intro': 'ProF Controller usa tres servicios gratuitos para obtener cotizaciones. Cada uno pide una clave que se crea en pocos minutos. Sin ellas la app funciona, pero sin precios automáticos.',
     'apiw.purpose.finnhub': 'Cotizaciones de acciones de EE. UU. y búsqueda por ISIN.',
@@ -1910,6 +2174,7 @@ function showFatal(msg) {
 function tx(store, mode) { return db.transaction(store, mode).objectStore(store); }
 
 async function loadAll() {
+  // Configurações primeiro: entradas de cache (hist:) nem são abertas aqui
   state.accounts = await getAll('accounts');
   state.balances = await getAll('balances');
   state.transactions = await getAll('transactions');
@@ -1922,8 +2187,11 @@ async function loadAll() {
   state.invmoves = await getAll('invmoves');
   state.assets = await getAll('assets');
   state.valuations = await getAll('valuations');
-  const settings = await getAll('settings');
-  settings.forEach((s) => { if (!String(s.key).startsWith(HIST_PREFIX)) state.settings[s.key] = s.value; });
+  const brutos = (await rawGetAll('settings')).filter((r) => !String(r.key).startsWith(HIST_PREFIX) && r.key !== SEC_KEY);
+  for (const r of brutos) {
+    const s = await decodeRecord(r);
+    if (s && s.key !== SEC_KEY) state.settings[s.key] = s.value;
+  }
 }
 
 function getAll(store) {
@@ -1933,9 +2201,139 @@ function getAll(store) {
     const req = tx(store, 'readonly').getAll();
     req.onsuccess = () => resolve(req.result || []);
     req.onerror = () => reject(req.error);
+  }).then(async (lista) => {
+    // Com a proteção ativa, cada registro é aberto aqui; registros ainda abertos passam direto
+    const out = [];
+    for (const r of lista) { const v = await decodeRecord(r); if (v) out.push(v); }
+    return out;
   });
 }
-function put(store, value) {
+// A criptografia acontece ANTES de abrir a transação: o IndexedDB fecha
+// transações que ficam esperando outras promessas.
+async function put(store, value) {
+  if (!db) return;
+  const registro = await encodeRecord(store, value);
+  return new Promise((resolve, reject) => {
+    const req = tx(store, 'readwrite').put(registro);
+    req.onsuccess = () => resolve();
+    req.onerror = () => reject(req.error);
+  });
+}
+async function del(store, id) {
+  if (!db) return;
+  const chave = await storageKeyFor(store, id);
+  return new Promise((resolve, reject) => {
+    const req = tx(store, 'readwrite').delete(chave);
+    req.onsuccess = () => resolve();
+    req.onerror = () => reject(req.error);
+  });
+}
+
+/* ================= FASE 11 — Segurança: senha, criptografia e biometria =================
+   Como funciona
+   - Uma CHAVE DE DADOS aleatória (AES-GCM 256) criptografa cada registro do banco.
+   - Essa chave nunca fica gravada aberta. Ela é guardada "embrulhada" três vezes:
+       1) pela senha numérica (PBKDF2-SHA256, 600 mil iterações);
+       2) pelo código de recuperação (aleatório, 160 bits);
+       3) opcionalmente pela biometria (WebAuthn com extensão PRF).
+   - Trocar a senha só reembrulha a chave; os dados não precisam ser refeitos.
+   - Ficam abertos apenas: idioma, tema e os metadados de segurança (sem segredo),
+     para a tela de bloqueio aparecer no idioma certo.
+   - Os nomes das entradas de cache (ex.: histórico de um ticker) passam por HMAC,
+     para não revelar quais ativos a pessoa tem.
+   Limite honesto: uma senha curta pode ser descoberta por tentativa e erro por
+   quem copiar o banco do aparelho. Por isso recomendamos 6 dígitos ou mais. */
+
+const SEC_KEY = 'security';
+const PLAIN_SETTINGS = ['lang', 'theme', SEC_KEY];
+const PIN_ITER = 600000;
+const REC_ITER = 150000;
+const PIN_MIN = 4, PIN_MAX = 10;
+const VAULT = { key: null, hmac: null, meta: null, unlocked: false };
+
+const te = new TextEncoder(), tdec = new TextDecoder();
+const rand = (n) => crypto.getRandomValues(new Uint8Array(n));
+function b64(buf) {
+  const b = buf instanceof Uint8Array ? buf : new Uint8Array(buf);
+  let s = '';
+  for (let i = 0; i < b.length; i += 0x8000) s += String.fromCharCode.apply(null, b.subarray(i, i + 0x8000));
+  return btoa(s);
+}
+const unb64 = (str) => Uint8Array.from(atob(str), (c) => c.charCodeAt(0));
+
+function vaultOn() { return !!(VAULT.meta && VAULT.meta.enabled); }
+function cryptoSupported() { return !!(window.crypto && crypto.subtle && window.indexedDB); }
+
+/* ----- Primitivas ----- */
+async function deriveKek(segredo, salt, iteracoes) {
+  const base = await crypto.subtle.importKey('raw', te.encode(segredo), 'PBKDF2', false, ['deriveKey']);
+  return crypto.subtle.deriveKey({ name: 'PBKDF2', hash: 'SHA-256', salt, iterations: iteracoes },
+    base, { name: 'AES-GCM', length: 256 }, false, ['wrapKey', 'unwrapKey']);
+}
+async function wrapDek(kek, dek) {
+  const iv = rand(12);
+  const w = await crypto.subtle.wrapKey('raw', dek, kek, { name: 'AES-GCM', iv });
+  return { iv: b64(iv), w: b64(w) };
+}
+// Falha (OperationError) quando a senha/código está errado — o GCM detecta.
+function unwrapDek(kek, embrulho) {
+  return crypto.subtle.unwrapKey('raw', unb64(embrulho.w), kek, { name: 'AES-GCM', iv: unb64(embrulho.iv) },
+    { name: 'AES-GCM', length: 256 }, true, ['encrypt', 'decrypt']);
+}
+async function sealBytes(key, bytes) {
+  const iv = rand(12);
+  const d = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, bytes);
+  return { iv: b64(iv), d: b64(d) };
+}
+async function openBytes(key, selado) {
+  return new Uint8Array(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: unb64(selado.iv) }, key, unb64(selado.d)));
+}
+const sealObj = async (key, obj) => sealBytes(key, te.encode(JSON.stringify(obj)));
+const openObj = async (key, selado) => JSON.parse(tdec.decode(await openBytes(key, selado)));
+
+async function loadHmac(dek, meta) {
+  const raw = await openBytes(dek, meta.hk);
+  return crypto.subtle.importKey('raw', raw, { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+}
+
+/* ----- Integração com o banco ----- */
+function keyFieldOf(store) { return store === 'settings' ? 'key' : 'id'; }
+function isPlainSetting(store, key) { return store === 'settings' && PLAIN_SETTINGS.includes(key); }
+
+async function storageKeyFor(store, key) {
+  if (store !== 'settings' || !vaultOn() || !VAULT.hmac || !String(key).startsWith(HIST_PREFIX)) return key;
+  const mac = new Uint8Array(await crypto.subtle.sign('HMAC', VAULT.hmac, te.encode(String(key))));
+  return HIST_PREFIX + '#' + [...mac.slice(0, 16)].map((x) => x.toString(16).padStart(2, '0')).join('');
+}
+
+async function encodeRecord(store, value) {
+  const campo = keyFieldOf(store);
+  if (!vaultOn() || !VAULT.key || isPlainSetting(store, value[campo])) return value;
+  return { [campo]: await storageKeyFor(store, value[campo]), _e: await sealObj(VAULT.key, value) };
+}
+async function decodeRecord(rec) {
+  if (!rec || !rec._e) return rec;           // registro ainda aberto (antes/durante a migração)
+  if (!VAULT.key) return null;               // bloqueado: não expõe nada
+  return openObj(VAULT.key, rec._e);
+}
+
+function rawGetAll(store) {
+  return new Promise((resolve, reject) => {
+    if (!db || !db.objectStoreNames.contains(store)) { resolve([]); return; }
+    const req = tx(store, 'readonly').getAll();
+    req.onsuccess = () => resolve(req.result || []);
+    req.onerror = () => reject(req.error);
+  });
+}
+function rawGet(store, key) {
+  return new Promise((resolve) => {
+    if (!db || !db.objectStoreNames.contains(store)) { resolve(null); return; }
+    const req = tx(store, 'readonly').get(key);
+    req.onsuccess = () => resolve(req.result || null);
+    req.onerror = () => resolve(null);
+  });
+}
+function rawPut(store, value) {
   return new Promise((resolve, reject) => {
     if (!db) { resolve(); return; }
     const req = tx(store, 'readwrite').put(value);
@@ -1943,14 +2341,659 @@ function put(store, value) {
     req.onerror = () => reject(req.error);
   });
 }
-function del(store, id) {
+// Grava um lote numa transação só: ou vai tudo, ou nada.
+function rawBatch(store, puts, deletes) {
   return new Promise((resolve, reject) => {
-    if (!db) { resolve(); return; }
-    const req = tx(store, 'readwrite').delete(id);
-    req.onsuccess = () => resolve();
-    req.onerror = () => reject(req.error);
+    const t2 = db.transaction(store, 'readwrite');
+    const os = t2.objectStore(store);
+    (deletes || []).forEach((k) => os.delete(k));
+    puts.forEach((v) => os.put(v));
+    t2.oncomplete = () => resolve();
+    t2.onerror = () => reject(t2.error);
+    t2.onabort = () => reject(t2.error || new Error('abort'));
   });
 }
+
+async function saveSecurityMeta(meta) {
+  VAULT.meta = meta;
+  await rawPut('settings', { key: SEC_KEY, value: meta });
+}
+
+const DATA_STORES = ['accounts', 'balances', 'transactions', 'budgets', 'fx', 'schedules', 'payments',
+  'positions', 'quotes', 'invmoves', 'assets', 'valuations', 'settings'];
+
+/* Criptografa (ou descriptografa) todos os registros. A leitura aceita registros
+   abertos e fechados misturados, então uma interrupção no meio não perde dados:
+   basta rodar de novo. */
+async function reencodeAll(criptografar, aoProgresso) {
+  let feito = 0;
+  for (const store of DATA_STORES) {
+    if (!db.objectStoreNames.contains(store)) continue;
+    const campo = keyFieldOf(store);
+    const brutos = await rawGetAll(store);
+    const puts = [], deletes = [];
+    for (const r of brutos) {
+      if (store === 'settings' && PLAIN_SETTINGS.includes(r.key)) continue;
+      const valor = await decodeRecord(r);
+      if (!valor) continue;
+      const chaveAntiga = r[campo];
+      const novo = criptografar ? await encodeRecord(store, valor) : valor;
+      if (novo[campo] !== chaveAntiga) deletes.push(chaveAntiga); // chave de cache mudou (HMAC)
+      puts.push(novo);
+    }
+    await rawBatch(store, puts, deletes);
+    feito++;
+    if (aoProgresso) aoProgresso(feito / DATA_STORES.length);
+  }
+}
+
+/* ----- Senha, código de recuperação e biometria ----- */
+function pinProblem(pin) {
+  if (!new RegExp(`^\\d{${PIN_MIN},${PIN_MAX}}$`).test(pin)) return t('sec.err.length').replace('{min}', PIN_MIN).replace('{max}', PIN_MAX);
+  if (/^(\d)\1+$/.test(pin)) return t('sec.err.repeated');
+  const seq = '01234567890123456789', inv = '98765432109876543210';
+  if (seq.includes(pin) || inv.includes(pin)) return t('sec.err.sequence');
+  return '';
+}
+function pinStrength(pin) {
+  if (pin.length >= 8) return 'strong';
+  if (pin.length >= 6) return 'good';
+  return 'weak';
+}
+
+const B32 = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // sem 0/O e 1/I, que confundem ao copiar
+function newRecoveryCode() {
+  const bytes = rand(32);
+  let s = '';
+  for (let i = 0; i < 32; i++) s += B32[bytes[i] % 32];
+  return s.match(/.{4}/g).join('-');
+}
+const normalizeRecovery = (c) => String(c || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+
+async function wrapForPin(dek, pin) {
+  const salt = rand(16);
+  return { salt: b64(salt), iter: PIN_ITER, ...(await wrapDek(await deriveKek(pin, salt, PIN_ITER), dek)) };
+}
+async function wrapForRecovery(dek, codigo) {
+  const salt = rand(16);
+  return { salt: b64(salt), iter: REC_ITER, ...(await wrapDek(await deriveKek(normalizeRecovery(codigo), salt, REC_ITER), dek)) };
+}
+async function unlockWithPin(pin) {
+  const p = VAULT.meta.pin;
+  return unwrapDek(await deriveKek(pin, unb64(p.salt), p.iter), p);
+}
+async function unlockWithRecovery(codigo) {
+  const r = VAULT.meta.rec;
+  return unwrapDek(await deriveKek(normalizeRecovery(codigo), unb64(r.salt), r.iter), r);
+}
+async function openVault(dek) {
+  VAULT.key = dek;
+  VAULT.hmac = await loadHmac(dek, VAULT.meta);
+  VAULT.unlocked = true;
+}
+
+async function biometricAvailable() {
+  try {
+    return !!(window.PublicKeyCredential && PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable
+      && await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable());
+  } catch (e) { return false; }
+}
+async function prfSecret(credId, prfSalt) {
+  const ass = await navigator.credentials.get({ publicKey: {
+    challenge: rand(32), allowCredentials: [{ type: 'public-key', id: unb64(credId) }],
+    userVerification: 'required', timeout: 60000,
+    extensions: { prf: { eval: { first: unb64(prfSalt) } } }
+  } });
+  const out = ass.getClientExtensionResults().prf;
+  if (!out || !out.results || !out.results.first) throw new Error('NO_PRF');
+  return crypto.subtle.importKey('raw', out.results.first, { name: 'AES-GCM' }, false, ['wrapKey', 'unwrapKey']);
+}
+// Cadastra a biometria do aparelho. Sem suporte a PRF, recusa: sem ela a biometria
+// seria só uma tela bonita, e a promessa de criptografia deixaria de valer.
+async function enrollBiometric() {
+  const prfSalt = rand(32);
+  const cred = await navigator.credentials.create({ publicKey: {
+    rp: { name: 'ProF Controller' },
+    user: { id: rand(16), name: 'ProF Controller', displayName: 'ProF Controller' },
+    challenge: rand(32),
+    pubKeyCredParams: [{ type: 'public-key', alg: -7 }, { type: 'public-key', alg: -257 }],
+    authenticatorSelection: { authenticatorAttachment: 'platform', userVerification: 'required', residentKey: 'preferred' },
+    timeout: 60000,
+    extensions: { prf: { eval: { first: prfSalt } } }
+  } });
+  const ext = cred.getClientExtensionResults().prf;
+  if (!ext || ext.enabled === false) throw new Error('NO_PRF');
+  const credId = b64(cred.rawId);
+  let kek;
+  if (ext.results && ext.results.first) {
+    kek = await crypto.subtle.importKey('raw', ext.results.first, { name: 'AES-GCM' }, false, ['wrapKey', 'unwrapKey']);
+  } else {
+    kek = await prfSecret(credId, b64(prfSalt)); // alguns aparelhos só entregam na confirmação
+  }
+  const meta = { ...VAULT.meta, bio: { credId, prfSalt: b64(prfSalt), ...(await wrapDek(kek, VAULT.key)) } };
+  await saveSecurityMeta(meta);
+}
+async function unlockWithBiometric() {
+  const b = VAULT.meta.bio;
+  return unwrapDek(await prfSecret(b.credId, b.prfSalt), b);
+}
+
+/* ----- Tentativas erradas: espera crescente (não apaga dados) ----- */
+function lockWaitMs() { return Math.max(0, (VAULT.meta.lockUntil || 0) - Date.now()); }
+async function registerFailure() {
+  const falhas = (VAULT.meta.fails || 0) + 1;
+  const espera = falhas >= 5 ? Math.min(30000 * Math.pow(2, falhas - 5), 15 * 60000) : 0;
+  await saveSecurityMeta({ ...VAULT.meta, fails: falhas, lockUntil: espera ? Date.now() + espera : 0 });
+}
+async function clearFailures() {
+  if (VAULT.meta.fails || VAULT.meta.lockUntil) await saveSecurityMeta({ ...VAULT.meta, fails: 0, lockUntil: 0 });
+}
+
+/* ----- Bloqueio automático ----- */
+let lastActivity = Date.now(), hiddenAt = null, autoLockTimer = null;
+function lockNow() {
+  // Recarregar apaga da memória a chave e todos os dados abertos.
+  VAULT.key = null; VAULT.hmac = null;
+  location.reload();
+}
+function startAutoLock() {
+  if (autoLockTimer) clearInterval(autoLockTimer);
+  if (!vaultOn()) return;
+  const marcar = () => { lastActivity = Date.now(); };
+  ['pointerdown', 'keydown', 'wheel', 'touchstart'].forEach((ev) => document.addEventListener(ev, marcar, { passive: true }));
+  document.addEventListener('visibilitychange', () => {
+    const min = Number(VAULT.meta.autoLockMin);
+    if (document.visibilityState === 'hidden') hiddenAt = Date.now();
+    else if (hiddenAt && min > 0 && Date.now() - hiddenAt >= min * 60000) lockNow();
+  });
+  autoLockTimer = setInterval(() => {
+    const min = Number(VAULT.meta.autoLockMin);
+    if (min > 0 && Date.now() - lastActivity >= min * 60000) lockNow();
+  }, 15000);
+}
+
+/* ----- Telas (sobreposição de tela cheia) ----- */
+function overlay(html) {
+  const el = document.getElementById('secOverlay');
+  el.innerHTML = `<div class="sec-card">${html}</div>`;
+  el.classList.remove('hidden');
+  document.body.classList.add('sec-open');
+  return el;
+}
+function closeOverlay() {
+  const el = document.getElementById('secOverlay');
+  el.classList.add('hidden'); el.innerHTML = '';
+  document.body.classList.remove('sec-open');
+}
+const logoHtml = () => `<img src="icon-192.png" alt="" class="sec-logo">`;
+const pinInput = (id, auto) => `<input id="${id}" class="pin-input" type="password" inputmode="numeric" pattern="[0-9]*"
+  maxlength="${PIN_MAX}" autocomplete="off" ${auto ? 'autofocus' : ''} aria-label="${t('sec.pin')}"
+  oninput="this.value=this.value.replace(/\\D/g,'')">`;
+function busy(btn, on, texto) {
+  if (!btn) return;
+  if (on) { btn.dataset.label = btn.textContent; btn.textContent = texto || t('sec.checking'); btn.disabled = true; }
+  else { btn.textContent = btn.dataset.label || btn.textContent; btn.disabled = false; }
+}
+function setMsg(id, texto, tipo) {
+  const el = document.getElementById(id);
+  if (el) { el.textContent = texto || ''; el.className = 'sec-msg ' + (tipo || ''); }
+}
+
+/* Tela de bloqueio. Resolve quando o cofre abre. */
+function showLockScreen() {
+  return new Promise((resolve) => {
+    const temBio = !!VAULT.meta.bio;
+    overlay(`
+      ${logoHtml()}
+      <h1>${t('sec.lockedTitle')}</h1>
+      <p class="hint">${t('sec.lockedHint')}</p>
+      ${pinInput('lockPin', true)}
+      <button id="lockGo" class="primary-btn sec-wide" type="button">${t('sec.unlock')}</button>
+      ${temBio ? `<button id="lockBio" class="secondary-btn sec-wide" type="button">${t('sec.useBio')}</button>` : ''}
+      <p id="lockMsg" class="sec-msg" aria-live="polite"></p>
+      <button id="lockForgot" class="link-btn" type="button">${t('sec.forgot')}</button>
+    `);
+    const campo = document.getElementById('lockPin');
+    let contagem = null;
+    const atualizarEspera = () => {
+      const ms = lockWaitMs();
+      const go = document.getElementById('lockGo');
+      if (!go) { clearInterval(contagem); return; }
+      if (ms > 0) {
+        go.disabled = true;
+        setMsg('lockMsg', t('sec.wait').replace('{s}', Math.ceil(ms / 1000)), 'amount-out');
+      } else {
+        clearInterval(contagem); contagem = null;
+        go.disabled = false;
+        if (VAULT.meta.fails >= 5) setMsg('lockMsg', '');
+      }
+    };
+    const iniciarEspera = () => { if (!contagem && lockWaitMs() > 0) { atualizarEspera(); contagem = setInterval(atualizarEspera, 1000); } };
+    iniciarEspera();
+
+    const abrir = async (dek) => {
+      await openVault(dek);
+      await clearFailures();
+      closeOverlay();
+      resolve();
+    };
+    const tentarPin = async () => {
+      if (lockWaitMs() > 0) return;
+      const pin = campo.value;
+      if (pin.length < PIN_MIN) { setMsg('lockMsg', t('sec.err.length').replace('{min}', PIN_MIN).replace('{max}', PIN_MAX), 'amount-out'); return; }
+      const btn = document.getElementById('lockGo');
+      busy(btn, true);
+      try {
+        await abrir(await unlockWithPin(pin));
+      } catch (e) {
+        busy(btn, false);
+        await registerFailure();
+        campo.value = ''; campo.focus();
+        const restantes = Math.max(0, 5 - VAULT.meta.fails);
+        setMsg('lockMsg', restantes > 0 ? t('sec.wrong').replace('{n}', restantes) : t('sec.wrongWait'), 'amount-out');
+        iniciarEspera();
+      }
+    };
+    document.getElementById('lockGo').addEventListener('click', tentarPin);
+    campo.addEventListener('keydown', (e) => { if (e.key === 'Enter') tentarPin(); });
+    if (temBio) {
+      document.getElementById('lockBio').addEventListener('click', async () => {
+        const btn = document.getElementById('lockBio');
+        busy(btn, true, t('sec.bioWaiting'));
+        try { await abrir(await unlockWithBiometric()); }
+        catch (e) { busy(btn, false); setMsg('lockMsg', t('sec.bioFail'), 'amount-out'); }
+      });
+    }
+    document.getElementById('lockForgot').addEventListener('click', () => showRecoveryScreen().then(resolve));
+    setTimeout(() => campo.focus(), 50);
+  });
+}
+
+/* Esqueci a senha: código de recuperação → nova senha → novo código. */
+function showRecoveryScreen() {
+  return new Promise((resolve) => {
+    overlay(`
+      ${logoHtml()}
+      <h1>${t('sec.recoverTitle')}</h1>
+      <p class="hint">${t('sec.recoverHint')}</p>
+      <input id="recCode" class="rec-input" type="text" autocomplete="off" spellcheck="false" autocapitalize="characters" placeholder="XXXX-XXXX-XXXX-…" aria-label="${t('sec.recoveryCode')}">
+      <button id="recGo" class="primary-btn sec-wide" type="button">${t('sec.continue')}</button>
+      <p id="recMsg" class="sec-msg" aria-live="polite"></p>
+      <button id="recBack" class="link-btn" type="button">${t('sec.back')}</button>
+    `);
+    document.getElementById('recBack').addEventListener('click', () => showLockScreen().then(resolve));
+    const ir = async () => {
+      const btn = document.getElementById('recGo');
+      busy(btn, true);
+      try {
+        const dek = await unlockWithRecovery(document.getElementById('recCode').value);
+        await openVault(dek);
+        await clearFailures();
+        // Com o código usado, cria senha e código novos
+        await runPinAndRecoverySetup({ dek, modo: 'reset' });
+        resolve();
+      } catch (e) {
+        busy(btn, false);
+        setMsg('recMsg', t('sec.recWrong'), 'amount-out');
+      }
+    };
+    document.getElementById('recGo').addEventListener('click', ir);
+    document.getElementById('recCode').addEventListener('keydown', (e) => { if (e.key === 'Enter') ir(); });
+    setTimeout(() => document.getElementById('recCode').focus(), 50);
+  });
+}
+
+/* Passos de criação de senha + código. modo: 'setup' (ativar), 'reset' (esqueci), 'change' (trocar senha). */
+function runPinAndRecoverySetup({ dek, modo }) {
+  return new Promise((resolve, reject) => {
+    const passoSenha = () => {
+      overlay(`
+        ${logoHtml()}
+        <p class="sec-step">${t('sec.step').replace('{a}', 1).replace('{b}', modo === 'change' ? 1 : 2)}</p>
+        <h1>${t(modo === 'setup' ? 'sec.createTitle' : 'sec.newPinTitle')}</h1>
+        <p class="hint">${t('sec.createHint').replace('{min}', PIN_MIN).replace('{max}', PIN_MAX)}</p>
+        <label class="sec-label" for="newPin">${t('sec.pin')}</label>
+        ${pinInput('newPin', true)}
+        <div class="pin-meter" aria-hidden="true"><span id="pinBar"></span></div>
+        <p id="pinStrength" class="sec-msg"></p>
+        <label class="sec-label" for="newPin2">${t('sec.pinConfirm')}</label>
+        ${pinInput('newPin2')}
+        <button id="pinGo" class="primary-btn sec-wide" type="button">${t('sec.continue')}</button>
+        <p id="pinMsg" class="sec-msg" aria-live="polite"></p>
+        ${modo === 'reset' ? '' : `<button id="pinCancel" class="link-btn" type="button">${t('sec.cancel')}</button>`}
+      `);
+      const p1 = document.getElementById('newPin'), p2 = document.getElementById('newPin2');
+      p1.addEventListener('input', () => {
+        const nivel = p1.value ? pinStrength(p1.value) : '';
+        const bar = document.getElementById('pinBar');
+        bar.className = nivel; bar.style.width = { weak: '33%', good: '66%', strong: '100%' }[nivel] || '0';
+        setMsg('pinStrength', nivel ? t('sec.strength.' + nivel) : '', nivel === 'weak' ? 'amount-out' : 'amount-in');
+      });
+      const cancelar = document.getElementById('pinCancel');
+      if (cancelar) cancelar.addEventListener('click', () => { closeOverlay(); reject(new Error('CANCEL')); });
+      const seguir = async () => {
+        const erro = pinProblem(p1.value);
+        if (erro) { setMsg('pinMsg', erro, 'amount-out'); p1.focus(); return; }
+        if (p1.value !== p2.value) { setMsg('pinMsg', t('sec.err.mismatch'), 'amount-out'); p2.value = ''; p2.focus(); return; }
+        const btn = document.getElementById('pinGo');
+        busy(btn, true, t('sec.protecting'));
+        const pinWrap = await wrapForPin(dek, p1.value);
+        if (modo === 'change') {
+          await saveSecurityMeta({ ...VAULT.meta, pin: pinWrap, fails: 0, lockUntil: 0 });
+          closeOverlay(); resolve(); return;
+        }
+        passoCodigo(pinWrap);
+      };
+      document.getElementById('pinGo').addEventListener('click', seguir);
+      p2.addEventListener('keydown', (e) => { if (e.key === 'Enter') seguir(); });
+      p1.addEventListener('keydown', (e) => { if (e.key === 'Enter') p2.focus(); });
+    };
+
+    const passoCodigo = (pinWrap) => {
+      const codigo = newRecoveryCode();
+      overlay(`
+        ${logoHtml()}
+        <p class="sec-step">${t('sec.step').replace('{a}', 2).replace('{b}', 2)}</p>
+        <h1>${t('sec.codeTitle')}</h1>
+        <p class="hint">${t('sec.codeHint')}</p>
+        <div class="rec-code" id="recShow" tabindex="0">${codigo}</div>
+        <div class="sec-row">
+          <button id="codeCopy" class="secondary-btn" type="button">${t('sec.copy')}</button>
+          <button id="codeSave" class="secondary-btn" type="button">${t('sec.saveTxt')}</button>
+        </div>
+        ${modo === 'setup' ? `<label class="checkline sec-check"><input type="checkbox" id="codeBackup" checked> ${t('sec.backupFirst')}</label>` : ''}
+        <label class="checkline sec-check"><input type="checkbox" id="codeOk"> ${t('sec.codeSaved')}</label>
+        <button id="codeGo" class="primary-btn sec-wide" type="button" disabled>${t(modo === 'setup' ? 'sec.activate' : 'sec.finish')}</button>
+        <p id="codeMsg" class="sec-msg" aria-live="polite"></p>
+      `);
+      document.getElementById('codeOk').addEventListener('change', (e) => { document.getElementById('codeGo').disabled = !e.target.checked; });
+      document.getElementById('codeCopy').addEventListener('click', async () => {
+        try { await navigator.clipboard.writeText(codigo); setMsg('codeMsg', t('sec.copied'), 'amount-in'); }
+        catch (e) { setMsg('codeMsg', t('sec.copyFail'), 'amount-out'); }
+      });
+      document.getElementById('codeSave').addEventListener('click', () => {
+        download(`prof-controller-codigo-recuperacao.txt`, `ProF Controller\n${t('sec.recoveryCode')}: ${codigo}\n${t('sec.codeTxtNote')}\n`, 'text/plain');
+      });
+      document.getElementById('codeGo').addEventListener('click', async () => {
+        const btn = document.getElementById('codeGo');
+        busy(btn, true, t('sec.protecting'));
+        try {
+          const recWrap = await wrapForRecovery(dek, codigo);
+          if (modo === 'setup') {
+            if (document.getElementById('codeBackup').checked) await exportJSONPlain(true);
+            await activateEncryption(dek, pinWrap, recWrap, (f) => setMsg('codeMsg', t('sec.encrypting').replace('{p}', Math.round(f * 100)), ''));
+          } else {
+            // reset: senha e código novos; a biometria antiga deixa de valer por segurança
+            await saveSecurityMeta({ ...VAULT.meta, pin: pinWrap, rec: recWrap, bio: null, fails: 0, lockUntil: 0 });
+          }
+          closeOverlay();
+          resolve();
+        } catch (e) {
+          console.error('Falha ao ativar a proteção:', e);
+          busy(btn, false);
+          setMsg('codeMsg', t('sec.activateFail') + ' ' + (e.message || e), 'amount-out');
+        }
+      });
+    };
+    passoSenha();
+  });
+}
+
+async function activateEncryption(dek, pinWrap, recWrap, aoProgresso) {
+  const hmacRaw = rand(32);
+  const meta = {
+    enabled: true, v: 1, createdAt: new Date().toISOString(),
+    pin: pinWrap, rec: recWrap, hk: await sealBytes(dek, hmacRaw), bio: null,
+    autoLockMin: 5, fails: 0, lockUntil: 0
+  };
+  // Metadados primeiro: se algo interromper, a chave já está salva e a leitura
+  // aceita registros abertos e fechados misturados.
+  await saveSecurityMeta(meta);
+  await openVault(dek);
+  await reencodeAll(true, aoProgresso);
+}
+
+/* ----- Oferta de ativação (primeira abertura ou "Agora não" anterior) ----- */
+function offerSecuritySetup(forcar) {
+  return new Promise((resolve) => {
+    if (vaultOn() || !cryptoSupported()) { resolve(false); return; }
+    const meta = VAULT.meta || {};
+    if (!forcar && meta.snoozeUntil && Date.now() < meta.snoozeUntil) { resolve(false); return; }
+    overlay(`
+      ${logoHtml()}
+      <h1>${t('sec.offerTitle')}</h1>
+      <p>${t('sec.offerText')}</p>
+      <ul class="sec-list">
+        <li>🔒 ${t('sec.offer1')}</li>
+        <li>🔑 ${t('sec.offer2')}</li>
+        <li>👆 ${t('sec.offer3')}</li>
+        <li>⏱️ ${t('sec.offer4')}</li>
+      </ul>
+      <p class="sec-warning">⚠️ ${t('sec.offerWarning')}</p>
+      <button id="offerGo" class="primary-btn sec-wide" type="button">${t('sec.offerYes')}</button>
+      <button id="offerLater" class="link-btn" type="button">${t('sec.offerLater')}</button>
+    `);
+    document.getElementById('offerLater').addEventListener('click', async () => {
+      // Pergunta de novo em 1 dia, para não incomodar a cada abertura
+      await saveSecurityMeta({ ...(VAULT.meta || {}), enabled: false, snoozeUntil: Date.now() + 86400000 });
+      closeOverlay(); resolve(false);
+    });
+    document.getElementById('offerGo').addEventListener('click', async () => {
+      const dek = await crypto.subtle.generateKey({ name: 'AES-GCM', length: 256 }, true, ['encrypt', 'decrypt']);
+      try {
+        await runPinAndRecoverySetup({ dek, modo: 'setup' });
+        await offerBiometric();
+        startAutoLock();
+        renderSecuritySettings();
+        showToast(t('sec.activated'));
+        resolve(true);
+      } catch (e) {
+        closeOverlay(); resolve(false);
+      }
+    });
+  });
+}
+
+function offerBiometric() {
+  return new Promise(async (resolve) => {
+    if (!vaultOn() || VAULT.meta.bio || !(await biometricAvailable())) { resolve(); return; }
+    overlay(`
+      ${logoHtml()}
+      <h1>${t('sec.bioTitle')}</h1>
+      <p class="hint">${t('sec.bioHint')}</p>
+      <button id="bioGo" class="primary-btn sec-wide" type="button">${t('sec.bioEnable')}</button>
+      <p id="bioMsg" class="sec-msg" aria-live="polite"></p>
+      <button id="bioLater" class="link-btn" type="button">${t('sec.offerLater')}</button>
+    `);
+    document.getElementById('bioLater').addEventListener('click', () => { closeOverlay(); resolve(); });
+    document.getElementById('bioGo').addEventListener('click', async () => {
+      const btn = document.getElementById('bioGo');
+      busy(btn, true, t('sec.bioWaiting'));
+      try {
+        await enrollBiometric();
+        closeOverlay(); showToast(t('sec.bioOn')); resolve();
+      } catch (e) {
+        busy(btn, false);
+        setMsg('bioMsg', e.message === 'NO_PRF' ? t('sec.bioNoPrf') : t('sec.bioFail'), 'amount-out');
+      }
+    });
+  });
+}
+
+/* Pede a senha atual antes de ações sensíveis. Resolve com a chave de dados. */
+function askCurrentPin(titulo) {
+  return new Promise((resolve, reject) => {
+    openModal(`
+      <h2>${titulo}</h2>
+      <p class="hint">${t('sec.confirmPin')}</p>
+      ${pinInput('curPin', true)}
+      <button id="curGo" class="primary-btn" type="button">${t('sec.continue')}</button>
+      <p id="curMsg" class="sec-msg" aria-live="polite"></p>
+    `);
+    const campo = document.getElementById('curPin');
+    const ir = async () => {
+      if (lockWaitMs() > 0) { setMsg('curMsg', t('sec.wait').replace('{s}', Math.ceil(lockWaitMs() / 1000)), 'amount-out'); return; }
+      const btn = document.getElementById('curGo');
+      busy(btn, true);
+      try {
+        const dek = await unlockWithPin(campo.value);
+        await clearFailures();
+        closeModal(); resolve(dek);
+      } catch (e) {
+        busy(btn, false);
+        await registerFailure();
+        campo.value = ''; campo.focus();
+        setMsg('curMsg', t('sec.wrongShort'), 'amount-out');
+      }
+    };
+    document.getElementById('curGo').addEventListener('click', ir);
+    campo.addEventListener('keydown', (e) => { if (e.key === 'Enter') ir(); });
+    setTimeout(() => campo.focus(), 50);
+  });
+}
+
+/* ----- Configurações → Segurança ----- */
+function renderSecuritySettings() {
+  const box = document.getElementById('securityGroup');
+  const gearLock = document.getElementById('btnLockNow');
+  if (gearLock) gearLock.classList.toggle('hidden', !vaultOn());
+  const exportEnc = document.getElementById('btnExportEnc');
+  if (exportEnc) exportEnc.classList.toggle('hidden', !vaultOn());
+  if (!box) return;
+  if (!cryptoSupported()) { box.innerHTML = `<h3>${t('sec.title')}</h3><p class="hint">${t('sec.unsupported')}</p>`; return; }
+  if (!vaultOn()) {
+    box.innerHTML = `<h3>${t('sec.title')}</h3>
+      <p><span class="api-badge badge-muted">${t('sec.statusOff')}</span></p>
+      <p class="hint">${t('sec.offText')}</p>
+      <button type="button" class="primary-btn" onclick="offerSecuritySetup(true)">${t('sec.offerYes')}</button>`;
+    return;
+  }
+  const m = VAULT.meta;
+  box.innerHTML = `<h3>${t('sec.title')}</h3>
+    <p><span class="api-badge badge-ok">${t('sec.statusOn')}</span></p>
+    <p class="hint">${t('sec.onText')}</p>
+    <label for="autoLockSel">${t('sec.autoLock')}</label>
+    <select id="autoLockSel" onchange="setAutoLock(this.value)">
+      ${[1, 5, 15, 30, 0].map((n) => `<option value="${n}" ${Number(m.autoLockMin) === n ? 'selected' : ''}>${n ? t('sec.minutes').replace('{n}', n) : t('sec.never')}</option>`).join('')}
+    </select>
+    <div class="sec-actions">
+      <button type="button" class="secondary-btn" onclick="lockNow()">${t('sec.lockNow')}</button>
+      <button type="button" class="secondary-btn" onclick="changePin()">${t('sec.changePin')}</button>
+      <button type="button" class="secondary-btn" onclick="regenerateRecovery()">${t('sec.newCode')}</button>
+      <button type="button" class="secondary-btn" id="bioSettingBtn" onclick="${m.bio ? 'removeBiometric()' : 'addBiometric()'}">${t(m.bio ? 'sec.bioRemove' : 'sec.bioEnable')}</button>
+      <button type="button" class="secondary-btn danger-btn" onclick="disableEncryption()">${t('sec.disable')}</button>
+    </div>`;
+  biometricAvailable().then((ok) => { const b = document.getElementById('bioSettingBtn'); if (b && !ok && !m.bio) b.classList.add('hidden'); });
+}
+
+async function setAutoLock(v) {
+  await saveSecurityMeta({ ...VAULT.meta, autoLockMin: Number(v) });
+  lastActivity = Date.now();
+  showToast(t('toast.saved'));
+}
+async function changePin() {
+  try {
+    const dek = await askCurrentPin(t('sec.changePin'));
+    await runPinAndRecoverySetup({ dek, modo: 'change' });
+    showToast(t('sec.pinChanged'));
+  } catch (e) { /* cancelado */ }
+}
+async function regenerateRecovery() {
+  let dek;
+  try { dek = await askCurrentPin(t('sec.newCode')); } catch (e) { return; }
+  const codigo = newRecoveryCode();
+  openModal(`
+    <h2>${t('sec.codeTitle')}</h2>
+    <p class="hint">${t('sec.codeReplaced')}</p>
+    <div class="rec-code">${codigo}</div>
+    <div class="sec-row">
+      <button type="button" class="secondary-btn" id="rc2Copy">${t('sec.copy')}</button>
+      <button type="button" class="secondary-btn" id="rc2Save">${t('sec.saveTxt')}</button>
+    </div>
+    <label class="checkline"><input type="checkbox" id="rc2Ok"> ${t('sec.codeSaved')}</label>
+    <button type="button" class="primary-btn" id="rc2Go" disabled>${t('sec.finish')}</button>
+  `);
+  document.getElementById('rc2Ok').addEventListener('change', (e) => { document.getElementById('rc2Go').disabled = !e.target.checked; });
+  document.getElementById('rc2Copy').addEventListener('click', () => navigator.clipboard.writeText(codigo).then(() => showToast(t('sec.copied'))).catch(() => {}));
+  document.getElementById('rc2Save').addEventListener('click', () => download('prof-controller-codigo-recuperacao.txt', `ProF Controller\n${t('sec.recoveryCode')}: ${codigo}\n${t('sec.codeTxtNote')}\n`, 'text/plain'));
+  document.getElementById('rc2Go').addEventListener('click', async () => {
+    await saveSecurityMeta({ ...VAULT.meta, rec: await wrapForRecovery(dek, codigo) });
+    closeModal(); showToast(t('sec.codeUpdated'));
+  });
+}
+async function addBiometric() {
+  if (!VAULT.key) return;
+  try { await enrollBiometric(); showToast(t('sec.bioOn')); }
+  catch (e) { showToast(e.message === 'NO_PRF' ? t('sec.bioNoPrf') : t('sec.bioFail')); }
+  renderSecuritySettings();
+}
+async function removeBiometric() {
+  if (!confirm(t('sec.bioRemoveConfirm'))) return;
+  await saveSecurityMeta({ ...VAULT.meta, bio: null });
+  renderSecuritySettings();
+}
+async function disableEncryption() {
+  if (!confirm(t('sec.disableConfirm'))) return;
+  try { await askCurrentPin(t('sec.disable')); } catch (e) { return; }
+  showToast(t('sec.decrypting'));
+  await reencodeAll(false);
+  VAULT.key = null; VAULT.hmac = null;
+  await saveSecurityMeta({ enabled: false, snoozeUntil: Date.now() + 30 * 86400000 });
+  if (autoLockTimer) clearInterval(autoLockTimer);
+  renderSecuritySettings();
+  showToast(t('sec.disabled'));
+}
+
+/* ----- Backup criptografado ----- */
+async function exportJSONPlain(silencioso) {
+  if (!silencioso && vaultOn() && !confirm(t('sec.plainExportWarn'))) return;
+  await exportJSON(true);
+}
+async function exportEncryptedBackup() {
+  if (!vaultOn() || !VAULT.key) return;
+  const payload = buildBackupData();
+  const arquivo = {
+    format: 'prof-controller-encrypted', v: 1, exportedAt: new Date().toISOString(),
+    pin: VAULT.meta.pin, rec: VAULT.meta.rec,
+    data: await sealObj(VAULT.key, payload)
+  };
+  download(`prof-controller-backup-protegido-${todayISO()}.json`, JSON.stringify(arquivo), 'application/json');
+  showToast(t('sec.encExported'));
+}
+// Abre um backup criptografado com a senha OU o código de recuperação da época em que foi feito.
+function askBackupSecret(arquivo) {
+  return new Promise((resolve, reject) => {
+    openModal(`
+      <h2>${t('sec.encImportTitle')}</h2>
+      <p class="hint">${t('sec.encImportHint')}</p>
+      <input id="bkSecret" type="password" autocomplete="off" spellcheck="false" aria-label="${t('sec.encImportTitle')}">
+      <button id="bkGo" class="primary-btn" type="button">${t('sec.continue')}</button>
+      <p id="bkMsg" class="sec-msg" aria-live="polite"></p>
+    `);
+    const ir = async () => {
+      const segredo = document.getElementById('bkSecret').value.trim();
+      const btn = document.getElementById('bkGo');
+      busy(btn, true);
+      try {
+        let dek;
+        try {
+          if (!/^\d+$/.test(segredo)) throw new Error('not pin');
+          dek = await unwrapDek(await deriveKek(segredo, unb64(arquivo.pin.salt), arquivo.pin.iter), arquivo.pin);
+        } catch (e) {
+          dek = await unwrapDek(await deriveKek(normalizeRecovery(segredo), unb64(arquivo.rec.salt), arquivo.rec.iter), arquivo.rec);
+        }
+        const dados = await openObj(dek, arquivo.data);
+        closeModal(); resolve(dados);
+      } catch (e) {
+        busy(btn, false);
+        setMsg('bkMsg', t('sec.recWrong'), 'amount-out');
+      }
+    };
+    document.getElementById('bkGo').addEventListener('click', ir);
+    document.getElementById('bkSecret').addEventListener('keydown', (e) => { if (e.key === 'Enter') ir(); });
+  });
+}
+
 
 /* ---------- Utilidades ---------- */
 function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
@@ -3643,13 +4686,13 @@ async function resolveAsset(entrada) {
 }
 
 /* ----- Histórico diário (cache de um dia no IndexedDB) ----- */
-function getSetting(key) {
-  return new Promise((resolve) => {
-    if (!db || !db.objectStoreNames.contains('settings')) { resolve(null); return; }
-    const req = tx('settings', 'readonly').get(key);
-    req.onsuccess = () => resolve(req.result ? req.result.value : null);
-    req.onerror = () => resolve(null);
-  });
+async function getSetting(key) {
+  const bruto = await rawGet('settings', await storageKeyFor('settings', key));
+  if (!bruto) return null;
+  try {
+    const r = await decodeRecord(bruto);
+    return r ? r.value : null;
+  } catch (e) { return null; }
 }
 const esperar = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -6057,6 +7100,7 @@ function renderSettings() {
   sel.innerHTML = CURRENCIES.map((c) => `<option value="${c.code}">${c.code} (${c.symbol.trim()})</option>`).join('');
   sel.value = state.settings.baseCurrency;
   renderApiSettings();
+  renderSecuritySettings();
 }
 
 /* ---------- Modais ---------- */
@@ -6360,8 +7404,8 @@ function download(filename, content, type) {
   URL.revokeObjectURL(url);
 }
 
-async function exportJSON() {
-  const data = {
+function buildBackupData() {
+  return {
     version: 6,
     exportedAt: new Date().toISOString(),
     accounts: state.accounts,
@@ -6377,13 +7421,17 @@ async function exportJSON() {
     assets: state.assets,
     valuations: state.valuations,
     // Chaves de API não saem do navegador: um backup é fácil de compartilhar por engano
-    settings: Object.fromEntries(Object.entries(state.settings).filter(([k]) => !API_KEYS.includes(k) && !k.startsWith(HIST_PREFIX)))
+    settings: Object.fromEntries(Object.entries(state.settings).filter(([k]) => !API_KEYS.includes(k) && !k.startsWith(HIST_PREFIX) && k !== SEC_KEY))
   };
+}
+async function exportJSON() {
+  const data = buildBackupData();
   download(`prof-controller-backup-${todayISO()}.json`, JSON.stringify(data, null, 2), 'application/json');
   showToast(t('toast.exported'));
 }
 
 function exportCSV() {
+  if (vaultOn() && !confirm(t('sec.plainExportWarn'))) return;
   // Baixar um arquivo só com cabeçalho parece que funcionou, e não funcionou
   if (!state.balances.length) { showToast(t('toast.nothingToExport')); return; }
   const header = ['Data', 'Conta', 'Moeda', 'Saldo'];
@@ -6399,6 +7447,7 @@ function exportCSV() {
 }
 
 function exportTransactionsCSV() {
+  if (vaultOn() && !confirm(t('sec.plainExportWarn'))) return;
   const header = ['Data', 'Tipo', 'Conta', 'ContaDestino', 'Moeda', 'Categoria', 'Descricao', 'Valor'];
   const rows = filteredTransactions().map((trn) => {
     const acc = accountById(trn.accountId);
@@ -6424,7 +7473,8 @@ function exportTransactionsCSV() {
 async function importJSON(file) {
   try {
     const text = await file.text();
-    const data = JSON.parse(text);
+    let data = JSON.parse(text);
+    if (data.format === 'prof-controller-encrypted') data = await askBackupSecret(data);
     if (!data.accounts || !data.balances) throw new Error('invalid');
     for (const a of data.accounts) await put('accounts', a);
     for (const b of data.balances) await put('balances', b);
@@ -6440,7 +7490,7 @@ async function importJSON(file) {
     for (const v of (data.valuations || [])) await put('valuations', v);
     if (data.settings) {
       for (const [k, v] of Object.entries(data.settings)) {
-        if (k === 'ui' || API_KEYS.includes(k) || k.startsWith(HIST_PREFIX)) continue;
+        if (k === 'ui' || k === SEC_KEY || API_KEYS.includes(k) || k.startsWith(HIST_PREFIX)) continue;
         await put('settings', { key: k, value: v });
         state.settings[k] = v;
       }
@@ -6739,7 +7789,9 @@ function bindEvents() {
   on('btnAddFx', 'click', () => openFxModal());
   on('btnFetchRates', 'click', fetchRates);
 
-  on('btnExportJSON', 'click', exportJSON);
+  on('btnExportJSON', 'click', () => exportJSONPlain(false));
+  on('btnExportEnc', 'click', exportEncryptedBackup);
+  on('btnLockNow', 'click', lockNow);
   on('btnExportCSV', 'click', exportCSV);
   on('btnImportJSON', 'click', () => document.getElementById('importFile').click());
   on('importFile', 'change', (e) => {
@@ -7298,6 +8350,16 @@ async function init() {
   // 2) Depois os dados. Qualquer falha aqui vira aviso na tela, nunca tela travada.
   try {
     await openDB();
+    // Idioma, tema e metadados de segurança ficam abertos: a tela de bloqueio precisa deles
+    for (const k of ['lang', 'theme']) {
+      const r = await rawGet('settings', k);
+      if (r && r.value != null && !r._e) state.settings[k] = r.value;
+    }
+    const sec = await rawGet('settings', SEC_KEY);
+    VAULT.meta = sec ? sec.value : null;
+    applyLang();
+    applyTheme();
+    if (vaultOn()) await showLockScreen();
     await loadAll();
   } catch (e) {
     console.error('Falha ao iniciar o banco de dados:', e);
@@ -7317,6 +8379,14 @@ async function init() {
   applyHelp();
   renderAll();
   showTab('dashboard');
+  renderSecuritySettings();
+
+  if (vaultOn()) {
+    startAutoLock();
+  } else {
+    // Oferece a proteção antes do assistente de chaves, para as telas não se sobreporem
+    try { await offerSecuritySetup(false); } catch (e) { console.warn('Oferta de proteção:', e); }
+  }
   startNewsSchedule();
   // Testa as chaves de API em segundo plano; abre o assistente só se faltar ou for recusada
   checkApiKeys().catch((e) => console.warn('Verificação das chaves:', e));
