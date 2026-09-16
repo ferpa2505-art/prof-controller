@@ -265,3 +265,55 @@ th { background: var(--surface); color: var(--muted); font-weight: 600; white-sp
 .brand-logo { width: 30px; height: 30px; border-radius: 7px; display: block; }
 .brand-name { font-size: 20px; }
 .inline-label { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+
+
+/* ===== Fase 8 — Mercado, gráficos e watchlist ===== */
+.modal-content.modal-wide { max-width: 860px; }
+.lookup-row { display: flex; gap: 8px; }
+.lookup-row input { flex: 1; }
+.lookup-row .secondary-btn { margin: 0; white-space: nowrap; }
+.lookup-info, .buy-preview {
+  margin-top: 10px; padding: 10px 12px; border-radius: 8px; font-size: 13px; line-height: 1.6;
+  background: var(--bg); border: 1px solid var(--border);
+}
+.buy-preview:empty { display: none; }
+.lookup-info.hidden { display: none; }
+.lookup-name { font-weight: 600; }
+.pl-summary {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px;
+  margin: 12px 0 20px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 10px;
+}
+.pl-summary span { display: block; font-size: 12px; color: var(--muted); }
+.pl-summary strong { font-size: 17px; }
+.chart-legend { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); margin-top: 4px; }
+.chart-legend span { display: inline-block; width: 18px; height: 0; margin-left: 10px; }
+.chart-legend span:first-child { margin-left: 0; }
+.lg-cost { border-top: 2px dashed var(--muted); }
+.lg-value { border-top: 2px solid var(--positive); }
+.chart-periods button { padding: 4px 10px; font-size: 12px; }
+.tv-box { height: 420px; width: 100%; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.ext-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.ext-links a {
+  font-size: 13px; padding: 6px 12px; border-radius: 8px; text-decoration: none;
+  border: 1px solid var(--border); color: var(--text); background: var(--surface);
+}
+.ext-links a:hover { border-color: var(--accent); }
+.watch-add { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.watch-add input {
+  flex: 1 1 220px; padding: 8px; border-radius: 8px; border: 1px solid var(--border);
+  background: var(--surface); color: var(--text); font-size: 14px;
+}
+.watch-add .secondary-btn { margin: 0; }
+#watchTable.hidden { display: none; }
+.api-group { max-width: 520px; }
+.api-group label { display: block; margin: 10px 0 4px; font-size: 13px; color: var(--muted); }
+.api-group input {
+  width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border);
+  background: var(--surface); color: var(--text); font-size: 14px; font-family: inherit;
+}
+.api-actions { margin-top: 12px; }
+.api-list { list-style: none; margin-top: 12px; font-size: 13px; line-height: 1.8; }
+@media (max-width: 600px) {
+  .tv-box { height: 320px; }
+  .lookup-row { flex-direction: column; }
+}
