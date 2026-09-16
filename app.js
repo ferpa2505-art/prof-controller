@@ -1,5 +1,5 @@
 /* ============================================================
-   ProF Controller — Fases 1 a 11 (11: senha, criptografia e biometria)
+   ProF Controller — Fases 1 a 12 (12: importador da B3 e proventos)
 
    Fase 1: contas, moedas, saldos diários, moeda base, importação CSV,
            i18n (pt-BR/en/es), temas, offline.
@@ -37,7 +37,7 @@ const I18N = {
     'tabs.dashboard': 'Dashboard',
     'tabs.accounts': 'Contas',
     'tabs.balances': 'Saldos Diários',
-    'tabs.transactions': 'Lançamentos',
+    'tabs.transactions': 'Entradas e saídas',
     'tabs.budgets': 'Orçamentos',
     'tabs.settings': 'Configurações avançadas',
     'dashboard.totalEquity': 'Financeiro',
@@ -366,6 +366,99 @@ const I18N = {
     'modal.move': 'Aporte ou resgate',
     'mkt.lookup': 'Buscar ativo (ticker ou ISIN)',
     'mkt.manual': 'Cadastrar sem busca (renda fixa, CDB ou ativo sem cotação)',
+    'tabs.payables': 'Contas a pagar',
+    'tabs.receivables': 'Contas a receber',
+    'help.payables': 'Contas que você ainda vai pagar, inclusive parceladas ou recorrentes (aluguel, financiamento, cartão). Ao quitar, o app lança a saída na conta.',
+    'help.receivables': 'Valores que você ainda vai receber, inclusive parcelados ou recorrentes (aluguéis, vendas a prazo). Ao receber, o app lança a entrada na conta.',
+    'bill.addPayable': '+ Nova conta a pagar',
+    'bill.addReceivable': '+ Nova conta a receber',
+    'b3.button': 'Importar extrato da B3',
+    'b3.title': 'Importar extrato da B3',
+    'b3.intro': 'Traga suas operações e proventos direto da Área do Investidor da B3. Posições são criadas com o histórico de compras e vendas; nada é lançado nas suas contas.',
+    'b3.step1': 'Entre na Área do Investidor:',
+    'b3.step2': 'Vá em Extratos → Movimentação (ou Negociação).',
+    'b3.step3': 'Escolha o período e exporte em Excel.',
+    'b3.step4': 'Selecione o arquivo abaixo. Pode importar vários anos, um de cada vez: o que já foi importado é ignorado.',
+    'b3.choose': 'Escolher arquivo (.xlsx ou .csv)',
+    'b3.formats': 'Extratos de Movimentação ou de Negociação da B3.',
+    'b3.privacy': 'O arquivo é lido só neste aparelho. Nada é enviado para nenhum servidor.',
+    'b3.reading': 'Lendo o arquivo…',
+    'b3.errNotB3': 'Não reconheci um extrato da B3 neste arquivo. Use o Excel de Movimentação ou Negociação sem alterar as colunas.',
+    'b3.errFile': 'Não foi possível ler o arquivo. Confira se é o .xlsx exportado pela B3.',
+    'b3.errBrowser': 'Este navegador não consegue abrir .xlsx. Atualize o navegador ou exporte em CSV.',
+    'b3.rows': 'Linhas lidas',
+    'b3.open': 'Posições abertas',
+    'b3.closedCount': 'Posições encerradas',
+    'b3.income': 'Proventos',
+    'b3.repeated': '{n} linha(s) já importada(s) antes foram ignoradas.',
+    'b3.missingExplain': 'Alguns papéis têm vendas maiores que as compras deste arquivo: provavelmente foram comprados antes do período exportado. Importe também os extratos dos anos anteriores para o custo ficar correto.',
+    'b3.selOpen': 'Só posições abertas',
+    'b3.selAll': 'Selecionar todas',
+    'b3.selNone': 'Limpar seleção',
+    'b3.status': 'Situação',
+    'b3.trades': 'Operações',
+    'b3.cost': 'Custo',
+    'b3.notes': 'Observações',
+    'b3.new': 'Nova',
+    'b3.existing': 'Já existe',
+    'b3.closed': 'encerrada',
+    'b3.warnMissing': 'venda de {n} sem compra no arquivo',
+    'b3.warnNoPrice': '{n} entrada(s) sem preço — custo zero',
+    'b3.warnManual': 'já tem {n} movimento(s) manual(is); marque só se não forem os mesmos',
+    'b3.nothingNew': 'Nada novo para importar neste arquivo.',
+    'b3.ignoredTitle': '{n} linha(s) não viraram operações — ver detalhes',
+    'b3.ign.derivative': 'derivativos (mini-índice, mini-dólar, opções, termo) — day trade não forma posição',
+    'b3.ign.custody': 'transferências de custódia entre corretoras — não mudam a quantidade',
+    'b3.ign.duplicate': 'compras/vendas que já aparecem como liquidação — evitadas para não contar em dobro',
+    'b3.ign.rights': 'direitos e cessões de subscrição',
+    'b3.ign.lending': 'empréstimo de ativos',
+    'b3.ign.review': 'eventos que precisam de revisão manual',
+    'b3.ign.unknown': 'linhas não reconhecidas',
+    'b3.importIncome': 'Importar também os proventos (dividendos, JCP, rendimentos)',
+    'b3.account': 'Conta ou corretora das posições novas (opcional)',
+    'b3.accountHint': 'Só para organizar. O histórico importado não altera o saldo da conta.',
+    'b3.importN': 'Importar {n} ativo(s)',
+    'b3.importing': 'Importando…',
+    'b3.done': 'Importação concluída: {p} posição(ões) nova(s), {m} operação(ões) e {d} provento(s).',
+    'b3.bonus': 'Bonificação/desdobro',
+    'div.title': 'Proventos',
+    'div.fetch': 'Buscar proventos',
+    'div.fetching': 'Buscando…',
+    'div.add': '+ Provento',
+    'div.year': 'Recebido em {y}',
+    'div.last12': 'Últimos 12 meses',
+    'div.pending': 'A receber / a confirmar',
+    'div.yoc': 'Yield on cost (12 meses)',
+    'div.yocHint': 'Proventos de 12 meses ÷ custo atual da carteira',
+    'div.fYear': 'Ano',
+    'div.fStatus': 'Situação',
+    'div.confirmAll': 'Confirmar todos os recebidos',
+    'div.payDate': 'Pagamento',
+    'div.exDate': 'data com',
+    'div.tbd': 'a definir',
+    'div.type': 'Tipo',
+    'div.perShare': 'Por cota/ação',
+    'div.amount': 'Valor',
+    'div.status': 'Situação',
+    'div.st.received': 'Recebido',
+    'div.st.toConfirm': 'A confirmar',
+    'div.st.expected': 'Previsto',
+    'div.t.div': 'Dividendo',
+    'div.t.jcp': 'JCP',
+    'div.t.rend': 'Rendimento',
+    'div.t.amort': 'Amortização',
+    'div.t.other': 'Outro',
+    'div.jcpNet': 'líquido de 15% de IR',
+    'div.confirm': 'Confirmar',
+    'div.empty': 'Nenhum provento ainda. Importe o extrato da B3 ou clique em Buscar proventos.',
+    'div.noB3': 'Nenhuma posição da B3 com movimentações para buscar proventos.',
+    'div.fetched': '{n} provento(s) novo(s) encontrado(s).',
+    'div.noPlan': 'O plano da sua chave brapi não inclui proventos para alguns papéis; use o extrato da B3.',
+    'div.someFailed': '{n} papel(éis) sem resposta.',
+    'div.needPosition': 'Cadastre uma posição antes de lançar proventos.',
+    'div.addTitle': 'Novo provento',
+    'div.editTitle': 'Editar provento',
+    'div.optional': 'opcional',
     'sec.title': 'Segurança e privacidade',
     'sec.statusOn': 'Proteção ativada',
     'sec.statusOff': 'Proteção desativada',
@@ -488,7 +581,7 @@ const I18N = {
     'apiw.couldNotCheck': 'Não foi possível verificar {apis} agora (conexão ou limite). As cotações podem demorar.',
     'apiw.open': 'Assistente de chaves',
     'tabs.registry': 'Cadastros',
-    'tabs.flows': 'Entradas e Saídas',
+    'tabs.flows': 'Lançamentos',
     'tabs.news': 'Notícias',
     'gear.title': 'Preferências',
     'gear.open': 'Abrir preferências',
@@ -686,7 +779,7 @@ const I18N = {
     'tabs.dashboard': 'Dashboard',
     'tabs.accounts': 'Accounts',
     'tabs.balances': 'Daily Balances',
-    'tabs.transactions': 'Transactions',
+    'tabs.transactions': 'Money in & out',
     'tabs.budgets': 'Budgets',
     'tabs.settings': 'Advanced settings',
     'dashboard.totalEquity': 'Financial',
@@ -1015,6 +1108,99 @@ const I18N = {
     'modal.move': 'Contribution or withdrawal',
     'mkt.lookup': 'Find asset (ticker or ISIN)',
     'mkt.manual': 'Add without search (fixed income, CDs or unlisted assets)',
+    'tabs.payables': 'Bills to pay',
+    'tabs.receivables': 'Amounts to receive',
+    'help.payables': 'Bills you still have to pay, including installments or recurring ones (rent, loans, credit card). When paid, the app records the outflow.',
+    'help.receivables': 'Amounts you still have to receive, including installments or recurring ones (rents, credit sales). When received, the app records the inflow.',
+    'bill.addPayable': '+ New bill to pay',
+    'bill.addReceivable': '+ New amount to receive',
+    'b3.button': 'Import B3 statement',
+    'b3.title': 'Import B3 statement',
+    'b3.intro': 'Bring your trades and income straight from the B3 Investor Area. Positions are created with buy and sell history; nothing is posted to your accounts.',
+    'b3.step1': 'Sign in to the Investor Area:',
+    'b3.step2': 'Go to Statements → Movements (or Trades).',
+    'b3.step3': 'Pick the period and export to Excel.',
+    'b3.step4': 'Select the file below. You can import several years, one at a time: anything already imported is skipped.',
+    'b3.choose': 'Choose file (.xlsx or .csv)',
+    'b3.formats': 'B3 Movements or Trades statements.',
+    'b3.privacy': 'The file is read only on this device. Nothing is sent to any server.',
+    'b3.reading': 'Reading file…',
+    'b3.errNotB3': 'This does not look like a B3 statement. Use the Movements or Trades Excel without changing columns.',
+    'b3.errFile': 'Could not read the file. Check it is the .xlsx exported by B3.',
+    'b3.errBrowser': 'This browser cannot open .xlsx. Update it or export as CSV.',
+    'b3.rows': 'Rows read',
+    'b3.open': 'Open positions',
+    'b3.closedCount': 'Closed positions',
+    'b3.income': 'Income',
+    'b3.repeated': '{n} row(s) imported before were skipped.',
+    'b3.missingExplain': 'Some tickers have more sells than buys in this file: they were probably bought before the exported period. Import earlier years too so the cost is correct.',
+    'b3.selOpen': 'Open positions only',
+    'b3.selAll': 'Select all',
+    'b3.selNone': 'Clear selection',
+    'b3.status': 'Status',
+    'b3.trades': 'Trades',
+    'b3.cost': 'Cost',
+    'b3.notes': 'Notes',
+    'b3.new': 'New',
+    'b3.existing': 'Exists',
+    'b3.closed': 'closed',
+    'b3.warnMissing': 'sale of {n} without a buy in the file',
+    'b3.warnNoPrice': '{n} entry(ies) without price — zero cost',
+    'b3.warnManual': 'already has {n} manual move(s); select only if they are not the same',
+    'b3.nothingNew': 'Nothing new to import in this file.',
+    'b3.ignoredTitle': '{n} row(s) did not become trades — see details',
+    'b3.ign.derivative': 'derivatives (index/dollar futures, options, forwards) — day trades do not form positions',
+    'b3.ign.custody': 'custody transfers between brokers — quantity unchanged',
+    'b3.ign.duplicate': 'buys/sells already listed as settlement — skipped to avoid double counting',
+    'b3.ign.rights': 'subscription rights and assignments',
+    'b3.ign.lending': 'securities lending',
+    'b3.ign.review': 'events that need manual review',
+    'b3.ign.unknown': 'unrecognized rows',
+    'b3.importIncome': 'Also import income (dividends, interest on equity, fund distributions)',
+    'b3.account': 'Account or broker for new positions (optional)',
+    'b3.accountHint': 'For organization only. Imported history does not change the account balance.',
+    'b3.importN': 'Import {n} asset(s)',
+    'b3.importing': 'Importing…',
+    'b3.done': 'Import finished: {p} new position(s), {m} trade(s) and {d} income item(s).',
+    'b3.bonus': 'Bonus/split',
+    'div.title': 'Income',
+    'div.fetch': 'Fetch income',
+    'div.fetching': 'Fetching…',
+    'div.add': '+ Income',
+    'div.year': 'Received in {y}',
+    'div.last12': 'Last 12 months',
+    'div.pending': 'To receive / confirm',
+    'div.yoc': 'Yield on cost (12 months)',
+    'div.yocHint': '12-month income ÷ current portfolio cost',
+    'div.fYear': 'Year',
+    'div.fStatus': 'Status',
+    'div.confirmAll': 'Confirm all received',
+    'div.payDate': 'Payment',
+    'div.exDate': 'record date',
+    'div.tbd': 'to be set',
+    'div.type': 'Type',
+    'div.perShare': 'Per share',
+    'div.amount': 'Amount',
+    'div.status': 'Status',
+    'div.st.received': 'Received',
+    'div.st.toConfirm': 'To confirm',
+    'div.st.expected': 'Expected',
+    'div.t.div': 'Dividend',
+    'div.t.jcp': 'Interest on equity',
+    'div.t.rend': 'Distribution',
+    'div.t.amort': 'Amortization',
+    'div.t.other': 'Other',
+    'div.jcpNet': 'net of 15% tax',
+    'div.confirm': 'Confirm',
+    'div.empty': 'No income yet. Import the B3 statement or click Fetch income.',
+    'div.noB3': 'No B3 position with trades to fetch income for.',
+    'div.fetched': '{n} new income item(s) found.',
+    'div.noPlan': 'Your brapi key plan does not include income for some tickers; use the B3 statement.',
+    'div.someFailed': '{n} ticker(s) did not respond.',
+    'div.needPosition': 'Add a position before recording income.',
+    'div.addTitle': 'New income',
+    'div.editTitle': 'Edit income',
+    'div.optional': 'optional',
     'sec.title': 'Security and privacy',
     'sec.statusOn': 'Protection on',
     'sec.statusOff': 'Protection off',
@@ -1137,7 +1323,7 @@ const I18N = {
     'apiw.couldNotCheck': 'Could not verify {apis} right now (connection or limit). Prices may be delayed.',
     'apiw.open': 'Key setup assistant',
     'tabs.registry': 'Records',
-    'tabs.flows': 'Money in & out',
+    'tabs.flows': 'Transactions',
     'tabs.news': 'News',
     'gear.title': 'Preferences',
     'gear.open': 'Open preferences',
@@ -1334,7 +1520,7 @@ const I18N = {
     'tabs.dashboard': 'Panel',
     'tabs.accounts': 'Cuentas',
     'tabs.balances': 'Saldos Diarios',
-    'tabs.transactions': 'Movimientos',
+    'tabs.transactions': 'Entradas y salidas',
     'tabs.budgets': 'Presupuestos',
     'tabs.settings': 'Configuración avanzada',
     'dashboard.totalEquity': 'Financiero',
@@ -1663,6 +1849,99 @@ const I18N = {
     'modal.move': 'Aporte o rescate',
     'mkt.lookup': 'Buscar activo (ticker o ISIN)',
     'mkt.manual': 'Registrar sin búsqueda (renta fija, CDB o activo sin cotización)',
+    'tabs.payables': 'Cuentas por pagar',
+    'tabs.receivables': 'Cuentas por cobrar',
+    'help.payables': 'Cuentas que aún debes pagar, incluso a plazos o recurrentes (alquiler, préstamos, tarjeta). Al pagar, la app registra la salida.',
+    'help.receivables': 'Importes que aún vas a cobrar, incluso a plazos o recurrentes (alquileres, ventas a plazo). Al cobrar, la app registra la entrada.',
+    'bill.addPayable': '+ Nueva cuenta por pagar',
+    'bill.addReceivable': '+ Nueva cuenta por cobrar',
+    'b3.button': 'Importar extracto de B3',
+    'b3.title': 'Importar extracto de B3',
+    'b3.intro': 'Trae tus operaciones y rendimientos directamente del Área del Inversor de B3. Las posiciones se crean con el histórico de compras y ventas; nada se registra en tus cuentas.',
+    'b3.step1': 'Entra al Área del Inversor:',
+    'b3.step2': 'Ve a Extractos → Movimentación (o Negociación).',
+    'b3.step3': 'Elige el período y exporta a Excel.',
+    'b3.step4': 'Selecciona el archivo abajo. Puedes importar varios años, uno a la vez: lo ya importado se omite.',
+    'b3.choose': 'Elegir archivo (.xlsx o .csv)',
+    'b3.formats': 'Extractos de Movimentación o Negociación de B3.',
+    'b3.privacy': 'El archivo se lee solo en este dispositivo. No se envía a ningún servidor.',
+    'b3.reading': 'Leyendo el archivo…',
+    'b3.errNotB3': 'No reconozco un extracto de B3 en este archivo. Usa el Excel de Movimentación o Negociación sin cambiar columnas.',
+    'b3.errFile': 'No se pudo leer el archivo. Comprueba que sea el .xlsx exportado por B3.',
+    'b3.errBrowser': 'Este navegador no puede abrir .xlsx. Actualízalo o exporta en CSV.',
+    'b3.rows': 'Filas leídas',
+    'b3.open': 'Posiciones abiertas',
+    'b3.closedCount': 'Posiciones cerradas',
+    'b3.income': 'Rendimientos',
+    'b3.repeated': '{n} fila(s) ya importada(s) se omitieron.',
+    'b3.missingExplain': 'Algunos activos tienen más ventas que compras en este archivo: probablemente se compraron antes del período exportado. Importa también los años anteriores para que el costo sea correcto.',
+    'b3.selOpen': 'Solo posiciones abiertas',
+    'b3.selAll': 'Seleccionar todas',
+    'b3.selNone': 'Limpiar selección',
+    'b3.status': 'Situación',
+    'b3.trades': 'Operaciones',
+    'b3.cost': 'Costo',
+    'b3.notes': 'Observaciones',
+    'b3.new': 'Nueva',
+    'b3.existing': 'Ya existe',
+    'b3.closed': 'cerrada',
+    'b3.warnMissing': 'venta de {n} sin compra en el archivo',
+    'b3.warnNoPrice': '{n} entrada(s) sin precio — costo cero',
+    'b3.warnManual': 'ya tiene {n} movimiento(s) manual(es); marca solo si no son los mismos',
+    'b3.nothingNew': 'Nada nuevo para importar en este archivo.',
+    'b3.ignoredTitle': '{n} fila(s) no se convirtieron en operaciones — ver detalles',
+    'b3.ign.derivative': 'derivados (mini índice, mini dólar, opciones, término) — el day trade no forma posición',
+    'b3.ign.custody': 'transferencias de custodia entre corredoras — no cambian la cantidad',
+    'b3.ign.duplicate': 'compras/ventas que ya aparecen como liquidación — omitidas para no contar doble',
+    'b3.ign.rights': 'derechos y cesiones de suscripción',
+    'b3.ign.lending': 'préstamo de valores',
+    'b3.ign.review': 'eventos que requieren revisión manual',
+    'b3.ign.unknown': 'filas no reconocidas',
+    'b3.importIncome': 'Importar también rendimientos (dividendos, JCP, distribuciones)',
+    'b3.account': 'Cuenta o corredora de las posiciones nuevas (opcional)',
+    'b3.accountHint': 'Solo para organizar. El histórico importado no cambia el saldo de la cuenta.',
+    'b3.importN': 'Importar {n} activo(s)',
+    'b3.importing': 'Importando…',
+    'b3.done': 'Importación completa: {p} posición(es) nueva(s), {m} operación(es) y {d} rendimiento(s).',
+    'b3.bonus': 'Bonificación/desdoble',
+    'div.title': 'Rendimientos',
+    'div.fetch': 'Buscar rendimientos',
+    'div.fetching': 'Buscando…',
+    'div.add': '+ Rendimiento',
+    'div.year': 'Recibido en {y}',
+    'div.last12': 'Últimos 12 meses',
+    'div.pending': 'Por cobrar / confirmar',
+    'div.yoc': 'Yield on cost (12 meses)',
+    'div.yocHint': 'Rendimientos de 12 meses ÷ costo actual de la cartera',
+    'div.fYear': 'Año',
+    'div.fStatus': 'Situación',
+    'div.confirmAll': 'Confirmar todos los recibidos',
+    'div.payDate': 'Pago',
+    'div.exDate': 'fecha con',
+    'div.tbd': 'por definir',
+    'div.type': 'Tipo',
+    'div.perShare': 'Por acción/cuota',
+    'div.amount': 'Importe',
+    'div.status': 'Situación',
+    'div.st.received': 'Recibido',
+    'div.st.toConfirm': 'Por confirmar',
+    'div.st.expected': 'Previsto',
+    'div.t.div': 'Dividendo',
+    'div.t.jcp': 'JCP',
+    'div.t.rend': 'Distribución',
+    'div.t.amort': 'Amortización',
+    'div.t.other': 'Otro',
+    'div.jcpNet': 'neto del 15% de impuesto',
+    'div.confirm': 'Confirmar',
+    'div.empty': 'Aún no hay rendimientos. Importa el extracto de B3 o pulsa Buscar rendimientos.',
+    'div.noB3': 'No hay posiciones de B3 con operaciones para buscar rendimientos.',
+    'div.fetched': '{n} rendimiento(s) nuevo(s) encontrado(s).',
+    'div.noPlan': 'El plan de tu clave brapi no incluye rendimientos para algunos activos; usa el extracto de B3.',
+    'div.someFailed': '{n} activo(s) sin respuesta.',
+    'div.needPosition': 'Registra una posición antes de anotar rendimientos.',
+    'div.addTitle': 'Nuevo rendimiento',
+    'div.editTitle': 'Editar rendimiento',
+    'div.optional': 'opcional',
     'sec.title': 'Seguridad y privacidad',
     'sec.statusOn': 'Protección activada',
     'sec.statusOff': 'Protección desactivada',
@@ -1785,7 +2064,7 @@ const I18N = {
     'apiw.couldNotCheck': 'No se pudo verificar {apis} ahora (conexión o límite). Las cotizaciones pueden tardar.',
     'apiw.open': 'Asistente de claves',
     'tabs.registry': 'Registros',
-    'tabs.flows': 'Entradas y Salidas',
+    'tabs.flows': 'Movimientos',
     'tabs.news': 'Noticias',
     'gear.title': 'Preferencias',
     'gear.open': 'Abrir preferencias',
@@ -2053,7 +2332,7 @@ function groupLabel(g) {
 
 /* ---------- Estado e persistência (IndexedDB) ---------- */
 const DB_NAME = 'prof-controller';
-const DB_VERSION = 5; // Fase 7: posições de investimento, cotações e movimentações
+const DB_VERSION = 6; // Fase 12: proventos (dividendos, JCP, rendimentos)
 let db = null;
 let state = {
   accounts: [],
@@ -2066,6 +2345,7 @@ let state = {
   positions: [],
   quotes: [],
   invmoves: [],
+  dividends: [],
   assets: [],
   valuations: [],
   settings: { lang: 'pt-BR', theme: 'default', baseCurrency: 'EUR' },
@@ -2145,6 +2425,11 @@ function openDB() {
         s.createIndex('assetId', 'assetId');
         s.createIndex('date', 'date');
       }
+      // Fase 12
+      if (!d.objectStoreNames.contains('dividends')) {
+        const s = d.createObjectStore('dividends', { keyPath: 'id' });
+        s.createIndex('positionId', 'positionId');
+      }
       // Preparado para fases futuras (patrimônio)
       ['fx', 'receitas', 'lancamentos', 'imoveis', 'veiculos', 'posicoes', 'nav', 'orcamentos']
         .forEach((name) => { if (!d.objectStoreNames.contains(name)) d.createObjectStore(name, { keyPath: 'id' }); });
@@ -2187,6 +2472,7 @@ async function loadAll() {
   state.invmoves = await getAll('invmoves');
   state.assets = await getAll('assets');
   state.valuations = await getAll('valuations');
+  state.dividends = await getAll('dividends');
   const brutos = (await rawGetAll('settings')).filter((r) => !String(r.key).startsWith(HIST_PREFIX) && r.key !== SEC_KEY);
   for (const r of brutos) {
     const s = await decodeRecord(r);
@@ -2360,7 +2646,7 @@ async function saveSecurityMeta(meta) {
 }
 
 const DATA_STORES = ['accounts', 'balances', 'transactions', 'budgets', 'fx', 'schedules', 'payments',
-  'positions', 'quotes', 'invmoves', 'assets', 'valuations', 'settings'];
+  'positions', 'quotes', 'invmoves', 'assets', 'valuations', 'dividends', 'settings'];
 
 /* Criptografa (ou descriptografa) todos os registros. A leitura aceita registros
    abertos e fechados misturados, então uma interrupção no meio não perde dados:
@@ -3166,7 +3452,7 @@ function positionStateAt(pos, date) {
     if (m.date > limite) return;
     const q = Number(m.quantity) || 0;
     const v = Number(m.amount) || 0;
-    if (m.type === 'buy') { quantidade += q; custo += v; return; }
+    if (m.type === 'buy' || m.type === 'bonus') { quantidade += q; custo += v; return; }
     if (pos.kind === 'quote' && quantidade > 0) {
       const fatia = Math.min(q / quantidade, 1);
       custo -= custo * fatia;
@@ -3203,6 +3489,7 @@ function positionValue(pos, date) {
   let valor = Number(cot.value) || 0;
   invMovesOf(pos.id).forEach((m) => {
     if (m.date <= cot.date || m.date > limite) return;
+    if (m.type === 'bonus') { valor += Number(m.amount) || 0; return; }
     valor += (m.type === 'buy' ? 1 : -1) * (Number(m.amount) || 0);
   });
   return Math.max(valor, 0);
@@ -4170,6 +4457,8 @@ function renderBills() {
       <option value="receivable">${t('bill.receivable')}</option>
       <option value="payable">${t('bill.payable')}</option>`;
     selKind.value = state.ui.billKind;
+    const rotulo = selKind.closest('label');
+    if (rotulo) rotulo.classList.toggle('hidden', !!VIRTUAL_TABS[state.ui.tab]);
   }
   const selSt = document.getElementById('billStatus');
   if (selSt) {
@@ -4236,7 +4525,7 @@ function renderBills() {
       if (vazio2) { vazio2.textContent = t('bill.emptySchedules'); vazio2.classList.remove('hidden'); }
     } else {
       if (vazio2) vazio2.classList.add('hidden');
-      tb2.innerHTML = state.schedules.map((sch) => {
+      tb2.innerHTML = state.schedules.filter((sch) => state.ui.billKind === 'all' || sch.kind === state.ui.billKind).map((sch) => {
         const conta = accountById(sch.accountId);
         const moeda = conta ? conta.currency : state.settings.baseCurrency;
         const n = scheduleCount(sch);
@@ -4278,7 +4567,7 @@ function openBillModal(id, prefill) {
   if (!state.accounts.length) { showToast(t('bill.noAccounts')); return; }
   const b = id ? state.schedules.find((x) => x.id === id) : (prefill || null);
   const novo = !id; // prefill preenche, mas o título ainda não existe
-  const kind = b ? b.kind : 'receivable';
+  const kind = b ? b.kind : (state.ui.billKind === 'payable' ? 'payable' : 'receivable');
   openModal(`
     <h2>${b ? t('modal.editBill') : t('modal.addBill')}</h2>
     <label>${t('bill.kind')}</label>
@@ -5521,6 +5810,7 @@ function periodStart(cfg, primeira) {
 function flowsOf(positions, D, conv) {
   const fluxos = [];
   positions.forEach((pos) => invMovesOf(pos.id).forEach((m) => {
+    if (m.type === 'bonus') return; // não é dinheiro entrando nem saindo
     const v = conv(Number(m.amount) || 0, pos.currency, D, m.date);
     if (v != null) fluxos.push({ date: m.date, type: m.type, amount: v, posId: pos.id });
   }));
@@ -5536,7 +5826,7 @@ function costSeriesD(pos, datas, D, conv) {
       const m = movs[i++];
       const q = Number(m.quantity) || 0;
       const v = conv(Number(m.amount) || 0, pos.currency, D, m.date) || 0;
-      if (m.type === 'buy') { qtd += q; custo += v; }
+      if (m.type === 'buy' || m.type === 'bonus') { qtd += q; custo += v; }
       else if (pos.kind === 'quote' && qtd > 0) { const f = Math.min(q / qtd, 1); custo -= custo * f; qtd -= q; }
       else custo -= v;
     }
@@ -6383,6 +6673,661 @@ async function testApis() {
 }
 
 
+/* ================= FASE 12 — Importador da B3 e proventos =================
+   Leitor de .xlsx próprio (ZIP + XML), sem bibliotecas externas: funciona offline
+   e não expõe o extrato a nenhum servidor.
+
+   Regras do extrato de MOVIMENTAÇÃO da B3 (Área do Investidor):
+   - "Transferência - Liquidação": Crédito = compra liquidada, Débito = venda liquidada.
+   - "Compra"/"Venda" com Futuro/Opção/Termo: derivativos (day trade) — não formam posição.
+   - "Compra"/"Venda" de ações só contam se o papel NÃO tiver liquidações no arquivo
+     (evita contar a mesma operação duas vezes).
+   - "Transferência" (sem liquidação) e itens "- Transferido": troca de custódia, neutros.
+   - Dividendo, JCP e Rendimento: proventos recebidos (valor já líquido).
+   - Desdobro/Bonificação: aumentam a quantidade.
+   Também aceita o extrato de NEGOCIAÇÃO (Data do Negócio, Código de Negociação…). */
+
+/* ----- XLSX ----- */
+async function inflateRaw(bytes) {
+  if (typeof DecompressionStream === 'undefined') throw new Error('NO_DECOMPRESS');
+  const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream('deflate-raw'));
+  return new Uint8Array(await new Response(stream).arrayBuffer());
+}
+function unzip(buf) {
+  const dv = new DataView(buf), u8 = new Uint8Array(buf);
+  let fim = -1;
+  for (let i = buf.byteLength - 22; i >= Math.max(0, buf.byteLength - 65557); i--) {
+    if (dv.getUint32(i, true) === 0x06054b50) { fim = i; break; }
+  }
+  if (fim < 0) throw new Error('NOT_XLSX');
+  const total = dv.getUint16(fim + 10, true);
+  let off = dv.getUint32(fim + 16, true);
+  const arquivos = {};
+  for (let k = 0; k < total && dv.getUint32(off, true) === 0x02014b50; k++) {
+    const nl = dv.getUint16(off + 28, true), el = dv.getUint16(off + 30, true), cl = dv.getUint16(off + 32, true);
+    arquivos[tdec.decode(u8.subarray(off + 46, off + 46 + nl))] = {
+      method: dv.getUint16(off + 10, true), size: dv.getUint32(off + 20, true), local: dv.getUint32(off + 42, true)
+    };
+    off += 46 + nl + el + cl;
+  }
+  return async (nome) => {
+    const f = arquivos[nome];
+    if (!f) return null;
+    const ini = f.local + 30 + dv.getUint16(f.local + 26, true) + dv.getUint16(f.local + 28, true);
+    const dados = u8.subarray(ini, ini + f.size);
+    return tdec.decode(f.method === 0 ? dados : await inflateRaw(dados));
+  };
+}
+function colIndex(ref) {
+  const letras = String(ref).match(/^[A-Z]+/);
+  if (!letras) return 0;
+  return letras[0].split('').reduce((n, c) => n * 26 + c.charCodeAt(0) - 64, 0) - 1;
+}
+async function readXlsxRows(file) {
+  const ler = unzip(await file.arrayBuffer());
+  const xml = (s) => new DOMParser().parseFromString(s, 'application/xml');
+  const compartilhadas = [];
+  const ss = await ler('xl/sharedStrings.xml');
+  if (ss) [...xml(ss).getElementsByTagName('si')].forEach((si) => compartilhadas.push([...si.getElementsByTagName('t')].map((x) => x.textContent).join('')));
+
+  let caminho = 'xl/worksheets/sheet1.xml';
+  const wb = await ler('xl/workbook.xml'), rels = await ler('xl/_rels/workbook.xml.rels');
+  if (wb && rels) {
+    const primeira = xml(wb).getElementsByTagName('sheet')[0];
+    const rid = primeira && (primeira.getAttribute('r:id') || primeira.getAttributeNS('http://schemas.openxmlformats.org/officeDocument/2006/relationships', 'id'));
+    const rel = [...xml(rels).getElementsByTagName('Relationship')].find((r) => r.getAttribute('Id') === rid);
+    if (rel) {
+      const alvo = rel.getAttribute('Target');
+      caminho = alvo.startsWith('/') ? alvo.slice(1) : 'xl/' + alvo.replace(/^\.\//, '');
+    }
+  }
+  const planilha = await ler(caminho);
+  if (!planilha) throw new Error('NOT_XLSX');
+  const linhas = [];
+  [...xml(planilha).getElementsByTagName('row')].forEach((row) => {
+    const cel = [];
+    [...row.getElementsByTagName('c')].forEach((c) => {
+      const tipo = c.getAttribute('t');
+      const v = c.getElementsByTagName('v')[0];
+      let valor = '';
+      if (tipo === 's') valor = compartilhadas[Number(v && v.textContent)] || '';
+      else if (tipo === 'inlineStr') valor = [...c.getElementsByTagName('t')].map((x) => x.textContent).join('');
+      else if (v) valor = tipo === 'str' || tipo === 'b' ? v.textContent : (isNaN(Number(v.textContent)) ? v.textContent : Number(v.textContent));
+      cel[colIndex(c.getAttribute('r'))] = valor;
+    });
+    if (cel.some((x) => x !== '' && x != null)) linhas.push(Array.from(cel, (x) => (x == null ? '' : x)));
+  });
+  return linhas;
+}
+
+/* ----- Normalização ----- */
+const semAcento = (s) => String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+const chaveCab = (s) => semAcento(s).replace(/[^a-z0-9]/g, '');
+function b3Num(v) {
+  if (typeof v === 'number') return v;
+  const s = String(v || '').replace(/R\$\s?/i, '').trim();
+  if (!s || s === '-') return null;
+  const n = s.includes(',') ? Number(s.replace(/\./g, '').replace(',', '.')) : Number(s);
+  return isNaN(n) ? null : n;
+}
+function b3Date(v) {
+  if (typeof v === 'number') { // número de série do Excel
+    const d = new Date(Date.UTC(1899, 11, 30) + v * 86400000);
+    return d.toISOString().slice(0, 10);
+  }
+  const m = String(v || '').trim().match(/^(\d{2})\/(\d{2})\/(\d{4})/);
+  if (m) return `${m[3]}-${m[2]}-${m[1]}`;
+  const iso = String(v || '').match(/^\d{4}-\d{2}-\d{2}/);
+  return iso ? iso[0] : null;
+}
+function parseProduct(prod) {
+  const txt = String(prod || '').trim();
+  if (/^(futuro|opcao|opção|termo)\b/i.test(semAcento(txt))) return { derivative: true, name: txt };
+  const m = txt.match(/^([A-Z]{4}\d{1,2})F?\s*-\s*(.+)$/);
+  if (m) return { ticker: m[1], name: m[2].trim() };
+  const so = txt.match(/^([A-Z]{4}\d{1,2})F?$/);
+  if (so) return { ticker: so[1], name: so[1] };
+  return { ticker: null, name: txt };
+}
+function guessAssetType(ticker, nome) {
+  const n = semAcento(nome);
+  if (/fii|imobiliari|fdo inv imob|fundo de investimento imob/.test(n)) return 'fii';
+  if (/\betf\b|fundo de indice|ishares|index/.test(n)) return 'etf';
+  if (/tesouro/.test(n)) return 'treasury';
+  if (/cdb|lci|lca|debenture/.test(n)) return 'cdb';
+  if (ticker && /3[2-9]$/.test(ticker)) return 'bdr';
+  return 'stock';
+}
+
+/* ----- Interpretação ----- */
+function detectB3Layout(cabecalho) {
+  const k = cabecalho.map(chaveCab);
+  const idx = (...nomes) => nomes.map((n) => k.indexOf(n)).find((i) => i >= 0);
+  if (k.includes('movimentacao') && k.includes('produto')) {
+    return { type: 'mov', io: idx('entradasaida'), date: idx('data'), mov: idx('movimentacao'), prod: idx('produto'),
+      inst: idx('instituicao'), qty: idx('quantidade'), price: idx('precounitario'), value: idx('valordaoperacao') };
+  }
+  if (k.includes('codigodenegociacao')) {
+    return { type: 'neg', date: idx('datadonegocio', 'data'), side: idx('tipodemovimentacao'), market: idx('mercado'),
+      inst: idx('instituicao'), prod: idx('codigodenegociacao'), qty: idx('quantidade'), price: idx('preco'), value: idx('valor') };
+  }
+  return null;
+}
+
+function interpretB3(linhas) {
+  const hi = linhas.findIndex((l) => detectB3Layout(l));
+  if (hi < 0) throw new Error('NOT_B3');
+  const L = detectB3Layout(linhas[hi]);
+  const brutos = linhas.slice(hi + 1);
+  const eventos = [], ignorados = {};
+  const ignorar = (motivo, desc) => { ignorados[motivo] = ignorados[motivo] || { count: 0, examples: new Set() }; ignorados[motivo].count++; if (desc) ignorados[motivo].examples.add(desc); };
+  const ocorrencias = {};
+  const chaveImport = (partes) => {
+    const base = partes.join('|');
+    ocorrencias[base] = (ocorrencias[base] || 0) + 1; // linhas idênticas legítimas continuam distintas
+    return 'b3|' + base + '|' + ocorrencias[base];
+  };
+
+  if (L.type === 'mov') {
+    // Papéis com liquidação no arquivo: Compra/Venda deles seria contagem dupla
+    const comLiquidacao = new Set();
+    brutos.forEach((r) => {
+      if (chaveCab(r[L.mov]) === 'transferencialiquidacao') { const p = parseProduct(r[L.prod]); if (p.ticker) comLiquidacao.add(p.ticker); }
+    });
+    brutos.forEach((r) => {
+      const data = b3Date(r[L.date]);
+      if (!data) return;
+      const mov = chaveCab(r[L.mov]);
+      const credito = chaveCab(r[L.io]).startsWith('cred');
+      const p = parseProduct(r[L.prod]);
+      const qtd = b3Num(r[L.qty]) || 0, preco = b3Num(r[L.price]), valor = b3Num(r[L.value]);
+      const inst = String(r[L.inst] || '').trim();
+      const rotulo = String(r[L.mov] || '').trim();
+      const base = { date: data, ticker: p.ticker, name: p.name, broker: inst, qty: qtd, price: preco, value: valor, label: rotulo };
+      const key = () => chaveImport([data, mov, r[L.prod], inst, qtd, preco, valor, credito ? 'C' : 'D']);
+
+      if (mov.endsWith('transferido')) return ignorar('custody', rotulo);
+      if (p.derivative) return ignorar('derivative', rotulo);
+      if (mov === 'transferencialiquidacao' || ((mov === 'compra' || mov === 'venda') && !comLiquidacao.has(p.ticker))) {
+        if (mov === 'transferencialiquidacao' && !p.ticker) return ignorar('unknown', rotulo + ' — ' + p.name);
+        const lado = mov === 'compra' ? 'buy' : mov === 'venda' ? 'sell' : (credito ? 'buy' : 'sell');
+        return eventos.push({ ...base, kind: 'trade', side: lado, ticker: p.ticker || p.name, importKey: key() });
+      }
+      if (mov === 'compra' || mov === 'venda') return ignorar('duplicate', rotulo);
+      if (mov === 'transferencia') return ignorar('custody', rotulo);
+      if (mov === 'dividendo' || mov === 'jurossobrecapitalproprio' || mov === 'rendimento' || mov === 'amortizacao' || mov === 'restituicaodecapital') {
+        if (!credito || !valor) return ignorar('unknown', rotulo);
+        const tipo = mov === 'dividendo' ? 'div' : mov === 'rendimento' ? 'rend' : mov === 'jurossobrecapitalproprio' ? 'jcp' : 'amort';
+        return eventos.push({ ...base, kind: 'income', incomeType: tipo, importKey: key() });
+      }
+      if (mov === 'desdobro' || mov === 'bonificacaoemativos') {
+        if (!p.ticker || !qtd) return ignorar('review', rotulo);
+        return eventos.push({ ...base, kind: 'trade', side: 'bonus', value: mov === 'bonificacaoemativos' ? (valor || 0) : 0, importKey: key() });
+      }
+      if (mov === 'leilaodefracao' || mov === 'resgate') {
+        if (!p.ticker && !p.name) return ignorar('review', rotulo);
+        return eventos.push({ ...base, kind: 'trade', side: 'sell', ticker: p.ticker || p.name, importKey: key() });
+      }
+      if (mov.includes('subscricao') || mov.includes('cessaodedireitos') || mov.includes('direito')) return ignorar('rights', rotulo);
+      if (mov.includes('emprestimo')) return ignorar('lending', rotulo);
+      return ignorar('review', rotulo);
+    });
+  } else {
+    brutos.forEach((r) => {
+      const data = b3Date(r[L.date]);
+      if (!data) return;
+      const mercado = semAcento(r[L.market]);
+      const p = parseProduct(r[L.prod]);
+      const rotulo = String(r[L.side] || '').trim();
+      if (/opc|futuro|termo/.test(mercado) || p.derivative) return ignorar('derivative', rotulo + ' ' + (r[L.market] || ''));
+      if (!p.ticker) return ignorar('unknown', String(r[L.prod]));
+      const lado = semAcento(rotulo).startsWith('c') ? 'buy' : 'sell';
+      const qtd = b3Num(r[L.qty]) || 0, preco = b3Num(r[L.price]), valor = b3Num(r[L.value]);
+      const inst = String(r[L.inst] || '').trim();
+      eventos.push({ kind: 'trade', side: lado, date: data, ticker: p.ticker, name: p.ticker, broker: inst, qty: qtd, price: preco,
+        value: valor != null ? valor : (preco != null ? preco * qtd : null), label: rotulo,
+        importKey: chaveImport([data, lado, p.ticker, inst, qtd, preco, valor]) });
+    });
+  }
+  // Mesma data: entradas antes das saídas, para não "vender o que ainda não chegou"
+  const ordem = { buy: 0, bonus: 1, sell: 2 };
+  eventos.sort((a, b) => a.date.localeCompare(b.date) || (ordem[a.side] ?? 3) - (ordem[b.side] ?? 3));
+  return { layout: L.type, eventos, ignorados, linhas: brutos.length };
+}
+
+/* Resumo por ativo: simula a carteira para achar quantidade final, custo e avisos. */
+function summarizeB3(eventos) {
+  const jaImportadas = new Set(state.invmoves.map((m) => m.importKey).concat(state.dividends.map((d) => d.importKey)).filter(Boolean));
+  const porAtivo = new Map();
+  let repetidos = 0;
+  eventos.forEach((ev) => {
+    if (jaImportadas.has(ev.importKey)) { repetidos++; return; }
+    const tk = ev.ticker || ev.name;
+    if (!porAtivo.has(tk)) porAtivo.set(tk, { ticker: tk, name: ev.name, trades: [], incomes: [], qty: 0, cost: 0, income: 0, missingBuys: 0, noPrice: 0, brokers: new Set() });
+    const a = porAtivo.get(tk);
+    if (ev.name && ev.name.length > (a.name || '').length) a.name = ev.name;
+    if (ev.broker) a.brokers.add(ev.broker);
+    if (ev.kind === 'income') { a.incomes.push(ev); a.income += ev.value || 0; return; }
+    let qtd = ev.qty, valor = ev.value;
+    if (ev.side === 'buy' || ev.side === 'bonus') {
+      if (ev.side === 'buy' && valor == null) { valor = ev.price != null ? ev.price * qtd : 0; if (!valor) a.noPrice++; }
+      a.qty += qtd; a.cost += valor || 0;
+    } else {
+      if (qtd > a.qty + 1e-9) { a.missingBuys += qtd - a.qty; qtd = a.qty; } // vendeu o que comprou antes do período
+      if (valor == null) valor = ev.price != null ? ev.price * ev.qty : 0;
+      // se a quantidade foi reduzida, o valor da venda acompanha a proporção
+      if (qtd < ev.qty && ev.qty > 0) valor = valor * (qtd / ev.qty);
+      const fatia = a.qty > 0 ? qtd / a.qty : 0;
+      a.cost -= a.cost * fatia; a.qty -= qtd;
+    }
+    a.trades.push({ ...ev, qty: qtd, value: valor });
+  });
+  porAtivo.forEach((a) => {
+    a.qty = Math.round(a.qty * 1e8) / 1e8;
+    a.existing = state.positions.find((p) => p.ticker && p.ticker === a.ticker) || null;
+    a.manualMoves = a.existing ? invMovesOf(a.existing.id).filter((m) => m.source !== 'b3').length : 0;
+    a.closed = a.qty <= 0;
+  });
+  return { ativos: [...porAtivo.values()].sort((x, y) => (x.closed - y.closed) || x.ticker.localeCompare(y.ticker)), repetidos };
+}
+
+/* ----- Tela do importador ----- */
+let b3Preview = null;
+
+function openB3Import() {
+  b3Preview = null;
+  openModal(`
+    <h2>${t('b3.title')}</h2>
+    <p class="hint">${t('b3.intro')}</p>
+    <ol class="b3-steps">
+      <li>${t('b3.step1')} <a href="https://www.investidor.b3.com.br" target="_blank" rel="noopener noreferrer">investidor.b3.com.br</a></li>
+      <li>${t('b3.step2')}</li>
+      <li>${t('b3.step3')}</li>
+      <li>${t('b3.step4')}</li>
+    </ol>
+    <label class="b3-drop" for="b3File">
+      <input id="b3File" type="file" accept=".xlsx,.csv" onchange="handleB3File(this.files[0])">
+      <strong>${t('b3.choose')}</strong>
+      <span class="hint">${t('b3.formats')}</span>
+    </label>
+    <p class="hint">🔒 ${t('b3.privacy')}</p>
+    <div id="b3Result"></div>
+  `, true);
+}
+
+async function handleB3File(file) {
+  const box = document.getElementById('b3Result');
+  if (!file || !box) return;
+  box.innerHTML = `<p class="hint">${t('b3.reading')}</p>`;
+  try {
+    let linhas;
+    if (/\.csv$/i.test(file.name)) {
+      const texto = (await file.text()).replace(/^\uFEFF/, '');
+      const sep = detectDelimiter(texto.split(/\r?\n/)[0]);
+      linhas = texto.split(/\r?\n/).filter((l) => l.trim()).map((l) => splitCsvLine(l, sep));
+    } else {
+      linhas = await readXlsxRows(file);
+    }
+    const lido = interpretB3(linhas);
+    b3Preview = { ...lido, ...summarizeB3(lido.eventos), fileName: file.name };
+    renderB3Preview();
+  } catch (e) {
+    console.error('Importação B3:', e);
+    const msg = { NOT_B3: t('b3.errNotB3'), NOT_XLSX: t('b3.errFile'), NO_DECOMPRESS: t('b3.errBrowser') }[e.message] || t('b3.errFile');
+    box.innerHTML = `<p class="amount-out">${msg}</p>`;
+  }
+}
+function splitCsvLine(linha, sep) {
+  const out = []; let cur = '', aspas = false;
+  for (let i = 0; i < linha.length; i++) {
+    const ch = linha[i];
+    if (aspas) { if (ch === '"') { if (linha[i + 1] === '"') { cur += '"'; i++; } else aspas = false; } else cur += ch; }
+    else if (ch === '"') aspas = true;
+    else if (ch === sep) { out.push(cur); cur = ''; }
+    else cur += ch;
+  }
+  out.push(cur);
+  return out;
+}
+
+function renderB3Preview() {
+  const box = document.getElementById('b3Result');
+  const P = b3Preview;
+  if (!box || !P) return;
+  const abertos = P.ativos.filter((a) => !a.closed);
+  const fechados = P.ativos.filter((a) => a.closed);
+  const totalProv = P.ativos.reduce((s, a) => s + a.income, 0);
+  const incluirPadrao = (a) => !a.closed && !a.manualMoves;
+  P.ativos.forEach((a) => { if (a.include === undefined) a.include = incluirPadrao(a); });
+
+  const linha = (a) => {
+    const avisos = [];
+    if (a.missingBuys > 0) avisos.push(t('b3.warnMissing').replace('{n}', fmtQty(a.missingBuys)));
+    if (a.noPrice) avisos.push(t('b3.warnNoPrice').replace('{n}', a.noPrice));
+    if (a.manualMoves) avisos.push(t('b3.warnManual').replace('{n}', a.manualMoves));
+    return `<tr class="${a.closed ? 'b3-closed' : ''}">
+      <td><input type="checkbox" ${a.include ? 'checked' : ''} aria-label="${escapeHtml(a.ticker)}" onchange="b3Toggle('${escapeHtml(a.ticker)}', this.checked)"></td>
+      <td><strong>${escapeHtml(a.ticker)}</strong><br><span class="hint">${escapeHtml(a.name || '')}</span></td>
+      <td>${t(a.existing ? 'b3.existing' : 'b3.new')}</td>
+      <td>${a.trades.length}</td>
+      <td>${a.closed ? `<span class="hint">${t('b3.closed')}</span>` : fmtQty(a.qty)}</td>
+      <td>${a.closed ? '—' : fmtMoney(a.cost, 'BRL')}</td>
+      <td>${a.income ? fmtMoney(a.income, 'BRL') : '—'}</td>
+      <td class="b3-warn">${avisos.map((w) => `<div>⚠️ ${w}</div>`).join('')}</td>
+    </tr>`;
+  };
+  const motivos = Object.entries(P.ignorados);
+  box.innerHTML = `
+    <div class="b3-summary">
+      <div><span>${t('b3.rows')}</span><strong>${P.linhas}</strong></div>
+      <div><span>${t('b3.open')}</span><strong>${abertos.length}</strong></div>
+      <div><span>${t('b3.closedCount')}</span><strong>${fechados.length}</strong></div>
+      <div><span>${t('b3.income')}</span><strong>${fmtMoney(totalProv, 'BRL')}</strong></div>
+    </div>
+    ${P.repetidos ? `<p class="hint">↺ ${t('b3.repeated').replace('{n}', P.repetidos)}</p>` : ''}
+    ${P.ativos.some((a) => a.missingBuys > 0) ? `<p class="sec-warning">⚠️ ${t('b3.missingExplain')}</p>` : ''}
+    ${P.ativos.length ? `
+    <div class="b3-bulk">
+      <button type="button" class="link-btn" onclick="b3Select('open')">${t('b3.selOpen')}</button>
+      <button type="button" class="link-btn" onclick="b3Select('all')">${t('b3.selAll')}</button>
+      <button type="button" class="link-btn" onclick="b3Select('none')">${t('b3.selNone')}</button>
+    </div>
+    <div class="table-scroll"><table class="mini-table b3-table">
+      <thead><tr><th></th><th>${t('mkt.asset')}</th><th>${t('b3.status')}</th><th>${t('b3.trades')}</th><th>${t('inv.quantity')}</th><th>${t('b3.cost')}</th><th>${t('b3.income')}</th><th>${t('b3.notes')}</th></tr></thead>
+      <tbody>${P.ativos.map(linha).join('')}</tbody>
+    </table></div>` : `<p class="empty-state">${t('b3.nothingNew')}</p>`}
+    ${motivos.length ? `<details class="b3-ignored"><summary>${t('b3.ignoredTitle').replace('{n}', motivos.reduce((s, [, v]) => s + v.count, 0))}</summary>
+      <ul>${motivos.map(([m, v]) => `<li><strong>${v.count}</strong> — ${t('b3.ign.' + m)}${v.examples.size ? ` <span class="hint">(${[...v.examples].slice(0, 4).map(escapeHtml).join(', ')})</span>` : ''}</li>`).join('')}</ul>
+    </details>` : ''}
+    <label class="checkline"><input type="checkbox" id="b3Income" checked> ${t('b3.importIncome')}</label>
+    <label for="b3Account">${t('b3.account')}</label>
+    <select id="b3Account">
+      <option value="">${t('inv.noAccount')}</option>
+      ${state.accounts.map((c) => `<option value="${c.id}">${escapeHtml(c.name)} (${c.currency})</option>`).join('')}
+    </select>
+    <p class="hint">${t('b3.accountHint')}</p>
+    <button type="button" id="b3Go" class="primary-btn" onclick="commitB3Import()" ${P.ativos.length ? '' : 'disabled'}>${t('b3.importN').replace('{n}', P.ativos.filter((a) => a.include).length)}</button>`;
+}
+function b3Toggle(tk, on) {
+  const a = b3Preview && b3Preview.ativos.find((x) => x.ticker === tk);
+  if (a) a.include = on;
+  const btn = document.getElementById('b3Go');
+  if (btn) btn.textContent = t('b3.importN').replace('{n}', b3Preview.ativos.filter((x) => x.include).length);
+}
+function b3Select(modo) {
+  if (!b3Preview) return;
+  b3Preview.ativos.forEach((a) => { a.include = modo === 'all' ? true : modo === 'none' ? false : !a.closed; });
+  renderB3Preview();
+}
+
+async function commitB3Import() {
+  const P = b3Preview;
+  if (!P) return;
+  const btn = document.getElementById('b3Go');
+  if (btn) { btn.disabled = true; btn.textContent = t('b3.importing'); }
+  const comProventos = document.getElementById('b3Income').checked;
+  const conta = document.getElementById('b3Account').value || null;
+  let nPos = 0, nMov = 0, nProv = 0;
+  for (const a of P.ativos.filter((x) => x.include)) {
+    let pos = a.existing;
+    if (!pos) {
+      const tipo = guessAssetType(a.ticker, a.name);
+      pos = {
+        id: uid(), name: a.name || a.ticker, ticker: /^[A-Z]{4}\d{1,2}$/.test(a.ticker) ? a.ticker : '',
+        kind: 'quote', currency: 'BRL', assetClass: ['treasury', 'cdb'].includes(tipo) ? 'fixed' : 'variable',
+        assetType: tipo, market: 'b3', exchange: 'B3', accountId: conta, color: nextFreeColor(), source: 'b3'
+      };
+      state.positions.push(pos);
+      await put('positions', pos);
+      nPos++;
+    }
+    for (const ev of a.trades) {
+      const mov = {
+        id: uid(), positionId: pos.id, type: ev.side, date: ev.date, quantity: ev.qty, amount: Math.round((ev.value || 0) * 100) / 100,
+        source: 'b3', importKey: ev.importKey, broker: ev.broker
+      };
+      state.invmoves.push(mov);
+      await put('invmoves', mov);
+      nMov++;
+    }
+    if (comProventos) {
+      for (const ev of a.incomes) {
+        const d = {
+          id: uid(), positionId: pos.id, ticker: a.ticker, type: ev.incomeType, payDate: ev.date,
+          quantity: ev.qty || null, perShare: ev.price, amount: ev.value, currency: 'BRL',
+          status: 'received', source: 'b3', importKey: ev.importKey, broker: ev.broker
+        };
+        await removeMatchingEstimate(d);
+        state.dividends.push(d);
+        await put('dividends', d);
+        nProv++;
+      }
+    }
+  }
+  closeModal();
+  renderAll();
+  showToast(t('b3.done').replace('{p}', nPos).replace('{m}', nMov).replace('{d}', nProv));
+}
+
+/* ================= Proventos ================= */
+const DIV_TYPES = ['div', 'jcp', 'rend', 'amort', 'other'];
+const divUi = { year: 'all', status: 'all', ticker: 'all' };
+
+function dividendsOfPosition(id) { return state.dividends.filter((d) => d.positionId === id); }
+
+// Estimativa automática some quando chega o valor real (B3 ou manual)
+async function removeMatchingEstimate(real) {
+  const perto = (a, b) => a && b && Math.abs(new Date(a) - new Date(b)) <= 10 * 86400000;
+  const alvo = state.dividends.filter((d) => d.source === 'auto' && d.status !== 'received' && d.ticker === real.ticker
+    && (d.type === real.type || (d.type === 'rend' && real.type === 'div') || (d.type === 'div' && real.type === 'rend'))
+    && perto(d.payDate || d.exDate, real.payDate));
+  for (const d of alvo) {
+    state.dividends = state.dividends.filter((x) => x.id !== d.id);
+    await del('dividends', d.id);
+  }
+}
+
+/* Busca automática na brapi: para cada provento com "data com" em que você tinha
+   o papel, calcula quantidade × valor por ação. JCP sai com 15% de IR retido. */
+async function fetchAutoDividends(silencioso) {
+  const alvos = state.positions.filter((p) => p.ticker && marketOf(p) === 'b3' && invMovesOf(p.id).length);
+  if (!alvos.length) { if (!silencioso) showToast(t('div.noB3')); return 0; }
+  const btn = document.getElementById('btnDivFetch');
+  if (btn) { btn.disabled = true; btn.textContent = t('div.fetching'); }
+  let novos = 0, semPlano = 0, falhas = 0;
+  const hoje = todayISO();
+  for (const pos of alvos) {
+    let lista;
+    try {
+      const r = brapiResult(await getJSON(brapiUrl('quote/' + encodeURIComponent(pos.ticker), { dividends: 'true' })));
+      const dd = r && (r.dividendsData || (r.data && r.data.dividendsData));
+      if (!dd) { semPlano++; continue; }
+      lista = dd.cashDividends || [];
+    } catch (e) { falhas++; continue; }
+    const primeira = invMovesOf(pos.id)[0].date;
+    for (const cd of lista) {
+      const dataCom = String(cd.lastDatePrior || cd.approvedOn || '').slice(0, 10);
+      if (!dataCom || dataCom < primeira) continue;
+      const qtd = positionStateAt(pos, dataCom).quantity;
+      if (qtd <= 0 || !(Number(cd.rate) > 0)) continue;
+      const rotulo = semAcento(cd.label);
+      const tipo = rotulo.includes('jcp') || rotulo.includes('juros') ? 'jcp' : rotulo.includes('rend') ? 'rend' : rotulo.includes('amort') ? 'amort' : 'div';
+      const pag = cd.paymentDate ? String(cd.paymentDate).slice(0, 10) : null;
+      const chave = `auto|${pos.ticker}|${tipo}|${dataCom}|${cd.rate}`;
+      const bruto = qtd * Number(cd.rate);
+      // Já existe o recebimento real? Então a estimativa não é necessária.
+      const perto = (a, b) => a && b && Math.abs(new Date(a) - new Date(b)) <= 10 * 86400000;
+      if (state.dividends.some((d) => d.source !== 'auto' && d.ticker === pos.ticker && perto(d.payDate, pag || dataCom))) continue;
+      const existente = state.dividends.find((d) => d.importKey === chave);
+      const reg = {
+        ...(existente || {}), id: existente ? existente.id : uid(), positionId: pos.id, ticker: pos.ticker, type: tipo,
+        exDate: dataCom, payDate: pag, quantity: qtd, perShare: Number(cd.rate),
+        gross: bruto, amount: tipo === 'jcp' ? bruto * 0.85 : bruto, currency: pos.currency || 'BRL',
+        status: existente && existente.status === 'received' ? 'received' : (pag && pag <= hoje ? 'toConfirm' : 'expected'),
+        source: 'auto', importKey: chave
+      };
+      if (existente) state.dividends = state.dividends.map((d) => (d.id === reg.id ? reg : d));
+      else { state.dividends.push(reg); novos++; }
+      await put('dividends', reg);
+    }
+  }
+  await put('settings', { key: HIST_PREFIX + 'divFetchedAt', value: hoje });
+  if (btn) { btn.disabled = false; btn.textContent = t('div.fetch'); }
+  renderDividends();
+  if (!silencioso) {
+    let msg = t('div.fetched').replace('{n}', novos);
+    if (semPlano) msg += ' ' + t('div.noPlan');
+    if (falhas) msg += ' ' + t('div.someFailed').replace('{n}', falhas);
+    showToast(msg);
+  }
+  return novos;
+}
+async function autoDividendsDaily() {
+  if (!apiKey('apiBrapi') && !state.positions.some((p) => marketOf(p) === 'b3')) return;
+  if ((await getSetting(HIST_PREFIX + 'divFetchedAt')) === todayISO()) return;
+  await fetchAutoDividends(true);
+}
+
+function divStatusLabel(s) { return t('div.st.' + (s || 'received')); }
+
+function renderDividends() {
+  const tbody = document.querySelector('#divTable tbody');
+  if (!tbody) return;
+  const base = state.settings.baseCurrency;
+  const hoje = todayISO();
+  const ano = hoje.slice(0, 4);
+  const dozeMeses = (() => { const d = new Date(); d.setFullYear(d.getFullYear() - 1); return d.toISOString().slice(0, 10); })();
+  const emBase = (d) => toBase(Number(d.amount) || 0, d.currency || 'BRL', d.payDate || hoje);
+  const recebidos = state.dividends.filter((d) => d.status === 'received');
+  const noAno = recebidos.filter((d) => (d.payDate || '').startsWith(ano)).reduce((s, d) => s + emBase(d), 0);
+  const ult12 = recebidos.filter((d) => (d.payDate || '') >= dozeMeses).reduce((s, d) => s + emBase(d), 0);
+  const aReceber = state.dividends.filter((d) => d.status !== 'received').reduce((s, d) => s + emBase(d), 0);
+  const custo = consolidate(investmentTotals(hoje).cost, base, hoje).total;
+  const yoc = custo > 0 ? (ult12 / custo) * 100 : 0;
+
+  const cards = document.getElementById('divCards');
+  if (cards) cards.innerHTML = `
+    <div class="card"><h3>${t('div.year').replace('{y}', ano)}</h3><p class="big-number amount-in">${fmtMoney(noAno, base)}</p></div>
+    <div class="card"><h3>${t('div.last12')}</h3><p class="big-number">${fmtMoney(ult12, base)}</p></div>
+    <div class="card"><h3>${t('div.pending')}</h3><p class="big-number">${fmtMoney(aReceber, base)}</p></div>
+    <div class="card"><h3>${t('div.yoc')}</h3><p class="big-number">${yoc.toFixed(2).replace('.', ',')}%</p><p class="sub-number">${t('div.yocHint')}</p></div>`;
+
+  // Barras dos últimos 12 meses
+  const barras = document.getElementById('divBars');
+  if (barras) {
+    const meses = [];
+    for (let i = 11; i >= 0; i--) { const d = new Date(); d.setDate(1); d.setMonth(d.getMonth() - i); meses.push(d.toISOString().slice(0, 7)); }
+    const somas = meses.map((m) => recebidos.filter((d) => (d.payDate || '').startsWith(m)).reduce((s, d) => s + emBase(d), 0));
+    const max = Math.max(...somas, 0.01);
+    barras.innerHTML = somas.some((v) => v > 0) ? `<div class="div-bars" role="img" aria-label="${t('div.last12')}">${meses.map((m, i) => `
+      <div class="div-bar" title="${m}: ${fmtMoney(somas[i], base)}">
+        <span class="div-bar-fill" style="height:${Math.max((somas[i] / max) * 100, somas[i] ? 3 : 0)}%"></span>
+        <span class="div-bar-label">${m.slice(5)}/${m.slice(2, 4)}</span>
+      </div>`).join('')}</div>` : '';
+  }
+
+  // Filtros
+  const anos = [...new Set(state.dividends.map((d) => (d.payDate || d.exDate || '').slice(0, 4)).filter(Boolean))].sort().reverse();
+  const tickers = [...new Set(state.dividends.map((d) => d.ticker).filter(Boolean))].sort();
+  const filtros = document.getElementById('divFilters');
+  if (filtros) filtros.innerHTML = `
+    <label><span>${t('div.fYear')}</span><select onchange="divUi.year=this.value;renderDividends()"><option value="all">${t('bill.all')}</option>${anos.map((a) => `<option ${divUi.year === a ? 'selected' : ''}>${a}</option>`).join('')}</select></label>
+    <label><span>${t('div.fStatus')}</span><select onchange="divUi.status=this.value;renderDividends()">${['all', 'received', 'toConfirm', 'expected'].map((s) => `<option value="${s}" ${divUi.status === s ? 'selected' : ''}>${s === 'all' ? t('bill.all') : divStatusLabel(s)}</option>`).join('')}</select></label>
+    <label><span>${t('mkt.asset')}</span><select onchange="divUi.ticker=this.value;renderDividends()"><option value="all">${t('bill.all')}</option>${tickers.map((tk) => `<option ${divUi.ticker === tk ? 'selected' : ''}>${tk}</option>`).join('')}</select></label>
+    ${state.dividends.some((d) => d.status === 'toConfirm') ? `<button type="button" class="secondary-btn" onclick="confirmAllDividends()">${t('div.confirmAll')}</button>` : ''}`;
+
+  const lista = state.dividends
+    .filter((d) => divUi.year === 'all' || (d.payDate || d.exDate || '').startsWith(divUi.year))
+    .filter((d) => divUi.status === 'all' || d.status === divUi.status)
+    .filter((d) => divUi.ticker === 'all' || d.ticker === divUi.ticker)
+    .sort((a, b) => (b.payDate || b.exDate || '9999').localeCompare(a.payDate || a.exDate || '9999'));
+
+  const thead = document.querySelector('#divTable thead tr');
+  if (thead) thead.innerHTML = `<th>${t('div.payDate')}</th><th>${t('mkt.asset')}</th><th>${t('div.type')}</th><th>${t('inv.quantity')}</th><th>${t('div.perShare')}</th><th>${t('div.amount')}</th><th>${t('div.status')}</th><th>${t('accounts.actions')}</th>`;
+  const vazio = document.getElementById('divEmpty');
+  if (!lista.length) {
+    tbody.innerHTML = '';
+    if (vazio) { vazio.textContent = state.dividends.length ? t('news.emptyFilter') : t('div.empty'); vazio.classList.remove('hidden'); }
+    return;
+  }
+  if (vazio) vazio.classList.add('hidden');
+  tbody.innerHTML = lista.slice(0, 300).map((d) => `<tr>
+    <td>${d.payDate ? d.payDate.split('-').reverse().join('/') : `<span class="hint">${t('div.tbd')}</span>`}${d.exDate ? `<br><span class="hint">${t('div.exDate')} ${d.exDate.split('-').reverse().join('/')}</span>` : ''}</td>
+    <td>${colorDot(tickerColor(d.ticker))}<strong>${escapeHtml(d.ticker || '—')}</strong></td>
+    <td>${t('div.t.' + (d.type || 'other'))}</td>
+    <td>${d.quantity ? fmtQty(d.quantity) : '—'}</td>
+    <td>${d.perShare != null ? fmtMoney(d.perShare, d.currency || 'BRL') : '—'}</td>
+    <td><strong>${fmtMoney(Number(d.amount) || 0, d.currency || 'BRL')}</strong>${d.type === 'jcp' && d.source === 'auto' ? `<br><span class="hint">${t('div.jcpNet')}</span>` : ''}</td>
+    <td><span class="api-badge ${d.status === 'received' ? 'badge-ok' : d.status === 'toConfirm' ? 'badge-warn' : 'badge-muted'}">${divStatusLabel(d.status)}</span>${d.source === 'b3' ? ' <span class="tag">B3</span>' : d.source === 'auto' ? ' <span class="tag">auto</span>' : ''}</td>
+    <td>
+      ${d.status !== 'received' ? `<button class="secondary-btn" onclick="confirmDividend('${d.id}')">${t('div.confirm')}</button>` : ''}
+      <button class="secondary-btn" onclick="openDividendModal('${d.id}')">${t('modal.edit')}</button>
+      <button class="secondary-btn" onclick="deleteDividend('${d.id}')">${t('modal.delete')}</button>
+    </td>
+  </tr>`).join('');
+}
+
+async function confirmDividend(id) {
+  const d = state.dividends.find((x) => x.id === id);
+  if (!d) return;
+  const novo = { ...d, status: 'received', payDate: d.payDate || todayISO() };
+  state.dividends = state.dividends.map((x) => (x.id === id ? novo : x));
+  await put('dividends', novo);
+  renderDividends();
+}
+async function confirmAllDividends() {
+  for (const d of state.dividends.filter((x) => x.status === 'toConfirm')) await confirmDividend(d.id);
+  showToast(t('toast.saved'));
+}
+async function deleteDividend(id) {
+  if (!confirm(t('modal.delete') + '?')) return;
+  state.dividends = state.dividends.filter((x) => x.id !== id);
+  await del('dividends', id);
+  renderDividends();
+}
+
+function openDividendModal(id) {
+  const d = id ? state.dividends.find((x) => x.id === id) : null;
+  if (!state.positions.length) { showToast(t('div.needPosition')); return; }
+  openModal(`
+    <h2>${t(d ? 'div.editTitle' : 'div.addTitle')}</h2>
+    <label>${t('mkt.asset')}</label>
+    <select id="dvPos">${state.positions.map((p) => `<option value="${p.id}" ${d && d.positionId === p.id ? 'selected' : ''}>${escapeHtml(p.ticker || p.name)} — ${escapeHtml(p.name)}</option>`).join('')}</select>
+    <label>${t('div.type')}</label>
+    <select id="dvType">${DIV_TYPES.map((k) => `<option value="${k}" ${d && d.type === k ? 'selected' : ''}>${t('div.t.' + k)}</option>`).join('')}</select>
+    <label>${t('div.payDate')}</label>
+    <input id="dvDate" type="date" value="${d && d.payDate ? d.payDate : todayISO()}">
+    <label>${t('div.amount')}</label>
+    <input id="dvAmount" type="text" inputmode="decimal" value="${d && d.amount != null ? String(d.amount).replace('.', ',') : ''}">
+    <label>${t('inv.quantity')} <span class="hint">(${t('div.optional')})</span></label>
+    <input id="dvQty" type="text" inputmode="decimal" value="${d && d.quantity ? d.quantity : ''}">
+    <label>${t('div.status')}</label>
+    <select id="dvStatus">${['received', 'toConfirm', 'expected'].map((s) => `<option value="${s}" ${(d ? d.status : 'received') === s ? 'selected' : ''}>${divStatusLabel(s)}</option>`).join('')}</select>
+    <button class="primary-btn" onclick="saveDividend('${d ? d.id : ''}')">${t('modal.save')}</button>
+  `);
+}
+async function saveDividend(id) {
+  const pos = state.positions.find((p) => p.id === document.getElementById('dvPos').value);
+  const valor = parseMoney(document.getElementById('dvAmount').value);
+  if (!pos || valor == null || valor <= 0) { showToast(t('toast.invalidValue')); return; }
+  const anterior = id ? state.dividends.find((x) => x.id === id) : null;
+  const qtd = parseMoney(document.getElementById('dvQty').value);
+  const d = {
+    ...(anterior || {}), id: id || uid(), positionId: pos.id, ticker: pos.ticker || pos.name,
+    type: document.getElementById('dvType').value, payDate: document.getElementById('dvDate').value,
+    amount: valor, quantity: qtd || null, perShare: qtd ? valor / qtd : (anterior ? anterior.perShare : null),
+    currency: pos.currency, status: document.getElementById('dvStatus').value, source: anterior ? anterior.source : 'manual'
+  };
+  if (!anterior && d.status === 'received') await removeMatchingEstimate(d);
+  if (anterior) state.dividends = state.dividends.map((x) => (x.id === d.id ? d : x));
+  else state.dividends.push(d);
+  await put('dividends', d);
+  closeModal();
+  renderDividends();
+  showToast(t('toast.saved'));
+}
+
+
 /* ================= Assistente de chaves de API =================
    Na abertura, testa as três chaves em paralelo (6 s cada), sem travar a tela.
    - Chave faltando ou RECUSADA pela API → abre o assistente.
@@ -6677,6 +7622,7 @@ function renderInvestments() {
     elR.textContent = fmtMoney(lucro, base) + (custo > 0 ? ' · ' + ((lucro / custo) * 100).toFixed(1) + '%' : '');
     elR.className = 'big-number ' + (lucro > 0.004 ? 'amount-in' : lucro < -0.004 ? 'amount-out' : '');
   }
+  renderDividends();
   renderWatchlist();
   renderCompare();
 }
@@ -6687,7 +7633,7 @@ function positionUndeducted(pos) {
   if (!pos.accountId) return 0;
   const movs = invMovesOf(pos.id);
   const semLancamento = movs
-    .filter((m) => m.type === 'buy' && !m.transactionId)
+    .filter((m) => m.type === 'buy' && !m.transactionId && m.source !== 'b3')
     .reduce((soma, m) => soma + (Number(m.amount) || 0), 0);
   if (semLancamento > 0) return semLancamento;
   // Caso da posição criada só com cotação: tem valor, mas custo zero e
@@ -6931,7 +7877,7 @@ function openMoveModal(positionId) {
         <th>${t('inv.moveAmount')}</th><th></th></tr></thead>
         <tbody>${movs.map((m) => `<tr>
           <td>${m.date}</td>
-          <td>${t(m.type === 'buy' ? 'inv.buy' : 'inv.sell')}</td>
+          <td>${t(m.type === 'buy' ? 'inv.buy' : m.type === 'bonus' ? 'b3.bonus' : 'inv.sell')}${m.source === 'b3' ? ' <span class="tag">B3</span>' : ''}</td>
           ${cotacao ? `<td>${fmtQty(m.quantity)}</td><td>${Number(m.quantity) > 0 ? fmtMoney(m.amount / m.quantity, pos.currency) : '—'}</td>` : ''}
           <td>${fmtMoney(m.amount, pos.currency)}</td>
           <td><button class="secondary-btn" onclick="deleteMove('${m.id}','${positionId}')">${t('modal.delete')}</button></td>
@@ -7420,6 +8366,7 @@ function buildBackupData() {
     invmoves: state.invmoves,
     assets: state.assets,
     valuations: state.valuations,
+    dividends: state.dividends,
     // Chaves de API não saem do navegador: um backup é fácil de compartilhar por engano
     settings: Object.fromEntries(Object.entries(state.settings).filter(([k]) => !API_KEYS.includes(k) && !k.startsWith(HIST_PREFIX) && k !== SEC_KEY))
   };
@@ -7488,6 +8435,7 @@ async function importJSON(file) {
     for (const mv of (data.invmoves || [])) await put('invmoves', mv);
     for (const a of (data.assets || [])) await put('assets', a);
     for (const v of (data.valuations || [])) await put('valuations', v);
+    for (const dv of (data.dividends || [])) await put('dividends', dv);
     if (data.settings) {
       for (const [k, v] of Object.entries(data.settings)) {
         if (k === 'ui' || k === SEC_KEY || API_KEYS.includes(k) || k.startsWith(HIST_PREFIX)) continue;
@@ -7645,14 +8593,31 @@ const NAV_GROUPS = {
   dashboard: ['dashboard'],
   investments: ['investments'],
   registry: ['accounts', 'balances', 'budgets', 'fx', 'portfolio'],
-  flows: ['transactions', 'bills'],
+  flows: ['transactions', 'payables', 'receivables'],
   news: ['news'],
   settings: ['settings']
 };
 function groupOf(tab) { return Object.keys(NAV_GROUPS).find((g) => NAV_GROUPS[g].includes(tab)) || 'dashboard'; }
 
+// Telas que reaproveitam outra seção com um filtro fixo
+const VIRTUAL_TABS = { payables: { panel: 'bills', kind: 'payable' }, receivables: { panel: 'bills', kind: 'receivable' } };
+
 function showTab(tab) {
-  if (!document.getElementById('tab-' + tab)) tab = 'dashboard';
+  if (tab === 'bills') tab = state.ui.lastSub.flows && state.ui.lastSub.flows !== 'transactions' ? state.ui.lastSub.flows : 'payables';
+  const virtual = VIRTUAL_TABS[tab];
+  const painel = virtual ? virtual.panel : tab;
+  if (!document.getElementById('tab-' + painel)) tab = 'dashboard';
+  if (virtual) {
+    state.ui.billKind = virtual.kind;
+    state.ui.tab = tab;
+    const intro = document.querySelector('#tab-bills .tab-intro');
+    const titulo = document.querySelector('#tab-bills .panel-header h2');
+    const botao = document.getElementById('btnAddBill');
+    if (intro) { intro.dataset.i18n = 'help.' + tab; intro.textContent = t('help.' + tab); }
+    if (titulo) { titulo.dataset.i18n = 'tabs.' + tab; titulo.textContent = t('tabs.' + tab); }
+    if (botao) { botao.dataset.i18n = virtual.kind === 'payable' ? 'bill.addPayable' : 'bill.addReceivable'; botao.textContent = t(botao.dataset.i18n); }
+    renderBills();
+  }
   const grupo = groupOf(tab);
   state.ui.lastSub[grupo] = tab;
   state.ui.tab = tab;
@@ -7661,7 +8626,7 @@ function showTab(tab) {
     b.classList.toggle('active', ativo);
     b.setAttribute('aria-selected', ativo);
   });
-  document.querySelectorAll('.tab-panel').forEach((p) => p.classList.toggle('active', p.id === 'tab-' + tab));
+  document.querySelectorAll('.tab-panel').forEach((p) => p.classList.toggle('active', p.id === 'tab-' + (VIRTUAL_TABS[tab] ? VIRTUAL_TABS[tab].panel : tab)));
   const gear = document.getElementById('btnGear');
   if (gear) gear.classList.toggle('active', grupo === 'settings');
   renderSubTabs();
@@ -7719,6 +8684,9 @@ function bindEvents() {
   on('btnSaveApi', 'click', saveApiKeys);
   on('btnTestApi', 'click', testApis);
   on('btnApiWizard', 'click', openApiSetup);
+  on('btnB3Import', 'click', openB3Import);
+  on('btnDivFetch', 'click', () => fetchAutoDividends(false));
+  on('btnDivAdd', 'click', () => openDividendModal());
   API_KEYS.forEach((k) => on(k, 'input', (e) => { e.target.dataset.dirty = '1'; }));
   on('cashGrain', 'change', (e) => { state.ui.cashGrain = e.target.value; renderCashflow(); });
   on('billKind', 'change', (e) => { state.ui.billKind = e.target.value; renderBills(); });
@@ -8390,6 +9358,8 @@ async function init() {
   startNewsSchedule();
   // Testa as chaves de API em segundo plano; abre o assistente só se faltar ou for recusada
   checkApiKeys().catch((e) => console.warn('Verificação das chaves:', e));
+  // Proventos automáticos: no máximo uma busca por dia, em segundo plano
+  autoDividendsDaily().catch((e) => console.warn('Proventos automáticos:', e));
 
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./service-worker.js').catch(() => {});
