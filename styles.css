@@ -512,3 +512,55 @@ body.hide-help .tab-intro { display: none; }
 .api-footer .secondary-btn { margin: 0; }
 [data-theme="dark"] .badge-warn { color: #fbbf24; }
 .api-footer .primary-btn { margin: 0; width: auto; }
+
+/* ===== Fase 11 — Segurança ===== */
+.sec-overlay {
+  position: fixed; inset: 0; z-index: 1000; overflow-y: auto;
+  display: flex; align-items: center; justify-content: center; padding: 24px 16px;
+  background: radial-gradient(1200px 600px at 50% -10%, color-mix(in srgb, var(--accent) 22%, var(--primary)) 0%, var(--primary) 60%);
+}
+.sec-overlay.hidden { display: none; }
+body.sec-open { overflow: hidden; }
+.sec-card {
+  width: 100%; max-width: 400px; background: var(--surface); color: var(--text);
+  border-radius: 18px; padding: 28px 24px; text-align: center; box-shadow: 0 24px 60px rgba(0,0,0,.35);
+}
+.sec-card h1 { font-size: 22px; margin: 10px 0 6px; }
+.sec-card p { line-height: 1.5; }
+.sec-logo { width: 56px; height: 56px; border-radius: 14px; }
+.sec-step { font-size: 12px; color: var(--muted); letter-spacing: .04em; text-transform: uppercase; margin-top: 6px; }
+.sec-label { display: block; text-align: left; font-size: 13px; color: var(--muted); margin: 14px 0 4px; }
+.pin-input {
+  width: 100%; margin-top: 12px; padding: 14px; border-radius: 12px; border: 1.5px solid var(--border);
+  background: var(--bg); color: var(--text); font-size: 26px; letter-spacing: .45em; text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.pin-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent); }
+.rec-input {
+  width: 100%; margin-top: 12px; padding: 12px; border-radius: 10px; border: 1.5px solid var(--border);
+  background: var(--bg); color: var(--text); font-family: ui-monospace, monospace; font-size: 15px; text-align: center;
+}
+.sec-wide { width: 100%; margin: 14px 0 0; padding: 12px; font-size: 15px; }
+.sec-card .secondary-btn.sec-wide { margin-top: 10px; }
+.sec-msg { min-height: 20px; margin-top: 10px; font-size: 13px; }
+.sec-card .link-btn { margin-top: 12px; }
+.pin-meter { height: 6px; border-radius: 3px; background: var(--bg); margin-top: 8px; overflow: hidden; }
+.pin-meter span { display: block; height: 100%; width: 0; transition: width .2s; background: var(--negative); }
+.pin-meter span.good { background: #f59e0b; }
+.pin-meter span.strong { background: var(--positive); }
+.rec-code {
+  margin: 16px 0 10px; padding: 16px; border-radius: 12px; border: 2px dashed var(--accent); background: var(--bg);
+  font-family: ui-monospace, monospace; font-size: 17px; font-weight: 700; letter-spacing: .06em; line-height: 1.7;
+  word-break: break-word; user-select: all;
+}
+.sec-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.sec-row .secondary-btn { margin: 0; }
+.sec-check { text-align: left; margin-top: 12px; }
+.sec-list { list-style: none; text-align: left; margin: 14px 0; display: grid; gap: 8px; font-size: 14px; }
+.sec-warning { text-align: left; font-size: 13px; padding: 10px 12px; border-radius: 10px; background: color-mix(in srgb, #f59e0b 14%, transparent); }
+.sec-group .sec-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.sec-group .sec-actions .secondary-btn { margin: 0; }
+.sec-group label { display: block; margin: 12px 0 4px; font-size: 13px; color: var(--muted); }
+.sec-group select { padding: 8px; border-radius: 6px; border: 1px solid var(--border); background: var(--surface); color: var(--text); }
+.danger-btn { color: var(--negative) !important; border-color: color-mix(in srgb, var(--negative) 45%, var(--border)) !important; }
+@media (prefers-reduced-motion: reduce) { .pin-meter span { transition: none; } }
