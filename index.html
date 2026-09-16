@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#1a1a2e">
   <title>ProF Controller</title>
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="styles.css?v=30">
+  <link rel="stylesheet" href="styles.css?v=31">
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 </head>
 <body>
@@ -336,6 +336,22 @@
       </div>
 
       <div class="panel-header panel-header-spaced">
+        <h2 data-i18n="div.title">Proventos</h2>
+        <div class="div-actions">
+          <button id="btnB3Import" class="secondary-btn" type="button" data-i18n="b3.button">Importar extrato da B3</button>
+          <button id="btnDivFetch" class="secondary-btn" type="button" data-i18n="div.fetch">Buscar proventos</button>
+          <button id="btnDivAdd" class="primary-btn" type="button" data-i18n="div.add">+ Provento</button>
+        </div>
+      </div>
+      <div id="divCards" class="cards"></div>
+      <div id="divBars"></div>
+      <div id="divFilters" class="filters div-filters"></div>
+      <p id="divEmpty" class="empty-state hidden"></p>
+      <div class="table-scroll">
+        <table id="divTable"><thead><tr></tr></thead><tbody></tbody></table>
+      </div>
+
+      <div class="panel-header panel-header-spaced">
         <h2 data-i18n="mkt.watchTitle">Watchlist</h2>
       </div>
       <div class="watch-add">
@@ -433,6 +449,6 @@
   </div>
   <div id="toast" class="toast hidden"></div>
   <div id="secOverlay" class="sec-overlay hidden" role="dialog" aria-modal="true"></div>
-  <script src="app.js?v=30"></script>
+  <script src="app.js?v=31"></script>
 </body>
 </html>
