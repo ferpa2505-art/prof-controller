@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#1a1a2e">
   <title>ProF Controller</title>
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="styles.css?v=24">
+  <link rel="stylesheet" href="styles.css?v=25">
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 </head>
 <body>
@@ -292,7 +292,10 @@
     <section id="tab-investments" class="tab-panel">
       <div class="panel-header">
         <h2 data-i18n="inv.title">Carteira de Investimentos</h2>
-        <button id="btnAddPosition" class="primary-btn" data-i18n="inv.add">+ Nova posição</button>
+        <div>
+          <button id="btnPortfolioChart" class="secondary-btn" data-i18n="mkt.portfolioChart">Gráfico da carteira</button>
+          <button id="btnAddPosition" class="primary-btn" data-i18n="inv.add">+ Nova posição</button>
+        </div>
       </div>
 
       <div class="cards">
@@ -315,6 +318,19 @@
       <div class="table-scroll">
         <table id="invTable"><thead><tr></tr></thead><tbody></tbody></table>
       </div>
+
+      <div class="panel-header panel-header-spaced">
+        <h2 data-i18n="mkt.watchTitle">Watchlist</h2>
+      </div>
+      <div class="watch-add">
+        <input id="watchInput" type="text" placeholder="TTWO, PETR4, US8740541094" aria-label="Ticker / ISIN">
+        <button id="btnWatchAdd" class="primary-btn" data-i18n="mkt.watchAdd">Adicionar</button>
+        <button id="btnWatchRefresh" class="secondary-btn" data-i18n="mkt.watchRefresh">Atualizar cotações</button>
+      </div>
+      <p id="watchEmpty" class="empty-state hidden"></p>
+      <div class="table-scroll">
+        <table id="watchTable"><thead><tr></tr></thead><tbody></tbody></table>
+      </div>
     </section>
 
     <!-- CONFIGURAÇÕES -->
@@ -324,6 +340,21 @@
         <h3 data-i18n="settings.baseCurrency">Moeda base</h3>
         <p class="hint" data-i18n="settings.baseCurrencyHint">Moeda usada para consolidar patrimônio e relatórios.</p>
         <select id="baseCurrencySelect"></select>
+      </div>
+      <div class="settings-group api-group">
+        <h3 data-i18n="api.title">Cotações de mercado</h3>
+        <p class="hint" data-i18n="api.hint">Chaves gratuitas da Finnhub, Twelve Data e brapi.dev.</p>
+        <label for="apiFinnhub">Finnhub</label>
+        <input id="apiFinnhub" type="password" autocomplete="off" spellcheck="false">
+        <label for="apiTwelve">Twelve Data</label>
+        <input id="apiTwelve" type="password" autocomplete="off" spellcheck="false">
+        <label for="apiBrapi">brapi.dev</label>
+        <input id="apiBrapi" type="password" autocomplete="off" spellcheck="false">
+        <div class="api-actions">
+          <button id="btnSaveApi" class="primary-btn" data-i18n="api.save">Salvar chaves</button>
+          <button id="btnTestApi" class="secondary-btn" data-i18n="api.test">Testar conexões</button>
+        </div>
+        <div id="apiTestResult"></div>
       </div>
       <div class="settings-group">
         <h3 data-i18n="settings.backup">Backup dos dados</h3>
@@ -347,6 +378,6 @@
     </div>
   </div>
   <div id="toast" class="toast hidden"></div>
-  <script src="app.js?v=24"></script>
+  <script src="app.js?v=25"></script>
 </body>
 </html>
