@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#1a1a2e">
   <title>ProF Controller</title>
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="styles.css?v=29">
+  <link rel="stylesheet" href="styles.css?v=30">
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 </head>
 <body>
@@ -26,6 +26,7 @@
         <span class="gear-label" data-i18n="gear.lang">Idioma</span>
         <div id="langButtons" class="lang-buttons" role="group" aria-label="Idioma"></div>
         <label class="checkline"><input type="checkbox" id="helpToggle" checked> <span data-i18n="gear.help">Mostrar explicações das abas</span></label>
+        <button id="btnLockNow" class="secondary-btn gear-advanced hidden" type="button" data-i18n="sec.lockNow">Bloquear agora</button>
         <button id="btnAdvanced" class="secondary-btn gear-advanced" type="button" data-i18n="gear.advanced">Configurações avançadas</button>
       </div>
     </div>
@@ -389,6 +390,7 @@
         <p class="hint" data-i18n="settings.baseCurrencyHint">Moeda usada para consolidar patrimônio e relatórios.</p>
         <select id="baseCurrencySelect"></select>
       </div>
+      <div class="settings-group sec-group" id="securityGroup"></div>
       <div class="settings-group api-group">
         <h3 data-i18n="api.title">Cotações de mercado</h3>
         <p class="hint" data-i18n="api.hint">Chaves gratuitas da Finnhub, Twelve Data e brapi.dev.</p>
@@ -409,6 +411,7 @@
       </div>
       <div class="settings-group">
         <h3 data-i18n="settings.backup">Backup dos dados</h3>
+        <button id="btnExportEnc" class="primary-btn hidden" type="button" data-i18n="sec.exportEnc">Exportar backup protegido</button>
         <button id="btnExportJSON" class="secondary-btn" data-i18n="settings.exportJSON">Exportar backup (JSON)</button>
         <button id="btnExportCSV" class="secondary-btn" data-i18n="settings.exportCSV">Exportar planilha (CSV)</button>
         <button id="btnImportJSON" class="secondary-btn" data-i18n="settings.importJSON">Importar backup</button>
@@ -429,6 +432,7 @@
     </div>
   </div>
   <div id="toast" class="toast hidden"></div>
-  <script src="app.js?v=29"></script>
+  <div id="secOverlay" class="sec-overlay hidden" role="dialog" aria-modal="true"></div>
+  <script src="app.js?v=30"></script>
 </body>
 </html>
