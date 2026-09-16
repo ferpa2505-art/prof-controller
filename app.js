@@ -3614,7 +3614,7 @@ async function upsertQuote(positionId, date, value) {
 }
 
 function fmtQty(n) { return Number(n).toLocaleString('pt-BR', { maximumFractionDigits: 8 }); }
-function fmtPct(n) { return (n > 0 ? '+' : '') + Number(n).toFixed(2).replace('.', ',') + '%'; }
+function fmtPct(n) { if (Math.abs(n) < 0.005) n = 0; return (n > 0 ? '+' : '') + Number(n).toFixed(2).replace('.', ',') + '%'; }
 
 /* ----- Formulário de compra/venda com cálculo automático -----
    Modo "valor": informa o dinheiro, o app calcula a quantidade pela cotação.
@@ -4676,6 +4676,7 @@ function fmtAxis(v, unidade) {
 }
 function fmtVal(v, unidade, D) {
   if (v == null) return '—';
+  if (Math.abs(v) < 0.005) v = 0;
   if (unidade === 'money') return fmtMoney(v, D);
   if (unidade === 'pp') return (v > 0 ? '+' : '') + v.toFixed(2).replace('.', ',') + ' p.p.';
   return fmtPct(v);
@@ -4805,7 +4806,8 @@ function drawCompareChart(series, unidade, D, estilo, refLabel) {
       const vals = s.points.filter(([, v]) => v != null);
       const ini = vals[0][1], fim = vals[vals.length - 1][1];
       const ys = vals.map(([, v]) => v);
-      const dif = fim - ini;
+      let dif = fim - ini;
+      if (Math.abs(dif) < 0.005) dif = 0;
       const variacao = unidade === 'money'
         ? fmtMoney(dif, D) + (ini > 0 ? ' (' + fmtPct((fim / ini - 1) * 100) + ')' : '')
         : (dif > 0 ? '+' : '') + dif.toFixed(2).replace('.', ',') + ' p.p.';
@@ -4972,6 +4974,12 @@ function newsTickers() {
   return [...vistos.values()];
 }
 
+// "S&amp;P 500" → "S&P 500". O escapeHtml na hora de exibir continua protegendo a tela.
+function decodeEntities(txt) {
+  const el = document.createElement('textarea');
+  el.innerHTML = String(txt || '');
+  return el.value;
+}
 function safeUrl(u) {
   try { const x = new URL(u); return x.protocol === 'https:' || x.protocol === 'http:' ? x.href : null; } catch (e) { return null; }
 }
@@ -4988,7 +4996,7 @@ async function fetchGoogleNews(query, tag) {
   if (d.status && d.status !== 'ok') throw new Error(d.message || 'rss2json');
   return (d.items || []).slice(0, 12).map((it) => {
     // O Google News coloca a fonte no fim do título: "Manchete - InfoMoney"
-    const partes = String(it.title || '').split(' - ');
+    const partes = decodeEntities(it.title).split(' - ');
     const fonte = partes.length > 1 ? partes.pop() : (it.author || 'Google News');
     return {
       title: partes.join(' - '), source: fonte, url: safeUrl(it.link),
@@ -5005,13 +5013,16 @@ async function fetchFinnhubNews(ticker) {
   const de = new Date(); de.setDate(de.getDate() - 7);
   const d = await getJSON(`https://finnhub.io/api/v1/company-news?symbol=${encodeURIComponent(ticker)}&from=${de.toISOString().slice(0, 10)}&to=${ate}&token=${key}`);
   return (Array.isArray(d) ? d : []).slice(0, 12).map((n) => ({
-    title: n.headline, source: n.source, url: safeUrl(n.url),
+    title: decodeEntities(n.headline), source: decodeEntities(n.source), url: safeUrl(n.url),
     date: new Date((n.datetime || 0) * 1000).toISOString(), tag: ticker, lang: 'en'
   }));
 }
 
 async function loadNewsCache() {
-  if (!newsCache) newsCache = (await getSetting(NEWS_KEY)) || { fetchedAt: null, items: [] };
+  if (!newsCache) {
+    newsCache = (await getSetting(NEWS_KEY)) || { fetchedAt: null, items: [] };
+    newsCache.items = (newsCache.items || []).map((n) => ({ ...n, title: decodeEntities(n.title), tags: (n.tags || []).filter(Boolean) }));
+  }
   return newsCache;
 }
 
@@ -5052,9 +5063,10 @@ async function refreshNews(forcar) {
   [...novos, ...(newsCache.items || [])].forEach((n) => {
     if (!n.url || !n.title) return;
     const k = norm(n.title);
+    const etiquetas = (n.tags || [n.tag]).filter(Boolean);
     const existente = porTitulo.get(k);
-    if (!existente) porTitulo.set(k, { ...n, tags: [n.tag] });
-    else if (!existente.tags.includes(n.tag)) existente.tags.push(n.tag);
+    if (!existente) porTitulo.set(k, { ...n, title: decodeEntities(n.title), tags: [...new Set(etiquetas)] });
+    else etiquetas.forEach((tg) => { if (!existente.tags.includes(tg)) existente.tags.push(tg); });
   });
   const limite = Date.now() - 14 * 86400000;
   const itens = [...porTitulo.values()]
