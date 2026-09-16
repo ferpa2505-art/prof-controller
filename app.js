@@ -1,5 +1,5 @@
 /* ============================================================
-   ProF Controller — Fase 1 (Fundação) + Fase 2 (Transações e Orçamentos)
+   ProF Controller — Fases 1 a 8 (Fase 8: mercado, gráficos e watchlist)
 
    Fase 1: contas, moedas, saldos diários, moeda base, importação CSV,
            i18n (pt-BR/en/es), temas, offline.
@@ -363,7 +363,78 @@ const I18N = {
     'dashboard.investments': 'Investimentos',
     'modal.addPosition': 'Nova posição',
     'modal.editPosition': 'Editar posição',
-    'modal.move': 'Aporte ou resgate'
+    'modal.move': 'Aporte ou resgate',
+    'mkt.lookup': 'Buscar ativo (ticker ou ISIN)',
+    'mkt.lookupHint': 'Ex.: TTWO, PETR4 ou o ISIN US8740541094. O app preenche nome, ticker, moeda e a cotação atual.',
+    'mkt.search': 'Buscar',
+    'mkt.searching': 'Buscando…',
+    'mkt.source': 'Fonte',
+    'mkt.noTicker': 'Informe um ticker ou ISIN.',
+    'mkt.notFound': 'Nenhum ativo encontrado para este código.',
+    'mkt.needFinnhub': 'Cadastre a chave da Finnhub em Configurações para buscar por ISIN e cotar ações dos EUA.',
+    'mkt.noQuote': 'Cotação indisponível para este ativo no plano gratuito. Registre a cotação manualmente.',
+    'mkt.currencyUnsupported': 'A moeda {code} não está cadastrada no app. Escolha a moeda manualmente.',
+    'mkt.firstBuy': 'Compra',
+    'mkt.date': 'Data da operação',
+    'mkt.mode': 'Como informar',
+    'mkt.modeAmount': 'Valor investido — o app calcula a quantidade',
+    'mkt.modeQty': 'Quantidade e total pago — o app calcula o preço',
+    'mkt.modeAmountSell': 'Valor a resgatar — o app calcula a quantidade',
+    'mkt.modeQtySell': 'Quantidade e total recebido — o app calcula o preço',
+    'mkt.amount': 'Valor investido',
+    'mkt.amountSell': 'Valor a resgatar',
+    'mkt.total': 'Total pago',
+    'mkt.totalSell': 'Total recebido',
+    'mkt.whole': 'Somente quantidades inteiras (a sobra fica na conta)',
+    'mkt.priceToday': 'Cotação de hoje',
+    'mkt.priceOn': 'Fechamento em {data}',
+    'mkt.noPriceYet': 'Sem cotação ainda. Use o botão Buscar ou o modo quantidade e total.',
+    'mkt.needPrice': 'Sem cotação para calcular a quantidade. Busque o ativo ou use o modo quantidade e total.',
+    'mkt.notEnough': 'O valor não compra nem uma unidade.',
+    'mkt.youGet': 'Quantidade',
+    'mkt.leftover': 'Sobra em dinheiro',
+    'mkt.unitPaid': 'Preço unitário pago',
+    'mkt.vsMarket': 'Diferença para o mercado',
+    'mkt.unit': 'Preço unit.',
+    'mkt.sellTooMuch': 'Quantidade maior que a possuída nesta data ({n}).',
+    'mkt.loadingHist': 'Carregando histórico de preços…',
+    'mkt.loadingN': 'Carregando histórico {n} de {total}…',
+    'mkt.rateWait': 'Limite de chamadas por minuto atingido. Aguardando 1 minuto para continuar…',
+    'mkt.histFail': 'Histórico indisponível:',
+    'mkt.histManual': 'Sem histórico online para este ativo. O gráfico usa as cotações registradas no app.',
+    'mkt.chart': 'Gráfico',
+    'mkt.chartTitle': 'Investido x valor de mercado',
+    'mkt.chartEmpty': 'Ainda não há pontos suficientes para o gráfico. Registre um aporte.',
+    'mkt.marketChart': 'Gráfico de mercado',
+    'mkt.portfolioChart': 'Gráfico da carteira',
+    'mkt.invested': 'Investido',
+    'mkt.market': 'Valor de mercado',
+    'mkt.result': 'Resultado',
+    'mkt.avgPrice': 'Preço médio',
+    'mkt.lastPrice': 'Última cotação',
+    'mkt.p.1m': '1M',
+    'mkt.p.3m': '3M',
+    'mkt.p.6m': '6M',
+    'mkt.p.1y': '1A',
+    'mkt.p.all': 'Tudo',
+    'mkt.watchTitle': 'Watchlist',
+    'mkt.watchAdd': 'Adicionar',
+    'mkt.watchRefresh': 'Atualizar cotações',
+    'mkt.watchEmpty': 'Nenhum ativo acompanhado. Digite um ticker ou ISIN e clique em Adicionar.',
+    'mkt.alreadyWatch': 'Este ativo já está na watchlist.',
+    'mkt.asset': 'Ativo',
+    'mkt.exchange': 'Bolsa',
+    'mkt.dayChange': 'Variação do dia',
+    'mkt.updated': 'Atualizado',
+    'mkt.buy': 'Comprar',
+    'api.title': 'Cotações de mercado',
+    'api.hint': 'Chaves gratuitas da Finnhub (ISIN e ações dos EUA), Twelve Data (histórico) e brapi.dev (B3). Ficam salvas só neste navegador e não entram no backup.',
+    'api.save': 'Salvar chaves',
+    'api.test': 'Testar conexões',
+    'api.saved': 'Chaves salvas neste navegador.',
+    'api.testing': 'Testando…',
+    'api.ok': 'conectado',
+    'api.noKey': 'sem chave'
 
   },
   'en': {
@@ -696,7 +767,78 @@ const I18N = {
     'dashboard.investments': 'Investments',
     'modal.addPosition': 'New position',
     'modal.editPosition': 'Edit position',
-    'modal.move': 'Contribution or withdrawal'
+    'modal.move': 'Contribution or withdrawal',
+    'mkt.lookup': 'Find asset (ticker or ISIN)',
+    'mkt.lookupHint': 'E.g. TTWO, PETR4 or ISIN US8740541094. The app fills in name, ticker, currency and current price.',
+    'mkt.search': 'Search',
+    'mkt.searching': 'Searching…',
+    'mkt.source': 'Source',
+    'mkt.noTicker': 'Enter a ticker or ISIN.',
+    'mkt.notFound': 'No asset found for this code.',
+    'mkt.needFinnhub': 'Add your Finnhub key in Settings to search by ISIN and quote US stocks.',
+    'mkt.noQuote': 'No quote available for this asset on the free plan. Record the price manually.',
+    'mkt.currencyUnsupported': 'Currency {code} is not set up in the app. Choose the currency manually.',
+    'mkt.firstBuy': 'Purchase',
+    'mkt.date': 'Trade date',
+    'mkt.mode': 'How to enter',
+    'mkt.modeAmount': 'Amount invested — app calculates quantity',
+    'mkt.modeQty': 'Quantity and total paid — app calculates price',
+    'mkt.modeAmountSell': 'Amount to withdraw — app calculates quantity',
+    'mkt.modeQtySell': 'Quantity and total received — app calculates price',
+    'mkt.amount': 'Amount invested',
+    'mkt.amountSell': 'Amount to withdraw',
+    'mkt.total': 'Total paid',
+    'mkt.totalSell': 'Total received',
+    'mkt.whole': 'Whole units only (the remainder stays in the account)',
+    'mkt.priceToday': 'Today\'s price',
+    'mkt.priceOn': 'Close on {data}',
+    'mkt.noPriceYet': 'No price yet. Use Search or the quantity and total mode.',
+    'mkt.needPrice': 'No price to calculate quantity. Search the asset or use the quantity and total mode.',
+    'mkt.notEnough': 'This amount does not buy a single unit.',
+    'mkt.youGet': 'Quantity',
+    'mkt.leftover': 'Cash remainder',
+    'mkt.unitPaid': 'Unit price paid',
+    'mkt.vsMarket': 'Difference from market',
+    'mkt.unit': 'Unit price',
+    'mkt.sellTooMuch': 'Quantity exceeds holdings on this date ({n}).',
+    'mkt.loadingHist': 'Loading price history…',
+    'mkt.loadingN': 'Loading history {n} of {total}…',
+    'mkt.rateWait': 'Per-minute call limit reached. Waiting 1 minute to continue…',
+    'mkt.histFail': 'History unavailable:',
+    'mkt.histManual': 'No online history for this asset. The chart uses prices recorded in the app.',
+    'mkt.chart': 'Chart',
+    'mkt.chartTitle': 'Invested vs market value',
+    'mkt.chartEmpty': 'Not enough points for a chart yet. Record a contribution.',
+    'mkt.marketChart': 'Market chart',
+    'mkt.portfolioChart': 'Portfolio chart',
+    'mkt.invested': 'Invested',
+    'mkt.market': 'Market value',
+    'mkt.result': 'Gain/loss',
+    'mkt.avgPrice': 'Average price',
+    'mkt.lastPrice': 'Last price',
+    'mkt.p.1m': '1M',
+    'mkt.p.3m': '3M',
+    'mkt.p.6m': '6M',
+    'mkt.p.1y': '1Y',
+    'mkt.p.all': 'All',
+    'mkt.watchTitle': 'Watchlist',
+    'mkt.watchAdd': 'Add',
+    'mkt.watchRefresh': 'Refresh prices',
+    'mkt.watchEmpty': 'No assets on your watchlist. Type a ticker or ISIN and click Add.',
+    'mkt.alreadyWatch': 'This asset is already on the watchlist.',
+    'mkt.asset': 'Asset',
+    'mkt.exchange': 'Exchange',
+    'mkt.dayChange': 'Day change',
+    'mkt.updated': 'Updated',
+    'mkt.buy': 'Buy',
+    'api.title': 'Market prices',
+    'api.hint': 'Free keys from Finnhub (ISIN and US stocks), Twelve Data (history) and brapi.dev (B3). Stored only in this browser and excluded from backups.',
+    'api.save': 'Save keys',
+    'api.test': 'Test connections',
+    'api.saved': 'Keys saved in this browser.',
+    'api.testing': 'Testing…',
+    'api.ok': 'connected',
+    'api.noKey': 'no key'
   },
   'es': {
     'tabs.dashboard': 'Panel',
@@ -1028,7 +1170,78 @@ const I18N = {
     'dashboard.investments': 'Inversiones',
     'modal.addPosition': 'Nueva posición',
     'modal.editPosition': 'Editar posición',
-    'modal.move': 'Aporte o rescate'
+    'modal.move': 'Aporte o rescate',
+    'mkt.lookup': 'Buscar activo (ticker o ISIN)',
+    'mkt.lookupHint': 'Ej.: TTWO, PETR4 o el ISIN US8740541094. La app completa nombre, ticker, moneda y cotización actual.',
+    'mkt.search': 'Buscar',
+    'mkt.searching': 'Buscando…',
+    'mkt.source': 'Fuente',
+    'mkt.noTicker': 'Indica un ticker o ISIN.',
+    'mkt.notFound': 'No se encontró ningún activo con este código.',
+    'mkt.needFinnhub': 'Registra la clave de Finnhub en Configuración para buscar por ISIN y cotizar acciones de EE. UU.',
+    'mkt.noQuote': 'Cotización no disponible para este activo en el plan gratuito. Regístrala manualmente.',
+    'mkt.currencyUnsupported': 'La moneda {code} no está registrada en la app. Elige la moneda manualmente.',
+    'mkt.firstBuy': 'Compra',
+    'mkt.date': 'Fecha de la operación',
+    'mkt.mode': 'Cómo informar',
+    'mkt.modeAmount': 'Importe invertido — la app calcula la cantidad',
+    'mkt.modeQty': 'Cantidad y total pagado — la app calcula el precio',
+    'mkt.modeAmountSell': 'Importe a rescatar — la app calcula la cantidad',
+    'mkt.modeQtySell': 'Cantidad y total recibido — la app calcula el precio',
+    'mkt.amount': 'Importe invertido',
+    'mkt.amountSell': 'Importe a rescatar',
+    'mkt.total': 'Total pagado',
+    'mkt.totalSell': 'Total recibido',
+    'mkt.whole': 'Solo cantidades enteras (el sobrante queda en la cuenta)',
+    'mkt.priceToday': 'Cotización de hoy',
+    'mkt.priceOn': 'Cierre del {data}',
+    'mkt.noPriceYet': 'Aún sin cotización. Usa Buscar o el modo cantidad y total.',
+    'mkt.needPrice': 'Sin cotización para calcular la cantidad. Busca el activo o usa el modo cantidad y total.',
+    'mkt.notEnough': 'El importe no alcanza para una unidad.',
+    'mkt.youGet': 'Cantidad',
+    'mkt.leftover': 'Sobrante en efectivo',
+    'mkt.unitPaid': 'Precio unitario pagado',
+    'mkt.vsMarket': 'Diferencia con el mercado',
+    'mkt.unit': 'Precio unit.',
+    'mkt.sellTooMuch': 'Cantidad mayor a la que tienes en esta fecha ({n}).',
+    'mkt.loadingHist': 'Cargando histórico de precios…',
+    'mkt.loadingN': 'Cargando histórico {n} de {total}…',
+    'mkt.rateWait': 'Límite de llamadas por minuto alcanzado. Esperando 1 minuto para continuar…',
+    'mkt.histFail': 'Histórico no disponible:',
+    'mkt.histManual': 'Sin histórico en línea para este activo. El gráfico usa las cotizaciones registradas en la app.',
+    'mkt.chart': 'Gráfico',
+    'mkt.chartTitle': 'Invertido vs valor de mercado',
+    'mkt.chartEmpty': 'Aún no hay puntos suficientes para el gráfico. Registra un aporte.',
+    'mkt.marketChart': 'Gráfico de mercado',
+    'mkt.portfolioChart': 'Gráfico de la cartera',
+    'mkt.invested': 'Invertido',
+    'mkt.market': 'Valor de mercado',
+    'mkt.result': 'Resultado',
+    'mkt.avgPrice': 'Precio medio',
+    'mkt.lastPrice': 'Última cotización',
+    'mkt.p.1m': '1M',
+    'mkt.p.3m': '3M',
+    'mkt.p.6m': '6M',
+    'mkt.p.1y': '1A',
+    'mkt.p.all': 'Todo',
+    'mkt.watchTitle': 'Watchlist',
+    'mkt.watchAdd': 'Añadir',
+    'mkt.watchRefresh': 'Actualizar cotizaciones',
+    'mkt.watchEmpty': 'Ningún activo en seguimiento. Escribe un ticker o ISIN y pulsa Añadir.',
+    'mkt.alreadyWatch': 'Este activo ya está en la watchlist.',
+    'mkt.asset': 'Activo',
+    'mkt.exchange': 'Bolsa',
+    'mkt.dayChange': 'Variación del día',
+    'mkt.updated': 'Actualizado',
+    'mkt.buy': 'Comprar',
+    'api.title': 'Cotizaciones de mercado',
+    'api.hint': 'Claves gratuitas de Finnhub (ISIN y acciones de EE. UU.), Twelve Data (histórico) y brapi.dev (B3). Se guardan solo en este navegador y no van en la copia de seguridad.',
+    'api.save': 'Guardar claves',
+    'api.test': 'Probar conexiones',
+    'api.saved': 'Claves guardadas en este navegador.',
+    'api.testing': 'Probando…',
+    'api.ok': 'conectado',
+    'api.noKey': 'sin clave'
   }
 };
 
@@ -1239,7 +1452,7 @@ async function loadAll() {
   state.assets = await getAll('assets');
   state.valuations = await getAll('valuations');
   const settings = await getAll('settings');
-  settings.forEach((s) => { state.settings[s.key] = s.value; });
+  settings.forEach((s) => { if (!String(s.key).startsWith(HIST_PREFIX)) state.settings[s.key] = s.value; });
 }
 
 function getAll(store) {
@@ -1484,7 +1697,8 @@ function positionValue(pos, date) {
 function positionReturn(pos, date) {
   const st = positionStateAt(pos, date);
   const valor = positionValue(pos, date);
-  const lucro = valor - st.cost;
+  let lucro = valor - st.cost;
+  if (Math.abs(lucro) < 0.005) lucro = 0; // evita "-0,00" por arredondamento
   return { value: valor, cost: st.cost, profit: lucro, pct: st.cost > 0 ? (lucro / st.cost) * 100 : 0 };
 }
 
@@ -2790,40 +3004,811 @@ async function undoPayment(scheduleId, seq) {
   showToast(t('toast.deleted'));
 }
 
-/* Fontes de cotação por TICKER. Não existe API pública gratuita indexada por
-   ISIN — os provedores que fazem isso são pagos. O ISIN fica guardado para seu
-   controle; a busca automática, quando funciona, é pelo ticker. */
-const QUOTE_SOURCES = [
-  {
-    name: 'brapi.dev',
-    url: (tk) => `https://brapi.dev/api/quote/${encodeURIComponent(tk)}`,
-    parse: (d) => (d && d.results && d.results[0] && Number(d.results[0].regularMarketPrice)) || null
-  },
-  {
-    name: 'awesomeapi',
-    url: (tk) => `https://economia.awesomeapi.com.br/json/last/${encodeURIComponent(tk)}-BRL`,
-    parse: (d) => {
-      if (!d) return null;
-      const chave = Object.keys(d)[0];
-      return (chave && Number(d[chave].bid)) || null;
-    }
-  }
-];
+/* ================= FASE 8 — Mercado: busca por ISIN/ticker, cotações, gráficos e watchlist =================
+   Três fontes, cada uma no que faz melhor:
+   - Finnhub: descobre o ativo pelo ISIN e cota ações americanas.
+   - Twelve Data: histórico diário (gráfico) e reserva de cotação.
+   - brapi.dev: B3 (ações, FIIs, ETFs, BDRs).
+   Criptos continuam na AwesomeAPI.
+   As chaves ficam SÓ neste navegador (settings do IndexedDB). Nunca vão para o
+   código — o repositório é público — e ficam fora do backup JSON. */
 
-async function fetchQuoteFor(ticker) {
-  for (const fonte of QUOTE_SOURCES) {
+const API_KEYS = ['apiFinnhub', 'apiTwelve', 'apiBrapi'];
+const HIST_PREFIX = 'hist:';
+
+function apiKey(nome) { return (state.settings[nome] || '').trim(); }
+
+function isISIN(s) { return /^[A-Z]{2}[A-Z0-9]{9}[0-9]$/.test(s); }
+function isB3Ticker(s) { return /^[A-Z]{4}\d{1,2}F?$/.test(s); }
+
+function marketOf(item) {
+  if (item.assetType === 'crypto') return 'crypto';
+  if (item.market) return item.market;
+  return isB3Ticker(item.ticker || '') ? 'b3' : 'us';
+}
+
+// Erro com mensagem legível — o HTTP cru não diz nada ao usuário.
+async function getJSON(url) {
+  const res = await fetch(url, { cache: 'no-store' });
+  let corpo = null;
+  try { corpo = await res.json(); } catch (e) { /* resposta sem JSON */ }
+  if (!res.ok) {
+    const msg = (corpo && (corpo.message || corpo.error)) || ('HTTP ' + res.status);
+    const err = new Error(msg); err.status = res.status; throw err;
+  }
+  // A Twelve Data responde 200 com status "error" no corpo
+  if (corpo && corpo.status === 'error') {
+    const err = new Error(corpo.message || 'erro'); err.status = corpo.code; throw err;
+  }
+  return corpo;
+}
+
+function brapiUrl(caminho, extra) {
+  const tk = apiKey('apiBrapi');
+  const qs = new URLSearchParams(extra || {});
+  if (tk) qs.set('token', tk);
+  const q = qs.toString();
+  return `https://brapi.dev/api/${caminho}${q ? '?' + q : ''}`;
+}
+// A brapi já respondeu nos dois formatos: campos soltos ou dentro de "data".
+function brapiResult(d) {
+  const r = d && d.results && d.results[0];
+  return r ? (r.data && typeof r.data === 'object' ? { ...r, ...r.data } : r) : null;
+}
+
+/* ----- ISIN → ticker ----- */
+async function isinToTicker(isin) {
+  const key = apiKey('apiFinnhub');
+  if (!key) throw new Error(t('mkt.needFinnhub'));
+  const d = await getJSON(`https://finnhub.io/api/v1/search?q=${encodeURIComponent(isin)}&token=${key}`);
+  const lista = (d && d.result) || [];
+  if (!lista.length) throw new Error(t('mkt.notFound'));
+  // Papel brasileiro: a Finnhub devolve PETR4.SA — a cotação vem da brapi, sem o sufixo.
+  if (isin.startsWith('BR')) {
+    const sa = lista.find((r) => /\.SA$/.test(r.symbol));
+    if (sa) return { ticker: sa.symbol.replace(/\.SA$/, ''), name: sa.description, market: 'b3', type: sa.type };
+  }
+  // Demais: a listagem principal é a que não tem sufixo de bolsa.
+  const principal = lista.find((r) => !r.symbol.includes('.')) || lista[0];
+  return { ticker: principal.symbol, name: principal.description, market: principal.symbol.includes('.') ? 'intl' : 'us', type: principal.type };
+}
+
+/* ----- Cotação atual ----- */
+async function quoteUS(ticker) {
+  const fk = apiKey('apiFinnhub');
+  if (fk) {
     try {
-      const res = await fetch(fonte.url(ticker), { cache: 'no-store' });
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      const preco = fonte.parse(await res.json());
-      if (preco && preco > 0) { console.log('Cotação de', ticker, 'obtida em', fonte.name, preco); return preco; }
-      throw new Error('sem preço na resposta');
-    } catch (e) {
-      console.warn('Cotação indisponível —', ticker, fonte.name + ':', e && e.message ? e.message : e);
+      const q = await getJSON(`https://finnhub.io/api/v1/quote?symbol=${encodeURIComponent(ticker)}&token=${fk}`);
+      // Símbolo desconhecido volta com tudo zerado, não com erro
+      if (q && Number(q.c) > 0) return { price: Number(q.c), changePct: Number(q.dp) || 0, source: 'Finnhub' };
+    } catch (e) { console.warn('Finnhub quote', ticker, e.message); }
+  }
+  const tk = apiKey('apiTwelve');
+  if (tk) {
+    const q = await getJSON(`https://api.twelvedata.com/quote?symbol=${encodeURIComponent(ticker)}&apikey=${tk}`);
+    const preco = Number(q.close);
+    if (preco > 0) return { price: preco, changePct: Number(q.percent_change) || 0, currency: q.currency, name: q.name, exchange: q.exchange, source: 'Twelve Data' };
+  }
+  throw new Error(fk || tk ? t('mkt.noQuote') : t('mkt.needFinnhub'));
+}
+
+async function quoteB3(ticker) {
+  const r = brapiResult(await getJSON(brapiUrl('quote/' + encodeURIComponent(ticker))));
+  const preco = r && Number(r.regularMarketPrice);
+  if (!preco) throw new Error(t('mkt.noQuote'));
+  return {
+    price: preco, changePct: Number(r.regularMarketChangePercent) || 0,
+    currency: r.currency || 'BRL', name: r.longName || r.shortName, exchange: 'B3', source: 'brapi.dev'
+  };
+}
+
+async function quoteCrypto(ticker, moeda) {
+  const par = `${ticker}-${moeda || 'BRL'}`;
+  const d = await getJSON(`https://economia.awesomeapi.com.br/json/last/${encodeURIComponent(par)}`);
+  const chave = d && Object.keys(d)[0];
+  const preco = chave && Number(d[chave].bid);
+  if (!preco) throw new Error(t('mkt.noQuote'));
+  return { price: preco, changePct: Number(d[chave].pctChange) || 0, currency: moeda || 'BRL', name: d[chave].name, source: 'AwesomeAPI' };
+}
+
+// Cotação de um item já conhecido (posição ou watchlist).
+async function fetchPrice(item) {
+  const tk = (item.ticker || '').toUpperCase();
+  if (!tk) throw new Error(t('mkt.noTicker'));
+  const mk = marketOf(item);
+  if (mk === 'crypto') return quoteCrypto(tk, item.currency);
+  if (mk === 'b3') return quoteB3(tk);
+  return quoteUS(tk);
+}
+
+// Compatibilidade com o código antigo: devolve só o preço ou null.
+async function fetchQuoteFor(ticker, item) {
+  try { return (await fetchPrice(item || { ticker })).price; }
+  catch (e) { console.warn('Cotação indisponível —', ticker, e.message); return null; }
+}
+
+/* ----- Descobrir um ativo a partir do que o usuário digitou ----- */
+async function resolveAsset(entrada) {
+  let q = String(entrada || '').trim().toUpperCase();
+  if (!q) throw new Error(t('mkt.noTicker'));
+  let info = { isin: '', ticker: q, name: '', market: '', type: '' };
+
+  if (isISIN(q)) {
+    const r = await isinToTicker(q);
+    info = { isin: q, ticker: r.ticker, name: r.name, market: r.market, type: r.type };
+  } else if (/\.SA$/.test(q)) {
+    info.ticker = q.replace(/\.SA$/, ''); info.market = 'b3';
+  } else {
+    info.market = isB3Ticker(q) ? 'b3' : 'us';
+  }
+
+  let cot;
+  if (info.market === 'b3') {
+    cot = await quoteB3(info.ticker);
+  } else {
+    cot = await quoteUS(info.ticker);
+    // Nome, moeda e bolsa pelo perfil da Finnhub (a cotação não traz)
+    const fk = apiKey('apiFinnhub');
+    if (fk && (!cot.currency || !cot.exchange)) {
+      try {
+        const p = await getJSON(`https://finnhub.io/api/v1/stock/profile2?symbol=${encodeURIComponent(info.ticker)}&token=${fk}`);
+        if (p && p.ticker) { cot.currency = cot.currency || p.currency; cot.exchange = cot.exchange || p.exchange; cot.name = p.name || cot.name; }
+      } catch (e) { console.warn('Perfil Finnhub', e.message); }
     }
   }
-  return null;
+
+  let tipo = 'stock';
+  if (/ETP|ETF/i.test(info.type || '')) tipo = 'etf';
+  if (info.market === 'b3' && /34$|35$|39$/.test(info.ticker)) tipo = 'bdr';
+  if (info.market === 'b3' && /11$/.test(info.ticker)) tipo = 'fii';
+
+  return {
+    isin: info.isin, ticker: info.ticker, market: info.market === 'intl' ? 'us' : info.market,
+    name: cot.name || info.name || info.ticker, currency: (cot.currency || (info.market === 'b3' ? 'BRL' : 'USD')).toUpperCase(),
+    exchange: cot.exchange || '', price: cot.price, changePct: cot.changePct, source: cot.source, assetType: tipo
+  };
 }
+
+/* ----- Histórico diário (cache de um dia no IndexedDB) ----- */
+function getSetting(key) {
+  return new Promise((resolve) => {
+    if (!db || !db.objectStoreNames.contains('settings')) { resolve(null); return; }
+    const req = tx('settings', 'readonly').get(key);
+    req.onsuccess = () => resolve(req.result ? req.result.value : null);
+    req.onerror = () => resolve(null);
+  });
+}
+const esperar = (ms) => new Promise((r) => setTimeout(r, ms));
+
+async function fetchHistory(item, aoEsperar) {
+  const tk = (item.ticker || '').toUpperCase();
+  const mk = marketOf(item);
+  if (!tk || mk === 'crypto') return [];
+  const chave = HIST_PREFIX + mk + ':' + tk;
+  const cache = await getSetting(chave);
+  if (cache && cache.fetchedAt === todayISO() && cache.points && cache.points.length) return cache.points;
+
+  let pontos = [];
+  if (mk === 'b3') {
+    // O plano gratuito da brapi limita o período; tenta do maior para o menor.
+    for (const range of ['5y', '1y', '3mo']) {
+      try {
+        const r = brapiResult(await getJSON(brapiUrl('quote/' + encodeURIComponent(tk), { range, interval: '1d' })));
+        const lista = (r && r.historicalDataPrice) || [];
+        pontos = lista.filter((p) => p.close != null)
+          .map((p) => [new Date(p.date * 1000).toISOString().slice(0, 10), Number(p.close)]);
+        if (pontos.length) break;
+      } catch (e) { console.warn('Histórico brapi', range, e.message); }
+    }
+  } else {
+    const key = apiKey('apiTwelve');
+    if (!key) return cache ? cache.points : [];
+    const url = `https://api.twelvedata.com/time_series?symbol=${encodeURIComponent(tk)}&interval=1day&outputsize=5000&apikey=${key}`;
+    let d;
+    try { d = await getJSON(url); }
+    catch (e) {
+      if (e.status === 429) {
+        // Plano gratuito: 8 chamadas por minuto
+        if (aoEsperar) aoEsperar();
+        await esperar(61000);
+        d = await getJSON(url);
+      } else throw e;
+    }
+    pontos = ((d && d.values) || []).map((v) => [v.datetime.slice(0, 10), Number(v.close)]);
+  }
+  pontos.sort((a, b) => a[0].localeCompare(b[0]));
+  if (pontos.length) await put('settings', { key: chave, value: { fetchedAt: todayISO(), points: pontos } });
+  return pontos.length ? pontos : (cache ? cache.points : []);
+}
+
+// Último fechamento até a data (busca binária — o histórico pode ter milhares de dias).
+function closeAt(pontos, data) {
+  let lo = 0, hi = pontos.length - 1, achado = null;
+  while (lo <= hi) {
+    const mid = (lo + hi) >> 1;
+    if (pontos[mid][0] <= data) { achado = pontos[mid][1]; lo = mid + 1; } else hi = mid - 1;
+  }
+  return achado;
+}
+
+async function upsertQuote(positionId, date, value) {
+  const existente = state.quotes.find((q) => q.positionId === positionId && q.date === date);
+  const registro = { id: existente ? existente.id : uid(), positionId, date, value };
+  if (existente) state.quotes = state.quotes.map((q) => (q.id === registro.id ? registro : q));
+  else state.quotes.push(registro);
+  await put('quotes', registro);
+}
+
+function fmtQty(n) { return Number(n).toLocaleString('pt-BR', { maximumFractionDigits: 8 }); }
+function fmtPct(n) { return (n > 0 ? '+' : '') + Number(n).toFixed(2).replace('.', ',') + '%'; }
+
+/* ----- Formulário de compra/venda com cálculo automático -----
+   Modo "valor": informa o dinheiro, o app calcula a quantidade pela cotação.
+   Modo "qtd":   informa quantidade e total pago, o app calcula o preço unitário. */
+const buyCtx = {}; // prefixo → { item, price, priceDate }
+
+function buyFormHtml(p, currency, tipoMov) {
+  const venda = tipoMov === 'sell';
+  return `
+    <label>${t('mkt.date')}</label>
+    <input id="${p}Date" type="date" value="${todayISO()}" onchange="refreshRefPrice('${p}')">
+    <label>${t('mkt.mode')}</label>
+    <select id="${p}Mode" onchange="updateBuyPreview('${p}')">
+      <option value="amount">${t(venda ? 'mkt.modeAmountSell' : 'mkt.modeAmount')}</option>
+      <option value="qty">${t(venda ? 'mkt.modeQtySell' : 'mkt.modeQty')}</option>
+    </select>
+    <div id="${p}AmountWrap">
+      <label>${t(venda ? 'mkt.amountSell' : 'mkt.amount')} (<span class="cur-code">${currency}</span>)</label>
+      <input id="${p}Amount" type="text" inputmode="decimal" oninput="updateBuyPreview('${p}')">
+      <label class="checkline"><input type="checkbox" id="${p}Whole" onchange="updateBuyPreview('${p}')"> ${t('mkt.whole')}</label>
+    </div>
+    <div id="${p}QtyWrap" class="hidden">
+      <label>${t('inv.moveQty')}</label>
+      <input id="${p}Qty" type="text" inputmode="decimal" oninput="updateBuyPreview('${p}')">
+      <label>${t(venda ? 'mkt.totalSell' : 'mkt.total')} (<span class="cur-code">${currency}</span>)</label>
+      <input id="${p}Total" type="text" inputmode="decimal" oninput="updateBuyPreview('${p}')">
+    </div>
+    <div id="${p}Preview" class="buy-preview"></div>`;
+}
+
+function buyCurrency(p) {
+  const sel = document.getElementById('poCurrency');
+  if (p === 'po' && sel) return sel.value;
+  const ctx = buyCtx[p];
+  return (ctx && ctx.item && ctx.item.currency) || state.settings.baseCurrency;
+}
+
+// Cotação de referência: fechamento do dia da compra, ou a atual se for hoje.
+async function refreshRefPrice(p) {
+  const ctx = buyCtx[p];
+  if (!ctx || !ctx.item || !ctx.item.ticker) { updateBuyPreview(p); return; }
+  const data = (document.getElementById(p + 'Date') || {}).value || todayISO();
+  const prev = document.getElementById(p + 'Preview');
+  if (data >= todayISO()) {
+    if (ctx.livePrice) { ctx.price = ctx.livePrice; ctx.priceDate = todayISO(); }
+    updateBuyPreview(p); return;
+  }
+  if (prev) prev.innerHTML = `<span class="hint">${t('mkt.loadingHist')}</span>`;
+  try {
+    const pts = await fetchHistory(ctx.item);
+    const c = closeAt(pts, data);
+    if (c) { ctx.price = c; ctx.priceDate = data; }
+    else { ctx.price = ctx.livePrice || null; ctx.priceDate = todayISO(); }
+  } catch (e) {
+    console.warn('Histórico indisponível', e.message);
+    ctx.price = ctx.livePrice || null; ctx.priceDate = todayISO();
+  }
+  updateBuyPreview(p);
+}
+
+function readBuyForm(p) {
+  const ctx = buyCtx[p] || {};
+  const modo = document.getElementById(p + 'Mode').value;
+  const data = document.getElementById(p + 'Date').value;
+  const preco = ctx.price || null;
+  const r = { date: data, mode: modo, price: preco, priceDate: ctx.priceDate, qty: null, amount: null, unit: null, leftover: 0, error: '' };
+  if (modo === 'amount') {
+    const valor = parseMoney(document.getElementById(p + 'Amount').value);
+    if (valor == null || valor <= 0) { r.error = 'empty'; return r; }
+    if (!preco) { r.error = t('mkt.needPrice'); return r; }
+    const inteiras = document.getElementById(p + 'Whole').checked;
+    let qtd = valor / preco;
+    if (inteiras) qtd = Math.floor(qtd + 1e-9);
+    else qtd = Math.round(qtd * 1e8) / 1e8;
+    if (qtd <= 0) { r.error = t('mkt.notEnough'); return r; }
+    r.qty = qtd;
+    r.amount = inteiras ? Math.round(qtd * preco * 100) / 100 : valor;
+    r.leftover = inteiras ? valor - r.amount : 0;
+    r.unit = r.amount / qtd;
+  } else {
+    const qtd = parseMoney(document.getElementById(p + 'Qty').value);
+    const total = parseMoney(document.getElementById(p + 'Total').value);
+    if (qtd == null || qtd <= 0 || total == null || total <= 0) { r.error = 'empty'; return r; }
+    r.qty = qtd; r.amount = total; r.unit = total / qtd;
+  }
+  return r;
+}
+
+function updateBuyPreview(p) {
+  const modoEl = document.getElementById(p + 'Mode');
+  if (!modoEl) return;
+  const modo = modoEl.value;
+  document.getElementById(p + 'AmountWrap').classList.toggle('hidden', modo !== 'amount');
+  document.getElementById(p + 'QtyWrap').classList.toggle('hidden', modo !== 'qty');
+  document.querySelectorAll('.cur-code').forEach((el) => { el.textContent = buyCurrency(p); });
+
+  const prev = document.getElementById(p + 'Preview');
+  if (!prev) return;
+  const cur = buyCurrency(p);
+  const ctx = buyCtx[p] || {};
+  const r = readBuyForm(p);
+  const linhaPreco = r.price
+    ? `<div>${t(r.priceDate === todayISO() ? 'mkt.priceToday' : 'mkt.priceOn').replace('{data}', r.priceDate || '')}: <strong>${fmtMoney(r.price, cur)}</strong></div>`
+    : (ctx.item && ctx.item.ticker ? `<div class="hint">${t('mkt.noPriceYet')}</div>` : '');
+
+  if (r.error && r.error !== 'empty') { prev.innerHTML = linhaPreco + `<div class="amount-out">${r.error}</div>`; return; }
+  if (r.error) { prev.innerHTML = linhaPreco; return; }
+
+  let html = linhaPreco;
+  if (r.mode === 'amount') {
+    html += `<div>${t('mkt.youGet')}: <strong>${fmtQty(r.qty)}</strong></div>`;
+    if (r.leftover > 0.004) html += `<div>${t('mkt.leftover')}: ${fmtMoney(r.leftover, cur)}</div>`;
+  } else {
+    html += `<div>${t('mkt.unitPaid')}: <strong>${fmtMoney(r.unit, cur)}</strong></div>`;
+    if (r.price) {
+      const dif = (r.unit / r.price - 1) * 100;
+      html += `<div class="${dif > 0.05 ? 'amount-out' : dif < -0.05 ? 'amount-in' : 'amount-neutral'}">${t('mkt.vsMarket')}: ${fmtPct(dif)}</div>`;
+    }
+  }
+  prev.innerHTML = html;
+}
+
+/* ----- Busca do ativo no modal de posição ----- */
+async function lookupAsset(prefill) {
+  const entrada = document.getElementById('poLookup');
+  const info = document.getElementById('poLookupInfo');
+  const btn = document.getElementById('poLookupBtn');
+  const q = prefill || (entrada ? entrada.value : '');
+  if (!q.trim()) { showToast(t('mkt.noTicker')); return; }
+  if (btn) { btn.disabled = true; btn.textContent = t('mkt.searching'); }
+  info.classList.remove('hidden');
+  info.innerHTML = `<span class="hint">${t('mkt.searching')}</span>`;
+  try {
+    const a = await resolveAsset(q);
+    const set = (id, v) => { const el = document.getElementById(id); if (el && v != null && v !== '') el.value = v; };
+    set('poName', a.name);
+    set('poTicker', a.ticker);
+    set('poIsin', a.isin);
+    set('poKind', 'quote');
+    set('poClass', 'variable');
+    set('poType', a.assetType);
+    const suportada = CURRENCIES.some((c) => c.code === a.currency);
+    if (suportada) set('poCurrency', a.currency);
+    buyCtx.po = { item: { ticker: a.ticker, market: a.market, currency: a.currency, assetType: a.assetType }, price: a.price, livePrice: a.price, priceDate: todayISO(), meta: a };
+    info.innerHTML = `
+      <div class="lookup-name">${escapeHtml(a.name)} <span class="tag">${escapeHtml(a.ticker)}</span></div>
+      <div>${a.exchange ? escapeHtml(a.exchange) + ' — ' : ''}<strong>${fmtMoney(a.price, a.currency)}</strong>
+        <span class="${a.changePct >= 0 ? 'amount-in' : 'amount-out'}">${fmtPct(a.changePct)}</span></div>
+      <div class="hint">${t('mkt.source')}: ${a.source}</div>
+      ${suportada ? '' : `<div class="amount-out">${t('mkt.currencyUnsupported').replace('{code}', a.currency)}</div>`}`;
+    onPositionAccountChange();
+    await refreshRefPrice('po');
+  } catch (e) {
+    info.innerHTML = `<span class="amount-out">${escapeHtml(e.message || String(e))}</span>`;
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = t('mkt.search'); }
+  }
+}
+
+/* ----- Links externos e TradingView ----- */
+function externalLinks(item) {
+  const tk = (item.ticker || '').toUpperCase();
+  const mk = marketOf(item);
+  const baixo = tk.toLowerCase();
+  const investing = `https://${state.settings.lang === 'pt-BR' ? 'br' : state.settings.lang === 'es' ? 'es' : 'www'}.investing.com/search/?q=${encodeURIComponent(tk)}`;
+  const yahoo = `https://finance.yahoo.com/quote/${encodeURIComponent(mk === 'b3' ? tk + '.SA' : mk === 'crypto' ? tk + '-' + (item.currency || 'USD') : tk)}`;
+  let i10 = null;
+  if (mk === 'b3') {
+    const pasta = { fii: 'fiis', etf: 'etfs', bdr: 'bdrs' }[item.assetType] || 'acoes';
+    i10 = `https://investidor10.com.br/${pasta}/${baixo}/`;
+  } else if (mk === 'us') {
+    i10 = `https://investidor10.com.br/stocks/${baixo}/`;
+  }
+  return `<div class="ext-links">
+    <a href="${investing}" target="_blank" rel="noopener">Investing.com</a>
+    <a href="${yahoo}" target="_blank" rel="noopener">Yahoo Finance</a>
+    ${i10 ? `<a href="${i10}" target="_blank" rel="noopener">Investidor10</a>` : ''}
+  </div>`;
+}
+
+function tradingViewSymbol(item) {
+  const tk = (item.ticker || '').toUpperCase();
+  const mk = marketOf(item);
+  if (mk === 'b3') return 'BMFBOVESPA:' + tk;
+  if (mk === 'crypto') return 'BINANCE:' + tk + (item.currency === 'BRL' ? 'BRL' : item.currency === 'EUR' ? 'EUR' : 'USDT');
+  const bolsa = String(item.exchange || '').toUpperCase();
+  if (bolsa.includes('NASDAQ')) return 'NASDAQ:' + tk;
+  if (bolsa.includes('NEW YORK') || bolsa.includes('NYSE')) return 'NYSE:' + tk;
+  return tk;
+}
+
+function mountTradingView(containerId, item) {
+  const box = document.getElementById(containerId);
+  if (!box || !item.ticker) return;
+  box.innerHTML = '<div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>';
+  box.classList.add('tradingview-widget-container');
+  const s = document.createElement('script');
+  s.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
+  s.async = true;
+  s.text = JSON.stringify({
+    autosize: true, symbol: tradingViewSymbol(item), interval: 'D', timezone: 'Etc/UTC',
+    theme: state.settings.theme === 'dark' ? 'dark' : 'light', style: '1',
+    locale: state.settings.lang === 'pt-BR' ? 'br' : state.settings.lang,
+    allow_symbol_change: true, calendar: false, support_host: 'https://www.tradingview.com'
+  });
+  box.appendChild(s);
+}
+
+/* ----- Gráfico "investido x mercado" ----- */
+function fmtCompact(v) {
+  const a = Math.abs(v);
+  if (a >= 1e6) return (v / 1e6).toFixed(1).replace('.', ',') + ' mi';
+  if (a >= 1e4) return (v / 1e3).toFixed(1).replace('.', ',') + ' mil';
+  return v.toLocaleString('pt-BR', { maximumFractionDigits: 0 });
+}
+
+// Série diária: datas de pregão do histórico + datas de movimentos + hoje.
+function buildPositionSeries(pos, hist) {
+  const movs = invMovesOf(pos.id);
+  if (!movs.length) return [];
+  const inicio = movs[0].date;
+  const hoje = todayISO();
+  const datas = new Set([hoje]);
+  hist.forEach(([d]) => { if (d >= inicio && d <= hoje) datas.add(d); });
+  movs.forEach((m) => datas.add(m.date));
+  quotesOf(pos.id).forEach((q) => { if (q.date >= inicio) datas.add(q.date); });
+  return [...datas].sort().map((d) => {
+    const st = positionStateAt(pos, d);
+    let valor;
+    if (pos.kind === 'quote') {
+      // Cotação digitada no dia prevalece; senão o fechamento do histórico
+      const manual = quotesOf(pos.id).find((q) => q.date === d);
+      const preco = manual ? Number(manual.value) : (closeAt(hist, d) || (positionQuoteAt(pos, d) || {}).value);
+      valor = preco ? st.quantity * preco : st.cost;
+    } else {
+      valor = positionValue(pos, d);
+    }
+    return { date: d, cost: st.cost, value: valor };
+  });
+}
+
+function drawPLChart(boxId, tipId, pontos, cur) {
+  const box = document.getElementById(boxId);
+  const tip = document.getElementById(tipId);
+  if (!box) return;
+  if (pontos.length < 2) { box.innerHTML = `<p class="empty-state">${t('mkt.chartEmpty')}</p>`; return; }
+  const W = 720, H = 300, padL = 64, padR = 16, padT = 16, padB = 34;
+  let min = Infinity, max = -Infinity;
+  pontos.forEach((p) => { min = Math.min(min, p.cost, p.value); max = Math.max(max, p.cost, p.value); });
+  if (min === max) max = min + 1;
+  const faixa = max - min; min = Math.max(0, min - faixa * 0.08); max += faixa * 0.08;
+  const X = (i) => padL + (i / (pontos.length - 1)) * (W - padL - padR);
+  const Y = (v) => padT + (1 - (v - min) / (max - min)) * (H - padT - padB);
+  const pos = getComputedStyle(document.documentElement).getPropertyValue('--positive').trim() || '#15803d';
+  const neg = getComputedStyle(document.documentElement).getPropertyValue('--negative').trim() || '#b91c1c';
+
+  let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${t('mkt.chartTitle')}">`;
+  for (let g = 0; g <= 4; g++) {
+    const v = min + ((max - min) * g) / 4;
+    svg += `<line x1="${padL}" x2="${W - padR}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--border)" stroke-width="1"/>
+      <text x="${padL - 8}" y="${Y(v) + 4}" text-anchor="end" font-size="11" fill="var(--muted)">${fmtCompact(v)}</text>`;
+  }
+  // Área entre as linhas: verde onde o mercado está acima do investido
+  for (let i = 0; i < pontos.length - 1; i++) {
+    const a = pontos[i], b = pontos[i + 1];
+    const cor = (a.value - a.cost + b.value - b.cost) >= 0 ? pos : neg;
+    svg += `<polygon points="${X(i)},${Y(a.value)} ${X(i + 1)},${Y(b.value)} ${X(i + 1)},${Y(b.cost)} ${X(i)},${Y(a.cost)}" fill="${cor}" fill-opacity="0.16"/>`;
+  }
+  const linha = (k) => pontos.map((p, i) => `${i ? 'L' : 'M'}${X(i).toFixed(1)},${Y(p[k]).toFixed(1)}`).join(' ');
+  const ultimo = pontos[pontos.length - 1];
+  const corValor = ultimo.value >= ultimo.cost ? pos : neg;
+  svg += `<path d="${linha('cost')}" fill="none" stroke="var(--muted)" stroke-width="2" stroke-dasharray="6 4"/>`;
+  svg += `<path d="${linha('value')}" fill="none" stroke="${corValor}" stroke-width="2.2"/>`;
+  const passos = Math.min(6, pontos.length);
+  for (let k = 0; k < passos; k++) {
+    const i = Math.round((k * (pontos.length - 1)) / (passos - 1 || 1));
+    const ancora = k === 0 ? 'start' : k === passos - 1 ? 'end' : 'middle';
+    svg += `<text x="${X(i)}" y="${H - 10}" text-anchor="${ancora}" font-size="11" fill="var(--muted)">${pontos[i].date.slice(2).split('-').reverse().join('/')}</text>`;
+  }
+  svg += `<line id="${boxId}Cursor" x1="0" x2="0" y1="${padT}" y2="${H - padB}" stroke="var(--muted)" stroke-width="1" visibility="hidden"/>`;
+  svg += `<rect x="${padL}" y="${padT}" width="${W - padL - padR}" height="${H - padT - padB}" fill="transparent" id="${boxId}Hit"/>`;
+  svg += '</svg>';
+  box.innerHTML = svg;
+
+  const hit = document.getElementById(boxId + 'Hit');
+  const cursor = document.getElementById(boxId + 'Cursor');
+  const svgEl = box.querySelector('svg');
+  const mover = (ev) => {
+    const r = svgEl.getBoundingClientRect();
+    const px = ((ev.touches ? ev.touches[0].clientX : ev.clientX) - r.left) * (W / r.width);
+    const i = Math.max(0, Math.min(pontos.length - 1, Math.round(((px - padL) / (W - padL - padR)) * (pontos.length - 1))));
+    const p = pontos[i];
+    cursor.setAttribute('x1', X(i)); cursor.setAttribute('x2', X(i)); cursor.setAttribute('visibility', 'visible');
+    const lucro = p.value - p.cost;
+    tip.innerHTML = `${p.date}<br>${t('mkt.invested')}: ${fmtMoney(p.cost, cur)}<br>${t('mkt.market')}: <strong>${fmtMoney(p.value, cur)}</strong><br>
+      ${t('mkt.result')}: ${fmtMoney(lucro, cur)}${p.cost > 0 ? ' (' + fmtPct((lucro / p.cost) * 100) + ')' : ''}`;
+    tip.classList.remove('hidden');
+    const bx = box.getBoundingClientRect();
+    let left = (X(i) / W) * r.width + (r.left - bx.left) + 12;
+    if (left + tip.offsetWidth > bx.width) left -= tip.offsetWidth + 24;
+    tip.style.left = left + 'px';
+    tip.style.top = '8px';
+  };
+  const sair = () => { tip.classList.add('hidden'); cursor.setAttribute('visibility', 'hidden'); };
+  hit.addEventListener('mousemove', mover);
+  hit.addEventListener('touchmove', mover, { passive: true });
+  hit.addEventListener('mouseleave', sair);
+}
+
+function periodCut(pontos, periodo) {
+  if (periodo === 'all' || !pontos.length) return pontos;
+  const meses = { '1m': 1, '3m': 3, '6m': 6, '1y': 12 }[periodo];
+  const d = new Date(); d.setMonth(d.getMonth() - meses);
+  const corte = d.toISOString().slice(0, 10);
+  const r = pontos.filter((p) => p.date >= corte);
+  return r.length >= 2 ? r : pontos.slice(-2);
+}
+
+function periodButtons(onclickFn) {
+  return `<div class="nav-toggle chart-periods">${['1m', '3m', '6m', '1y', 'all'].map((k) =>
+    `<button data-period="${k}" class="${k === 'all' ? 'active' : ''}" onclick="${onclickFn}('${k}', this)">${t('mkt.p.' + k)}</button>`).join('')}</div>`;
+}
+
+let chartState = { pontos: [], cur: 'EUR' };
+function setChartPeriod(k, btn) {
+  btn.parentElement.querySelectorAll('button').forEach((b) => b.classList.toggle('active', b === btn));
+  drawPLChart('plChart', 'plTip', periodCut(chartState.pontos, k), chartState.cur);
+}
+
+function summaryHtml(custo, valor, cur, extra) {
+  const lucro = valor - custo;
+  const cls = lucro > 0.004 ? 'amount-in' : lucro < -0.004 ? 'amount-out' : 'amount-neutral';
+  return `<div class="pl-summary">
+    <div><span>${t('mkt.invested')}</span><strong>${fmtMoney(custo, cur)}</strong></div>
+    <div><span>${t('mkt.market')}</span><strong>${fmtMoney(valor, cur)}</strong></div>
+    <div><span>${t('mkt.result')}</span><strong class="${cls}">${fmtMoney(lucro, cur)}${custo > 0 ? ' · ' + fmtPct((lucro / custo) * 100) : ''}</strong></div>
+    ${extra || ''}
+  </div>`;
+}
+
+async function openPositionChart(positionId) {
+  const pos = state.positions.find((x) => x.id === positionId);
+  if (!pos) return;
+  const r = positionReturn(pos, todayISO());
+  const st = positionStateAt(pos, todayISO());
+  const cot = positionQuoteAt(pos, todayISO());
+  const extra = pos.kind === 'quote' && st.quantity > 0
+    ? `<div><span>${t('mkt.avgPrice')}</span><strong>${fmtMoney(st.cost / st.quantity, pos.currency)}</strong></div>
+       <div><span>${t('mkt.lastPrice')}</span><strong>${cot ? fmtMoney(cot.value, pos.currency) : '—'}</strong></div>` : '';
+  openModal(`
+    <h2>${escapeHtml(pos.name)} ${pos.ticker ? `<span class="tag">${escapeHtml(pos.ticker)}</span>` : ''}</h2>
+    ${summaryHtml(r.cost, r.value, pos.currency, extra)}
+    <div class="nav-head"><h3>${t('mkt.chartTitle')}</h3>${periodButtons('setChartPeriod')}</div>
+    <div class="chart-legend"><span class="lg-cost"></span>${t('mkt.invested')} <span class="lg-value"></span>${t('mkt.market')}</div>
+    <div class="nav-chart pl-chart"><div id="plChart"><p class="hint">${t('mkt.loadingHist')}</p></div><div id="plTip" class="nav-tip hidden"></div></div>
+    <p id="plNote" class="hint"></p>
+    ${pos.ticker ? `<h3 class="section-sub">${t('mkt.marketChart')}</h3><div id="tvChart" class="tv-box"></div>${externalLinks(pos)}` : ''}
+  `, true);
+  if (pos.ticker && pos.kind === 'quote') mountTradingView('tvChart', pos);
+
+  let hist = [];
+  const nota = document.getElementById('plNote');
+  if (pos.ticker && pos.kind === 'quote') {
+    try { hist = await fetchHistory(pos, () => { if (nota) nota.textContent = t('mkt.rateWait'); }); }
+    catch (e) { if (nota) nota.textContent = t('mkt.histFail') + ' ' + e.message; }
+    if (!hist.length && nota && !nota.textContent) nota.textContent = t('mkt.histManual');
+    else if (hist.length && nota) nota.textContent = '';
+  }
+  chartState = { pontos: buildPositionSeries(pos, hist), cur: pos.currency };
+  drawPLChart('plChart', 'plTip', chartState.pontos, pos.currency);
+}
+
+async function openPortfolioChart() {
+  const base = state.settings.baseCurrency;
+  const hoje = todayISO();
+  const tot = investmentTotals(hoje);
+  openModal(`
+    <h2>${t('mkt.portfolioChart')}</h2>
+    ${summaryHtml(consolidate(tot.cost, base, hoje).total, consolidate(tot.value, base, hoje).total, base)}
+    <div class="nav-head"><h3>${t('mkt.chartTitle')} (${base})</h3>${periodButtons('setChartPeriod')}</div>
+    <div class="chart-legend"><span class="lg-cost"></span>${t('mkt.invested')} <span class="lg-value"></span>${t('mkt.market')}</div>
+    <div class="nav-chart pl-chart"><div id="plChart"><p class="hint">${t('mkt.loadingHist')}</p></div><div id="plTip" class="nav-tip hidden"></div></div>
+    <p id="plNote" class="hint"></p>
+  `, true);
+  const nota = document.getElementById('plNote');
+  const series = [];
+  const ativos = state.positions.filter((p) => invMovesOf(p.id).length);
+  let n = 0;
+  for (const pos of ativos) {
+    n++;
+    if (nota) nota.textContent = t('mkt.loadingN').replace('{n}', n).replace('{total}', ativos.length);
+    let hist = [];
+    if (pos.ticker && pos.kind === 'quote') {
+      try { hist = await fetchHistory(pos, () => { if (nota) nota.textContent = t('mkt.rateWait'); }); }
+      catch (e) { console.warn('Histórico', pos.ticker, e.message); }
+    }
+    series.push({ pos, pontos: buildPositionSeries(pos, hist) });
+  }
+  // Soma na moeda base, carregando o último valor de cada posição entre datas
+  const datas = [...new Set(series.flatMap((s) => s.pontos.map((p) => p.date)))].sort();
+  const pontos = datas.map((d) => {
+    let custo = 0, valor = 0;
+    series.forEach(({ pos, pontos: ps }) => {
+      let ult = null;
+      for (const p of ps) { if (p.date <= d) ult = p; else break; }
+      if (!ult) return;
+      custo += toBase(ult.cost, pos.currency, d);
+      valor += toBase(ult.value, pos.currency, d);
+    });
+    return { date: d, cost: custo, value: valor };
+  });
+  if (nota) nota.textContent = '';
+  chartState = { pontos, cur: base };
+  drawPLChart('plChart', 'plTip', pontos, base);
+}
+
+/* ----- Watchlist ----- */
+function watchlist() { return Array.isArray(state.settings.watchlist) ? state.settings.watchlist : []; }
+async function saveWatchlist(lista) {
+  state.settings.watchlist = lista;
+  await put('settings', { key: 'watchlist', value: lista });
+}
+
+async function addToWatchlist() {
+  const el = document.getElementById('watchInput');
+  const btn = document.getElementById('btnWatchAdd');
+  const q = el ? el.value.trim() : '';
+  if (!q) { showToast(t('mkt.noTicker')); return; }
+  if (btn) btn.disabled = true;
+  try {
+    const a = await resolveAsset(q);
+    if (watchlist().some((w) => w.ticker === a.ticker)) { showToast(t('mkt.alreadyWatch')); return; }
+    await saveWatchlist([...watchlist(), {
+      ticker: a.ticker, isin: a.isin, name: a.name, currency: a.currency, exchange: a.exchange,
+      market: a.market, assetType: a.assetType, price: a.price, changePct: a.changePct, updatedAt: new Date().toISOString()
+    }]);
+    el.value = '';
+    renderWatchlist();
+    showToast(t('toast.saved'));
+  } catch (e) {
+    showToast(e.message || String(e));
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+
+async function refreshWatchlist(silencioso) {
+  const lista = watchlist();
+  let n = 0;
+  for (const w of lista) {
+    try {
+      const c = await fetchPrice(w);
+      w.price = c.price; w.changePct = c.changePct; w.updatedAt = new Date().toISOString(); n++;
+    } catch (e) { console.warn('Watchlist', w.ticker, e.message); }
+  }
+  if (lista.length) await saveWatchlist(lista);
+  renderWatchlist();
+  if (!silencioso) showToast(t('inv.updateOk').replace('{n}', n));
+  return n;
+}
+
+async function removeFromWatchlist(ticker) {
+  if (!confirm(t('modal.delete') + '?')) return;
+  await saveWatchlist(watchlist().filter((w) => w.ticker !== ticker));
+  renderWatchlist();
+}
+
+function openWatchChart(ticker) {
+  const w = watchlist().find((x) => x.ticker === ticker);
+  if (!w) return;
+  openModal(`
+    <h2>${escapeHtml(w.name)} <span class="tag">${escapeHtml(w.ticker)}</span></h2>
+    <p><strong>${w.price ? fmtMoney(w.price, w.currency) : '—'}</strong>
+      ${w.changePct != null ? `<span class="${w.changePct >= 0 ? 'amount-in' : 'amount-out'}">${fmtPct(w.changePct)}</span>` : ''}</p>
+    <div id="tvChart" class="tv-box"></div>
+    ${externalLinks(w)}
+  `, true);
+  mountTradingView('tvChart', w);
+}
+
+function buyFromWatch(ticker) {
+  const w = watchlist().find((x) => x.ticker === ticker);
+  if (!w) return;
+  openPositionModal(null, w.isin || w.ticker);
+}
+
+function renderWatchlist() {
+  const tbody = document.querySelector('#watchTable tbody');
+  const thead = document.querySelector('#watchTable thead tr');
+  const vazio = document.getElementById('watchEmpty');
+  if (!tbody) return;
+  if (thead) thead.innerHTML = `<th>${t('mkt.asset')}</th><th>${t('mkt.exchange')}</th><th>${t('inv.price')}</th>
+    <th>${t('mkt.dayChange')}</th><th>${t('mkt.updated')}</th><th>${t('accounts.actions')}</th>`;
+  const lista = watchlist();
+  document.getElementById('watchTable').classList.toggle('hidden', !lista.length);
+  if (!lista.length) {
+    tbody.innerHTML = '';
+    if (vazio) { vazio.textContent = t('mkt.watchEmpty'); vazio.classList.remove('hidden'); }
+    return;
+  }
+  if (vazio) vazio.classList.add('hidden');
+  tbody.innerHTML = lista.map((w) => `<tr>
+    <td>${escapeHtml(w.name)} <span class="tag">${escapeHtml(w.ticker)}</span></td>
+    <td>${escapeHtml(w.exchange || (w.market === 'b3' ? 'B3' : '—'))}</td>
+    <td><strong>${w.price ? fmtMoney(w.price, w.currency) : '—'}</strong></td>
+    <td class="${(w.changePct || 0) >= 0 ? 'amount-in' : 'amount-out'}">${w.changePct != null ? fmtPct(w.changePct) : '—'}</td>
+    <td>${w.updatedAt ? new Date(w.updatedAt).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' }) : '—'}</td>
+    <td>
+      <button class="secondary-btn" onclick="openWatchChart('${w.ticker}')">${t('mkt.chart')}</button>
+      <button class="secondary-btn" onclick="buyFromWatch('${w.ticker}')">${t('mkt.buy')}</button>
+      <button class="secondary-btn" onclick="removeFromWatchlist('${w.ticker}')">${t('modal.delete')}</button>
+    </td>
+  </tr>`).join('');
+}
+
+/* ----- Chaves das APIs (Configurações) ----- */
+function renderApiSettings() {
+  API_KEYS.forEach((k) => {
+    const el = document.getElementById(k);
+    if (el && el !== document.activeElement && el.dataset.dirty !== '1') el.value = state.settings[k] || '';
+  });
+}
+
+async function saveApiKeys() {
+  for (const k of API_KEYS) {
+    const el = document.getElementById(k);
+    if (!el) continue;
+    const v = el.value.trim();
+    state.settings[k] = v;
+    el.dataset.dirty = '';
+    await put('settings', { key: k, value: v });
+  }
+  showToast(t('api.saved'));
+}
+
+async function testApis() {
+  await saveApiKeys();
+  const box = document.getElementById('apiTestResult');
+  const btn = document.getElementById('btnTestApi');
+  if (btn) btn.disabled = true;
+  box.innerHTML = `<p class="hint">${t('api.testing')}</p>`;
+  const testes = [
+    ['Finnhub', 'apiFinnhub', async () => {
+      const q = await getJSON(`https://finnhub.io/api/v1/quote?symbol=AAPL&token=${apiKey('apiFinnhub')}`);
+      if (!(Number(q.c) > 0)) throw new Error(t('mkt.noQuote'));
+      return 'AAPL ' + fmtMoney(q.c, 'USD');
+    }],
+    ['Twelve Data', 'apiTwelve', async () => {
+      const q = await getJSON(`https://api.twelvedata.com/price?symbol=AAPL&apikey=${apiKey('apiTwelve')}`);
+      if (!(Number(q.price) > 0)) throw new Error(t('mkt.noQuote'));
+      return 'AAPL ' + fmtMoney(Number(q.price), 'USD');
+    }],
+    ['brapi.dev', 'apiBrapi', async () => {
+      const q = await quoteB3('PETR4');
+      return 'PETR4 ' + fmtMoney(q.price, 'BRL');
+    }]
+  ];
+  const linhas = [];
+  for (const [nome, chave, fn] of testes) {
+    if (!apiKey(chave)) { linhas.push(`<li class="amount-neutral">${nome}: ${t('api.noKey')}</li>`); continue; }
+    try { linhas.push(`<li class="amount-in">${nome}: ${t('api.ok')} — ${await fn()}</li>`); }
+    catch (e) { linhas.push(`<li class="amount-out">${nome}: ${escapeHtml(e.message || String(e))}</li>`); }
+    box.innerHTML = `<ul class="api-list">${linhas.join('')}</ul>`;
+  }
+  box.innerHTML = `<ul class="api-list">${linhas.join('')}</ul>`;
+  if (btn) btn.disabled = false;
+}
+
 
 /* Botão único do dashboard: atualiza câmbio e cotações. Cada parte reporta o
    que conseguiu, para não sobrar dúvida sobre o que foi atualizado. */
@@ -2846,17 +3831,15 @@ async function updateEverything() {
   } else {
     let n = 0;
     for (const pos of comTicker) {
-      const preco = await fetchQuoteFor(pos.ticker);
+      const preco = await fetchQuoteFor(pos.ticker, pos);
       if (preco == null) continue;
-      const hoje = todayISO();
-      const existente = state.quotes.find((q) => q.positionId === pos.id && q.date === hoje);
-      const registro = { id: existente ? existente.id : uid(), positionId: pos.id, date: hoje, value: preco };
-      if (existente) state.quotes = state.quotes.map((q) => (q.id === registro.id ? registro : q));
-      else state.quotes.push(registro);
-      await put('quotes', registro);
+      await upsertQuote(pos.id, todayISO(), preco);
       n++;
     }
     resumoQ = n ? t('inv.updateOk').replace('{n}', n) : t('inv.updateFail');
+  }
+  if (watchlist().length) {
+    try { await refreshWatchlist(true); } catch (e) { console.warn('Watchlist não atualizada:', e); }
   }
 
   renderAll();
@@ -2894,12 +3877,13 @@ function renderInvestments() {
         <td>${escapeHtml(pos.name)}${pos.ticker ? ` <span class="tag">${escapeHtml(pos.ticker)}</span>` : ''}</td>
         <td>${pos.assetType ? t('inv.ty.' + pos.assetType) : '—'}</td>
         <td>${conta ? escapeHtml(conta.name) : '—'}</td>
-        <td>${pos.kind === 'quote' ? st.quantity.toLocaleString('pt-BR', { maximumFractionDigits: 8 }) : '—'}</td>
-        <td>${cot ? fmtMoney(cot.value, pos.currency) : '—'}</td>
+        <td>${pos.kind === 'quote' ? fmtQty(st.quantity) : '—'}</td>
+        <td>${cot ? fmtMoney(cot.value, pos.currency) : '—'}${pos.kind === 'quote' && st.quantity > 0 ? `<br><span class="hint">${t('mkt.avgPrice')}: ${fmtMoney(st.cost / st.quantity, pos.currency)}</span>` : ''}</td>
         <td>${fmtMoney(r.cost, pos.currency)}</td>
         <td><strong>${fmtMoney(r.value, pos.currency)}</strong></td>
         <td class="${classe}">${fmtMoney(r.profit, pos.currency)} · ${r.pct.toFixed(1)}%</td>
         <td>
+          <button class="secondary-btn" onclick="openPositionChart('${pos.id}')">${t('mkt.chart')}</button>
           <button class="secondary-btn" onclick="openMoveModal('${pos.id}')">${t('inv.move')}</button>
           <button class="secondary-btn" onclick="openQuotesModal('${pos.id}')">${t('inv.quotes')}</button>
           <button class="secondary-btn" onclick="openPositionModal('${pos.id}')">${t('modal.edit')}</button>
@@ -2945,6 +3929,7 @@ function renderInvestments() {
     elR.textContent = fmtMoney(lucro, base) + (custo > 0 ? ' · ' + ((lucro / custo) * 100).toFixed(1) + '%' : '');
     elR.className = 'big-number ' + (lucro > 0.004 ? 'amount-in' : lucro < -0.004 ? 'amount-out' : '');
   }
+  renderWatchlist();
 }
 
 /* Quanto desta posição foi aplicado SEM sair do saldo da conta vinculada.
@@ -3008,10 +3993,20 @@ async function fixDuplication(positionId) {
   showToast(t('inv.dupFixed'));
 }
 
-function openPositionModal(id) {
+function openPositionModal(id, prefill) {
   const p = id ? state.positions.find((x) => x.id === id) : null;
+  delete buyCtx.po;
+  if (p && p.ticker) buyCtx.po = { item: { ticker: p.ticker, market: p.market, currency: p.currency, assetType: p.assetType } };
   openModal(`
     <h2>${p ? t('modal.editPosition') : t('modal.addPosition')}</h2>
+    <label>${t('mkt.lookup')}</label>
+    <div class="lookup-row">
+      <input id="poLookup" placeholder="TTWO, PETR4, US8740541094" value="${prefill ? escapeHtml(prefill) : ''}"
+        onkeydown="if(event.key==='Enter'){event.preventDefault();lookupAsset();}">
+      <button id="poLookupBtn" class="secondary-btn" type="button" onclick="lookupAsset()">${t('mkt.search')}</button>
+    </div>
+    <p class="hint">${t('mkt.lookupHint')}</p>
+    <div id="poLookupInfo" class="lookup-info hidden"></div>
     <label>${t('inv.name')}</label>
     <input id="poName" value="${p ? escapeHtml(p.name) : ''}">
     <label>${t('inv.account')}</label>
@@ -3039,28 +4034,27 @@ function openPositionModal(id) {
     <input id="poTicker" value="${p && p.ticker ? escapeHtml(p.ticker) : ''}" placeholder="PETR4">
     <label>${t('inv.isin')}</label>
     <input id="poIsin" value="${p && p.isin ? escapeHtml(p.isin) : ''}" placeholder="BRPETRACNPR6">
-    <p class="hint">${t('inv.tickerHint')}</p>
     <label>${t('inv.currency')}</label>
-    <select id="poCurrency">
+    <select id="poCurrency" onchange="updateBuyPreview('po')">
       ${CURRENCIES.map((c) => {
         const sel = p ? p.currency === c.code : c.code === state.settings.baseCurrency;
         return `<option value="${c.code}" ${sel ? 'selected' : ''}>${c.code}</option>`;
       }).join('')}
     </select>
     ${p ? '' : `
-      <div id="poInitialWrap">
+      <h3 class="section-sub">${t('mkt.firstBuy')}</h3>
+      <div id="poQuoteForm">${buyFormHtml('po', state.settings.baseCurrency, 'buy')}</div>
+      <div id="poValueForm" class="hidden">
         <label>${t('inv.initial')}</label>
         <input id="poInitial" type="text" inputmode="decimal">
-        <div id="poInitialQtyWrap">
-          <label>${t('inv.initialQty')}</label>
-          <input id="poInitialQty" type="text" inputmode="decimal">
-        </div>
-        <label class="checkline" id="poDeductWrap"><input type="checkbox" id="poDeduct" checked> ${t('inv.deduct')}</label>
-        <p class="hint">${t('inv.deductHint')}</p>
-      </div>`}
+      </div>
+      <label class="checkline" id="poDeductWrap"><input type="checkbox" id="poDeduct" checked> ${t('inv.deduct')}</label>
+      <p class="hint">${t('inv.deductHint')}</p>`}
     <button class="primary-btn" onclick="savePosition('${p ? p.id : ''}')">${t('modal.save')}</button>
   `);
   onPositionAccountChange();
+  if (!p) updateBuyPreview('po');
+  if (prefill) lookupAsset(prefill);
 }
 
 // Sem conta vinculada não há de onde descontar; e renda fixa não tem quantidade.
@@ -3068,42 +4062,65 @@ function onPositionAccountChange() {
   const wrapDeduz = document.getElementById('poDeductWrap');
   const conta = document.getElementById('poAccount');
   if (wrapDeduz && conta) wrapDeduz.classList.toggle('hidden', !conta.value);
-  const wrapQtd = document.getElementById('poInitialQtyWrap');
   const kind = document.getElementById('poKind');
-  if (wrapQtd && kind) wrapQtd.classList.toggle('hidden', kind.value !== 'quote');
+  const fq = document.getElementById('poQuoteForm');
+  const fv = document.getElementById('poValueForm');
+  if (kind && fq && fv) {
+    fq.classList.toggle('hidden', kind.value !== 'quote');
+    fv.classList.toggle('hidden', kind.value === 'quote');
+  }
 }
 
 async function savePosition(id) {
   const nome = document.getElementById('poName').value.trim();
   if (!nome) { showToast(t('toast.invalidValue')); return; }
+  const anterior = id ? state.positions.find((x) => x.id === id) : null;
+  const ticker = document.getElementById('poTicker').value.trim().toUpperCase();
+  const kind = document.getElementById('poKind').value;
+  const ctx = buyCtx.po || {};
+  const meta = ctx.meta && ctx.meta.ticker === ticker ? ctx.meta : null;
   const pos = {
+    ...(anterior || {}),
     id: id || uid(),
     name: nome,
     accountId: document.getElementById('poAccount').value || null,
-    kind: document.getElementById('poKind').value,
+    kind,
     currency: document.getElementById('poCurrency').value,
     assetClass: document.getElementById('poClass').value,
     assetType: document.getElementById('poType').value,
-    ticker: document.getElementById('poTicker').value.trim().toUpperCase(),
+    ticker,
     isin: document.getElementById('poIsin').value.trim().toUpperCase()
   };
+  if (meta) { pos.market = meta.market; pos.exchange = meta.exchange; }
+  else if (!anterior || anterior.ticker !== ticker) { delete pos.market; delete pos.exchange; }
+
+  // Primeira compra: calculada pela cotação (valor → quantidade, ou quantidade + total → preço)
+  let mov = null, precoRef = null, dataRef = null;
+  if (!id) {
+    if (kind === 'quote') {
+      const r = readBuyForm('po');
+      if (r.error && r.error !== 'empty') { showToast(r.error); return; }
+      if (!r.error) {
+        mov = { id: uid(), positionId: pos.id, type: 'buy', date: r.date, quantity: r.qty, amount: r.amount };
+        precoRef = r.price; dataRef = r.priceDate;
+      }
+    } else {
+      const inicial = parseMoney((document.getElementById('poInitial') || {}).value);
+      if (inicial != null && inicial > 0) mov = { id: uid(), positionId: pos.id, type: 'buy', date: todayISO(), quantity: 0, amount: inicial };
+    }
+  }
+
   if (id) state.positions = state.positions.map((x) => (x.id === id ? pos : x));
   else state.positions.push(pos);
   await put('positions', pos);
 
-  // Valor já aplicado vira o primeiro aporte. Se o dinheiro ainda está na conta
-  // vinculada, ele sai de lá — é isso que evita contar o mesmo valor duas vezes.
-  const elInicial = document.getElementById('poInitial');
-  const inicial = elInicial ? parseMoney(elInicial.value) : null;
-  if (!id && inicial != null && inicial > 0) {
-    const elQtd = document.getElementById('poInitialQty');
-    const qtd = elQtd ? (parseMoney(elQtd.value) || 0) : 0;
-    const mov = { id: uid(), positionId: pos.id, type: 'buy', date: todayISO(), quantity: qtd, amount: inicial };
+  if (mov) {
+    // Se o dinheiro ainda está na conta vinculada, ele sai de lá — evita contar duas vezes.
     const deduz = document.getElementById('poDeduct');
     if (pos.accountId && deduz && deduz.checked) {
       const trn = {
-        id: uid(), type: 'expense', date: todayISO(), accountId: pos.accountId,
-        category: 'investimentos', description: t('inv.buy') + ' — ' + pos.name, value: inicial
+        id: uid(), type: 'expense', date: mov.date, accountId: pos.accountId,
+        category: 'investimentos', description: t('inv.buy') + ' — ' + pos.name, value: mov.amount
       };
       state.transactions.push(trn);
       await put('transactions', trn);
@@ -3111,6 +4128,9 @@ async function savePosition(id) {
     }
     state.invmoves.push(mov);
     await put('invmoves', mov);
+    // Cotação de mercado já registrada: a posição passa a valer o preço real, não o custo
+    if (precoRef) await upsertQuote(pos.id, dataRef || mov.date, precoRef);
+    if (ctx.livePrice && dataRef !== todayISO()) await upsertQuote(pos.id, todayISO(), ctx.livePrice);
   }
 
   closeModal();
@@ -3141,34 +4161,38 @@ function openMoveModal(positionId) {
   const pos = state.positions.find((x) => x.id === positionId);
   if (!pos) return;
   const movs = invMovesOf(positionId).slice().reverse();
+  const cotacao = pos.kind === 'quote';
+  buyCtx.mv = { item: pos, price: null, livePrice: null, priceDate: null };
+  const ult = positionQuoteAt(pos, todayISO());
+  if (ult) { buyCtx.mv.price = Number(ult.value); buyCtx.mv.priceDate = ult.date; }
   openModal(`
     <h2>${t('modal.move')} — ${escapeHtml(pos.name)}</h2>
     ${movs.length ? `
       <table class="mini-table">
         <thead><tr><th>${t('inv.moveDate')}</th><th>${t('inv.moveType')}</th>
-        ${pos.kind === 'quote' ? `<th>${t('inv.moveQty')}</th>` : ''}
+        ${cotacao ? `<th>${t('inv.moveQty')}</th><th>${t('mkt.unit')}</th>` : ''}
         <th>${t('inv.moveAmount')}</th><th></th></tr></thead>
         <tbody>${movs.map((m) => `<tr>
           <td>${m.date}</td>
           <td>${t(m.type === 'buy' ? 'inv.buy' : 'inv.sell')}</td>
-          ${pos.kind === 'quote' ? `<td>${Number(m.quantity).toLocaleString('pt-BR', { maximumFractionDigits: 8 })}</td>` : ''}
+          ${cotacao ? `<td>${fmtQty(m.quantity)}</td><td>${Number(m.quantity) > 0 ? fmtMoney(m.amount / m.quantity, pos.currency) : '—'}</td>` : ''}
           <td>${fmtMoney(m.amount, pos.currency)}</td>
           <td><button class="secondary-btn" onclick="deleteMove('${m.id}','${positionId}')">${t('modal.delete')}</button></td>
         </tr>`).join('')}</tbody>
       </table>` : `<p class="hint">${t('inv.noMoves')}</p>`}
 
     <label>${t('inv.moveType')}</label>
-    <select id="mvType">
+    <select id="mvType" onchange="onMoveTypeChange('${positionId}')">
       <option value="buy">${t('inv.buy')}</option>
       <option value="sell">${t('inv.sell')}</option>
     </select>
-    <label>${t('inv.moveDate')}</label>
-    <input id="mvDate" type="date" value="${todayISO()}">
-    ${pos.kind === 'quote' ? `
-      <label>${t('inv.moveQty')}</label>
-      <input id="mvQty" type="text" inputmode="decimal">` : ''}
-    <label>${t('inv.moveAmount')} (${pos.currency})</label>
-    <input id="mvAmount" type="text" inputmode="decimal">
+    <div id="mvForm">
+      ${cotacao ? buyFormHtml('mv', pos.currency, 'buy') : `
+        <label>${t('inv.moveDate')}</label>
+        <input id="mvDate" type="date" value="${todayISO()}">
+        <label>${t('inv.moveAmount')} (${pos.currency})</label>
+        <input id="mvAmount" type="text" inputmode="decimal">`}
+    </div>
     <label>${t('inv.moveAccount')}</label>
     <select id="mvAccount">
       <option value="">${t('inv.noAccount')}</option>
@@ -3178,18 +4202,53 @@ function openMoveModal(positionId) {
     <p class="hint">${t('inv.launchHint')}</p>
     <button class="primary-btn" onclick="saveMove('${positionId}')">${t('modal.save')}</button>
   `);
+  if (cotacao) {
+    updateBuyPreview('mv');
+    // Cotação ao vivo para o cálculo, se houver ticker
+    if (pos.ticker) {
+      fetchPrice(pos).then((c) => {
+        if (!buyCtx.mv || buyCtx.mv.item !== pos) return;
+        buyCtx.mv.livePrice = c.price;
+        const d = document.getElementById('mvDate');
+        if (!d || d.value >= todayISO()) { buyCtx.mv.price = c.price; buyCtx.mv.priceDate = todayISO(); }
+        updateBuyPreview('mv');
+      }).catch((e) => console.warn('Cotação ao vivo', e.message));
+    }
+  }
+}
+
+// Troca os rótulos entre compra e venda sem perder o que já foi digitado
+function onMoveTypeChange(positionId) {
+  const pos = state.positions.find((x) => x.id === positionId);
+  if (!pos || pos.kind !== 'quote') return;
+  const tipo = document.getElementById('mvType').value;
+  const guardar = ['Date', 'Mode', 'Amount', 'Qty', 'Total'].map((k) => [k, (document.getElementById('mv' + k) || {}).value]);
+  const whole = (document.getElementById('mvWhole') || {}).checked;
+  document.getElementById('mvForm').innerHTML = buyFormHtml('mv', pos.currency, tipo);
+  guardar.forEach(([k, v]) => { const el = document.getElementById('mv' + k); if (el && v != null) el.value = v; });
+  const w = document.getElementById('mvWhole'); if (w) w.checked = !!whole;
+  updateBuyPreview('mv');
 }
 
 async function saveMove(positionId) {
   const pos = state.positions.find((x) => x.id === positionId);
   if (!pos) return;
   const tipo = document.getElementById('mvType').value;
-  const data = document.getElementById('mvDate').value;
-  const valor = parseMoney(document.getElementById('mvAmount').value);
-  const qtdEl = document.getElementById('mvQty');
-  const qtd = qtdEl ? parseMoney(qtdEl.value) : 0;
+  let data, valor, qtd = 0, precoRef = null, dataRef = null;
+
+  if (pos.kind === 'quote') {
+    const r = readBuyForm('mv');
+    if (r.error) { showToast(r.error === 'empty' ? t('toast.invalidValue') : r.error); return; }
+    data = r.date; valor = r.amount; qtd = r.qty; precoRef = r.price; dataRef = r.priceDate;
+    if (tipo === 'sell') {
+      const tem = positionStateAt(pos, data).quantity;
+      if (qtd > tem + 1e-9) { showToast(t('mkt.sellTooMuch').replace('{n}', fmtQty(tem))); return; }
+    }
+  } else {
+    data = document.getElementById('mvDate').value;
+    valor = parseMoney(document.getElementById('mvAmount').value);
+  }
   if (!data || valor == null || valor <= 0) { showToast(t('toast.invalidValue')); return; }
-  if (pos.kind === 'quote' && (qtd == null || qtd <= 0)) { showToast(t('toast.invalidValue')); return; }
 
   const mov = { id: uid(), positionId, type: tipo, date: data, quantity: qtd || 0, amount: valor };
 
@@ -3212,6 +4271,7 @@ async function saveMove(positionId) {
 
   state.invmoves.push(mov);
   await put('invmoves', mov);
+  if (precoRef && dataRef) await upsertQuote(positionId, dataRef, precoRef);
   closeModal();
   renderAll();
   showToast(t('toast.saved'));
@@ -3282,11 +4342,13 @@ function renderSettings() {
   const sel = document.getElementById('baseCurrencySelect');
   sel.innerHTML = CURRENCIES.map((c) => `<option value="${c.code}">${c.code} (${c.symbol.trim()})</option>`).join('');
   sel.value = state.settings.baseCurrency;
+  renderApiSettings();
 }
 
 /* ---------- Modais ---------- */
-function openModal(html) {
+function openModal(html, wide) {
   document.getElementById('modalBody').innerHTML = html;
+  document.querySelector('#modal .modal-content').classList.toggle('modal-wide', !!wide);
   document.getElementById('modal').classList.remove('hidden');
 }
 function closeModal() { document.getElementById('modal').classList.add('hidden'); }
@@ -3600,7 +4662,8 @@ async function exportJSON() {
     invmoves: state.invmoves,
     assets: state.assets,
     valuations: state.valuations,
-    settings: state.settings
+    // Chaves de API não saem do navegador: um backup é fácil de compartilhar por engano
+    settings: Object.fromEntries(Object.entries(state.settings).filter(([k]) => !API_KEYS.includes(k) && !k.startsWith(HIST_PREFIX)))
   };
   download(`prof-controller-backup-${todayISO()}.json`, JSON.stringify(data, null, 2), 'application/json');
   showToast(t('toast.exported'));
@@ -3663,7 +4726,7 @@ async function importJSON(file) {
     for (const v of (data.valuations || [])) await put('valuations', v);
     if (data.settings) {
       for (const [k, v] of Object.entries(data.settings)) {
-        if (k === 'ui') continue;
+        if (k === 'ui' || API_KEYS.includes(k) || k.startsWith(HIST_PREFIX)) continue;
         await put('settings', { key: k, value: v });
         state.settings[k] = v;
       }
@@ -3818,6 +4881,14 @@ function bindEvents() {
   on('btnAddBill', 'click', () => openBillModal());
   on('btnAddPosition', 'click', () => openPositionModal());
   on('btnUpdateAll', 'click', updateEverything);
+  // Fase 8 — mercado
+  on('btnPortfolioChart', 'click', openPortfolioChart);
+  on('btnWatchAdd', 'click', addToWatchlist);
+  on('watchInput', 'keydown', (e) => { if (e.key === 'Enter') addToWatchlist(); });
+  on('btnWatchRefresh', 'click', () => refreshWatchlist(false));
+  on('btnSaveApi', 'click', saveApiKeys);
+  on('btnTestApi', 'click', testApis);
+  API_KEYS.forEach((k) => on(k, 'input', (e) => { e.target.dataset.dirty = '1'; }));
   on('cashGrain', 'change', (e) => { state.ui.cashGrain = e.target.value; renderCashflow(); });
   on('billKind', 'change', (e) => { state.ui.billKind = e.target.value; renderBills(); });
   on('billStatus', 'change', (e) => { state.ui.billStatus = e.target.value; renderBills(); });
