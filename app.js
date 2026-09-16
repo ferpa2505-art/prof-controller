@@ -1,5 +1,5 @@
 /* ============================================================
-   ProF Controller — Fases 1 a 8 (Fase 8: mercado, gráficos e watchlist)
+   ProF Controller — Fases 1 a 9 (8: mercado e watchlist; 9: cores e comparativo)
 
    Fase 1: contas, moedas, saldos diários, moeda base, importação CSV,
            i18n (pt-BR/en/es), temas, offline.
@@ -365,6 +365,7 @@ const I18N = {
     'modal.editPosition': 'Editar posição',
     'modal.move': 'Aporte ou resgate',
     'mkt.lookup': 'Buscar ativo (ticker ou ISIN)',
+    'mkt.manual': 'Cadastrar sem busca (renda fixa, CDB ou ativo sem cotação)',
     'mkt.lookupHint': 'Ex.: TTWO, PETR4 ou o ISIN US8740541094. O app preenche nome, ticker, moeda e a cotação atual.',
     'mkt.search': 'Buscar',
     'mkt.searching': 'Buscando…',
@@ -434,7 +435,62 @@ const I18N = {
     'api.saved': 'Chaves salvas neste navegador.',
     'api.testing': 'Testando…',
     'api.ok': 'conectado',
-    'api.noKey': 'sem chave'
+    'api.noKey': 'sem chave',
+    'cmp.title': 'Comparativo',
+    'cmp.assets': 'Ativos (até {n})',
+    'cmp.benchmarks': 'Comparar com',
+    'cmp.color': 'Cor',
+    'cmp.total': 'Carteira total',
+    'cmp.noAssets': 'Cadastre posições ou adicione ativos à watchlist.',
+    'cmp.b.cdi': 'CDB',
+    'cmp.b.ibov': 'Ibovespa',
+    'cmp.b.spx': 'S&P 500 (SPY)',
+    'cmp.cdbCdi': 'CDB {p}% do CDI',
+    'cmp.cdbFixed': 'CDB {p}% a.a.',
+    'cmp.cdbModeCdi': 'Percentual do CDI',
+    'cmp.cdbModeFixed': 'Taxa fixa ao ano',
+    'cmp.ofCdi': 'do CDI',
+    'cmp.perYear': 'ao ano',
+    'cmp.metric': 'Métrica',
+    'cmp.m.both': 'Investido x valor de mercado',
+    'cmp.m.value': 'Valor de mercado',
+    'cmp.m.cost': 'Valor investido',
+    'cmp.m.profit': 'Resultado em dinheiro',
+    'cmp.m.retInv': 'Rentabilidade sobre o investido (%)',
+    'cmp.m.price': 'Variação no período (%)',
+    'cmp.currency': 'Moeda',
+    'cmp.baseCur': 'Moeda base ({c})',
+    'cmp.style': 'Estilo',
+    'cmp.lines': 'Linhas',
+    'cmp.area': 'Área',
+    'cmp.markers': 'Marcar aportes e resgates',
+    'cmp.p.1m': '1M',
+    'cmp.p.3m': '3M',
+    'cmp.p.6m': '6M',
+    'cmp.p.ytd': 'No ano',
+    'cmp.p.1y': '1A',
+    'cmp.p.3y': '3A',
+    'cmp.p.5y': '5A',
+    'cmp.p.all': 'Desde o 1º aporte',
+    'cmp.p.custom': 'Personalizado',
+    'cmp.pickOne': 'Escolha ao menos um ativo ou índice acima.',
+    'cmp.noData': 'Sem dados suficientes para este período. Tente um período maior ou outra métrica.',
+    'cmp.maxReached': 'Máximo de {n} ativos por comparação.',
+    'cmp.sameMoney': '(mesmo dinheiro)',
+    'cmp.watchOnlyPrice': '{a} está só na watchlist e aparece apenas em "Variação no período".',
+    'cmp.benchNeedsFlows': 'Índices em valor precisam de aportes registrados.',
+    'cmp.costNoBench': 'Na métrica "Valor investido" os índices não aparecem: o investido seria o mesmo.',
+    'cmp.benchCombined': 'Os índices recebem os aportes somados dos ativos selecionados.',
+    'cmp.cdiFail': 'CDI do Banco Central indisponível; usando a taxa fixa configurada.',
+    'cmp.benchFail': '{b} indisponível:',
+    'cmp.series': 'Série',
+    'cmp.start': 'Início',
+    'cmp.end': 'Atual',
+    'cmp.change': 'Variação',
+    'cmp.max': 'Máximo',
+    'cmp.min': 'Mínimo',
+    'cmp.benchFlows': 'Aportes usados nos índices',
+    'cmp.flowsSum': 'Soma dos selecionados'
 
   },
   'en': {
@@ -769,6 +825,7 @@ const I18N = {
     'modal.editPosition': 'Edit position',
     'modal.move': 'Contribution or withdrawal',
     'mkt.lookup': 'Find asset (ticker or ISIN)',
+    'mkt.manual': 'Add without search (fixed income, CDs or unlisted assets)',
     'mkt.lookupHint': 'E.g. TTWO, PETR4 or ISIN US8740541094. The app fills in name, ticker, currency and current price.',
     'mkt.search': 'Search',
     'mkt.searching': 'Searching…',
@@ -838,7 +895,62 @@ const I18N = {
     'api.saved': 'Keys saved in this browser.',
     'api.testing': 'Testing…',
     'api.ok': 'connected',
-    'api.noKey': 'no key'
+    'api.noKey': 'no key',
+    'cmp.title': 'Comparison',
+    'cmp.assets': 'Assets (up to {n})',
+    'cmp.benchmarks': 'Compare with',
+    'cmp.color': 'Color',
+    'cmp.total': 'Total portfolio',
+    'cmp.noAssets': 'Add positions or watchlist assets.',
+    'cmp.b.cdi': 'CDB',
+    'cmp.b.ibov': 'Ibovespa',
+    'cmp.b.spx': 'S&P 500 (SPY)',
+    'cmp.cdbCdi': 'CDB {p}% of CDI',
+    'cmp.cdbFixed': 'CDB {p}% p.a.',
+    'cmp.cdbModeCdi': 'Percentage of CDI',
+    'cmp.cdbModeFixed': 'Fixed annual rate',
+    'cmp.ofCdi': 'of CDI',
+    'cmp.perYear': 'per year',
+    'cmp.metric': 'Metric',
+    'cmp.m.both': 'Invested vs market value',
+    'cmp.m.value': 'Market value',
+    'cmp.m.cost': 'Amount invested',
+    'cmp.m.profit': 'Gain/loss in money',
+    'cmp.m.retInv': 'Return on invested (%)',
+    'cmp.m.price': 'Change over period (%)',
+    'cmp.currency': 'Currency',
+    'cmp.baseCur': 'Base currency ({c})',
+    'cmp.style': 'Style',
+    'cmp.lines': 'Lines',
+    'cmp.area': 'Area',
+    'cmp.markers': 'Mark contributions and withdrawals',
+    'cmp.p.1m': '1M',
+    'cmp.p.3m': '3M',
+    'cmp.p.6m': '6M',
+    'cmp.p.ytd': 'YTD',
+    'cmp.p.1y': '1Y',
+    'cmp.p.3y': '3Y',
+    'cmp.p.5y': '5Y',
+    'cmp.p.all': 'Since 1st contribution',
+    'cmp.p.custom': 'Custom',
+    'cmp.pickOne': 'Pick at least one asset or index above.',
+    'cmp.noData': 'Not enough data for this period. Try a longer period or another metric.',
+    'cmp.maxReached': 'Up to {n} assets per comparison.',
+    'cmp.sameMoney': '(same money)',
+    'cmp.watchOnlyPrice': '{a} is only on the watchlist and appears only in "Change over period".',
+    'cmp.benchNeedsFlows': 'Indices in money need recorded contributions.',
+    'cmp.costNoBench': 'Indices are hidden for "Amount invested": the invested amount would be the same.',
+    'cmp.benchCombined': 'Indices receive the combined contributions of the selected assets.',
+    'cmp.cdiFail': 'Central Bank CDI unavailable; using the fixed rate set.',
+    'cmp.benchFail': '{b} unavailable:',
+    'cmp.series': 'Series',
+    'cmp.start': 'Start',
+    'cmp.end': 'Current',
+    'cmp.change': 'Change',
+    'cmp.max': 'High',
+    'cmp.min': 'Low',
+    'cmp.benchFlows': 'Contributions used for indices',
+    'cmp.flowsSum': 'Sum of selected'
   },
   'es': {
     'tabs.dashboard': 'Panel',
@@ -1172,6 +1284,7 @@ const I18N = {
     'modal.editPosition': 'Editar posición',
     'modal.move': 'Aporte o rescate',
     'mkt.lookup': 'Buscar activo (ticker o ISIN)',
+    'mkt.manual': 'Registrar sin búsqueda (renta fija, CDB o activo sin cotización)',
     'mkt.lookupHint': 'Ej.: TTWO, PETR4 o el ISIN US8740541094. La app completa nombre, ticker, moneda y cotización actual.',
     'mkt.search': 'Buscar',
     'mkt.searching': 'Buscando…',
@@ -1241,7 +1354,62 @@ const I18N = {
     'api.saved': 'Claves guardadas en este navegador.',
     'api.testing': 'Probando…',
     'api.ok': 'conectado',
-    'api.noKey': 'sin clave'
+    'api.noKey': 'sin clave',
+    'cmp.title': 'Comparativo',
+    'cmp.assets': 'Activos (hasta {n})',
+    'cmp.benchmarks': 'Comparar con',
+    'cmp.color': 'Color',
+    'cmp.total': 'Cartera total',
+    'cmp.noAssets': 'Registra posiciones o añade activos a la watchlist.',
+    'cmp.b.cdi': 'CDB',
+    'cmp.b.ibov': 'Ibovespa',
+    'cmp.b.spx': 'S&P 500 (SPY)',
+    'cmp.cdbCdi': 'CDB {p}% del CDI',
+    'cmp.cdbFixed': 'CDB {p}% anual',
+    'cmp.cdbModeCdi': 'Porcentaje del CDI',
+    'cmp.cdbModeFixed': 'Tasa fija anual',
+    'cmp.ofCdi': 'del CDI',
+    'cmp.perYear': 'anual',
+    'cmp.metric': 'Métrica',
+    'cmp.m.both': 'Invertido vs valor de mercado',
+    'cmp.m.value': 'Valor de mercado',
+    'cmp.m.cost': 'Importe invertido',
+    'cmp.m.profit': 'Resultado en dinero',
+    'cmp.m.retInv': 'Rentabilidad sobre lo invertido (%)',
+    'cmp.m.price': 'Variación en el período (%)',
+    'cmp.currency': 'Moneda',
+    'cmp.baseCur': 'Moneda base ({c})',
+    'cmp.style': 'Estilo',
+    'cmp.lines': 'Líneas',
+    'cmp.area': 'Área',
+    'cmp.markers': 'Marcar aportes y rescates',
+    'cmp.p.1m': '1M',
+    'cmp.p.3m': '3M',
+    'cmp.p.6m': '6M',
+    'cmp.p.ytd': 'En el año',
+    'cmp.p.1y': '1A',
+    'cmp.p.3y': '3A',
+    'cmp.p.5y': '5A',
+    'cmp.p.all': 'Desde el 1er aporte',
+    'cmp.p.custom': 'Personalizado',
+    'cmp.pickOne': 'Elige al menos un activo o índice arriba.',
+    'cmp.noData': 'Sin datos suficientes para este período. Prueba un período mayor u otra métrica.',
+    'cmp.maxReached': 'Máximo de {n} activos por comparación.',
+    'cmp.sameMoney': '(mismo dinero)',
+    'cmp.watchOnlyPrice': '{a} está solo en la watchlist y aparece únicamente en "Variación en el período".',
+    'cmp.benchNeedsFlows': 'Los índices en dinero necesitan aportes registrados.',
+    'cmp.costNoBench': 'En "Importe invertido" los índices no aparecen: lo invertido sería igual.',
+    'cmp.benchCombined': 'Los índices reciben los aportes sumados de los activos seleccionados.',
+    'cmp.cdiFail': 'CDI del Banco Central no disponible; se usa la tasa fija configurada.',
+    'cmp.benchFail': '{b} no disponible:',
+    'cmp.series': 'Serie',
+    'cmp.start': 'Inicio',
+    'cmp.end': 'Actual',
+    'cmp.change': 'Variación',
+    'cmp.max': 'Máximo',
+    'cmp.min': 'Mínimo',
+    'cmp.benchFlows': 'Aportes usados en los índices',
+    'cmp.flowsSum': 'Suma de los seleccionados'
   }
 };
 
@@ -3260,7 +3428,7 @@ function buyFormHtml(p, currency, tipoMov) {
     <div id="${p}AmountWrap">
       <label>${t(venda ? 'mkt.amountSell' : 'mkt.amount')} (<span class="cur-code">${currency}</span>)</label>
       <input id="${p}Amount" type="text" inputmode="decimal" oninput="updateBuyPreview('${p}')">
-      <label class="checkline"><input type="checkbox" id="${p}Whole" onchange="updateBuyPreview('${p}')"> ${t('mkt.whole')}</label>
+      <label class="checkline"><input type="checkbox" id="${p}Whole" checked onchange="updateBuyPreview('${p}')"> ${t('mkt.whole')}</label>
     </div>
     <div id="${p}QtyWrap" class="hidden">
       <label>${t('inv.moveQty')}</label>
@@ -3392,11 +3560,26 @@ async function lookupAsset(prefill) {
       <div class="hint">${t('mkt.source')}: ${a.source}</div>
       ${suportada ? '' : `<div class="amount-out">${t('mkt.currencyUnsupported').replace('{code}', a.currency)}</div>`}`;
     onPositionAccountChange();
+    unlockPositionForm(false);
     await refreshRefPrice('po');
   } catch (e) {
     info.innerHTML = `<span class="amount-out">${escapeHtml(e.message || String(e))}</span>`;
   } finally {
     if (btn) { btn.disabled = false; btn.textContent = t('mkt.search'); }
+  }
+}
+
+// Libera o formulário depois da busca, ou a pedido para posições sem ticker (renda fixa, CDB)
+function unlockPositionForm(manual) {
+  const rest = document.getElementById('poRest');
+  if (!rest) return;
+  rest.disabled = false;
+  rest.classList.remove('locked');
+  const btn = document.getElementById('poManualBtn');
+  if (btn) btn.classList.add('hidden');
+  if (manual) {
+    const nome = document.getElementById('poName');
+    if (nome) nome.focus();
   }
 }
 
@@ -3743,7 +3926,7 @@ function renderWatchlist() {
   }
   if (vazio) vazio.classList.add('hidden');
   tbody.innerHTML = lista.map((w) => `<tr>
-    <td>${escapeHtml(w.name)} <span class="tag">${escapeHtml(w.ticker)}</span></td>
+    <td>${colorDot(w.color)}${escapeHtml(w.name)} <span class="tag">${escapeHtml(w.ticker)}</span></td>
     <td>${escapeHtml(w.exchange || (w.market === 'b3' ? 'B3' : '—'))}</td>
     <td><strong>${w.price ? fmtMoney(w.price, w.currency) : '—'}</strong></td>
     <td class="${(w.changePct || 0) >= 0 ? 'amount-in' : 'amount-out'}">${w.changePct != null ? fmtPct(w.changePct) : '—'}</td>
@@ -3755,6 +3938,712 @@ function renderWatchlist() {
     </td>
   </tr>`).join('');
 }
+
+/* ================= FASE 9 — Cores por ativo e gráfico comparativo =================
+   Até 4 séries (posições, itens da watchlist ou a carteira total) contra CDB,
+   Ibovespa e S&P 500, em várias métricas e em qualquer moeda cadastrada.
+
+   Como os índices entram na comparação:
+   - Métricas em valor e "rentabilidade sobre o investido": o índice recebe
+     exatamente os mesmos aportes e resgates, nas mesmas datas. A pergunta
+     respondida é "e se esse dinheiro tivesse ido para o CDB/Ibovespa/S&P?".
+   - "Variação no período": tudo parte de 0% no início do período. Ativos usam
+     o preço; a carteira usa rentabilidade ponderada pelo tempo (TWR), que
+     neutraliza o efeito dos aportes. */
+
+const ASSET_PALETTE = ['#2563eb', '#16a34a', '#f59e0b', '#e94560', '#8b5cf6', '#0891b2', '#db2777', '#65a30d', '#ea580c', '#0d9488', '#7c3aed', '#ca8a04'];
+const CMP_MAX = 4;
+const CMP_DEFAULT = {
+  sel: [], bench: { cdi: false, ibov: false, spx: false },
+  cdbMode: 'cdi', cdbPct: 100, cdbRate: 11,
+  metric: 'both', currency: 'base', period: '1y', from: '', to: '',
+  style: 'line', markers: true,
+  colors: { total: '#0ea5e9', cdi: '#0d9488', ibov: '#ca8a04', spx: '#94a3b8' },
+  benchFlows: 'sum'
+};
+
+function cmpConfig() {
+  const salvo = state.settings.cmpConfig || { sel: state.positions.length ? ['total'] : [] };
+  return {
+    ...CMP_DEFAULT, ...salvo,
+    bench: { ...CMP_DEFAULT.bench, ...(salvo.bench || {}) },
+    colors: { ...CMP_DEFAULT.colors, ...(salvo.colors || {}) }
+  };
+}
+async function saveCmpConfig(cfg) {
+  state.settings.cmpConfig = cfg;
+  await put('settings', { key: 'cmpConfig', value: cfg });
+}
+
+/* ----- Cores ----- */
+// Atribui a primeira cor livre da paleta; depois disso a cor é do ativo.
+async function ensureAssetColors() {
+  const usadas = new Set(state.positions.map((p) => p.color).filter(Boolean));
+  let mudou = false;
+  for (const pos of state.positions) {
+    if (pos.color) continue;
+    const livre = ASSET_PALETTE.find((c) => !usadas.has(c)) || ASSET_PALETTE[usadas.size % ASSET_PALETTE.length];
+    pos.color = livre; usadas.add(livre);
+    await put('positions', pos);
+    mudou = true;
+  }
+  const lista = watchlist();
+  lista.forEach((w, i) => {
+    if (w.color) return;
+    const pos = state.positions.find((p) => p.ticker && p.ticker === w.ticker);
+    w.color = pos ? pos.color : ASSET_PALETTE[(usadas.size + i) % ASSET_PALETTE.length];
+    mudou = true;
+  });
+  if (mudou && lista.length) await saveWatchlist(lista);
+  return mudou;
+}
+function nextFreeColor() {
+  const usadas = new Set(state.positions.map((p) => p.color).filter(Boolean));
+  return ASSET_PALETTE.find((c) => !usadas.has(c)) || ASSET_PALETTE[usadas.size % ASSET_PALETTE.length];
+}
+function colorDot(cor) { return `<span class="color-dot" style="background:${cor || 'var(--muted)'}"></span>`; }
+
+async function setSeriesColor(chave, cor) {
+  if (chave.startsWith('pos:')) {
+    const pos = state.positions.find((p) => p.id === chave.slice(4));
+    if (pos) { pos.color = cor; await put('positions', pos); }
+  } else if (chave.startsWith('watch:')) {
+    const lista = watchlist();
+    const w = lista.find((x) => x.ticker === chave.slice(6));
+    if (w) { w.color = cor; await saveWatchlist(lista); }
+  } else {
+    const cfg = cmpConfig();
+    cfg.colors[chave] = cor;
+    await saveCmpConfig(cfg);
+  }
+  renderInvestments();
+}
+
+/* ----- Câmbio histórico (Frankfurter), com a tabela do app como reserva ----- */
+async function fetchFxHistory(desde) {
+  const chave = HIST_PREFIX + 'fx:EUR';
+  const cache = await getSetting(chave);
+  if (cache && cache.fetchedAt === todayISO() && cache.from <= desde) return cache.rates;
+  const moedas = CURRENCIES.map((c) => c.code).filter((c) => c !== 'EUR').join(',');
+  try {
+    const d = await getJSON(`https://api.frankfurter.app/${desde}..${todayISO()}?from=EUR&to=${moedas}`);
+    const rates = Object.entries((d && d.rates) || {}).sort((a, b) => a[0].localeCompare(b[0]));
+    if (rates.length) {
+      await put('settings', { key: chave, value: { fetchedAt: todayISO(), from: desde, rates } });
+      return rates;
+    }
+  } catch (e) { console.warn('Câmbio histórico indisponível:', e.message); }
+  return cache ? cache.rates : [];
+}
+
+// Conversor rápido: listas ordenadas por moeda + busca binária.
+function makeConverter(ratesHist) {
+  const porMoeda = {};
+  ratesHist.forEach(([data, taxas]) => {
+    Object.entries(taxas).forEach(([cod, v]) => { (porMoeda[cod] = porMoeda[cod] || []).push([data, Number(v)]); });
+  });
+  state.fx.forEach((r) => { (porMoeda[r.currency] = porMoeda[r.currency] || []).push([r.date, Number(r.rate)]); });
+  Object.values(porMoeda).forEach((l) => l.sort((a, b) => a[0].localeCompare(b[0])));
+  let aproximou = false;
+  const taxa = (cod, data) => {
+    if (cod === 'EUR') return 1;
+    const l = porMoeda[cod];
+    if (!l || !l.length) return null;
+    const v = closeAt(l, data);
+    if (v != null) return v;
+    aproximou = true;
+    return l[0][1];
+  };
+  const conv = (valor, de, para, data) => {
+    if (valor == null) return null;
+    if (de === para) return valor;
+    const a = taxa(de, data), b = taxa(para, data);
+    return a && b ? (valor / a) * b : null;
+  };
+  conv.approx = () => aproximou;
+  return conv;
+}
+
+/* ----- Índices de referência ----- */
+function brDate(iso) { const [a, m, d] = iso.split('-'); return `${d}/${m}/${a}`; }
+function isoFromBr(br) { const [d, m, a] = br.split('/'); return `${a}-${m}-${d}`; }
+function weekdaysBetween(de, ate) {
+  const out = [];
+  const d = new Date(de + 'T12:00:00Z'), fim = new Date(ate + 'T12:00:00Z');
+  while (d <= fim) {
+    const dia = d.getUTCDay();
+    if (dia !== 0 && dia !== 6) out.push(d.toISOString().slice(0, 10));
+    d.setUTCDate(d.getUTCDate() + 1);
+  }
+  return out;
+}
+
+// CDI diário do Banco Central (série SGS 12). Limite da API: 10 anos por consulta.
+async function fetchCDI(desde) {
+  const chave = HIST_PREFIX + 'bench:cdi';
+  const cache = await getSetting(chave);
+  if (cache && cache.fetchedAt === todayISO() && cache.from <= desde) return cache.points;
+  const dez = new Date(); dez.setFullYear(dez.getFullYear() - 10); dez.setDate(dez.getDate() + 2);
+  const inicio = desde < dez.toISOString().slice(0, 10) ? dez.toISOString().slice(0, 10) : desde;
+  const d = await getJSON(`https://api.bcb.gov.br/dados/serie/bcdata.sgs.12/dados?formato=json&dataInicial=${brDate(inicio)}&dataFinal=${brDate(todayISO())}`);
+  const pts = (Array.isArray(d) ? d : []).map((r) => [isoFromBr(r.data), Number(r.valor)]).filter((p) => !isNaN(p[1]));
+  if (pts.length) await put('settings', { key: chave, value: { fetchedAt: todayISO(), from: inicio, points: pts } });
+  return pts;
+}
+
+// Série de nível (índice) do benchmark, na moeda nativa dele.
+async function benchmarkLevels(key, cfg, desde, avisar) {
+  if (key === 'cdi') {
+    let diarias = [];
+    if (cfg.cdbMode === 'cdi') {
+      try { diarias = (await fetchCDI(desde)).map(([d, v]) => [d, (v / 100) * (cfg.cdbPct / 100)]); }
+      catch (e) { avisar(t('cmp.cdiFail')); }
+    }
+    if (!diarias.length) {
+      const diaria = Math.pow(1 + (Number(cfg.cdbRate) || 0) / 100, 1 / 252) - 1;
+      diarias = weekdaysBetween(desde, todayISO()).map((d) => [d, diaria]);
+    }
+    let nivel = 1;
+    const pts = [];
+    diarias.forEach(([d, r]) => { pts.push([d, nivel]); nivel *= 1 + r; });
+    if (pts.length) pts.push([todayISO(), nivel]);
+    return { points: pts, currency: 'BRL' };
+  }
+  if (key === 'ibov') return { points: await fetchHistory({ ticker: '^BVSP', market: 'b3' }, avisar), currency: 'BRL' };
+  if (key === 'spx') return { points: await fetchHistory({ ticker: 'SPY', market: 'us' }, () => avisar(t('mkt.rateWait'))), currency: 'USD' };
+  return { points: [], currency: 'EUR' };
+}
+
+function benchLabel(key, cfg) {
+  if (key === 'cdi') return cfg.cdbMode === 'cdi'
+    ? t('cmp.cdbCdi').replace('{p}', cfg.cdbPct)
+    : t('cmp.cdbFixed').replace('{p}', String(cfg.cdbRate).replace('.', ','));
+  return t('cmp.b.' + key);
+}
+
+/* ----- Opções selecionáveis ----- */
+function cmpOptions() {
+  const ops = [];
+  if (state.positions.length) ops.push({ key: 'total', label: t('cmp.total'), color: cmpConfig().colors.total, invest: true });
+  state.positions.forEach((p) => ops.push({ key: 'pos:' + p.id, label: p.ticker || p.name, title: p.name, color: p.color, invest: true, pos: p }));
+  watchlist().forEach((w) => {
+    if (state.positions.some((p) => p.ticker && p.ticker === w.ticker)) return; // já aparece como posição
+    ops.push({ key: 'watch:' + w.ticker, label: w.ticker, title: w.name, color: w.color, invest: false, watch: w });
+  });
+  return ops;
+}
+
+function periodStart(cfg, primeira) {
+  const hoje = new Date();
+  const menos = (m) => { const d = new Date(); d.setMonth(d.getMonth() - m); return d.toISOString().slice(0, 10); };
+  switch (cfg.period) {
+    case '1m': return menos(1);
+    case '3m': return menos(3);
+    case '6m': return menos(6);
+    case '1y': return menos(12);
+    case '3y': return menos(36);
+    case '5y': return menos(60);
+    case 'ytd': return hoje.getFullYear() + '-01-01';
+    case 'custom': return cfg.from || primeira;
+    default: return primeira;
+  }
+}
+
+/* ----- Montagem das séries ----- */
+// Custo na moeda de exibição, convertendo cada movimento pelo câmbio da SUA data.
+function flowsOf(positions, D, conv) {
+  const fluxos = [];
+  positions.forEach((pos) => invMovesOf(pos.id).forEach((m) => {
+    const v = conv(Number(m.amount) || 0, pos.currency, D, m.date);
+    if (v != null) fluxos.push({ date: m.date, type: m.type, amount: v, posId: pos.id });
+  }));
+  return fluxos.sort((a, b) => a.date.localeCompare(b.date));
+}
+
+function costSeriesD(pos, datas, D, conv) {
+  const movs = invMovesOf(pos.id);
+  let i = 0, qtd = 0, custo = 0;
+  return datas.map((d) => {
+    while (i < movs.length && movs[i].date <= d) {
+      const m = movs[i++];
+      const q = Number(m.quantity) || 0;
+      const v = conv(Number(m.amount) || 0, pos.currency, D, m.date) || 0;
+      if (m.type === 'buy') { qtd += q; custo += v; }
+      else if (pos.kind === 'quote' && qtd > 0) { const f = Math.min(q / qtd, 1); custo -= custo * f; qtd -= q; }
+      else custo -= v;
+    }
+    return Math.max(custo, 0);
+  });
+}
+
+// Mesmo dinheiro aplicado no índice: compra "cotas" do índice em cada aporte.
+function simulateBench(levels, levelCur, fluxos, datas, D, conv) {
+  const nivelD = (d) => conv(closeAt(levels, d), levelCur, D, d);
+  let i = 0, cotas = 0, custo = 0;
+  return datas.map((d) => {
+    while (i < fluxos.length && fluxos[i].date <= d) {
+      const f = fluxos[i++];
+      const n = nivelD(f.date) || nivelD(d);
+      if (!n) continue;
+      if (f.type === 'buy') { cotas += f.amount / n; custo += f.amount; }
+      else if (cotas > 0) {
+        const valorAtual = cotas * n;
+        const fr = valorAtual > 0 ? Math.min(f.amount / valorAtual, 1) : 1;
+        cotas -= cotas * fr; custo -= custo * fr;
+      }
+    }
+    const n = nivelD(d);
+    return { value: n ? cotas * n : null, cost: custo };
+  });
+}
+
+// TWR: encadeia retornos diários descontando os fluxos do dia.
+function twrSeries(valores, fluxosPorData, datas) {
+  let acumulado = 1;
+  return datas.map((d, i) => {
+    if (i > 0) {
+      const anterior = valores[i - 1];
+      const fluxo = fluxosPorData[d] || 0;
+      if (anterior > 0 && valores[i] != null) acumulado *= (valores[i] - fluxo) / anterior;
+    }
+    return (acumulado - 1) * 100;
+  });
+}
+
+function downsample(datas, max) {
+  if (datas.length <= max) return datas;
+  const passo = datas.length / max;
+  const out = [];
+  for (let i = 0; i < max; i++) out.push(datas[Math.floor(i * passo)]);
+  if (out[out.length - 1] !== datas[datas.length - 1]) out.push(datas[datas.length - 1]);
+  return out;
+}
+
+let cmpToken = 0;
+const cmpVisible = {};
+
+async function renderCompare() {
+  const painel = document.getElementById('tab-investments');
+  if (!painel || !painel.classList.contains('active')) return;
+  // Cores novas: redesenha a aba inteira, que chama esta função de novo
+  if (await ensureAssetColors()) { renderInvestments(); return; }
+  renderCompareControls();
+  const token = ++cmpToken;
+  const box = document.getElementById('cmpChart');
+  const nota = document.getElementById('cmpNote');
+  const cfg = cmpConfig();
+  const ops = cmpOptions();
+  const selecionadas = cfg.sel.map((k) => ops.find((o) => o.key === k)).filter(Boolean);
+  const benches = Object.keys(cfg.bench).filter((k) => cfg.bench[k]);
+  const avisos = new Set();
+  const avisar = (m) => { avisos.add(m); if (nota && token === cmpToken) nota.textContent = [...avisos].join(' '); };
+
+  if (!selecionadas.length && !benches.length) {
+    box.innerHTML = `<p class="empty-state">${t('cmp.pickOne')}</p>`;
+    document.getElementById('cmpLegend').innerHTML = '';
+    document.getElementById('cmpStats').innerHTML = '';
+    nota.textContent = '';
+    return;
+  }
+  box.innerHTML = `<p class="hint">${t('mkt.loadingHist')}</p>`;
+  nota.textContent = '';
+
+  const D = cfg.currency === 'base' ? state.settings.baseCurrency : cfg.currency;
+  const metrica = cfg.metric;
+  const emPct = metrica === 'retInv' || metrica === 'price';
+
+  // Posições envolvidas (a carteira total inclui todas)
+  const temTotal = selecionadas.some((o) => o.key === 'total');
+  const posicoesSel = temTotal ? state.positions.slice() : selecionadas.filter((o) => o.pos).map((o) => o.pos);
+  const todasPosicoes = [...new Set([...(temTotal ? state.positions : []), ...selecionadas.filter((o) => o.pos).map((o) => o.pos)])];
+
+  const primeiraMov = todasPosicoes.flatMap((p) => invMovesOf(p.id).map((m) => m.date)).sort()[0];
+  const cincoAnos = (() => { const d = new Date(); d.setFullYear(d.getFullYear() - 5); return d.toISOString().slice(0, 10); })();
+  const inicioPeriodo = periodStart(cfg, primeiraMov || cincoAnos);
+  const fimPeriodo = cfg.period === 'custom' && cfg.to ? cfg.to : todayISO();
+  // Métricas de valor precisam do histórico desde o primeiro aporte
+  const inicioDados = [inicioPeriodo, primeiraMov || inicioPeriodo].sort()[0];
+
+  // Históricos
+  const hist = {};
+  for (const pos of todasPosicoes) {
+    if (token !== cmpToken) return;
+    hist['pos:' + pos.id] = pos.ticker && pos.kind === 'quote'
+      ? await fetchHistory(pos, () => avisar(t('mkt.rateWait'))).catch((e) => { avisar(t('mkt.histFail') + ' ' + pos.ticker); return []; })
+      : [];
+  }
+  for (const o of selecionadas.filter((x) => x.watch)) {
+    if (token !== cmpToken) return;
+    hist[o.key] = await fetchHistory(o.watch, () => avisar(t('mkt.rateWait'))).catch(() => { avisar(t('mkt.histFail') + ' ' + o.label); return []; });
+  }
+  const niveis = {};
+  for (const b of benches) {
+    if (token !== cmpToken) return;
+    try { niveis[b] = await benchmarkLevels(b, cfg, inicioDados, avisar); }
+    catch (e) { avisar(t('cmp.benchFail').replace('{b}', t('cmp.b.' + b)) + ' ' + e.message); niveis[b] = { points: [], currency: 'EUR' }; }
+  }
+  const conv = makeConverter(await fetchFxHistory(inicioDados));
+  if (token !== cmpToken) return;
+
+  // Eixo de datas: pregões conhecidos + movimentos + hoje, dentro do período
+  const datasSet = new Set([fimPeriodo]);
+  Object.values(hist).forEach((h) => h.forEach(([d]) => { if (d >= inicioDados && d <= fimPeriodo) datasSet.add(d); }));
+  Object.values(niveis).forEach((n) => n.points.forEach(([d]) => { if (d >= inicioDados && d <= fimPeriodo) datasSet.add(d); }));
+  todasPosicoes.forEach((p) => {
+    invMovesOf(p.id).forEach((m) => { if (m.date <= fimPeriodo) datasSet.add(m.date); });
+    quotesOf(p.id).forEach((q) => { if (q.date >= inicioDados && q.date <= fimPeriodo) datasSet.add(q.date); });
+  });
+  let datasTodas = [...datasSet].filter((d) => d >= inicioDados).sort();
+  if (datasTodas.length < 2) datasTodas = weekdaysBetween(inicioDados, fimPeriodo);
+
+  // Valor e custo diários de cada posição, na moeda de exibição
+  const valorPos = {}, custoPos = {};
+  todasPosicoes.forEach((pos) => {
+    const h = hist['pos:' + pos.id] || [];
+    const manual = {};
+    quotesOf(pos.id).forEach((q) => { manual[q.date] = Number(q.value); });
+    const custos = costSeriesD(pos, datasTodas, D, conv);
+    custoPos[pos.id] = custos;
+    valorPos[pos.id] = datasTodas.map((d, i) => {
+      let v;
+      if (pos.kind === 'quote') {
+        const st = positionStateAt(pos, d);
+        if (st.quantity <= 0) return 0;
+        const preco = manual[d] != null ? manual[d] : (closeAt(h, d) || (positionQuoteAt(pos, d) || {}).value);
+        v = preco ? st.quantity * preco : positionStateAt(pos, d).cost;
+      } else v = positionValue(pos, d);
+      const c = conv(v, pos.currency, D, d);
+      return c == null ? custos[i] : c;
+    });
+  });
+
+  // Aportes que os índices recebem: soma dos selecionados ou os de um ativo específico
+  let posFluxo = posicoesSel;
+  const alvo = selecionadas.find((o) => o.key === cfg.benchFlows && o.invest);
+  if (alvo) posFluxo = alvo.key === 'total' ? state.positions : [alvo.pos];
+  const fluxosTodos = flowsOf(posFluxo, D, conv);
+  const primeiroFluxo = fluxosTodos.length ? fluxosTodos[0].date : '9999';
+  const idx = datasTodas.map((d, i) => [d, i]).filter(([d]) => d >= inicioPeriodo && d <= fimPeriodo).map(([, i]) => i);
+  const cortar = (arr) => idx.map((i) => arr[i]);
+  const datasPeriodo = cortar(datasTodas);
+
+  const series = [];
+  const precisaInvest = metrica !== 'price';
+
+  selecionadas.forEach((o) => {
+    if (precisaInvest && !o.invest) { avisar(t('cmp.watchOnlyPrice').replace('{a}', o.label)); return; }
+    const ps = o.key === 'total' ? state.positions : [o.pos].filter(Boolean);
+    let valores = datasTodas.map((_, i) => ps.reduce((s, p) => s + (valorPos[p.id] ? valorPos[p.id][i] : 0), 0));
+    let custos = datasTodas.map((_, i) => ps.reduce((s, p) => s + (custoPos[p.id] ? custoPos[p.id][i] : 0), 0));
+    const marcadores = cfg.markers && o.pos ? invMovesOf(o.pos.id).filter((m) => m.date >= inicioPeriodo && m.date <= fimPeriodo).map((m) => ({ date: m.date, type: m.type })) : [];
+
+    if (o.watch) {
+      const h = hist[o.key] || [];
+      const precos = datasPeriodo.map((d) => conv(closeAt(h, d), o.watch.currency, D, d));
+      const base = precos.find((p) => p);
+      series.push({ key: o.key, label: o.label, title: o.title, color: o.color, points: datasPeriodo.map((d, i) => [d, base && precos[i] ? (precos[i] / base - 1) * 100 : null]) });
+      return;
+    }
+    if (metrica === 'price') {
+      const h = o.pos && o.pos.kind === 'quote' ? hist[o.key] : null;
+      let pts;
+      if (h && h.length) {
+        const precos = datasPeriodo.map((d) => conv(closeAt(h, d), o.pos.currency, D, d));
+        const base = precos.find((p) => p);
+        pts = datasPeriodo.map((d, i) => [d, base && precos[i] ? (precos[i] / base - 1) * 100 : null]);
+      } else {
+        const fl = {};
+        flowsOf(ps, D, conv).forEach((f) => { fl[f.date] = (fl[f.date] || 0) + (f.type === 'buy' ? f.amount : -f.amount); });
+        const tw = twrSeries(cortar(valores), fl, datasPeriodo);
+        pts = datasPeriodo.map((d, i) => [d, tw[i]]);
+      }
+      series.push({ key: o.key, label: o.label, title: o.title, color: o.color, points: pts, markers: marcadores });
+      return;
+    }
+    valores = cortar(valores); custos = cortar(custos);
+    const inicioSerie = ps.flatMap((x) => invMovesOf(x.id).map((m) => m.date)).sort()[0] || '9999';
+    const ponto = (i) => {
+      if (datasPeriodo[i] < inicioSerie) return null; // antes da compra a posição não existia
+      if (metrica === 'value') return valores[i];
+      if (metrica === 'cost') return custos[i];
+      if (metrica === 'profit') return valores[i] - custos[i];
+      if (metrica === 'retInv') return custos[i] > 0 ? (valores[i] / custos[i] - 1) * 100 : null;
+      return valores[i];
+    };
+    series.push({ key: o.key, label: o.label, title: o.title, color: o.color, points: datasPeriodo.map((d, i) => [d, ponto(i)]), markers: marcadores });
+    if (metrica === 'both') {
+      series.push({ key: o.key + ':cost', label: o.label + ' — ' + t('mkt.invested'), color: o.color, dash: '6 4', points: datasPeriodo.map((d, i) => [d, d < inicioSerie ? null : custos[i]]), parent: o.key });
+    }
+  });
+
+  benches.forEach((b) => {
+    const nv = niveis[b];
+    if (!nv || !nv.points.length) return;
+    const cor = cfg.colors[b];
+    const rotulo = benchLabel(b, cfg);
+    if (metrica === 'price' || !fluxosTodos.length) {
+      if (metrica !== 'price' && !fluxosTodos.length) avisar(t('cmp.benchNeedsFlows'));
+      if (metrica !== 'price') return;
+      const lv = datasPeriodo.map((d) => conv(closeAt(nv.points, d), nv.currency, D, d));
+      const base = lv.find((x) => x);
+      series.push({ key: 'bench:' + b, label: rotulo, color: cor, dash: '2 3', bench: true, points: datasPeriodo.map((d, i) => [d, base && lv[i] ? (lv[i] / base - 1) * 100 : null]) });
+      return;
+    }
+    if (metrica === 'cost') return;
+    const sim = cortar(simulateBench(nv.points, nv.currency, fluxosTodos, datasTodas, D, conv));
+    const ponto = (s) => {
+      if (s.value == null) return null;
+      if (metrica === 'profit') return s.value - s.cost;
+      if (metrica === 'retInv') return s.cost > 0 ? (s.value / s.cost - 1) * 100 : null;
+      return s.value;
+    };
+    series.push({ key: 'bench:' + b, label: rotulo + ' ' + t('cmp.sameMoney'), color: cor, dash: '2 3', bench: true, points: datasPeriodo.map((d, i) => [d, d < primeiroFluxo ? null : ponto(sim[i])]) });
+  });
+  if (metrica === 'cost' && benches.length) avisar(t('cmp.costNoBench'));
+  if (benches.length && metrica !== 'price' && !alvo && selecionadas.filter((o) => o.invest).length > 1 && !temTotal) avisar(t('cmp.benchCombined'));
+  if (conv.approx()) avisar(t('nav.approx'));
+
+  // Reduz pontos para o SVG continuar leve
+  const manter = new Set(downsample(datasPeriodo, 700));
+  series.forEach((s) => { s.points = s.points.filter(([d]) => manter.has(d)); });
+
+  if (token !== cmpToken) return;
+  drawCompareChart(series, emPct ? 'pct' : 'money', D, cfg.style);
+}
+
+function fmtAxis(v, unidade, escala) {
+  if (unidade === 'pct') return v.toFixed(escala < 10 ? 1 : 0).replace('.', ',') + '%';
+  // Mesma unidade em todas as linhas do eixo
+  if (escala >= 1e6) return (v / 1e6).toFixed(1).replace('.', ',') + ' mi';
+  if (escala >= 1e4) return (v / 1e3).toFixed(escala >= 1e5 ? 0 : 1).replace('.', ',') + ' mil';
+  return v.toLocaleString('pt-BR', { maximumFractionDigits: 0 });
+}
+function fmtVal(v, unidade, D) {
+  if (v == null) return '—';
+  return unidade === 'pct' ? fmtPct(v) : fmtMoney(v, D);
+}
+
+function drawCompareChart(series, unidade, D, estilo) {
+  const box = document.getElementById('cmpChart');
+  const tip = document.getElementById('cmpTip');
+  const legend = document.getElementById('cmpLegend');
+  const stats = document.getElementById('cmpStats');
+  const validas = series.filter((s) => s.points.filter(([, v]) => v != null).length >= 2);
+  if (!validas.length) {
+    box.innerHTML = `<p class="empty-state">${t('cmp.noData')}</p>`;
+    legend.innerHTML = ''; stats.innerHTML = '';
+    return;
+  }
+  validas.forEach((s) => { if (cmpVisible[s.key] === undefined) cmpVisible[s.key] = true; });
+
+  legend.innerHTML = '';
+  validas.forEach((s) => {
+    const lab = document.createElement('label');
+    lab.innerHTML = `<input type="checkbox" ${cmpVisible[s.key] ? 'checked' : ''}><span class="swatch${s.dash ? ' swatch-dash' : ''}" style="${s.dash ? `border-color:${s.color}` : `background:${s.color}`}"></span>${escapeHtml(s.label)}`;
+    lab.querySelector('input').addEventListener('change', (e) => { cmpVisible[s.key] = e.target.checked; desenhar(); });
+    legend.appendChild(lab);
+  });
+
+  const datas = [...new Set(validas.flatMap((s) => s.points.map(([d]) => d)))].sort();
+  const mapa = validas.map((s) => { const m = {}; s.points.forEach(([d, v]) => { m[d] = v; }); return m; });
+
+  function desenhar() {
+    const W = 760, H = 340, padL = 70, padR = 16, padT = 16, padB = 34;
+    const vis = validas.map((s, k) => ({ s, m: mapa[k] })).filter(({ s }) => cmpVisible[s.key]);
+    let min = Infinity, max = -Infinity;
+    vis.forEach(({ s }) => s.points.forEach(([, v]) => { if (v != null) { min = Math.min(min, v); max = Math.max(max, v); } }));
+    if (!isFinite(min)) { min = 0; max = 1; }
+    if (unidade === 'pct') { min = Math.min(min, 0); max = Math.max(max, 0); }
+    if (min === max) max = min + 1;
+    const faixa = max - min; min -= faixa * 0.06; max += faixa * 0.06;
+    if (unidade === 'money' && min < 0 && vis.every(({ s }) => s.points.every(([, v]) => v == null || v >= 0))) min = 0;
+    const X = (i) => padL + (i / Math.max(datas.length - 1, 1)) * (W - padL - padR);
+    const Y = (v) => padT + (1 - (v - min) / (max - min)) * (H - padT - padB);
+    const iData = {}; datas.forEach((d, i) => { iData[d] = i; });
+
+    let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${t('cmp.title')}">`;
+    for (let g = 0; g <= 5; g++) {
+      const v = min + ((max - min) * g) / 5;
+      svg += `<line x1="${padL}" x2="${W - padR}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--border)"/>
+        <text x="${padL - 8}" y="${Y(v) + 4}" text-anchor="end" font-size="11" fill="var(--muted)">${fmtAxis(v, unidade, Math.max(Math.abs(min), Math.abs(max)))}</text>`;
+    }
+    if (min < 0 && max > 0) svg += `<line x1="${padL}" x2="${W - padR}" y1="${Y(0)}" y2="${Y(0)}" stroke="var(--muted)" stroke-width="1"/>`;
+
+    vis.forEach(({ s }) => {
+      const pts = s.points.filter(([, v]) => v != null);
+      if (pts.length < 2) return;
+      const d = pts.map(([dt, v], j) => `${j ? 'L' : 'M'}${X(iData[dt]).toFixed(1)},${Y(v).toFixed(1)}`).join(' ');
+      if (estilo === 'area' && !s.dash) {
+        const chao = Y(Math.max(min, 0));
+        svg += `<path d="${d} L${X(iData[pts[pts.length - 1][0]]).toFixed(1)},${chao} L${X(iData[pts[0][0]]).toFixed(1)},${chao} Z" fill="${s.color}" fill-opacity="${vis.length > 2 ? 0.08 : 0.16}"/>`;
+      }
+      svg += `<path d="${d}" fill="none" stroke="${s.color}" stroke-width="${s.bench ? 1.8 : 2.2}" ${s.dash ? `stroke-dasharray="${s.dash}"` : ''} stroke-linejoin="round"/>`;
+      (s.markers || []).forEach((mk) => {
+        const i = iData[mk.date] != null ? iData[mk.date] : datas.findIndex((x) => x >= mk.date);
+        const ponto = pts.find(([dt]) => dt >= mk.date);
+        if (i < 0 || !ponto) return;
+        const cx = X(i), cy = Y(ponto[1]);
+        svg += mk.type === 'buy'
+          ? `<path d="M${cx},${cy - 7} l5,8 h-10 z" fill="${s.color}" stroke="var(--surface)" stroke-width="1"><title>${t('inv.buy')} ${mk.date}</title></path>`
+          : `<path d="M${cx},${cy + 7} l5,-8 h-10 z" fill="${s.color}" stroke="var(--surface)" stroke-width="1"><title>${t('inv.sell')} ${mk.date}</title></path>`;
+      });
+    });
+
+    const passos = Math.min(7, datas.length);
+    for (let k = 0; k < passos; k++) {
+      const i = Math.round((k * (datas.length - 1)) / (passos - 1 || 1));
+      const ancora = k === 0 ? 'start' : k === passos - 1 ? 'end' : 'middle';
+      svg += `<text x="${X(i)}" y="${H - 10}" text-anchor="${ancora}" font-size="11" fill="var(--muted)">${datas[i].slice(2).split('-').reverse().join('/')}</text>`;
+    }
+    svg += `<line id="cmpCursor" x1="0" x2="0" y1="${padT}" y2="${H - padB}" stroke="var(--muted)" visibility="hidden"/>`;
+    svg += `<rect id="cmpHit" x="${padL}" y="${padT}" width="${W - padL - padR}" height="${H - padT - padB}" fill="transparent"/></svg>`;
+    box.innerHTML = svg;
+
+    const svgEl = box.querySelector('svg');
+    const hit = document.getElementById('cmpHit');
+    const cursor = document.getElementById('cmpCursor');
+    const mover = (ev) => {
+      const r = svgEl.getBoundingClientRect();
+      const px = ((ev.touches ? ev.touches[0].clientX : ev.clientX) - r.left) * (W / r.width);
+      const i = Math.max(0, Math.min(datas.length - 1, Math.round(((px - padL) / (W - padL - padR)) * (datas.length - 1))));
+      const d = datas[i];
+      cursor.setAttribute('x1', X(i)); cursor.setAttribute('x2', X(i)); cursor.setAttribute('visibility', 'visible');
+      tip.innerHTML = `<div>${d.split('-').reverse().join('/')}</div>` + vis.map(({ s, m }) => {
+        let v = m[d];
+        if (v === undefined) { const ant = s.points.filter(([x]) => x <= d); v = ant.length ? ant[ant.length - 1][1] : null; }
+        return `<div class="tip-row">${colorDot(s.color)}${escapeHtml(s.label)}: <strong>${fmtVal(v, unidade, D)}</strong></div>`.replace(': <strong>', ':&nbsp;<strong>');
+      }).join('');
+      tip.classList.remove('hidden');
+      const bx = box.parentElement.getBoundingClientRect();
+      let left = (X(i) / W) * r.width + (r.left - bx.left) + 14;
+      if (left + tip.offsetWidth > bx.width) left -= tip.offsetWidth + 28;
+      tip.style.left = Math.max(0, left) + 'px';
+      tip.style.top = '8px';
+    };
+    hit.addEventListener('mousemove', mover);
+    hit.addEventListener('touchmove', mover, { passive: true });
+    hit.addEventListener('mouseleave', () => { tip.classList.add('hidden'); cursor.setAttribute('visibility', 'hidden'); });
+  }
+  desenhar();
+
+  // Tabela-resumo do período
+  stats.innerHTML = `<table class="mini-table cmp-stats-table"><thead><tr>
+      <th>${t('cmp.series')}</th><th>${t('cmp.start')}</th><th>${t('cmp.end')}</th><th>${t('cmp.change')}</th><th>${t('cmp.max')}</th><th>${t('cmp.min')}</th>
+    </tr></thead><tbody>${validas.map((s) => {
+      const vals = s.points.filter(([, v]) => v != null);
+      const ini = vals[0][1], fim = vals[vals.length - 1][1];
+      const ys = vals.map(([, v]) => v);
+      const dif = fim - ini;
+      const variacao = unidade === 'pct'
+        ? (dif > 0 ? '+' : '') + dif.toFixed(2).replace('.', ',') + ' p.p.'
+        : fmtMoney(dif, D) + (ini > 0 ? ' (' + fmtPct((fim / ini - 1) * 100) + ')' : '');
+      return `<tr><td>${colorDot(s.color)}${escapeHtml(s.label)}</td><td>${fmtVal(ini, unidade, D)}</td><td><strong>${fmtVal(fim, unidade, D)}</strong></td>
+        <td class="${dif > 0 ? 'amount-in' : dif < 0 ? 'amount-out' : ''}">${variacao}</td><td>${fmtVal(Math.max(...ys), unidade, D)}</td><td>${fmtVal(Math.min(...ys), unidade, D)}</td></tr>`;
+    }).join('')}</tbody></table>`;
+}
+
+/* ----- Controles ----- */
+function renderCompareControls() {
+  const wrap = document.getElementById('cmpControls');
+  if (!wrap) return;
+  const cfg = cmpConfig();
+  const ops = cmpOptions();
+  // Remove da seleção o que não existe mais (posição excluída, etc.)
+  const validas = cfg.sel.filter((k) => ops.some((o) => o.key === k));
+  if (validas.length !== cfg.sel.length) { cfg.sel = validas; saveCmpConfig(cfg); }
+
+  const chip = (o) => {
+    const ativo = cfg.sel.includes(o.key);
+    return `<span class="cmp-chip ${ativo ? 'active' : ''}" style="--chip:${o.color || 'var(--muted)'}" title="${escapeHtml(o.title || o.label)}">
+      <input type="color" value="${o.color || '#64748b'}" aria-label="${t('cmp.color')}" onchange="setSeriesColor('${o.key}', this.value)">
+      <button type="button" onclick="toggleCmpSel('${o.key}')">${escapeHtml(o.label)}</button>
+    </span>`;
+  };
+  const benchChip = (k) => `<span class="cmp-chip ${cfg.bench[k] ? 'active' : ''}" style="--chip:${cfg.colors[k]}">
+      <input type="color" value="${cfg.colors[k]}" aria-label="${t('cmp.color')}" onchange="setSeriesColor('${k}', this.value)">
+      <button type="button" onclick="toggleCmpBench('${k}')">${escapeHtml(benchLabel(k, cfg))}</button>
+    </span>`;
+  const opt = (v, atual, rot) => `<option value="${v}" ${v === atual ? 'selected' : ''}>${rot}</option>`;
+
+  wrap.innerHTML = `
+    <div class="cmp-block">
+      <div class="cmp-label">${t('cmp.assets').replace('{n}', CMP_MAX)} <span class="hint">${cfg.sel.length}/${CMP_MAX}</span></div>
+      <div class="cmp-chips">${ops.length ? ops.map(chip).join('') : `<span class="hint">${t('cmp.noAssets')}</span>`}</div>
+    </div>
+    <div class="cmp-block">
+      <div class="cmp-label">${t('cmp.benchmarks')}</div>
+      <div class="cmp-chips">${['cdi', 'ibov', 'spx'].map(benchChip).join('')}</div>
+      <div class="cmp-cdb ${cfg.bench.cdi ? '' : 'hidden'}">
+        <select onchange="setCmp('cdbMode', this.value)">
+          ${opt('cdi', cfg.cdbMode, t('cmp.cdbModeCdi'))}${opt('fixed', cfg.cdbMode, t('cmp.cdbModeFixed'))}
+        </select>
+        ${cfg.cdbMode === 'cdi'
+          ? `<input type="number" min="1" max="300" step="1" value="${cfg.cdbPct}" onchange="setCmp('cdbPct', Number(this.value) || 100)"> <span>% ${t('cmp.ofCdi')}</span>`
+          : `<input type="number" min="0" max="100" step="0.1" value="${cfg.cdbRate}" onchange="setCmp('cdbRate', Number(this.value) || 0)"> <span>% ${t('cmp.perYear')}</span>`}
+      </div>
+    </div>
+    <div class="cmp-row">
+      <label>${t('cmp.metric')}
+        <select onchange="setCmp('metric', this.value)">
+          ${['both', 'value', 'cost', 'profit', 'retInv', 'price'].map((m) => opt(m, cfg.metric, t('cmp.m.' + m))).join('')}
+        </select>
+      </label>
+      <label>${t('cmp.currency')}
+        <select onchange="setCmp('currency', this.value)">
+          ${opt('base', cfg.currency, t('cmp.baseCur').replace('{c}', state.settings.baseCurrency))}
+          ${CURRENCIES.map((c) => opt(c.code, cfg.currency, c.code)).join('')}
+        </select>
+      </label>
+      <label>${t('cmp.style')}
+        <select onchange="setCmp('style', this.value)">
+          ${opt('line', cfg.style, t('cmp.lines'))}${opt('area', cfg.style, t('cmp.area'))}
+        </select>
+      </label>
+      ${(() => {
+        const investidos = ops.filter((o) => o.invest && cfg.sel.includes(o.key));
+        const algumIndice = Object.values(cfg.bench).some(Boolean);
+        if (!algumIndice || cfg.metric === 'price' || investidos.length < 2) return '';
+        return `<label>${t('cmp.benchFlows')}
+          <select onchange="setCmp('benchFlows', this.value)">
+            ${opt('sum', cfg.benchFlows, t('cmp.flowsSum'))}
+            ${investidos.map((o) => opt(o.key, cfg.benchFlows, escapeHtml(o.label))).join('')}
+          </select></label>`;
+      })()}
+      <label class="checkline"><input type="checkbox" ${cfg.markers ? 'checked' : ''} onchange="setCmp('markers', this.checked)"> ${t('cmp.markers')}</label>
+    </div>
+    <div class="cmp-row">
+      <div class="nav-toggle chart-periods">${['1m', '3m', '6m', 'ytd', '1y', '3y', '5y', 'all', 'custom'].map((k) =>
+        `<button type="button" class="${cfg.period === k ? 'active' : ''}" onclick="setCmp('period', '${k}')">${t('cmp.p.' + k)}</button>`).join('')}</div>
+      <span class="cmp-custom ${cfg.period === 'custom' ? '' : 'hidden'}">
+        <input type="date" value="${cfg.from}" onchange="setCmp('from', this.value)">
+        <input type="date" value="${cfg.to}" onchange="setCmp('to', this.value)">
+      </span>
+    </div>`;
+}
+
+async function setCmp(campo, valor) {
+  const cfg = cmpConfig();
+  cfg[campo] = valor;
+  await saveCmpConfig(cfg);
+  renderCompare();
+}
+async function toggleCmpSel(chave) {
+  const cfg = cmpConfig();
+  if (cfg.sel.includes(chave)) cfg.sel = cfg.sel.filter((k) => k !== chave);
+  else {
+    if (cfg.sel.length >= CMP_MAX) { showToast(t('cmp.maxReached').replace('{n}', CMP_MAX)); return; }
+    cfg.sel = [...cfg.sel, chave];
+  }
+  await saveCmpConfig(cfg);
+  renderCompare();
+}
+async function toggleCmpBench(chave) {
+  const cfg = cmpConfig();
+  cfg.bench[chave] = !cfg.bench[chave];
+  await saveCmpConfig(cfg);
+  renderCompare();
+}
+
 
 /* ----- Chaves das APIs (Configurações) ----- */
 function renderApiSettings() {
@@ -3874,7 +4763,7 @@ function renderInvestments() {
       const conta = accountById(pos.accountId);
       const classe = r.profit > 0.004 ? 'amount-in' : (r.profit < -0.004 ? 'amount-out' : 'amount-neutral');
       return `<tr>
-        <td>${escapeHtml(pos.name)}${pos.ticker ? ` <span class="tag">${escapeHtml(pos.ticker)}</span>` : ''}</td>
+        <td>${colorDot(pos.color)}${escapeHtml(pos.name)}${pos.ticker ? ` <span class="tag">${escapeHtml(pos.ticker)}</span>` : ''}</td>
         <td>${pos.assetType ? t('inv.ty.' + pos.assetType) : '—'}</td>
         <td>${conta ? escapeHtml(conta.name) : '—'}</td>
         <td>${pos.kind === 'quote' ? fmtQty(st.quantity) : '—'}</td>
@@ -3930,6 +4819,7 @@ function renderInvestments() {
     elR.className = 'big-number ' + (lucro > 0.004 ? 'amount-in' : lucro < -0.004 ? 'amount-out' : '');
   }
   renderWatchlist();
+  renderCompare();
 }
 
 /* Quanto desta posição foi aplicado SEM sair do saldo da conta vinculada.
@@ -4007,8 +4897,13 @@ function openPositionModal(id, prefill) {
     </div>
     <p class="hint">${t('mkt.lookupHint')}</p>
     <div id="poLookupInfo" class="lookup-info hidden"></div>
+    ${p ? '' : `<button type="button" id="poManualBtn" class="link-btn" onclick="unlockPositionForm(true)">${t('mkt.manual')}</button>`}
+    <fieldset id="poRest" class="po-rest ${p ? '' : 'locked'}" ${p ? '' : 'disabled'}>
     <label>${t('inv.name')}</label>
-    <input id="poName" value="${p ? escapeHtml(p.name) : ''}">
+    <div class="name-color">
+      <input id="poName" value="${p ? escapeHtml(p.name) : ''}">
+      <input id="poColor" type="color" value="${p && p.color ? p.color : nextFreeColor()}" title="${t('cmp.color')}" aria-label="${t('cmp.color')}">
+    </div>
     <label>${t('inv.account')}</label>
     <select id="poAccount" onchange="onPositionAccountChange()">
       <option value="">${t('inv.noAccount')}</option>
@@ -4051,7 +4946,9 @@ function openPositionModal(id, prefill) {
       <label class="checkline" id="poDeductWrap"><input type="checkbox" id="poDeduct" checked> ${t('inv.deduct')}</label>
       <p class="hint">${t('inv.deductHint')}</p>`}
     <button class="primary-btn" onclick="savePosition('${p ? p.id : ''}')">${t('modal.save')}</button>
+    </fieldset>
   `);
+  if (!p && !prefill) setTimeout(() => { const el = document.getElementById('poLookup'); if (el) el.focus(); }, 50);
   onPositionAccountChange();
   if (!p) updateBuyPreview('po');
   if (prefill) lookupAsset(prefill);
@@ -4089,7 +4986,8 @@ async function savePosition(id) {
     assetClass: document.getElementById('poClass').value,
     assetType: document.getElementById('poType').value,
     ticker,
-    isin: document.getElementById('poIsin').value.trim().toUpperCase()
+    isin: document.getElementById('poIsin').value.trim().toUpperCase(),
+    color: document.getElementById('poColor').value
   };
   if (meta) { pos.market = meta.market; pos.exchange = meta.exchange; }
   else if (!anterior || anterior.ticker !== ticker) { delete pos.market; delete pos.exchange; }
@@ -4979,6 +5877,7 @@ function bindEvents() {
       btn.classList.add('active');
       document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
       if (btn.dataset.tab === 'dashboard') renderNAV();
+      if (btn.dataset.tab === 'investments') renderCompare();
     });
   });
 }
