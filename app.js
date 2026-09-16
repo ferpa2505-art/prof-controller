@@ -1,5 +1,5 @@
 /* ============================================================
-   ProF Controller — Fases 1 a 10 (8: mercado; 9: comparativo; 10: % e referência, notícias, nova navegação)
+   ProF Controller — Fases 1 a 10 + assistente de chaves de API
 
    Fase 1: contas, moedas, saldos diários, moeda base, importação CSV,
            i18n (pt-BR/en/es), temas, offline.
@@ -366,6 +366,39 @@ const I18N = {
     'modal.move': 'Aporte ou resgate',
     'mkt.lookup': 'Buscar ativo (ticker ou ISIN)',
     'mkt.manual': 'Cadastrar sem busca (renda fixa, CDB ou ativo sem cotação)',
+    'apiw.title': 'Configure as fontes de cotação',
+    'apiw.intro': 'O ProF Controller usa três serviços gratuitos para buscar cotações. Cada um pede uma chave, criada em poucos minutos. Sem elas, o app funciona, mas sem preços automáticos.',
+    'apiw.purpose.finnhub': 'Cotações de ações dos EUA e busca de ativos pelo ISIN.',
+    'apiw.purpose.twelve': 'Histórico de preços para os gráficos.',
+    'apiw.purpose.brapi': 'Cotações da bolsa brasileira (B3): ações, FIIs, ETFs e BDRs.',
+    'apiw.step1': 'Crie sua conta gratuita',
+    'apiw.step2.finnhub': 'Copie a "API Key" no painel.',
+    'apiw.step2.twelve': 'Copie a chave em "API keys".',
+    'apiw.step2.brapi': 'Copie o token no painel.',
+    'apiw.openDash': 'Abrir painel',
+    'apiw.step3': 'Cole abaixo e clique em Testar e salvar.',
+    'apiw.keyLabel': 'Chave',
+    'apiw.show': 'Mostrar chave',
+    'apiw.hide': 'Ocultar chave',
+    'apiw.testSave': 'Testar e salvar',
+    'apiw.paste': 'Cole a chave antes de testar.',
+    'apiw.st.ok': 'Funcionando',
+    'apiw.st.missing': 'Falta a chave',
+    'apiw.st.invalid': 'Chave recusada',
+    'apiw.st.error': 'Não verificada',
+    'apiw.st.testing': 'Testando…',
+    'apiw.rejected': 'O serviço recusou esta chave. Confira se copiou inteira ou gere uma nova no painel.',
+    'apiw.timeout': 'O serviço demorou mais de 6 segundos para responder.',
+    'apiw.network': 'Sem conexão com o serviço.',
+    'apiw.limit': 'Limite de uso do plano gratuito atingido; tente mais tarde.',
+    'apiw.unexpected': 'Resposta inesperada do serviço.',
+    'apiw.savedAnyway': 'A chave foi salva e será testada de novo na próxima abertura.',
+    'apiw.security': 'Chaves funcionam como senhas: ficam salvas só neste navegador e não entram no backup. Não compartilhe nem publique.',
+    'apiw.allSet': 'Tudo pronto! As três fontes estão funcionando.',
+    'apiw.later': 'Configurar depois',
+    'apiw.finish': 'Concluir',
+    'apiw.couldNotCheck': 'Não foi possível verificar {apis} agora (conexão ou limite). As cotações podem demorar.',
+    'apiw.open': 'Assistente de chaves',
     'tabs.registry': 'Cadastros',
     'tabs.flows': 'Entradas e Saídas',
     'tabs.news': 'Notícias',
@@ -894,6 +927,39 @@ const I18N = {
     'modal.move': 'Contribution or withdrawal',
     'mkt.lookup': 'Find asset (ticker or ISIN)',
     'mkt.manual': 'Add without search (fixed income, CDs or unlisted assets)',
+    'apiw.title': 'Set up price sources',
+    'apiw.intro': 'ProF Controller uses three free services to fetch prices. Each needs a key that takes a few minutes to create. Without them the app works, but without automatic prices.',
+    'apiw.purpose.finnhub': 'US stock prices and asset search by ISIN.',
+    'apiw.purpose.twelve': 'Price history for charts.',
+    'apiw.purpose.brapi': 'Brazilian exchange (B3) prices: stocks, REITs, ETFs and BDRs.',
+    'apiw.step1': 'Create your free account',
+    'apiw.step2.finnhub': 'Copy the "API Key" on the dashboard.',
+    'apiw.step2.twelve': 'Copy the key under "API keys".',
+    'apiw.step2.brapi': 'Copy the token on the dashboard.',
+    'apiw.openDash': 'Open dashboard',
+    'apiw.step3': 'Paste it below and click Test and save.',
+    'apiw.keyLabel': 'Key',
+    'apiw.show': 'Show key',
+    'apiw.hide': 'Hide key',
+    'apiw.testSave': 'Test and save',
+    'apiw.paste': 'Paste the key before testing.',
+    'apiw.st.ok': 'Working',
+    'apiw.st.missing': 'Key missing',
+    'apiw.st.invalid': 'Key rejected',
+    'apiw.st.error': 'Not verified',
+    'apiw.st.testing': 'Testing…',
+    'apiw.rejected': 'The service rejected this key. Check it was copied in full or generate a new one.',
+    'apiw.timeout': 'The service took longer than 6 seconds to respond.',
+    'apiw.network': 'No connection to the service.',
+    'apiw.limit': 'Free plan usage limit reached; try again later.',
+    'apiw.unexpected': 'Unexpected response from the service.',
+    'apiw.savedAnyway': 'The key was saved and will be tested again next time.',
+    'apiw.security': 'Keys work like passwords: they are stored only in this browser and are not included in backups. Do not share or publish them.',
+    'apiw.allSet': 'All set! All three sources are working.',
+    'apiw.later': 'Set up later',
+    'apiw.finish': 'Done',
+    'apiw.couldNotCheck': 'Could not verify {apis} right now (connection or limit). Prices may be delayed.',
+    'apiw.open': 'Key setup assistant',
     'tabs.registry': 'Records',
     'tabs.flows': 'Money in & out',
     'tabs.news': 'News',
@@ -1421,6 +1487,39 @@ const I18N = {
     'modal.move': 'Aporte o rescate',
     'mkt.lookup': 'Buscar activo (ticker o ISIN)',
     'mkt.manual': 'Registrar sin búsqueda (renta fija, CDB o activo sin cotización)',
+    'apiw.title': 'Configura las fuentes de cotización',
+    'apiw.intro': 'ProF Controller usa tres servicios gratuitos para obtener cotizaciones. Cada uno pide una clave que se crea en pocos minutos. Sin ellas la app funciona, pero sin precios automáticos.',
+    'apiw.purpose.finnhub': 'Cotizaciones de acciones de EE. UU. y búsqueda por ISIN.',
+    'apiw.purpose.twelve': 'Histórico de precios para los gráficos.',
+    'apiw.purpose.brapi': 'Cotizaciones de la bolsa brasileña (B3): acciones, FII, ETF y BDR.',
+    'apiw.step1': 'Crea tu cuenta gratuita',
+    'apiw.step2.finnhub': 'Copia la "API Key" en el panel.',
+    'apiw.step2.twelve': 'Copia la clave en "API keys".',
+    'apiw.step2.brapi': 'Copia el token en el panel.',
+    'apiw.openDash': 'Abrir panel',
+    'apiw.step3': 'Pégala abajo y pulsa Probar y guardar.',
+    'apiw.keyLabel': 'Clave',
+    'apiw.show': 'Mostrar clave',
+    'apiw.hide': 'Ocultar clave',
+    'apiw.testSave': 'Probar y guardar',
+    'apiw.paste': 'Pega la clave antes de probar.',
+    'apiw.st.ok': 'Funcionando',
+    'apiw.st.missing': 'Falta la clave',
+    'apiw.st.invalid': 'Clave rechazada',
+    'apiw.st.error': 'No verificada',
+    'apiw.st.testing': 'Probando…',
+    'apiw.rejected': 'El servicio rechazó esta clave. Comprueba que la copiaste entera o genera una nueva.',
+    'apiw.timeout': 'El servicio tardó más de 6 segundos en responder.',
+    'apiw.network': 'Sin conexión con el servicio.',
+    'apiw.limit': 'Límite del plan gratuito alcanzado; inténtalo más tarde.',
+    'apiw.unexpected': 'Respuesta inesperada del servicio.',
+    'apiw.savedAnyway': 'La clave se guardó y se probará de nuevo en la próxima apertura.',
+    'apiw.security': 'Las claves funcionan como contraseñas: se guardan solo en este navegador y no van en la copia de seguridad. No las compartas ni publiques.',
+    'apiw.allSet': '¡Todo listo! Las tres fuentes funcionan.',
+    'apiw.later': 'Configurar después',
+    'apiw.finish': 'Finalizar',
+    'apiw.couldNotCheck': 'No se pudo verificar {apis} ahora (conexión o límite). Las cotizaciones pueden tardar.',
+    'apiw.open': 'Asistente de claves',
     'tabs.registry': 'Registros',
     'tabs.flows': 'Entradas y Salidas',
     'tabs.news': 'Noticias',
@@ -5217,20 +5316,12 @@ async function testApis() {
   if (btn) btn.disabled = true;
   box.innerHTML = `<p class="hint">${t('api.testing')}</p>`;
   const testes = [
-    ['Finnhub', 'apiFinnhub', async () => {
-      const q = await getJSON(`https://finnhub.io/api/v1/quote?symbol=AAPL&token=${apiKey('apiFinnhub')}`);
-      if (!(Number(q.c) > 0)) throw new Error(t('mkt.noQuote'));
-      return 'AAPL ' + fmtMoney(q.c, 'USD');
-    }],
-    ['Twelve Data', 'apiTwelve', async () => {
-      const q = await getJSON(`https://api.twelvedata.com/price?symbol=AAPL&apikey=${apiKey('apiTwelve')}`);
-      if (!(Number(q.price) > 0)) throw new Error(t('mkt.noQuote'));
-      return 'AAPL ' + fmtMoney(Number(q.price), 'USD');
-    }],
-    ['brapi.dev', 'apiBrapi', async () => {
-      const q = await quoteB3('PETR4');
-      return 'PETR4 ' + fmtMoney(q.price, 'BRL');
-    }],
+    ...API_SERVICES.map((sv) => [sv.name, sv.key, async () => {
+      const r = await testApiKey(sv.id, apiKey(sv.key));
+      apiStatus[sv.id] = r;
+      if (r.status !== 'ok') throw new Error(r.msg || t('apiw.st.' + r.status));
+      return r.msg;
+    }]),
     ['rss2json', null, async () => {
       const n = await fetchGoogleNews('Ibovespa', 'market');
       if (!n.length) throw new Error(t('news.empty'));
@@ -5246,6 +5337,181 @@ async function testApis() {
   }
   box.innerHTML = `<ul class="api-list">${linhas.join('')}</ul>`;
   if (btn) btn.disabled = false;
+}
+
+
+/* ================= Assistente de chaves de API =================
+   Na abertura, testa as três chaves em paralelo (6 s cada), sem travar a tela.
+   - Chave faltando ou RECUSADA pela API → abre o assistente.
+   - Falha de rede, demora ou limite de uso → só um aviso discreto: a chave
+     pode estar certa, e reabrir o assistente toda vez só incomodaria. */
+
+const API_SERVICES = [
+  { id: 'finnhub', key: 'apiFinnhub', name: 'Finnhub', signup: 'https://finnhub.io/register', dashboard: 'https://finnhub.io/dashboard' },
+  { id: 'twelve', key: 'apiTwelve', name: 'Twelve Data', signup: 'https://twelvedata.com/register', dashboard: 'https://twelvedata.com/account/api-keys' },
+  { id: 'brapi', key: 'apiBrapi', name: 'brapi.dev', signup: 'https://brapi.dev/dashboard', dashboard: 'https://brapi.dev/dashboard' }
+];
+const API_TIMEOUT = 6000;
+const apiStatus = {}; // id → { status: 'ok'|'missing'|'invalid'|'error'|'testing', msg }
+
+async function fetchTimeout(url, ms) {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), ms);
+  try { return await fetch(url, { cache: 'no-store', signal: ctrl.signal }); }
+  finally { clearTimeout(timer); }
+}
+
+// Teste de baixo custo de UMA chave. Não lança erro: devolve o diagnóstico.
+async function testApiKey(serviceId, chave) {
+  const k = String(chave || '').trim();
+  if (!k) return { status: 'missing' };
+  const url = {
+    finnhub: `https://finnhub.io/api/v1/quote?symbol=AAPL&token=${encodeURIComponent(k)}`,
+    twelve: `https://api.twelvedata.com/quote?symbol=AAPL&apikey=${encodeURIComponent(k)}`,
+    brapi: `https://brapi.dev/api/quote/PETR4?token=${encodeURIComponent(k)}`
+  }[serviceId];
+  let res, corpo = null;
+  try {
+    res = await fetchTimeout(url, API_TIMEOUT);
+  } catch (e) {
+    return { status: 'error', msg: e.name === 'AbortError' ? t('apiw.timeout') : t('apiw.network') };
+  }
+  try { corpo = await res.json(); } catch (e) { /* sem JSON */ }
+  // A Twelve Data responde 200 com o erro dentro do corpo
+  const codigo = corpo && corpo.status === 'error' ? Number(corpo.code) : res.status;
+  const msgApi = corpo && (corpo.message || corpo.error);
+  if (codigo === 401 || codigo === 403) return { status: 'invalid', msg: t('apiw.rejected') };
+  if (codigo === 429) return { status: 'error', msg: t('apiw.limit') };
+  if (!res.ok || codigo >= 400) return { status: 'error', msg: msgApi || 'HTTP ' + codigo };
+
+  if (serviceId === 'finnhub' && Number(corpo && corpo.c) > 0) return { status: 'ok', msg: 'AAPL ' + fmtMoney(Number(corpo.c), 'USD') };
+  if (serviceId === 'twelve' && Number(corpo && corpo.close) > 0) return { status: 'ok', msg: 'AAPL ' + fmtMoney(Number(corpo.close), 'USD') };
+  if (serviceId === 'brapi') {
+    const r = brapiResult(corpo);
+    if (r && Number(r.regularMarketPrice) > 0) return { status: 'ok', msg: 'PETR4 ' + fmtMoney(Number(r.regularMarketPrice), 'BRL') };
+  }
+  return { status: 'error', msg: t('apiw.unexpected') };
+}
+
+// Chamada única na inicialização (depois de carregar as configurações salvas).
+async function checkApiKeys() {
+  API_SERVICES.forEach((s) => { apiStatus[s.id] = { status: 'testing' }; });
+  const resultados = await Promise.all(API_SERVICES.map((s) => testApiKey(s.id, state.settings[s.key])));
+  API_SERVICES.forEach((s, i) => { apiStatus[s.id] = resultados[i]; });
+
+  const precisaConfigurar = resultados.some((r) => r.status === 'missing' || r.status === 'invalid');
+  const comFalha = API_SERVICES.filter((s, i) => resultados[i].status === 'error').map((s) => s.name);
+  const modalAberto = !document.getElementById('modal').classList.contains('hidden');
+
+  if (precisaConfigurar && !modalAberto) openApiSetup();
+  else if (comFalha.length) showToast(t('apiw.couldNotCheck').replace('{apis}', comFalha.join(', ')));
+  return resultados;
+}
+
+function apiBadge(st) {
+  const s = (st && st.status) || 'missing';
+  const cls = { ok: 'badge-ok', invalid: 'badge-bad', error: 'badge-warn', testing: 'badge-muted', missing: 'badge-muted' }[s];
+  return `<span class="api-badge ${cls}">${t('apiw.st.' + s)}</span>`;
+}
+
+function apiCardHtml(s) {
+  const st = apiStatus[s.id] || { status: state.settings[s.key] ? 'testing' : 'missing' };
+  return `<article class="api-card" id="apiCard-${s.id}">
+    <header>
+      <h3>${s.name}</h3>
+      <span id="apiBadge-${s.id}">${apiBadge(st)}</span>
+    </header>
+    <p class="api-purpose">${t('apiw.purpose.' + s.id)}</p>
+    <ol class="api-steps">
+      <li><a href="${s.signup}" target="_blank" rel="noopener noreferrer">${t('apiw.step1')}</a></li>
+      <li>${t('apiw.step2.' + s.id)} <a href="${s.dashboard}" target="_blank" rel="noopener noreferrer">${t('apiw.openDash')}</a></li>
+      <li>${t('apiw.step3')}</li>
+    </ol>
+    <label for="apiw-${s.id}">${t('apiw.keyLabel')}</label>
+    <div class="api-input-row">
+      <input id="apiw-${s.id}" type="password" autocomplete="off" spellcheck="false" value="${escapeHtml(state.settings[s.key] || '')}"
+        onkeydown="if(event.key==='Enter'){event.preventDefault();testAndSaveKey('${s.id}');}">
+      <button type="button" class="secondary-btn api-eye" aria-label="${t('apiw.show')}" onclick="toggleKeyVisibility('${s.id}', this)">👁</button>
+    </div>
+    <button type="button" class="primary-btn api-save" id="apiwBtn-${s.id}" onclick="testAndSaveKey('${s.id}')">${t('apiw.testSave')}</button>
+    <p class="api-msg" id="apiMsg-${s.id}" aria-live="polite">${st.msg ? escapeHtml(st.msg) : ''}</p>
+  </article>`;
+}
+
+function openApiSetup() {
+  openModal(`
+    <h2>${t('apiw.title')}</h2>
+    <p class="hint">${t('apiw.intro')}</p>
+    <div class="api-cards">${API_SERVICES.map(apiCardHtml).join('')}</div>
+    <p class="api-security">🔒 ${t('apiw.security')}</p>
+    <div class="api-footer">
+      <span id="apiwDone" class="amount-in ${API_SERVICES.every((s) => (apiStatus[s.id] || {}).status === 'ok') ? '' : 'hidden'}">${t('apiw.allSet')}</span>
+      <button type="button" id="apiwClose" class="secondary-btn" onclick="closeModal()">${t(API_SERVICES.every((s) => (apiStatus[s.id] || {}).status === 'ok') ? 'apiw.finish' : 'apiw.later')}</button>
+    </div>
+  `, true);
+  // Chaves ainda sem resultado (teste em andamento) atualizam o card quando terminar
+  API_SERVICES.forEach((s) => {
+    if ((apiStatus[s.id] || {}).status === 'testing' || (!apiStatus[s.id] && state.settings[s.key])) {
+      testApiKey(s.id, state.settings[s.key]).then((r) => { apiStatus[s.id] = r; refreshApiCard(s.id); });
+    }
+  });
+  const primeira = API_SERVICES.find((s) => ['missing', 'invalid'].includes((apiStatus[s.id] || {}).status));
+  if (primeira) setTimeout(() => { const el = document.getElementById('apiw-' + primeira.id); if (el) el.focus(); }, 60);
+}
+
+function refreshApiCard(id) {
+  const badge = document.getElementById('apiBadge-' + id);
+  const msg = document.getElementById('apiMsg-' + id);
+  const st = apiStatus[id] || {};
+  if (badge) badge.innerHTML = apiBadge(st);
+  if (msg) {
+    msg.textContent = st.msg || '';
+    msg.className = 'api-msg ' + (st.status === 'ok' ? 'amount-in' : st.status === 'invalid' ? 'amount-out' : '');
+  }
+  const done = document.getElementById('apiwDone');
+  const tudoOk = API_SERVICES.every((s) => (apiStatus[s.id] || {}).status === 'ok');
+  if (done) done.classList.toggle('hidden', !tudoOk);
+  const fechar = document.getElementById('apiwClose');
+  if (fechar) {
+    fechar.textContent = t(tudoOk ? 'apiw.finish' : 'apiw.later');
+    fechar.className = tudoOk ? 'primary-btn' : 'secondary-btn';
+  }
+}
+
+function toggleKeyVisibility(id, btn) {
+  const el = document.getElementById('apiw-' + id);
+  if (!el) return;
+  const mostrar = el.type === 'password';
+  el.type = mostrar ? 'text' : 'password';
+  btn.setAttribute('aria-label', t(mostrar ? 'apiw.hide' : 'apiw.show'));
+}
+
+async function testAndSaveKey(id) {
+  const s = API_SERVICES.find((x) => x.id === id);
+  const el = document.getElementById('apiw-' + id);
+  const btn = document.getElementById('apiwBtn-' + id);
+  if (!s || !el) return;
+  const chave = el.value.trim();
+  if (!chave) { apiStatus[id] = { status: 'missing', msg: t('apiw.paste') }; refreshApiCard(id); el.focus(); return; }
+  if (btn) { btn.disabled = true; btn.textContent = t('api.testing'); }
+  apiStatus[id] = { status: 'testing' };
+  refreshApiCard(id);
+  const r = await testApiKey(id, chave);
+  // Salva se funcionou; se só a conexão falhou, salva também (a chave pode estar certa)
+  if (r.status === 'ok' || r.status === 'error') {
+    state.settings[s.key] = chave;
+    await put('settings', { key: s.key, value: chave });
+    renderApiSettings();
+    if (r.status === 'error') r.msg = (r.msg || '') + ' ' + t('apiw.savedAnyway');
+  }
+  apiStatus[id] = r;
+  refreshApiCard(id);
+  if (btn) { btn.disabled = false; btn.textContent = t('apiw.testSave'); }
+  if (r.status === 'ok') {
+    const proxima = API_SERVICES.find((x) => (apiStatus[x.id] || {}).status !== 'ok');
+    const alvo = proxima && document.getElementById('apiw-' + proxima.id);
+    if (alvo) alvo.focus();
+  }
 }
 
 
@@ -6402,6 +6668,7 @@ function bindEvents() {
   on('btnWatchRefresh', 'click', () => refreshWatchlist(false));
   on('btnSaveApi', 'click', saveApiKeys);
   on('btnTestApi', 'click', testApis);
+  on('btnApiWizard', 'click', openApiSetup);
   API_KEYS.forEach((k) => on(k, 'input', (e) => { e.target.dataset.dirty = '1'; }));
   on('cashGrain', 'change', (e) => { state.ui.cashGrain = e.target.value; renderCashflow(); });
   on('billKind', 'change', (e) => { state.ui.billKind = e.target.value; renderBills(); });
@@ -7051,10 +7318,12 @@ async function init() {
   renderAll();
   showTab('dashboard');
   startNewsSchedule();
+  // Testa as chaves de API em segundo plano; abre o assistente só se faltar ou for recusada
+  checkApiKeys().catch((e) => console.warn('Verificação das chaves:', e));
 
-   if ('serviceWorker' in navigator) {
+  if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./service-worker.js').catch(() => {});
   }
 }
 
-   init();
+init();
