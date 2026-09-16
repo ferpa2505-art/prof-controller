@@ -7053,8 +7053,9 @@ async function init() {
   startNewsSchedule();
 
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./service-worker.js').catch(() => {});
-  }
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./service-worker.js');
+  });
 }
-
+   
 init();
