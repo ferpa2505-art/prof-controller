@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#1a1a2e">
   <title>ProF Controller</title>
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="styles.css?v=26">
+  <link rel="stylesheet" href="styles.css?v=27">
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 </head>
 <body>
@@ -16,25 +16,32 @@
       <span class="brand-name">ProF Controller</span>
     </h1>
     <div class="topbar-actions">
-      <div id="langButtons" class="lang-buttons" role="group" aria-label="Idioma"></div>
-      <select id="themeSelect" aria-label="Tema"></select>
+      <button id="btnGear" class="gear-btn" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="gearMenu" aria-label="Preferências" title="Preferências">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
+      <div id="gearMenu" class="gear-menu hidden" role="dialog" aria-labelledby="gearTitle">
+        <h3 id="gearTitle" data-i18n="gear.title">Preferências</h3>
+        <label for="themeSelect" data-i18n="gear.theme">Tema</label>
+        <select id="themeSelect"></select>
+        <span class="gear-label" data-i18n="gear.lang">Idioma</span>
+        <div id="langButtons" class="lang-buttons" role="group" aria-label="Idioma"></div>
+        <label class="checkline"><input type="checkbox" id="helpToggle" checked> <span data-i18n="gear.help">Mostrar explicações das abas</span></label>
+        <button id="btnAdvanced" class="secondary-btn gear-advanced" type="button" data-i18n="gear.advanced">Configurações avançadas</button>
+      </div>
     </div>
   </header>
-  <nav class="tabs">
-    <button class="tab active" data-tab="dashboard" data-i18n="tabs.dashboard">Dashboard</button>
-    <button class="tab" data-tab="accounts" data-i18n="tabs.accounts">Contas</button>
-    <button class="tab" data-tab="balances" data-i18n="tabs.balances">Saldos Diários</button>
-    <button class="tab" data-tab="transactions" data-i18n="tabs.transactions">Transações</button>
-    <button class="tab" data-tab="budgets" data-i18n="tabs.budgets">Orçamentos</button>
-    <button class="tab" data-tab="fx" data-i18n="tabs.fx">Câmbio</button>
-    <button class="tab" data-tab="portfolio" data-i18n="tabs.portfolio">Portfólio</button>
-    <button class="tab" data-tab="bills" data-i18n="tabs.bills">A Pagar / Receber</button>
-    <button class="tab" data-tab="investments" data-i18n="tabs.investments">Investimentos</button>
-    <button class="tab" data-tab="settings" data-i18n="tabs.settings">Configurações</button>
+  <nav class="tabs" id="mainTabs" aria-label="Menu principal">
+    <button class="tab active" type="button" data-group="dashboard" data-i18n="tabs.dashboard">Dashboard</button>
+    <button class="tab" type="button" data-group="investments" data-i18n="tabs.investments">Investimentos</button>
+    <button class="tab" type="button" data-group="registry" data-i18n="tabs.registry">Cadastros</button>
+    <button class="tab" type="button" data-group="flows" data-i18n="tabs.flows">Entradas e Saídas</button>
+    <button class="tab" type="button" data-group="news" data-i18n="tabs.news">Notícias</button>
   </nav>
+  <nav class="subtabs hidden" id="subTabs" aria-label="Submenu"></nav>
   <main>
     <!-- DASHBOARD -->
     <section id="tab-dashboard" class="tab-panel active">
+      <p class="tab-intro" data-i18n="help.dashboard"></p>
       <div class="cards">
         <div class="card">
           <h3 data-i18n="dashboard.totalEquity">Financeiro</h3>
@@ -132,6 +139,7 @@
     </section>
     <!-- CONTAS -->
     <section id="tab-accounts" class="tab-panel">
+      <p class="tab-intro" data-i18n="help.accounts"></p>
       <div class="panel-header">
         <h2 data-i18n="accounts.title">Contas</h2>
         <button id="btnAddAccount" class="primary-btn" data-i18n="accounts.add">+ Nova conta</button>
@@ -154,6 +162,7 @@
     </section>
     <!-- SALDOS DIÁRIOS -->
     <section id="tab-balances" class="tab-panel">
+      <p class="tab-intro" data-i18n="help.balances"></p>
       <div class="panel-header">
         <h2 data-i18n="balances.title">Saldos Diários</h2>
         <div>
@@ -170,6 +179,7 @@
     </section>
     <!-- TRANSAÇÕES -->
     <section id="tab-transactions" class="tab-panel">
+      <p class="tab-intro" data-i18n="help.transactions"></p>
       <div class="panel-header">
         <h2 data-i18n="tx.title">Transações</h2>
         <div>
@@ -202,6 +212,7 @@
     </section>
     <!-- ORÇAMENTOS -->
     <section id="tab-budgets" class="tab-panel">
+      <p class="tab-intro" data-i18n="help.budgets"></p>
       <div class="panel-header">
         <h2 data-i18n="budget.title">Orçamentos</h2>
         <button id="btnAddBudget" class="primary-btn" data-i18n="budget.add">+ Novo orçamento</button>
@@ -218,6 +229,7 @@
     </section>
     <!-- CÂMBIO -->
     <section id="tab-fx" class="tab-panel">
+      <p class="tab-intro" data-i18n="help.fx"></p>
       <div class="panel-header">
         <h2 data-i18n="fx.title">Câmbio</h2>
         <div>
@@ -236,6 +248,7 @@
     </section>
     <!-- PORTFÓLIO -->
     <section id="tab-portfolio" class="tab-panel">
+      <p class="tab-intro" data-i18n="help.portfolio"></p>
       <div class="panel-header">
         <h2 data-i18n="portfolio.properties">Imóveis</h2>
         <button id="btnAddProperty" class="primary-btn" data-i18n="portfolio.addProperty">+ Novo imóvel</button>
@@ -263,6 +276,7 @@
     </section>
     <!-- A PAGAR / RECEBER -->
     <section id="tab-bills" class="tab-panel">
+      <p class="tab-intro" data-i18n="help.bills"></p>
       <div class="panel-header">
         <h2 data-i18n="bill.title">Contas a Pagar e a Receber</h2>
         <button id="btnAddBill" class="primary-btn" data-i18n="bill.add">+ Novo título</button>
@@ -290,6 +304,7 @@
 
     <!-- INVESTIMENTOS -->
     <section id="tab-investments" class="tab-panel">
+      <p class="tab-intro" data-i18n="help.investments"></p>
       <div class="panel-header">
         <h2 data-i18n="inv.title">Carteira de Investimentos</h2>
         <div>
@@ -342,13 +357,32 @@
           <div id="cmpChart"></div>
           <div id="cmpTip" class="nav-tip hidden"></div>
         </div>
+        <div id="cmpRanking" class="cmp-ranking"></div>
         <p id="cmpNote" class="hint cmp-note"></p>
         <div id="cmpStats" class="table-scroll"></div>
       </div>
     </section>
 
+    <!-- NOTÍCIAS -->
+    <section id="tab-news" class="tab-panel">
+      <p class="tab-intro" data-i18n="help.news"></p>
+      <div class="panel-header">
+        <h2 data-i18n="news.title">Notícias</h2>
+        <div class="news-actions">
+          <span id="newsStatus" class="hint" aria-live="polite"></span>
+          <button id="btnNewsRefresh" class="secondary-btn" type="button" data-i18n="news.refresh">Atualizar</button>
+        </div>
+      </div>
+      <div id="newsFilters" class="news-filters"></div>
+      <div id="newsList" class="news-list"></div>
+      <h3 class="section-sub" data-i18n="news.shortcuts">Atalhos por ativo</h3>
+      <div id="newsShortcuts" class="news-shortcuts"></div>
+      <p class="hint news-disclaimer" data-i18n="news.disclaimer"></p>
+    </section>
+
     <!-- CONFIGURAÇÕES -->
     <section id="tab-settings" class="tab-panel">
+      <p class="tab-intro" data-i18n="help.settings"></p>
       <h2 data-i18n="settings.title">Configurações</h2>
       <div class="settings-group">
         <h3 data-i18n="settings.baseCurrency">Moeda base</h3>
@@ -364,6 +398,8 @@
         <input id="apiTwelve" type="password" autocomplete="off" spellcheck="false">
         <label for="apiBrapi">brapi.dev</label>
         <input id="apiBrapi" type="password" autocomplete="off" spellcheck="false">
+        <label for="apiRss2json">rss2json <span class="hint">(opcional — notícias)</span></label>
+        <input id="apiRss2json" type="password" autocomplete="off" spellcheck="false">
         <div class="api-actions">
           <button id="btnSaveApi" class="primary-btn" data-i18n="api.save">Salvar chaves</button>
           <button id="btnTestApi" class="secondary-btn" data-i18n="api.test">Testar conexões</button>
@@ -392,6 +428,6 @@
     </div>
   </div>
   <div id="toast" class="toast hidden"></div>
-  <script src="app.js?v=26"></script>
+  <script src="app.js?v=27"></script>
 </body>
 </html>
