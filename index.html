@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#1a1a2e">
   <title>ProF Controller</title>
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="styles.css?v=25">
+  <link rel="stylesheet" href="styles.css?v=26">
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 </head>
 <body>
@@ -331,6 +331,20 @@
       <div class="table-scroll">
         <table id="watchTable"><thead><tr></tr></thead><tbody></tbody></table>
       </div>
+
+      <div class="panel-header panel-header-spaced">
+        <h2 data-i18n="cmp.title">Comparativo</h2>
+      </div>
+      <div class="card cmp-card">
+        <div id="cmpControls" class="cmp-controls"></div>
+        <div id="cmpLegend" class="nav-legend cmp-legend"></div>
+        <div class="nav-chart cmp-chart">
+          <div id="cmpChart"></div>
+          <div id="cmpTip" class="nav-tip hidden"></div>
+        </div>
+        <p id="cmpNote" class="hint cmp-note"></p>
+        <div id="cmpStats" class="table-scroll"></div>
+      </div>
     </section>
 
     <!-- CONFIGURAÇÕES -->
@@ -378,6 +392,6 @@
     </div>
   </div>
   <div id="toast" class="toast hidden"></div>
-  <script src="app.js?v=25"></script>
+  <script src="app.js?v=26"></script>
 </body>
 </html>
