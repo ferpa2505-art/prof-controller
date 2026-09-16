@@ -1,5 +1,5 @@
 /* ============================================================
-   ProF Controller — Fases 1 a 9 (8: mercado e watchlist; 9: cores e comparativo)
+   ProF Controller — Fases 1 a 10 (8: mercado; 9: comparativo; 10: % e referência, notícias, nova navegação)
 
    Fase 1: contas, moedas, saldos diários, moeda base, importação CSV,
            i18n (pt-BR/en/es), temas, offline.
@@ -37,9 +37,9 @@ const I18N = {
     'tabs.dashboard': 'Dashboard',
     'tabs.accounts': 'Contas',
     'tabs.balances': 'Saldos Diários',
-    'tabs.transactions': 'Transações',
+    'tabs.transactions': 'Lançamentos',
     'tabs.budgets': 'Orçamentos',
-    'tabs.settings': 'Configurações',
+    'tabs.settings': 'Configurações avançadas',
     'dashboard.totalEquity': 'Financeiro',
     'dashboard.accounts': 'Contas',
     'dashboard.currencies': 'Moedas',
@@ -161,7 +161,7 @@ const I18N = {
     'modal.editProperty': 'Editar imóvel',
     'modal.addVehicle': 'Novo veículo',
     'modal.editVehicle': 'Editar veículo',
-    'settings.title': 'Configurações',
+    'settings.title': 'Configurações avançadas',
     'settings.baseCurrency': 'Moeda base',
     'settings.baseCurrencyHint': 'Moeda usada para consolidar patrimônio e relatórios.',
     'settings.backup': 'Backup dos dados',
@@ -210,7 +210,7 @@ const I18N = {
     'nav.others': 'Outros',
     'nav.pieTitle': 'Composição do Patrimônio',
     'nav.pieNote': 'Fatias em {code}, na data de hoje. Dívidas não entram no gráfico.',
-    'tabs.bills': 'A Pagar / Receber',
+    'tabs.bills': 'A pagar e receber',
     'bill.title': 'Contas a Pagar e a Receber',
     'bill.add': '+ Novo título',
     'bill.schedules': 'Títulos cadastrados',
@@ -366,6 +366,74 @@ const I18N = {
     'modal.move': 'Aporte ou resgate',
     'mkt.lookup': 'Buscar ativo (ticker ou ISIN)',
     'mkt.manual': 'Cadastrar sem busca (renda fixa, CDB ou ativo sem cotação)',
+    'tabs.registry': 'Cadastros',
+    'tabs.flows': 'Entradas e Saídas',
+    'tabs.news': 'Notícias',
+    'gear.title': 'Preferências',
+    'gear.open': 'Abrir preferências',
+    'gear.theme': 'Tema',
+    'gear.lang': 'Idioma',
+    'gear.help': 'Mostrar explicações das abas',
+    'gear.advanced': 'Configurações avançadas',
+    'theme.default': 'Claro',
+    'theme.dark': 'Escuro',
+    'theme.green': 'Verde',
+    'theme.blue': 'Azul',
+    'help.dashboard': 'Visão geral do seu patrimônio: saldo das contas, investimentos, imóveis e veículos, tudo somado na moeda base, com gráficos de evolução e de fluxo de caixa.',
+    'help.investments': 'Suas ações, fundos, renda fixa e cripto. Busque o ativo pelo ticker ou ISIN, registre compras e vendas e acompanhe se está ganhando ou perdendo. Mais abaixo: watchlist e comparativo com CDB, Ibovespa e S&P 500.',
+    'help.accounts': 'Cadastre aqui cada conta bancária, carteira ou corretora, com a moeda e o saldo inicial. As outras telas usam essas contas.',
+    'help.balances': 'Registre o saldo real de uma conta em uma data (por exemplo, o do extrato). O app parte desse saldo e soma os lançamentos seguintes.',
+    'help.budgets': 'Defina um limite mensal de gastos por categoria e veja quanto já foi usado no mês.',
+    'help.fx': 'Taxas de câmbio usadas para somar valores em moedas diferentes. Busque as taxas do dia com um clique ou cadastre manualmente.',
+    'help.portfolio': 'Bens como imóveis e veículos, com valor de avaliação e dívidas ligadas a eles (financiamentos). Entram no patrimônio total.',
+    'help.transactions': 'Dinheiro que já entrou ou saiu: receitas, despesas e transferências entre contas. Cada lançamento atualiza o saldo da conta.',
+    'help.bills': 'Contas futuras a pagar e valores a receber, inclusive parcelados ou recorrentes. Ao quitar, o app gera o lançamento na conta.',
+    'help.news': 'Manchetes sobre os ativos da sua carteira, da watchlist e do mercado. Clique para ler no site original. Atualiza ao abrir o app e a cada 2 horas.',
+    'help.settings': 'Moeda base, chaves das fontes de cotação e notícias, backup e importação de dados.',
+    'news.title': 'Notícias',
+    'news.refresh': 'Atualizar',
+    'news.loading': 'Buscando notícias…',
+    'news.updated': 'Atualizado {t}.',
+    'news.failed': 'Algumas fontes não responderam.',
+    'news.now': 'agora',
+    'news.min': 'há {n} min',
+    'news.hours': 'há {n} h',
+    'news.days': 'há {n} d',
+    'news.all': 'Todas',
+    'news.portfolio': 'Minha carteira',
+    'news.watch': 'Watchlist',
+    'news.market': 'Mercado',
+    'news.lang': 'Idioma das notícias',
+    'news.langAll': 'Todos os idiomas',
+    'news.empty': 'Nenhuma notícia carregada ainda. Clique em Atualizar.',
+    'news.emptyFilter': 'Nenhuma notícia para este filtro.',
+    'news.noAssets': 'Adicione posições com ticker ou ativos à watchlist para ver atalhos.',
+    'news.shortcuts': 'Atalhos por ativo',
+    'news.google': 'Google Notícias',
+    'news.testOk': '{n} manchetes',
+    'news.disclaimer': 'Mostramos apenas título, fonte e horário. O conteúdo pertence a cada site. Notícias não são recomendação de investimento.',
+    'cmp.groupPct': 'Em percentual (recomendado)',
+    'cmp.groupMoney': 'Em dinheiro',
+    'cmp.m.ret': 'Ganho ou perda sobre o investido (%)',
+    'cmp.reference': 'Comparar contra',
+    'cmp.refNone': 'Nenhuma referência',
+    'cmp.refAssets': 'Ativos e carteira',
+    'cmp.refOnlyPct': 'Disponível nas métricas em percentual',
+    'cmp.refLine': 'Referência: {r} (linha do zero)',
+    'cmp.vsRef': 'diferença para {r}',
+    'cmp.rankVs': 'Ranking: quanto cada um ficou acima ou abaixo de {r}',
+    'cmp.rank.ret': 'Ranking: ganho ou perda sobre o investido',
+    'cmp.rank.price': 'Ranking: variação no período',
+    'cmp.rank.profit': 'Ranking: resultado em dinheiro',
+    'cmp.help.ret': 'Quanto cada investimento está ganhando ou perdendo em relação ao que você aplicou. Os índices recebem o mesmo dinheiro nas mesmas datas.',
+    'cmp.help.price': 'Quanto cada ativo e índice subiu ou caiu no período escolhido, todos partindo de 0%. Ignora quando você comprou.',
+    'cmp.help.profit': 'Lucro ou prejuízo em dinheiro de cada investimento.',
+    'cmp.help.value': 'Quanto cada investimento vale hoje a preço de mercado.',
+    'cmp.help.both': 'Linha contínua: valor de mercado. Tracejada: quanto foi investido.',
+    'cmp.help.cost': 'Quanto foi investido em cada ativo ao longo do tempo.',
+    'cmp.benchShort': '{b}: histórico gratuito disponível desde {d}; aportes anteriores usam o primeiro valor conhecido.',
+    'cmp.refOwnFlows': 'Cada ativo é comparado com {r} recebendo os aportes dele mesmo.',
+    'cmp.benchFlowsOf': 'Os índices recebem os aportes de {a}.',
     'mkt.lookupHint': 'Ex.: TTWO, PETR4 ou o ISIN US8740541094. O app preenche nome, ticker, moeda e a cotação atual.',
     'mkt.search': 'Buscar',
     'mkt.searching': 'Buscando…',
@@ -499,7 +567,7 @@ const I18N = {
     'tabs.balances': 'Daily Balances',
     'tabs.transactions': 'Transactions',
     'tabs.budgets': 'Budgets',
-    'tabs.settings': 'Settings',
+    'tabs.settings': 'Advanced settings',
     'dashboard.totalEquity': 'Financial',
     'dashboard.accounts': 'Accounts',
     'dashboard.currencies': 'Currencies',
@@ -621,7 +689,7 @@ const I18N = {
     'modal.editProperty': 'Edit property',
     'modal.addVehicle': 'New vehicle',
     'modal.editVehicle': 'Edit vehicle',
-    'settings.title': 'Settings',
+    'settings.title': 'Advanced settings',
     'settings.baseCurrency': 'Base currency',
     'settings.baseCurrencyHint': 'Currency used to consolidate equity and reports.',
     'settings.backup': 'Data backup',
@@ -670,7 +738,7 @@ const I18N = {
     'nav.others': 'Others',
     'nav.pieTitle': 'Wealth Composition',
     'nav.pieNote': 'Slices in {code}, as of today. Debt is not shown in the chart.',
-    'tabs.bills': 'Payables / Receivables',
+    'tabs.bills': 'Payables & receivables',
     'bill.title': 'Payables and Receivables',
     'bill.add': '+ New bill',
     'bill.schedules': 'Registered bills',
@@ -826,6 +894,74 @@ const I18N = {
     'modal.move': 'Contribution or withdrawal',
     'mkt.lookup': 'Find asset (ticker or ISIN)',
     'mkt.manual': 'Add without search (fixed income, CDs or unlisted assets)',
+    'tabs.registry': 'Records',
+    'tabs.flows': 'Money in & out',
+    'tabs.news': 'News',
+    'gear.title': 'Preferences',
+    'gear.open': 'Open preferences',
+    'gear.theme': 'Theme',
+    'gear.lang': 'Language',
+    'gear.help': 'Show tab explanations',
+    'gear.advanced': 'Advanced settings',
+    'theme.default': 'Light',
+    'theme.dark': 'Dark',
+    'theme.green': 'Green',
+    'theme.blue': 'Blue',
+    'help.dashboard': 'Overview of your net worth: account balances, investments, property and vehicles, all added up in the base currency, with growth and cash flow charts.',
+    'help.investments': 'Your stocks, funds, fixed income and crypto. Find an asset by ticker or ISIN, record buys and sells and see whether you are gaining or losing. Further down: watchlist and comparison with CDB, Ibovespa and S&P 500.',
+    'help.accounts': 'Add each bank account, wallet or brokerage here, with its currency and opening balance. Other screens use these accounts.',
+    'help.balances': 'Record the actual balance of an account on a date (for example, from a statement). The app starts from it and adds later entries.',
+    'help.budgets': 'Set a monthly spending limit per category and see how much has been used this month.',
+    'help.fx': 'Exchange rates used to add up amounts in different currencies. Fetch today\'s rates in one click or add them manually.',
+    'help.portfolio': 'Assets such as property and vehicles, with valuation and related debts (loans). They count toward total net worth.',
+    'help.transactions': 'Money that has already come in or gone out: income, expenses and transfers. Each entry updates the account balance.',
+    'help.bills': 'Future bills to pay and amounts to receive, including installments or recurring ones. When settled, the app creates the entry.',
+    'help.news': 'Headlines about your portfolio, watchlist and the market. Click to read on the original site. Refreshes when you open the app and every 2 hours.',
+    'help.settings': 'Base currency, keys for price and news sources, backup and data import.',
+    'news.title': 'News',
+    'news.refresh': 'Refresh',
+    'news.loading': 'Fetching news…',
+    'news.updated': 'Updated {t}.',
+    'news.failed': 'Some sources did not respond.',
+    'news.now': 'just now',
+    'news.min': '{n} min ago',
+    'news.hours': '{n} h ago',
+    'news.days': '{n} d ago',
+    'news.all': 'All',
+    'news.portfolio': 'My portfolio',
+    'news.watch': 'Watchlist',
+    'news.market': 'Market',
+    'news.lang': 'News language',
+    'news.langAll': 'All languages',
+    'news.empty': 'No news loaded yet. Click Refresh.',
+    'news.emptyFilter': 'No news for this filter.',
+    'news.noAssets': 'Add positions with a ticker or watchlist assets to see shortcuts.',
+    'news.shortcuts': 'Shortcuts by asset',
+    'news.google': 'Google News',
+    'news.testOk': '{n} headlines',
+    'news.disclaimer': 'We show only headline, source and time. Content belongs to each site. News is not investment advice.',
+    'cmp.groupPct': 'In percent (recommended)',
+    'cmp.groupMoney': 'In money',
+    'cmp.m.ret': 'Gain or loss on invested (%)',
+    'cmp.reference': 'Compare against',
+    'cmp.refNone': 'No reference',
+    'cmp.refAssets': 'Assets and portfolio',
+    'cmp.refOnlyPct': 'Available for percentage metrics',
+    'cmp.refLine': 'Reference: {r} (zero line)',
+    'cmp.vsRef': 'difference vs {r}',
+    'cmp.rankVs': 'Ranking: how far above or below {r}',
+    'cmp.rank.ret': 'Ranking: gain or loss on invested',
+    'cmp.rank.price': 'Ranking: change over period',
+    'cmp.rank.profit': 'Ranking: gain/loss in money',
+    'cmp.help.ret': 'How much each investment is gaining or losing relative to what you put in. Indices receive the same money on the same dates.',
+    'cmp.help.price': 'How much each asset and index rose or fell in the chosen period, all starting at 0%. Ignores when you bought.',
+    'cmp.help.profit': 'Profit or loss in money for each investment.',
+    'cmp.help.value': 'What each investment is worth at market price.',
+    'cmp.help.both': 'Solid line: market value. Dashed: amount invested.',
+    'cmp.help.cost': 'How much was invested in each asset over time.',
+    'cmp.benchShort': '{b}: free history available since {d}; earlier contributions use the first known value.',
+    'cmp.refOwnFlows': 'Each asset is compared with {r} receiving its own contributions.',
+    'cmp.benchFlowsOf': 'Indices receive the contributions of {a}.',
     'mkt.lookupHint': 'E.g. TTWO, PETR4 or ISIN US8740541094. The app fills in name, ticker, currency and current price.',
     'mkt.search': 'Search',
     'mkt.searching': 'Searching…',
@@ -956,9 +1092,9 @@ const I18N = {
     'tabs.dashboard': 'Panel',
     'tabs.accounts': 'Cuentas',
     'tabs.balances': 'Saldos Diarios',
-    'tabs.transactions': 'Transacciones',
+    'tabs.transactions': 'Movimientos',
     'tabs.budgets': 'Presupuestos',
-    'tabs.settings': 'Configuración',
+    'tabs.settings': 'Configuración avanzada',
     'dashboard.totalEquity': 'Financiero',
     'dashboard.accounts': 'Cuentas',
     'dashboard.currencies': 'Monedas',
@@ -1080,7 +1216,7 @@ const I18N = {
     'modal.editProperty': 'Editar inmueble',
     'modal.addVehicle': 'Nuevo vehículo',
     'modal.editVehicle': 'Editar vehículo',
-    'settings.title': 'Configuración',
+    'settings.title': 'Configuración avanzada',
     'settings.baseCurrency': 'Moneda base',
     'settings.baseCurrencyHint': 'Moneda usada para consolidar patrimonio e informes.',
     'settings.backup': 'Respaldo de datos',
@@ -1129,7 +1265,7 @@ const I18N = {
     'nav.others': 'Otros',
     'nav.pieTitle': 'Composición del Patrimonio',
     'nav.pieNote': 'Porciones en {code}, a fecha de hoy. Las deudas no entran en el gráfico.',
-    'tabs.bills': 'Por Pagar / Cobrar',
+    'tabs.bills': 'Por pagar y cobrar',
     'bill.title': 'Cuentas por Pagar y por Cobrar',
     'bill.add': '+ Nuevo título',
     'bill.schedules': 'Títulos registrados',
@@ -1285,6 +1421,74 @@ const I18N = {
     'modal.move': 'Aporte o rescate',
     'mkt.lookup': 'Buscar activo (ticker o ISIN)',
     'mkt.manual': 'Registrar sin búsqueda (renta fija, CDB o activo sin cotización)',
+    'tabs.registry': 'Registros',
+    'tabs.flows': 'Entradas y Salidas',
+    'tabs.news': 'Noticias',
+    'gear.title': 'Preferencias',
+    'gear.open': 'Abrir preferencias',
+    'gear.theme': 'Tema',
+    'gear.lang': 'Idioma',
+    'gear.help': 'Mostrar explicaciones de las pestañas',
+    'gear.advanced': 'Configuración avanzada',
+    'theme.default': 'Claro',
+    'theme.dark': 'Oscuro',
+    'theme.green': 'Verde',
+    'theme.blue': 'Azul',
+    'help.dashboard': 'Visión general de tu patrimonio: saldos, inversiones, inmuebles y vehículos, sumados en la moneda base, con gráficos de evolución y flujo de caja.',
+    'help.investments': 'Tus acciones, fondos, renta fija y cripto. Busca el activo por ticker o ISIN, registra compras y ventas y ve si ganas o pierdes. Más abajo: watchlist y comparativo con CDB, Ibovespa y S&P 500.',
+    'help.accounts': 'Registra aquí cada cuenta bancaria, billetera o bróker, con su moneda y saldo inicial. Las demás pantallas usan estas cuentas.',
+    'help.balances': 'Registra el saldo real de una cuenta en una fecha (por ejemplo, el del extracto). La app parte de ese saldo y suma los movimientos siguientes.',
+    'help.budgets': 'Define un límite mensual de gastos por categoría y ve cuánto se ha usado en el mes.',
+    'help.fx': 'Tipos de cambio usados para sumar importes en monedas distintas. Busca los tipos del día con un clic o regístralos manualmente.',
+    'help.portfolio': 'Bienes como inmuebles y vehículos, con su valoración y deudas asociadas (financiaciones). Cuentan en el patrimonio total.',
+    'help.transactions': 'Dinero que ya entró o salió: ingresos, gastos y transferencias. Cada movimiento actualiza el saldo de la cuenta.',
+    'help.bills': 'Cuentas futuras por pagar e importes por cobrar, incluso a plazos o recurrentes. Al liquidar, la app crea el movimiento.',
+    'help.news': 'Titulares sobre tu cartera, tu watchlist y el mercado. Haz clic para leer en el sitio original. Se actualiza al abrir la app y cada 2 horas.',
+    'help.settings': 'Moneda base, claves de las fuentes de cotización y noticias, copia de seguridad e importación.',
+    'news.title': 'Noticias',
+    'news.refresh': 'Actualizar',
+    'news.loading': 'Buscando noticias…',
+    'news.updated': 'Actualizado {t}.',
+    'news.failed': 'Algunas fuentes no respondieron.',
+    'news.now': 'ahora',
+    'news.min': 'hace {n} min',
+    'news.hours': 'hace {n} h',
+    'news.days': 'hace {n} d',
+    'news.all': 'Todas',
+    'news.portfolio': 'Mi cartera',
+    'news.watch': 'Watchlist',
+    'news.market': 'Mercado',
+    'news.lang': 'Idioma de las noticias',
+    'news.langAll': 'Todos los idiomas',
+    'news.empty': 'Aún no hay noticias. Pulsa Actualizar.',
+    'news.emptyFilter': 'No hay noticias para este filtro.',
+    'news.noAssets': 'Añade posiciones con ticker o activos a la watchlist para ver accesos directos.',
+    'news.shortcuts': 'Accesos por activo',
+    'news.google': 'Google Noticias',
+    'news.testOk': '{n} titulares',
+    'news.disclaimer': 'Mostramos solo título, fuente y hora. El contenido pertenece a cada sitio. Las noticias no son recomendación de inversión.',
+    'cmp.groupPct': 'En porcentaje (recomendado)',
+    'cmp.groupMoney': 'En dinero',
+    'cmp.m.ret': 'Ganancia o pérdida sobre lo invertido (%)',
+    'cmp.reference': 'Comparar contra',
+    'cmp.refNone': 'Sin referencia',
+    'cmp.refAssets': 'Activos y cartera',
+    'cmp.refOnlyPct': 'Disponible en métricas porcentuales',
+    'cmp.refLine': 'Referencia: {r} (línea del cero)',
+    'cmp.vsRef': 'diferencia con {r}',
+    'cmp.rankVs': 'Ranking: cuánto quedó cada uno por encima o por debajo de {r}',
+    'cmp.rank.ret': 'Ranking: ganancia o pérdida sobre lo invertido',
+    'cmp.rank.price': 'Ranking: variación en el período',
+    'cmp.rank.profit': 'Ranking: resultado en dinero',
+    'cmp.help.ret': 'Cuánto gana o pierde cada inversión respecto a lo que aportaste. Los índices reciben el mismo dinero en las mismas fechas.',
+    'cmp.help.price': 'Cuánto subió o bajó cada activo e índice en el período, todos desde 0%. No considera cuándo compraste.',
+    'cmp.help.profit': 'Ganancia o pérdida en dinero de cada inversión.',
+    'cmp.help.value': 'Cuánto vale cada inversión a precio de mercado.',
+    'cmp.help.both': 'Línea continua: valor de mercado. Discontinua: importe invertido.',
+    'cmp.help.cost': 'Cuánto se invirtió en cada activo a lo largo del tiempo.',
+    'cmp.benchShort': '{b}: histórico gratuito disponible desde {d}; los aportes anteriores usan el primer valor conocido.',
+    'cmp.refOwnFlows': 'Cada activo se compara con {r} recibiendo sus propios aportes.',
+    'cmp.benchFlowsOf': 'Los índices reciben los aportes de {a}.',
     'mkt.lookupHint': 'Ej.: TTWO, PETR4 o el ISIN US8740541094. La app completa nombre, ticker, moneda y cotización actual.',
     'mkt.search': 'Buscar',
     'mkt.searching': 'Buscando…',
@@ -1503,7 +1707,7 @@ let state = {
   valuations: [],
   settings: { lang: 'pt-BR', theme: 'default', baseCurrency: 'EUR' },
   ui: { txType: 'all', txAccount: 'all', txMonth: '', budgetMonth: '', navView: 'pie', navBreak: 'currency', cashGrain: 'monthly',
-        billKind: 'all', billStatus: 'open', billFrom: '', billTo: '' }
+        billKind: 'all', billStatus: 'open', billFrom: '', billTo: '', tab: 'dashboard', lastSub: {} }
 };
 
 const CURRENCIES = [
@@ -2122,6 +2326,8 @@ function applyLang() {
   document.documentElement.lang = state.settings.lang;
   document.querySelectorAll('[data-i18n]').forEach((el) => { el.textContent = t(el.dataset.i18n); });
   renderLangButtons();
+  renderSubTabs();
+  renderThemeOptions();
   renderAll();
 }
 function renderLangButtons() {
@@ -2148,7 +2354,7 @@ function renderAll() {
   const etapas = [
     ['dashboard', renderDashboard], ['contas', renderAccounts], ['saldos', renderBalances],
     ['transações', renderTransactions], ['orçamentos', renderBudgets], ['câmbio', renderFx],
-    ['portfólio', renderPortfolio], ['gráfico', renderNAV], ['fluxo', renderCashflow], ['títulos', renderBills], ['investimentos', renderInvestments], ['configurações', renderSettings]
+    ['portfólio', renderPortfolio], ['gráfico', renderNAV], ['fluxo', renderCashflow], ['títulos', renderBills], ['investimentos', renderInvestments], ['notícias', () => { if (state.ui.tab === 'news') renderNews(); }], ['configurações', renderSettings]
   ];
   etapas.forEach(([nome, fn]) => {
     try { fn(); } catch (e) { console.error('Falha ao renderizar ' + nome + ':', e); }
@@ -3181,7 +3387,7 @@ async function undoPayment(scheduleId, seq) {
    As chaves ficam SÓ neste navegador (settings do IndexedDB). Nunca vão para o
    código — o repositório é público — e ficam fora do backup JSON. */
 
-const API_KEYS = ['apiFinnhub', 'apiTwelve', 'apiBrapi'];
+const API_KEYS = ['apiFinnhub', 'apiTwelve', 'apiBrapi', 'apiRss2json'];
 const HIST_PREFIX = 'hist:';
 
 function apiKey(nome) { return (state.settings[nome] || '').trim(); }
@@ -3939,31 +4145,37 @@ function renderWatchlist() {
   </tr>`).join('');
 }
 
-/* ================= FASE 9 — Cores por ativo e gráfico comparativo =================
+/* ================= FASES 9 e 10 — Cores por ativo e comparativo =================
    Até 4 séries (posições, itens da watchlist ou a carteira total) contra CDB,
-   Ibovespa e S&P 500, em várias métricas e em qualquer moeda cadastrada.
+   Ibovespa e S&P 500.
 
-   Como os índices entram na comparação:
-   - Métricas em valor e "rentabilidade sobre o investido": o índice recebe
-     exatamente os mesmos aportes e resgates, nas mesmas datas. A pergunta
-     respondida é "e se esse dinheiro tivesse ido para o CDB/Ibovespa/S&P?".
-   - "Variação no período": tudo parte de 0% no início do período. Ativos usam
-     o preço; a carteira usa rentabilidade ponderada pelo tempo (TWR), que
-     neutraliza o efeito dos aportes. */
+   Métricas em % (padrão, porque colocam R$ 1 mil e R$ 100 mil na mesma escala):
+   - "ret"   Rentabilidade sobre o investido: valor ÷ custo − 1.
+             O índice recebe os MESMOS aportes, nas MESMAS datas.
+   - "price" Variação no período: tudo parte de 0%. Ativo usa o preço; a
+             carteira usa TWR, que neutraliza o efeito dos aportes.
+   Referência (só nas métricas em %): cada linha passa a mostrar quantos pontos
+   percentuais está acima ou abaixo da referência escolhida. Quando a referência
+   é um índice na métrica "ret", CADA ativo é comparado com o índice recebendo
+   os aportes DAQUELE ativo — "ITUB4 contra o CDB com o dinheiro da ITUB4". */
 
 const ASSET_PALETTE = ['#2563eb', '#16a34a', '#f59e0b', '#e94560', '#8b5cf6', '#0891b2', '#db2777', '#65a30d', '#ea580c', '#0d9488', '#7c3aed', '#ca8a04'];
 const CMP_MAX = 4;
+const CMP_VERSION = 10;
 const CMP_DEFAULT = {
+  v: CMP_VERSION,
   sel: [], bench: { cdi: false, ibov: false, spx: false },
   cdbMode: 'cdi', cdbPct: 100, cdbRate: 11,
-  metric: 'both', currency: 'base', period: '1y', from: '', to: '',
-  style: 'line', markers: true,
-  colors: { total: '#0ea5e9', cdi: '#0d9488', ibov: '#ca8a04', spx: '#94a3b8' },
-  benchFlows: 'sum'
+  metric: 'ret', reference: 'none', currency: 'base', period: '1y', from: '', to: '',
+  style: 'line', markers: true, benchFlows: 'sum',
+  colors: { total: '#0ea5e9', cdi: '#0d9488', ibov: '#ca8a04', spx: '#94a3b8' }
 };
+const PCT_METRICS = ['ret', 'price'];
 
 function cmpConfig() {
-  const salvo = state.settings.cmpConfig || { sel: state.positions.length ? ['total'] : [] };
+  let salvo = state.settings.cmpConfig || { sel: state.positions.length ? ['total'] : [] };
+  // Configurações salvas antes da Fase 10 passam a abrir em % (novo padrão)
+  if (salvo.v !== CMP_VERSION) salvo = { ...salvo, v: CMP_VERSION, metric: 'ret', reference: 'none' };
   return {
     ...CMP_DEFAULT, ...salvo,
     bench: { ...CMP_DEFAULT.bench, ...(salvo.bench || {}) },
@@ -3988,20 +4200,27 @@ async function ensureAssetColors() {
     mudou = true;
   }
   const lista = watchlist();
+  let mudouLista = false;
   lista.forEach((w, i) => {
     if (w.color) return;
     const pos = state.positions.find((p) => p.ticker && p.ticker === w.ticker);
     w.color = pos ? pos.color : ASSET_PALETTE[(usadas.size + i) % ASSET_PALETTE.length];
-    mudou = true;
+    mudouLista = true;
   });
-  if (mudou && lista.length) await saveWatchlist(lista);
-  return mudou;
+  if (mudouLista) await saveWatchlist(lista);
+  return mudou || mudouLista;
 }
 function nextFreeColor() {
   const usadas = new Set(state.positions.map((p) => p.color).filter(Boolean));
   return ASSET_PALETTE.find((c) => !usadas.has(c)) || ASSET_PALETTE[usadas.size % ASSET_PALETTE.length];
 }
 function colorDot(cor) { return `<span class="color-dot" style="background:${cor || 'var(--muted)'}"></span>`; }
+function tickerColor(ticker) {
+  const p = state.positions.find((x) => x.ticker === ticker);
+  if (p && p.color) return p.color;
+  const w = watchlist().find((x) => x.ticker === ticker);
+  return w && w.color ? w.color : null;
+}
 
 async function setSeriesColor(chave, cor) {
   if (chave.startsWith('pos:')) {
@@ -4023,16 +4242,24 @@ async function setSeriesColor(chave, cor) {
 async function fetchFxHistory(desde) {
   const chave = HIST_PREFIX + 'fx:EUR';
   const cache = await getSetting(chave);
-  if (cache && cache.fetchedAt === todayISO() && cache.from <= desde) return cache.rates;
+  if (cache && cache.fetchedAt === todayISO() && cache.from <= desde && cache.rates && cache.rates.length) return cache.rates;
   const moedas = CURRENCIES.map((c) => c.code).filter((c) => c !== 'EUR').join(',');
-  try {
-    const d = await getJSON(`https://api.frankfurter.app/${desde}..${todayISO()}?from=EUR&to=${moedas}`);
-    const rates = Object.entries((d && d.rates) || {}).sort((a, b) => a[0].localeCompare(b[0]));
-    if (rates.length) {
-      await put('settings', { key: chave, value: { fetchedAt: todayISO(), from: desde, rates } });
-      return rates;
-    }
-  } catch (e) { console.warn('Câmbio histórico indisponível:', e.message); }
+  const faixa = `${desde}..${todayISO()}`;
+  // O endereço antigo (.app) passou a redirecionar; tenta o novo primeiro.
+  const urls = [
+    `https://api.frankfurter.dev/v1/${faixa}?base=EUR&symbols=${moedas}`,
+    `https://api.frankfurter.app/${faixa}?from=EUR&to=${moedas}`
+  ];
+  for (const url of urls) {
+    try {
+      const d = await getJSON(url);
+      const rates = Object.entries((d && d.rates) || {}).sort((a, b) => a[0].localeCompare(b[0]));
+      if (rates.length) {
+        await put('settings', { key: chave, value: { fetchedAt: todayISO(), from: desde, rates } });
+        return rates;
+      }
+    } catch (e) { console.warn('Câmbio histórico indisponível em', url, '-', e.message); }
+  }
   return cache ? cache.rates : [];
 }
 
@@ -4134,7 +4361,6 @@ function cmpOptions() {
 }
 
 function periodStart(cfg, primeira) {
-  const hoje = new Date();
   const menos = (m) => { const d = new Date(); d.setMonth(d.getMonth() - m); return d.toISOString().slice(0, 10); };
   switch (cfg.period) {
     case '1m': return menos(1);
@@ -4143,14 +4369,13 @@ function periodStart(cfg, primeira) {
     case '1y': return menos(12);
     case '3y': return menos(36);
     case '5y': return menos(60);
-    case 'ytd': return hoje.getFullYear() + '-01-01';
+    case 'ytd': return new Date().getFullYear() + '-01-01';
     case 'custom': return cfg.from || primeira;
     default: return primeira;
   }
 }
 
-/* ----- Montagem das séries ----- */
-// Custo na moeda de exibição, convertendo cada movimento pelo câmbio da SUA data.
+/* ----- Motor de séries ----- */
 function flowsOf(positions, D, conv) {
   const fluxos = [];
   positions.forEach((pos) => invMovesOf(pos.id).forEach((m) => {
@@ -4160,6 +4385,7 @@ function flowsOf(positions, D, conv) {
   return fluxos.sort((a, b) => a.date.localeCompare(b.date));
 }
 
+// Custo na moeda de exibição, convertendo cada movimento pelo câmbio da SUA data.
 function costSeriesD(pos, datas, D, conv) {
   const movs = invMovesOf(pos.id);
   let i = 0, qtd = 0, custo = 0;
@@ -4176,14 +4402,23 @@ function costSeriesD(pos, datas, D, conv) {
   });
 }
 
-// Mesmo dinheiro aplicado no índice: compra "cotas" do índice em cada aporte.
-function simulateBench(levels, levelCur, fluxos, datas, D, conv) {
-  const nivelD = (d) => conv(closeAt(levels, d), levelCur, D, d);
+/* Mesmo dinheiro aplicado no índice: compra "cotas" do índice em cada aporte.
+   Correção da Fase 10: aporte anterior ao primeiro dado do índice (histórico
+   gratuito curto) antes era DESCARTADO — o Ibovespa aparecia começando em zero.
+   Agora usa o primeiro nível conhecido e sinaliza a aproximação. */
+function simulateBench(levels, levelCur, fluxos, datas, D, conv, aoAproximar) {
+  if (!levels.length) return datas.map(() => ({ value: null, cost: 0 }));
+  const primeiro = levels[0];
+  const nivelD = (d) => {
+    let n = closeAt(levels, d);
+    if (n == null) { n = primeiro[1]; if (aoAproximar) aoAproximar(primeiro[0]); }
+    return conv(n, levelCur, D, d);
+  };
   let i = 0, cotas = 0, custo = 0;
   return datas.map((d) => {
     while (i < fluxos.length && fluxos[i].date <= d) {
       const f = fluxos[i++];
-      const n = nivelD(f.date) || nivelD(d);
+      const n = nivelD(f.date);
       if (!n) continue;
       if (f.type === 'buy') { cotas += f.amount / n; custo += f.amount; }
       else if (cotas > 0) {
@@ -4219,13 +4454,15 @@ function downsample(datas, max) {
   return out;
 }
 
+const retOf = (v, c) => (c > 0 && v != null ? (v / c - 1) * 100 : null);
+const normalize = (arr) => { const b = arr.find((x) => x); return arr.map((x) => (b && x ? (x / b - 1) * 100 : null)); };
+
 let cmpToken = 0;
 const cmpVisible = {};
 
 async function renderCompare() {
   const painel = document.getElementById('tab-investments');
   if (!painel || !painel.classList.contains('active')) return;
-  // Cores novas: redesenha a aba inteira, que chama esta função de novo
   if (await ensureAssetColors()) { renderInvestments(); return; }
   renderCompareControls();
   const token = ++cmpToken;
@@ -4235,33 +4472,39 @@ async function renderCompare() {
   const ops = cmpOptions();
   const selecionadas = cfg.sel.map((k) => ops.find((o) => o.key === k)).filter(Boolean);
   const benches = Object.keys(cfg.bench).filter((k) => cfg.bench[k]);
+  const metrica = cfg.metric;
+  const emPct = PCT_METRICS.includes(metrica);
+  let ref = emPct ? cfg.reference : 'none';
   const avisos = new Set();
   const avisar = (m) => { avisos.add(m); if (nota && token === cmpToken) nota.textContent = [...avisos].join(' '); };
+  const limpar = (msg) => {
+    box.innerHTML = `<p class="empty-state">${msg}</p>`;
+    ['cmpLegend', 'cmpStats', 'cmpRanking'].forEach((id) => { const el = document.getElementById(id); if (el) el.innerHTML = ''; });
+  };
 
-  if (!selecionadas.length && !benches.length) {
-    box.innerHTML = `<p class="empty-state">${t('cmp.pickOne')}</p>`;
-    document.getElementById('cmpLegend').innerHTML = '';
-    document.getElementById('cmpStats').innerHTML = '';
-    nota.textContent = '';
-    return;
-  }
+  if (!selecionadas.length && !benches.length) { nota.textContent = ''; limpar(t('cmp.pickOne')); return; }
   box.innerHTML = `<p class="hint">${t('mkt.loadingHist')}</p>`;
   nota.textContent = '';
 
   const D = cfg.currency === 'base' ? state.settings.baseCurrency : cfg.currency;
-  const metrica = cfg.metric;
-  const emPct = metrica === 'retInv' || metrica === 'price';
-
-  // Posições envolvidas (a carteira total inclui todas)
   const temTotal = selecionadas.some((o) => o.key === 'total');
-  const posicoesSel = temTotal ? state.positions.slice() : selecionadas.filter((o) => o.pos).map((o) => o.pos);
-  const todasPosicoes = [...new Set([...(temTotal ? state.positions : []), ...selecionadas.filter((o) => o.pos).map((o) => o.pos)])];
+
+  // A referência também precisa de dados, mesmo que não esteja selecionada
+  const refOp = ref.startsWith('bench:') ? null : ops.find((o) => o.key === ref);
+  const refBench = ref.startsWith('bench:') ? ref.slice(6) : null;
+  if (ref !== 'none' && !refOp && !refBench) ref = 'none';
+  if (refOp && metrica === 'ret' && !refOp.invest) { avisar(t('cmp.watchOnlyPrice').replace('{a}', refOp.label)); ref = 'none'; }
+
+  const envolvidas = [...selecionadas];
+  if (refOp && !envolvidas.includes(refOp)) envolvidas.push(refOp);
+  const usaTotal = envolvidas.some((o) => o.key === 'total');
+  const todasPosicoes = [...new Set([...(usaTotal ? state.positions : []), ...envolvidas.filter((o) => o.pos).map((o) => o.pos)])];
+  const benchesNecessarios = [...new Set([...benches, ...(refBench ? [refBench] : [])])];
 
   const primeiraMov = todasPosicoes.flatMap((p) => invMovesOf(p.id).map((m) => m.date)).sort()[0];
   const cincoAnos = (() => { const d = new Date(); d.setFullYear(d.getFullYear() - 5); return d.toISOString().slice(0, 10); })();
   const inicioPeriodo = periodStart(cfg, primeiraMov || cincoAnos);
   const fimPeriodo = cfg.period === 'custom' && cfg.to ? cfg.to : todayISO();
-  // Métricas de valor precisam do histórico desde o primeiro aporte
   const inicioDados = [inicioPeriodo, primeiraMov || inicioPeriodo].sort()[0];
 
   // Históricos
@@ -4269,23 +4512,24 @@ async function renderCompare() {
   for (const pos of todasPosicoes) {
     if (token !== cmpToken) return;
     hist['pos:' + pos.id] = pos.ticker && pos.kind === 'quote'
-      ? await fetchHistory(pos, () => avisar(t('mkt.rateWait'))).catch((e) => { avisar(t('mkt.histFail') + ' ' + pos.ticker); return []; })
+      ? await fetchHistory(pos, () => avisar(t('mkt.rateWait'))).catch(() => { avisar(t('mkt.histFail') + ' ' + pos.ticker); return []; })
       : [];
   }
-  for (const o of selecionadas.filter((x) => x.watch)) {
+  for (const o of envolvidas.filter((x) => x.watch)) {
     if (token !== cmpToken) return;
     hist[o.key] = await fetchHistory(o.watch, () => avisar(t('mkt.rateWait'))).catch(() => { avisar(t('mkt.histFail') + ' ' + o.label); return []; });
   }
   const niveis = {};
-  for (const b of benches) {
+  for (const b of benchesNecessarios) {
     if (token !== cmpToken) return;
     try { niveis[b] = await benchmarkLevels(b, cfg, inicioDados, avisar); }
     catch (e) { avisar(t('cmp.benchFail').replace('{b}', t('cmp.b.' + b)) + ' ' + e.message); niveis[b] = { points: [], currency: 'EUR' }; }
+    if (!niveis[b].points.length) avisar(t('cmp.benchFail').replace('{b}', t('cmp.b.' + b)));
   }
   const conv = makeConverter(await fetchFxHistory(inicioDados));
   if (token !== cmpToken) return;
 
-  // Eixo de datas: pregões conhecidos + movimentos + hoje, dentro do período
+  // Eixo de datas
   const datasSet = new Set([fimPeriodo]);
   Object.values(hist).forEach((h) => h.forEach(([d]) => { if (d >= inicioDados && d <= fimPeriodo) datasSet.add(d); }));
   Object.values(niveis).forEach((n) => n.points.forEach(([d]) => { if (d >= inicioDados && d <= fimPeriodo) datasSet.add(d); }));
@@ -4310,120 +4554,134 @@ async function renderCompare() {
         const st = positionStateAt(pos, d);
         if (st.quantity <= 0) return 0;
         const preco = manual[d] != null ? manual[d] : (closeAt(h, d) || (positionQuoteAt(pos, d) || {}).value);
-        v = preco ? st.quantity * preco : positionStateAt(pos, d).cost;
+        v = preco ? st.quantity * preco : st.cost;
       } else v = positionValue(pos, d);
       const c = conv(v, pos.currency, D, d);
       return c == null ? custos[i] : c;
     });
   });
 
-  // Aportes que os índices recebem: soma dos selecionados ou os de um ativo específico
-  let posFluxo = posicoesSel;
-  const alvo = selecionadas.find((o) => o.key === cfg.benchFlows && o.invest);
-  if (alvo) posFluxo = alvo.key === 'total' ? state.positions : [alvo.pos];
-  const fluxosTodos = flowsOf(posFluxo, D, conv);
-  const primeiroFluxo = fluxosTodos.length ? fluxosTodos[0].date : '9999';
   const idx = datasTodas.map((d, i) => [d, i]).filter(([d]) => d >= inicioPeriodo && d <= fimPeriodo).map(([, i]) => i);
   const cortar = (arr) => idx.map((i) => arr[i]);
   const datasPeriodo = cortar(datasTodas);
 
+  const posicoesDe = (o) => (o.key === 'total' ? state.positions : [o.pos].filter(Boolean));
+  const somaPos = (mapa, ps) => datasTodas.map((_, i) => ps.reduce((s, p) => s + (mapa[p.id] ? mapa[p.id][i] : 0), 0));
+  const aprox = new Set();
+  const avisoCurto = (b) => (desde) => aprox.add(t('cmp.benchShort').replace('{b}', t('cmp.b.' + b)).replace('{d}', desde.split('-').reverse().join('/')));
+
+  // % de uma opção (ativo, carteira ou watchlist), já no período
+  const pctDe = (o) => {
+    if (o.watch) return normalize(datasPeriodo.map((d) => conv(closeAt(hist[o.key] || [], d), o.watch.currency, D, d)));
+    const ps = posicoesDe(o);
+    const valores = somaPos(valorPos, ps), custos = somaPos(custoPos, ps);
+    if (metrica === 'ret') return cortar(valores.map((v, i) => retOf(v, custos[i])));
+    const h = o.pos && o.pos.kind === 'quote' ? hist[o.key] : null;
+    if (h && h.length) return normalize(datasPeriodo.map((d) => conv(closeAt(h, d), o.pos.currency, D, d)));
+    const fl = {};
+    flowsOf(ps, D, conv).forEach((f) => { fl[f.date] = (fl[f.date] || 0) + (f.type === 'buy' ? f.amount : -f.amount); });
+    return twrSeries(cortar(valores), fl, datasPeriodo);
+  };
+  // % de um índice: "ret" recebe os aportes informados; "price" só normaliza
+  const pctBench = (b, fluxos) => {
+    const nv = niveis[b];
+    if (!nv || !nv.points.length) return null;
+    if (metrica === 'price') return normalize(datasPeriodo.map((d) => conv(closeAt(nv.points, d), nv.currency, D, d)));
+    if (!fluxos.length) return null;
+    const sim = cortar(simulateBench(nv.points, nv.currency, fluxos, datasTodas, D, conv, avisoCurto(b)));
+    return sim.map((s) => retOf(s.value, s.cost));
+  };
+
+  // Aportes que alimentam os índices exibidos como linha própria
+  const alvoFluxos = selecionadas.find((o) => o.key === cfg.benchFlows && o.invest);
+  const fluxosIndices = alvoFluxos
+    ? flowsOf(posicoesDe(alvoFluxos), D, conv)
+    : flowsOf(temTotal ? state.positions : selecionadas.filter((o) => o.pos).map((o) => o.pos), D, conv);
+
+  // Linha da referência (quando não depende do ativo)
+  let refFixa = null, refLabel = '';
+  if (ref !== 'none') {
+    if (refOp) { refFixa = pctDe(refOp); refLabel = refOp.label; }
+    else { refLabel = benchLabel(refBench, cfg); if (metrica === 'price') refFixa = pctBench(refBench, []); }
+  }
+  const menosRef = (arr, refArr) => arr.map((v, i) => (v == null || !refArr || refArr[i] == null ? null : v - refArr[i]));
+
   const series = [];
-  const precisaInvest = metrica !== 'price';
-
   selecionadas.forEach((o) => {
-    if (precisaInvest && !o.invest) { avisar(t('cmp.watchOnlyPrice').replace('{a}', o.label)); return; }
-    const ps = o.key === 'total' ? state.positions : [o.pos].filter(Boolean);
-    let valores = datasTodas.map((_, i) => ps.reduce((s, p) => s + (valorPos[p.id] ? valorPos[p.id][i] : 0), 0));
-    let custos = datasTodas.map((_, i) => ps.reduce((s, p) => s + (custoPos[p.id] ? custoPos[p.id][i] : 0), 0));
-    const marcadores = cfg.markers && o.pos ? invMovesOf(o.pos.id).filter((m) => m.date >= inicioPeriodo && m.date <= fimPeriodo).map((m) => ({ date: m.date, type: m.type })) : [];
+    if (metrica !== 'price' && !o.invest) { avisar(t('cmp.watchOnlyPrice').replace('{a}', o.label)); return; }
+    if (o.key === ref) return; // a própria referência vira a linha do zero
+    const marcadores = cfg.markers && o.pos
+      ? invMovesOf(o.pos.id).filter((m) => m.date >= inicioPeriodo && m.date <= fimPeriodo).map((m) => ({ date: m.date, type: m.type }))
+      : [];
+    const base = { key: o.key, label: o.label, title: o.title, color: o.color, markers: marcadores };
 
-    if (o.watch) {
-      const h = hist[o.key] || [];
-      const precos = datasPeriodo.map((d) => conv(closeAt(h, d), o.watch.currency, D, d));
-      const base = precos.find((p) => p);
-      series.push({ key: o.key, label: o.label, title: o.title, color: o.color, points: datasPeriodo.map((d, i) => [d, base && precos[i] ? (precos[i] / base - 1) * 100 : null]) });
-      return;
-    }
-    if (metrica === 'price') {
-      const h = o.pos && o.pos.kind === 'quote' ? hist[o.key] : null;
-      let pts;
-      if (h && h.length) {
-        const precos = datasPeriodo.map((d) => conv(closeAt(h, d), o.pos.currency, D, d));
-        const base = precos.find((p) => p);
-        pts = datasPeriodo.map((d, i) => [d, base && precos[i] ? (precos[i] / base - 1) * 100 : null]);
-      } else {
-        const fl = {};
-        flowsOf(ps, D, conv).forEach((f) => { fl[f.date] = (fl[f.date] || 0) + (f.type === 'buy' ? f.amount : -f.amount); });
-        const tw = twrSeries(cortar(valores), fl, datasPeriodo);
-        pts = datasPeriodo.map((d, i) => [d, tw[i]]);
+    if (emPct) {
+      let pts = pctDe(o);
+      if (ref !== 'none') {
+        // Índice como referência na métrica "ret": cada ativo contra o índice com os SEUS aportes
+        const r = refBench && metrica === 'ret' ? pctBench(refBench, flowsOf(posicoesDe(o), D, conv)) : refFixa;
+        pts = menosRef(pts, r);
       }
-      series.push({ key: o.key, label: o.label, title: o.title, color: o.color, points: pts, markers: marcadores });
+      series.push({ ...base, points: datasPeriodo.map((d, i) => [d, pts[i]]) });
       return;
     }
-    valores = cortar(valores); custos = cortar(custos);
-    const inicioSerie = ps.flatMap((x) => invMovesOf(x.id).map((m) => m.date)).sort()[0] || '9999';
-    const ponto = (i) => {
-      if (datasPeriodo[i] < inicioSerie) return null; // antes da compra a posição não existia
-      if (metrica === 'value') return valores[i];
-      if (metrica === 'cost') return custos[i];
-      if (metrica === 'profit') return valores[i] - custos[i];
-      if (metrica === 'retInv') return custos[i] > 0 ? (valores[i] / custos[i] - 1) * 100 : null;
-      return valores[i];
-    };
-    series.push({ key: o.key, label: o.label, title: o.title, color: o.color, points: datasPeriodo.map((d, i) => [d, ponto(i)]), markers: marcadores });
-    if (metrica === 'both') {
-      series.push({ key: o.key + ':cost', label: o.label + ' — ' + t('mkt.invested'), color: o.color, dash: '6 4', points: datasPeriodo.map((d, i) => [d, d < inicioSerie ? null : custos[i]]), parent: o.key });
-    }
+    const valores = cortar(somaPos(valorPos, posicoesDe(o)));
+    const custos = cortar(somaPos(custoPos, posicoesDe(o)));
+    const valorDe = (i) => (metrica === 'value' ? valores[i] : metrica === 'cost' ? custos[i] : metrica === 'profit' ? valores[i] - custos[i] : valores[i]);
+    series.push({ ...base, points: datasPeriodo.map((d, i) => [d, valorDe(i)]) });
+    if (metrica === 'both') series.push({ key: o.key + ':cost', label: o.label + ' — ' + t('mkt.invested'), color: o.color, dash: '6 4', points: datasPeriodo.map((d, i) => [d, custos[i]]) });
   });
 
   benches.forEach((b) => {
+    if (refBench === b) return;
     const nv = niveis[b];
     if (!nv || !nv.points.length) return;
     const cor = cfg.colors[b];
-    const rotulo = benchLabel(b, cfg);
-    if (metrica === 'price' || !fluxosTodos.length) {
-      if (metrica !== 'price' && !fluxosTodos.length) avisar(t('cmp.benchNeedsFlows'));
-      if (metrica !== 'price') return;
-      const lv = datasPeriodo.map((d) => conv(closeAt(nv.points, d), nv.currency, D, d));
-      const base = lv.find((x) => x);
-      series.push({ key: 'bench:' + b, label: rotulo, color: cor, dash: '2 3', bench: true, points: datasPeriodo.map((d, i) => [d, base && lv[i] ? (lv[i] / base - 1) * 100 : null]) });
+    const rotulo = benchLabel(b, cfg) + (metrica === 'price' ? '' : ' ' + t('cmp.sameMoney'));
+    if (!fluxosIndices.length && metrica !== 'price') { avisar(t('cmp.benchNeedsFlows')); return; }
+    if (metrica === 'cost') return;
+    if (emPct) {
+      let pts = pctBench(b, fluxosIndices);
+      if (!pts) return;
+      if (ref !== 'none') pts = menosRef(pts, refBench && metrica === 'ret' ? pctBench(refBench, fluxosIndices) : refFixa);
+      series.push({ key: 'bench:' + b, label: rotulo, color: cor, dash: '2 3', bench: true, points: datasPeriodo.map((d, i) => [d, pts[i]]) });
       return;
     }
-    if (metrica === 'cost') return;
-    const sim = cortar(simulateBench(nv.points, nv.currency, fluxosTodos, datasTodas, D, conv));
-    const ponto = (s) => {
-      if (s.value == null) return null;
-      if (metrica === 'profit') return s.value - s.cost;
-      if (metrica === 'retInv') return s.cost > 0 ? (s.value / s.cost - 1) * 100 : null;
-      return s.value;
-    };
-    series.push({ key: 'bench:' + b, label: rotulo + ' ' + t('cmp.sameMoney'), color: cor, dash: '2 3', bench: true, points: datasPeriodo.map((d, i) => [d, d < primeiroFluxo ? null : ponto(sim[i])]) });
+    const sim = cortar(simulateBench(nv.points, nv.currency, fluxosIndices, datasTodas, D, conv, avisoCurto(b)));
+    const val = (s) => (s.value == null ? null : metrica === 'profit' ? s.value - s.cost : s.value);
+    series.push({ key: 'bench:' + b, label: rotulo, color: cor, dash: '2 3', bench: true, points: datasPeriodo.map((d, i) => [d, val(sim[i])]) });
   });
+
   if (metrica === 'cost' && benches.length) avisar(t('cmp.costNoBench'));
-  if (benches.length && metrica !== 'price' && !alvo && selecionadas.filter((o) => o.invest).length > 1 && !temTotal) avisar(t('cmp.benchCombined'));
+  if (benches.length && metrica !== 'price' && ref === 'none') {
+    avisar(alvoFluxos ? t('cmp.benchFlowsOf').replace('{a}', alvoFluxos.label) : t('cmp.benchCombined'));
+  }
+  if (refBench && metrica === 'ret') avisar(t('cmp.refOwnFlows').replace('{r}', refLabel));
+  aprox.forEach((m) => avisar(m));
   if (conv.approx()) avisar(t('nav.approx'));
 
-  // Reduz pontos para o SVG continuar leve
   const manter = new Set(downsample(datasPeriodo, 700));
   series.forEach((s) => { s.points = s.points.filter(([d]) => manter.has(d)); });
 
   if (token !== cmpToken) return;
-  drawCompareChart(series, emPct ? 'pct' : 'money', D, cfg.style);
+  const unidade = emPct ? (ref !== 'none' ? 'pp' : 'pct') : 'money';
+  drawCompareChart(series, unidade, D, cfg.style, ref !== 'none' ? refLabel : '');
+  renderRanking(series, unidade, D, metrica, ref !== 'none' ? refLabel : '');
 }
 
-function fmtAxis(v, unidade, escala) {
-  if (unidade === 'pct') return v.toFixed(escala < 10 ? 1 : 0).replace('.', ',') + '%';
-  // Mesma unidade em todas as linhas do eixo
-  if (escala >= 1e6) return (v / 1e6).toFixed(1).replace('.', ',') + ' mi';
-  if (escala >= 1e4) return (v / 1e3).toFixed(escala >= 1e5 ? 0 : 1).replace('.', ',') + ' mil';
-  return v.toLocaleString('pt-BR', { maximumFractionDigits: 0 });
+function fmtAxis(v, unidade) {
+  if (unidade === 'money') return fmtCompact(v);
+  const txt = v.toFixed(Math.abs(v) < 10 ? 1 : 0).replace('.', ',');
+  return unidade === 'pp' ? (v > 0 ? '+' : '') + txt + ' p.p.' : txt + '%';
 }
 function fmtVal(v, unidade, D) {
   if (v == null) return '—';
-  return unidade === 'pct' ? fmtPct(v) : fmtMoney(v, D);
+  if (unidade === 'money') return fmtMoney(v, D);
+  if (unidade === 'pp') return (v > 0 ? '+' : '') + v.toFixed(2).replace('.', ',') + ' p.p.';
+  return fmtPct(v);
 }
 
-function drawCompareChart(series, unidade, D, estilo) {
+function drawCompareChart(series, unidade, D, estilo, refLabel) {
   const box = document.getElementById('cmpChart');
   const tip = document.getElementById('cmpTip');
   const legend = document.getElementById('cmpLegend');
@@ -4443,46 +4701,61 @@ function drawCompareChart(series, unidade, D, estilo) {
     lab.querySelector('input').addEventListener('change', (e) => { cmpVisible[s.key] = e.target.checked; desenhar(); });
     legend.appendChild(lab);
   });
+  if (refLabel) {
+    const lab = document.createElement('span');
+    lab.className = 'ref-legend';
+    lab.innerHTML = `<span class="swatch swatch-ref"></span>${escapeHtml(t('cmp.refLine').replace('{r}', refLabel))}`;
+    legend.appendChild(lab);
+  }
 
   const datas = [...new Set(validas.flatMap((s) => s.points.map(([d]) => d)))].sort();
   const mapa = validas.map((s) => { const m = {}; s.points.forEach(([d, v]) => { m[d] = v; }); return m; });
 
   function desenhar() {
-    const W = 760, H = 340, padL = 70, padR = 16, padT = 16, padB = 34;
+    const W = 760, H = 340, padL = 76, padR = 16, padT = 16, padB = 34;
     const vis = validas.map((s, k) => ({ s, m: mapa[k] })).filter(({ s }) => cmpVisible[s.key]);
     let min = Infinity, max = -Infinity;
     vis.forEach(({ s }) => s.points.forEach(([, v]) => { if (v != null) { min = Math.min(min, v); max = Math.max(max, v); } }));
     if (!isFinite(min)) { min = 0; max = 1; }
-    if (unidade === 'pct') { min = Math.min(min, 0); max = Math.max(max, 0); }
+    if (unidade !== 'money') { min = Math.min(min, 0); max = Math.max(max, 0); }
     if (min === max) max = min + 1;
     const faixa = max - min; min -= faixa * 0.06; max += faixa * 0.06;
     if (unidade === 'money' && min < 0 && vis.every(({ s }) => s.points.every(([, v]) => v == null || v >= 0))) min = 0;
     const X = (i) => padL + (i / Math.max(datas.length - 1, 1)) * (W - padL - padR);
     const Y = (v) => padT + (1 - (v - min) / (max - min)) * (H - padT - padB);
     const iData = {}; datas.forEach((d, i) => { iData[d] = i; });
+    const pos = getComputedStyle(document.documentElement).getPropertyValue('--positive').trim() || '#15803d';
+    const neg = getComputedStyle(document.documentElement).getPropertyValue('--negative').trim() || '#b91c1c';
 
     let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${t('cmp.title')}">`;
+    // Com referência: fundo levemente verde acima do zero e vermelho abaixo
+    if (unidade === 'pp' && min < 0 && max > 0) {
+      svg += `<rect x="${padL}" y="${padT}" width="${W - padL - padR}" height="${Y(0) - padT}" fill="${pos}" fill-opacity="0.05"/>
+        <rect x="${padL}" y="${Y(0)}" width="${W - padL - padR}" height="${H - padB - Y(0)}" fill="${neg}" fill-opacity="0.05"/>`;
+    }
     for (let g = 0; g <= 5; g++) {
       const v = min + ((max - min) * g) / 5;
       svg += `<line x1="${padL}" x2="${W - padR}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--border)"/>
-        <text x="${padL - 8}" y="${Y(v) + 4}" text-anchor="end" font-size="11" fill="var(--muted)">${fmtAxis(v, unidade, Math.max(Math.abs(min), Math.abs(max)))}</text>`;
+        <text x="${padL - 8}" y="${Y(v) + 4}" text-anchor="end" font-size="11" fill="var(--muted)">${fmtAxis(v, unidade)}</text>`;
     }
-    if (min < 0 && max > 0) svg += `<line x1="${padL}" x2="${W - padR}" y1="${Y(0)}" y2="${Y(0)}" stroke="var(--muted)" stroke-width="1"/>`;
+    if (min < 0 && max > 0) {
+      svg += `<line x1="${padL}" x2="${W - padR}" y1="${Y(0)}" y2="${Y(0)}" stroke="var(--text)" stroke-opacity="${unidade === 'pp' ? 0.7 : 0.35}" stroke-width="${unidade === 'pp' ? 1.5 : 1}"/>`;
+      if (unidade === 'pp') svg += `<text x="${W - padR - 4}" y="${Y(0) - 6}" text-anchor="end" font-size="11" fill="var(--muted)">${escapeHtml(refLabel)} = 0</text>`;
+    }
 
     vis.forEach(({ s }) => {
       const pts = s.points.filter(([, v]) => v != null);
       if (pts.length < 2) return;
       const d = pts.map(([dt, v], j) => `${j ? 'L' : 'M'}${X(iData[dt]).toFixed(1)},${Y(v).toFixed(1)}`).join(' ');
       if (estilo === 'area' && !s.dash) {
-        const chao = Y(Math.max(min, 0));
+        const chao = Y(unidade === 'money' ? Math.max(min, 0) : 0);
         svg += `<path d="${d} L${X(iData[pts[pts.length - 1][0]]).toFixed(1)},${chao} L${X(iData[pts[0][0]]).toFixed(1)},${chao} Z" fill="${s.color}" fill-opacity="${vis.length > 2 ? 0.08 : 0.16}"/>`;
       }
       svg += `<path d="${d}" fill="none" stroke="${s.color}" stroke-width="${s.bench ? 1.8 : 2.2}" ${s.dash ? `stroke-dasharray="${s.dash}"` : ''} stroke-linejoin="round"/>`;
       (s.markers || []).forEach((mk) => {
-        const i = iData[mk.date] != null ? iData[mk.date] : datas.findIndex((x) => x >= mk.date);
         const ponto = pts.find(([dt]) => dt >= mk.date);
-        if (i < 0 || !ponto) return;
-        const cx = X(i), cy = Y(ponto[1]);
+        if (!ponto) return;
+        const cx = X(iData[ponto[0]]), cy = Y(ponto[1]);
         svg += mk.type === 'buy'
           ? `<path d="M${cx},${cy - 7} l5,8 h-10 z" fill="${s.color}" stroke="var(--surface)" stroke-width="1"><title>${t('inv.buy')} ${mk.date}</title></path>`
           : `<path d="M${cx},${cy + 7} l5,-8 h-10 z" fill="${s.color}" stroke="var(--surface)" stroke-width="1"><title>${t('inv.sell')} ${mk.date}</title></path>`;
@@ -4508,10 +4781,10 @@ function drawCompareChart(series, unidade, D, estilo) {
       const i = Math.max(0, Math.min(datas.length - 1, Math.round(((px - padL) / (W - padL - padR)) * (datas.length - 1))));
       const d = datas[i];
       cursor.setAttribute('x1', X(i)); cursor.setAttribute('x2', X(i)); cursor.setAttribute('visibility', 'visible');
-      tip.innerHTML = `<div>${d.split('-').reverse().join('/')}</div>` + vis.map(({ s, m }) => {
+      tip.innerHTML = `<div>${d.split('-').reverse().join('/')}${refLabel ? ' — ' + escapeHtml(t('cmp.vsRef').replace('{r}', refLabel)) : ''}</div>` + vis.map(({ s, m }) => {
         let v = m[d];
         if (v === undefined) { const ant = s.points.filter(([x]) => x <= d); v = ant.length ? ant[ant.length - 1][1] : null; }
-        return `<div class="tip-row">${colorDot(s.color)}${escapeHtml(s.label)}: <strong>${fmtVal(v, unidade, D)}</strong></div>`.replace(': <strong>', ':&nbsp;<strong>');
+        return `<div class="tip-row">${colorDot(s.color)}${escapeHtml(s.label)}:&nbsp;<strong>${fmtVal(v, unidade, D)}</strong></div>`;
       }).join('');
       tip.classList.remove('hidden');
       const bx = box.parentElement.getBoundingClientRect();
@@ -4526,7 +4799,6 @@ function drawCompareChart(series, unidade, D, estilo) {
   }
   desenhar();
 
-  // Tabela-resumo do período
   stats.innerHTML = `<table class="mini-table cmp-stats-table"><thead><tr>
       <th>${t('cmp.series')}</th><th>${t('cmp.start')}</th><th>${t('cmp.end')}</th><th>${t('cmp.change')}</th><th>${t('cmp.max')}</th><th>${t('cmp.min')}</th>
     </tr></thead><tbody>${validas.map((s) => {
@@ -4534,12 +4806,37 @@ function drawCompareChart(series, unidade, D, estilo) {
       const ini = vals[0][1], fim = vals[vals.length - 1][1];
       const ys = vals.map(([, v]) => v);
       const dif = fim - ini;
-      const variacao = unidade === 'pct'
-        ? (dif > 0 ? '+' : '') + dif.toFixed(2).replace('.', ',') + ' p.p.'
-        : fmtMoney(dif, D) + (ini > 0 ? ' (' + fmtPct((fim / ini - 1) * 100) + ')' : '');
+      const variacao = unidade === 'money'
+        ? fmtMoney(dif, D) + (ini > 0 ? ' (' + fmtPct((fim / ini - 1) * 100) + ')' : '')
+        : (dif > 0 ? '+' : '') + dif.toFixed(2).replace('.', ',') + ' p.p.';
       return `<tr><td>${colorDot(s.color)}${escapeHtml(s.label)}</td><td>${fmtVal(ini, unidade, D)}</td><td><strong>${fmtVal(fim, unidade, D)}</strong></td>
         <td class="${dif > 0 ? 'amount-in' : dif < 0 ? 'amount-out' : ''}">${variacao}</td><td>${fmtVal(Math.max(...ys), unidade, D)}</td><td>${fmtVal(Math.min(...ys), unidade, D)}</td></tr>`;
     }).join('')}</tbody></table>`;
+}
+
+// Ranking em barras: quem ganhou mais no fim do período (ou mais acima da referência)
+function renderRanking(series, unidade, D, metrica, refLabel) {
+  const box = document.getElementById('cmpRanking');
+  if (!box) return;
+  if (!['ret', 'price', 'profit'].includes(metrica)) { box.innerHTML = ''; return; }
+  const itens = series
+    .filter((s) => !String(s.key).endsWith(':cost'))
+    .map((s) => { const v = s.points.filter(([, x]) => x != null); return { s, v: v.length ? v[v.length - 1][1] : null }; })
+    .filter((x) => x.v != null)
+    .sort((a, b) => b.v - a.v);
+  if (!itens.length) { box.innerHTML = ''; return; }
+  const maxAbs = Math.max(...itens.map((x) => Math.abs(x.v)), 0.0001);
+  const titulo = refLabel ? t('cmp.rankVs').replace('{r}', refLabel) : t('cmp.rank.' + metrica);
+  box.innerHTML = `<h4 class="rank-title">${escapeHtml(titulo)}</h4>
+    <ol class="rank-list">${itens.map(({ s, v }) => {
+      const larg = (Math.abs(v) / maxAbs) * 50;
+      const lado = v >= 0 ? `left:50%;width:${larg}%` : `left:${50 - larg}%;width:${larg}%`;
+      return `<li>
+        <span class="rank-name">${colorDot(s.color)}${escapeHtml(s.label)}</span>
+        <span class="rank-track"><span class="rank-axis"></span><span class="rank-bar${s.dash ? ' rank-bar-bench' : ''}" style="${lado};background:${s.color}"></span></span>
+        <span class="rank-val ${v > 0 ? 'amount-in' : v < 0 ? 'amount-out' : ''}">${fmtVal(v, unidade, D)}</span>
+      </li>`;
+    }).join('')}</ol>`;
 }
 
 /* ----- Controles ----- */
@@ -4548,22 +4845,28 @@ function renderCompareControls() {
   if (!wrap) return;
   const cfg = cmpConfig();
   const ops = cmpOptions();
-  // Remove da seleção o que não existe mais (posição excluída, etc.)
   const validas = cfg.sel.filter((k) => ops.some((o) => o.key === k));
   if (validas.length !== cfg.sel.length) { cfg.sel = validas; saveCmpConfig(cfg); }
+  const emPct = PCT_METRICS.includes(cfg.metric);
 
   const chip = (o) => {
     const ativo = cfg.sel.includes(o.key);
     return `<span class="cmp-chip ${ativo ? 'active' : ''}" style="--chip:${o.color || 'var(--muted)'}" title="${escapeHtml(o.title || o.label)}">
       <input type="color" value="${o.color || '#64748b'}" aria-label="${t('cmp.color')}" onchange="setSeriesColor('${o.key}', this.value)">
-      <button type="button" onclick="toggleCmpSel('${o.key}')">${escapeHtml(o.label)}</button>
+      <button type="button" aria-pressed="${ativo}" onclick="toggleCmpSel('${o.key}')">${escapeHtml(o.label)}</button>
     </span>`;
   };
   const benchChip = (k) => `<span class="cmp-chip ${cfg.bench[k] ? 'active' : ''}" style="--chip:${cfg.colors[k]}">
       <input type="color" value="${cfg.colors[k]}" aria-label="${t('cmp.color')}" onchange="setSeriesColor('${k}', this.value)">
-      <button type="button" onclick="toggleCmpBench('${k}')">${escapeHtml(benchLabel(k, cfg))}</button>
+      <button type="button" aria-pressed="${cfg.bench[k]}" onclick="toggleCmpBench('${k}')">${escapeHtml(benchLabel(k, cfg))}</button>
     </span>`;
   const opt = (v, atual, rot) => `<option value="${v}" ${v === atual ? 'selected' : ''}>${rot}</option>`;
+  const investidos = cfg.sel.map((k) => ops.find((o) => o.key === k)).filter((o) => o && o.invest);
+  const opcoesRef = [
+    opt('none', cfg.reference, t('cmp.refNone')),
+    `<optgroup label="${t('cmp.benchmarks')}">${['cdi', 'ibov', 'spx'].map((b) => opt('bench:' + b, cfg.reference, escapeHtml(benchLabel(b, cfg)))).join('')}</optgroup>`,
+    `<optgroup label="${t('cmp.refAssets')}">${ops.filter((o) => cfg.metric === 'price' || o.invest).map((o) => opt(o.key, cfg.reference, escapeHtml(o.label))).join('')}</optgroup>`
+  ].join('');
 
   wrap.innerHTML = `
     <div class="cmp-block">
@@ -4573,20 +4876,24 @@ function renderCompareControls() {
     <div class="cmp-block">
       <div class="cmp-label">${t('cmp.benchmarks')}</div>
       <div class="cmp-chips">${['cdi', 'ibov', 'spx'].map(benchChip).join('')}</div>
-      <div class="cmp-cdb ${cfg.bench.cdi ? '' : 'hidden'}">
-        <select onchange="setCmp('cdbMode', this.value)">
+      <div class="cmp-cdb ${cfg.bench.cdi || cfg.reference === 'bench:cdi' ? '' : 'hidden'}">
+        <select onchange="setCmp('cdbMode', this.value)" aria-label="CDB">
           ${opt('cdi', cfg.cdbMode, t('cmp.cdbModeCdi'))}${opt('fixed', cfg.cdbMode, t('cmp.cdbModeFixed'))}
         </select>
         ${cfg.cdbMode === 'cdi'
-          ? `<input type="number" min="1" max="300" step="1" value="${cfg.cdbPct}" onchange="setCmp('cdbPct', Number(this.value) || 100)"> <span>% ${t('cmp.ofCdi')}</span>`
-          : `<input type="number" min="0" max="100" step="0.1" value="${cfg.cdbRate}" onchange="setCmp('cdbRate', Number(this.value) || 0)"> <span>% ${t('cmp.perYear')}</span>`}
+          ? `<input type="number" min="1" max="300" step="1" value="${cfg.cdbPct}" onchange="setCmp('cdbPct', Number(this.value) || 100)" aria-label="% CDI"> <span>% ${t('cmp.ofCdi')}</span>`
+          : `<input type="number" min="0" max="100" step="0.1" value="${cfg.cdbRate}" onchange="setCmp('cdbRate', Number(this.value) || 0)" aria-label="% a.a."> <span>% ${t('cmp.perYear')}</span>`}
       </div>
     </div>
     <div class="cmp-row">
       <label>${t('cmp.metric')}
         <select onchange="setCmp('metric', this.value)">
-          ${['both', 'value', 'cost', 'profit', 'retInv', 'price'].map((m) => opt(m, cfg.metric, t('cmp.m.' + m))).join('')}
+          <optgroup label="${t('cmp.groupPct')}">${['ret', 'price'].map((m) => opt(m, cfg.metric, t('cmp.m.' + m))).join('')}</optgroup>
+          <optgroup label="${t('cmp.groupMoney')}">${['profit', 'value', 'both', 'cost'].map((m) => opt(m, cfg.metric, t('cmp.m.' + m))).join('')}</optgroup>
         </select>
+      </label>
+      <label class="${emPct ? '' : 'is-disabled'}" title="${emPct ? '' : t('cmp.refOnlyPct')}">${t('cmp.reference')}
+        <select onchange="setCmp('reference', this.value)" ${emPct ? '' : 'disabled'}>${opcoesRef}</select>
       </label>
       <label>${t('cmp.currency')}
         <select onchange="setCmp('currency', this.value)">
@@ -4599,24 +4906,21 @@ function renderCompareControls() {
           ${opt('line', cfg.style, t('cmp.lines'))}${opt('area', cfg.style, t('cmp.area'))}
         </select>
       </label>
-      ${(() => {
-        const investidos = ops.filter((o) => o.invest && cfg.sel.includes(o.key));
-        const algumIndice = Object.values(cfg.bench).some(Boolean);
-        if (!algumIndice || cfg.metric === 'price' || investidos.length < 2) return '';
-        return `<label>${t('cmp.benchFlows')}
-          <select onchange="setCmp('benchFlows', this.value)">
-            ${opt('sum', cfg.benchFlows, t('cmp.flowsSum'))}
-            ${investidos.map((o) => opt(o.key, cfg.benchFlows, escapeHtml(o.label))).join('')}
-          </select></label>`;
-      })()}
+      ${cfg.metric !== 'price' && investidos.length > 1 && cfg.reference === 'none' ? `<label>${t('cmp.benchFlows')}
+        <select onchange="setCmp('benchFlows', this.value)">
+          ${opt('sum', cfg.benchFlows, t('cmp.flowsSum'))}
+          ${investidos.map((o) => opt(o.key, cfg.benchFlows, escapeHtml(o.label))).join('')}
+        </select>
+      </label>` : ''}
       <label class="checkline"><input type="checkbox" ${cfg.markers ? 'checked' : ''} onchange="setCmp('markers', this.checked)"> ${t('cmp.markers')}</label>
     </div>
+    <p class="hint cmp-metric-hint">${t('cmp.help.' + cfg.metric)}</p>
     <div class="cmp-row">
       <div class="nav-toggle chart-periods">${['1m', '3m', '6m', 'ytd', '1y', '3y', '5y', 'all', 'custom'].map((k) =>
         `<button type="button" class="${cfg.period === k ? 'active' : ''}" onclick="setCmp('period', '${k}')">${t('cmp.p.' + k)}</button>`).join('')}</div>
       <span class="cmp-custom ${cfg.period === 'custom' ? '' : 'hidden'}">
-        <input type="date" value="${cfg.from}" onchange="setCmp('from', this.value)">
-        <input type="date" value="${cfg.to}" onchange="setCmp('to', this.value)">
+        <input type="date" value="${cfg.from}" onchange="setCmp('from', this.value)" aria-label="${t('cmp.start')}">
+        <input type="date" value="${cfg.to}" onchange="setCmp('to', this.value)" aria-label="${t('cmp.end')}">
       </span>
     </div>`;
 }
@@ -4643,6 +4947,235 @@ async function toggleCmpBench(chave) {
   await saveCmpConfig(cfg);
   renderCompare();
 }
+
+
+/* ================= FASE 10 — Notícias (manchetes e links) =================
+   Só título, fonte e horário: o clique abre a matéria no site original. Assim
+   respeitamos o conteúdo de cada portal e não precisamos de servidor próprio.
+   - Português: busca do Google News (RSS) lida através do rss2json.
+   - Inglês: notícias por empresa da Finnhub (chave já cadastrada).
+   Atualiza ao abrir o app e a cada 2 horas com ele aberto. */
+
+const NEWS_KEY = HIST_PREFIX + 'news';
+const NEWS_TTL = 2 * 60 * 60 * 1000;
+const NEWS_MAX = 200;
+const NEWS_MARKET_TOPICS = ['Ibovespa', 'dólar hoje', 'Selic Copom', 'S&P 500'];
+let newsCache = null;         // { fetchedAt, items }
+let newsLoading = false;
+let newsTimer = null;
+const newsUi = { filter: 'all', lang: 'all' };
+
+function newsTickers() {
+  const vistos = new Map();
+  state.positions.filter((p) => p.ticker).forEach((p) => vistos.set(p.ticker, { ticker: p.ticker, name: p.name, market: marketOf(p), assetType: p.assetType, currency: p.currency, group: 'portfolio' }));
+  watchlist().forEach((w) => { if (!vistos.has(w.ticker)) vistos.set(w.ticker, { ticker: w.ticker, name: w.name, market: marketOf(w), assetType: w.assetType, currency: w.currency, group: 'watch' }); });
+  return [...vistos.values()];
+}
+
+function safeUrl(u) {
+  try { const x = new URL(u); return x.protocol === 'https:' || x.protocol === 'http:' ? x.href : null; } catch (e) { return null; }
+}
+// Nome curto da empresa para a busca: "Petroleo Brasileiro SA Pfd" → "Petroleo Brasileiro"
+function shortCompany(nome) {
+  return String(nome || '').replace(/\b(S\.?A\.?|SA|Pfd|PN|ON|Inc\.?|Corp\.?|Holding|Ltd\.?|plc|Co\.?|Class [A-Z])\b/gi, '').replace(/\s+/g, ' ').trim().split(' ').slice(0, 2).join(' ');
+}
+
+async function fetchGoogleNews(query, tag) {
+  const rss = `https://news.google.com/rss/search?q=${encodeURIComponent(query)}&hl=pt-BR&gl=BR&ceid=BR:pt-419`;
+  const chave = apiKey('apiRss2json');
+  const url = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rss)}${chave ? '&api_key=' + encodeURIComponent(chave) : ''}`;
+  const d = await getJSON(url);
+  if (d.status && d.status !== 'ok') throw new Error(d.message || 'rss2json');
+  return (d.items || []).slice(0, 12).map((it) => {
+    // O Google News coloca a fonte no fim do título: "Manchete - InfoMoney"
+    const partes = String(it.title || '').split(' - ');
+    const fonte = partes.length > 1 ? partes.pop() : (it.author || 'Google News');
+    return {
+      title: partes.join(' - '), source: fonte, url: safeUrl(it.link),
+      date: it.pubDate ? new Date(it.pubDate.replace(' ', 'T') + 'Z').toISOString() : new Date().toISOString(),
+      tag, lang: 'pt'
+    };
+  });
+}
+
+async function fetchFinnhubNews(ticker) {
+  const key = apiKey('apiFinnhub');
+  if (!key) return [];
+  const ate = todayISO();
+  const de = new Date(); de.setDate(de.getDate() - 7);
+  const d = await getJSON(`https://finnhub.io/api/v1/company-news?symbol=${encodeURIComponent(ticker)}&from=${de.toISOString().slice(0, 10)}&to=${ate}&token=${key}`);
+  return (Array.isArray(d) ? d : []).slice(0, 12).map((n) => ({
+    title: n.headline, source: n.source, url: safeUrl(n.url),
+    date: new Date((n.datetime || 0) * 1000).toISOString(), tag: ticker, lang: 'en'
+  }));
+}
+
+async function loadNewsCache() {
+  if (!newsCache) newsCache = (await getSetting(NEWS_KEY)) || { fetchedAt: null, items: [] };
+  return newsCache;
+}
+
+async function refreshNews(forcar) {
+  await loadNewsCache();
+  const idade = newsCache.fetchedAt ? Date.now() - new Date(newsCache.fetchedAt).getTime() : Infinity;
+  // Ativo novo na carteira ou na watchlist busca na hora, sem esperar as 2 horas
+  const atuais = newsTickers().map((a) => a.ticker);
+  const temNovo = atuais.some((tk) => !(newsCache.tickers || []).includes(tk));
+  if (!forcar && idade < NEWS_TTL && !temNovo) return false;
+  if (newsLoading) return false;
+  newsLoading = true;
+  renderNewsStatus();
+
+  const tarefas = [];
+  newsTickers().forEach((a) => {
+    if (a.market === 'us') {
+      tarefas.push(() => fetchFinnhubNews(a.ticker));
+      tarefas.push(() => fetchGoogleNews(`${a.ticker} ${shortCompany(a.name)}`, a.ticker));
+    } else if (a.market === 'crypto') {
+      tarefas.push(() => fetchGoogleNews(`${a.name || a.ticker} criptomoeda`, a.ticker));
+    } else {
+      tarefas.push(() => fetchGoogleNews(`${a.ticker} ${shortCompany(a.name)}`, a.ticker));
+    }
+  });
+  NEWS_MARKET_TOPICS.forEach((q) => tarefas.push(() => fetchGoogleNews(q, 'market')));
+
+  const novos = [];
+  let falhas = 0;
+  for (const tarefa of tarefas) {
+    try { novos.push(...(await tarefa())); }
+    catch (e) { falhas++; console.warn('Notícias:', e.message); }
+  }
+
+  // Junta com o que já havia, sem repetir a mesma manchete
+  const norm = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9à-ú]+/g, ' ').trim();
+  const porTitulo = new Map();
+  [...novos, ...(newsCache.items || [])].forEach((n) => {
+    if (!n.url || !n.title) return;
+    const k = norm(n.title);
+    const existente = porTitulo.get(k);
+    if (!existente) porTitulo.set(k, { ...n, tags: [n.tag] });
+    else if (!existente.tags.includes(n.tag)) existente.tags.push(n.tag);
+  });
+  const limite = Date.now() - 14 * 86400000;
+  const itens = [...porTitulo.values()]
+    .filter((n) => new Date(n.date).getTime() >= limite)
+    .sort((a, b) => b.date.localeCompare(a.date))
+    .slice(0, NEWS_MAX)
+    .map(({ tag, ...resto }) => resto);
+
+  newsLoading = false;
+  if (novos.length || !newsCache.items.length) {
+    newsCache = { fetchedAt: new Date().toISOString(), items: itens, tickers: atuais, failed: falhas === tarefas.length };
+    await put('settings', { key: NEWS_KEY, value: newsCache });
+  } else {
+    newsCache.failed = true;
+  }
+  renderNews();
+  return true;
+}
+
+function startNewsSchedule() {
+  if (newsTimer) clearInterval(newsTimer);
+  refreshNews(false).catch((e) => console.warn('Notícias:', e));
+  newsTimer = setInterval(() => refreshNews(true).catch(() => {}), NEWS_TTL);
+}
+
+function timeAgo(iso) {
+  const min = Math.round((Date.now() - new Date(iso).getTime()) / 60000);
+  if (min < 1) return t('news.now');
+  if (min < 60) return t('news.min').replace('{n}', min);
+  const h = Math.round(min / 60);
+  if (h < 24) return t('news.hours').replace('{n}', h);
+  return t('news.days').replace('{n}', Math.round(h / 24));
+}
+
+function newsShortcuts(a) {
+  const tk = a.ticker, baixo = tk.toLowerCase();
+  const links = [
+    [t('news.google'), `https://news.google.com/search?q=${encodeURIComponent(tk + ' ' + shortCompany(a.name))}&hl=pt-BR&gl=BR&ceid=BR:pt-419`],
+    ['InfoMoney', `https://www.infomoney.com.br/?s=${encodeURIComponent(tk)}`]
+  ];
+  if (a.market === 'b3') {
+    const pasta = { fii: 'fiis', etf: 'etfs', bdr: 'bdrs' }[a.assetType] || 'acoes';
+    links.push(['Investidor10', `https://investidor10.com.br/${pasta}/${baixo}/`]);
+  } else if (a.market === 'us') {
+    links.push(['Investidor10', `https://investidor10.com.br/stocks/${baixo}/`]);
+  }
+  links.push(['Yahoo Finance', `https://finance.yahoo.com/quote/${encodeURIComponent(a.market === 'b3' ? tk + '.SA' : tk)}/news`]);
+  return links;
+}
+
+function renderNewsStatus() {
+  const el = document.getElementById('newsStatus');
+  const btn = document.getElementById('btnNewsRefresh');
+  if (btn) btn.disabled = newsLoading;
+  if (!el) return;
+  if (newsLoading) { el.textContent = t('news.loading'); return; }
+  if (!newsCache || !newsCache.fetchedAt) { el.textContent = ''; return; }
+  el.textContent = t('news.updated').replace('{t}', timeAgo(newsCache.fetchedAt)) + (newsCache.failed ? ' ' + t('news.failed') : '');
+}
+
+async function renderNews() {
+  const lista = document.getElementById('newsList');
+  if (!lista) return;
+  await loadNewsCache();
+  renderNewsStatus();
+  const ativos = newsTickers();
+
+  // Filtros
+  const filtros = document.getElementById('newsFilters');
+  const chip = (valor, rotulo, cor) => `<button type="button" class="news-chip ${newsUi.filter === valor ? 'active' : ''}" style="--chip:${cor || 'var(--accent)'}" onclick="setNewsFilter('${valor}')">${cor ? colorDot(cor) : ''}${escapeHtml(rotulo)}</button>`;
+  filtros.innerHTML = `
+    <div class="news-chips">
+      ${chip('all', t('news.all'))}${chip('portfolio', t('news.portfolio'))}${chip('watch', t('news.watch'))}${chip('market', t('news.market'))}
+      ${ativos.map((a) => chip('tk:' + a.ticker, a.ticker, tickerColor(a.ticker))).join('')}
+    </div>
+    <select id="newsLang" aria-label="${t('news.lang')}" onchange="setNewsLang(this.value)">
+      <option value="all" ${newsUi.lang === 'all' ? 'selected' : ''}>${t('news.langAll')}</option>
+      <option value="pt" ${newsUi.lang === 'pt' ? 'selected' : ''}>Português</option>
+      <option value="en" ${newsUi.lang === 'en' ? 'selected' : ''}>English</option>
+    </select>`;
+
+  const grupo = {};
+  ativos.forEach((a) => { grupo[a.ticker] = a.group; });
+  const itens = (newsCache.items || []).filter((n) => {
+    if (newsUi.lang !== 'all' && n.lang !== newsUi.lang) return false;
+    const tags = n.tags || [];
+    if (newsUi.filter === 'all') return true;
+    if (newsUi.filter === 'market') return tags.includes('market');
+    if (newsUi.filter === 'portfolio') return tags.some((tg) => grupo[tg] === 'portfolio');
+    if (newsUi.filter === 'watch') return tags.some((tg) => grupo[tg] === 'watch');
+    return tags.includes(newsUi.filter.slice(3));
+  });
+
+  if (!itens.length) {
+    lista.innerHTML = `<p class="empty-state">${newsLoading ? t('news.loading') : (newsCache.items || []).length ? t('news.emptyFilter') : t('news.empty')}</p>`;
+  } else {
+    lista.innerHTML = itens.slice(0, 80).map((n) => {
+      const tags = (n.tags || []).map((tg) => tg === 'market'
+        ? `<span class="tag">${t('news.market')}</span>`
+        : `<span class="tag news-tag" style="--chip:${tickerColor(tg) || 'var(--muted)'}">${colorDot(tickerColor(tg))}${escapeHtml(tg)}</span>`).join(' ');
+      return `<article class="news-item">
+        <a href="${escapeHtml(n.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(n.title)}</a>
+        <div class="news-meta">${tags} <span>${escapeHtml(n.source || '')}</span> <span>${timeAgo(n.date)}</span>${n.lang === 'en' ? ' <span class="tag">EN</span>' : ''}</div>
+      </article>`;
+    }).join('');
+  }
+
+  // Atalhos fixos: funcionam mesmo se as fontes automáticas falharem
+  const atalhos = document.getElementById('newsShortcuts');
+  if (atalhos) {
+    atalhos.innerHTML = ativos.length
+      ? ativos.map((a) => `<div class="shortcut-row">
+          <span class="shortcut-name">${colorDot(tickerColor(a.ticker))}<strong>${escapeHtml(a.ticker)}</strong></span>
+          <span class="ext-links">${newsShortcuts(a).map(([rot, url]) => `<a href="${url}" target="_blank" rel="noopener noreferrer">${escapeHtml(rot)}</a>`).join('')}</span>
+        </div>`).join('')
+      : `<p class="hint">${t('news.noAssets')}</p>`;
+  }
+}
+
+function setNewsFilter(v) { newsUi.filter = v; renderNews(); }
+function setNewsLang(v) { newsUi.lang = v; renderNews(); }
 
 
 /* ----- Chaves das APIs (Configurações) ----- */
@@ -4685,11 +5218,16 @@ async function testApis() {
     ['brapi.dev', 'apiBrapi', async () => {
       const q = await quoteB3('PETR4');
       return 'PETR4 ' + fmtMoney(q.price, 'BRL');
+    }],
+    ['rss2json', null, async () => {
+      const n = await fetchGoogleNews('Ibovespa', 'market');
+      if (!n.length) throw new Error(t('news.empty'));
+      return t('news.testOk').replace('{n}', n.length);
     }]
   ];
   const linhas = [];
   for (const [nome, chave, fn] of testes) {
-    if (!apiKey(chave)) { linhas.push(`<li class="amount-neutral">${nome}: ${t('api.noKey')}</li>`); continue; }
+    if (chave && !apiKey(chave)) { linhas.push(`<li class="amount-neutral">${nome}: ${t('api.noKey')}</li>`); continue; }
     try { linhas.push(`<li class="amount-in">${nome}: ${t('api.ok')} — ${await fn()}</li>`); }
     catch (e) { linhas.push(`<li class="amount-out">${nome}: ${escapeHtml(e.message || String(e))}</li>`); }
     box.innerHTML = `<ul class="api-list">${linhas.join('')}</ul>`;
@@ -5772,6 +6310,72 @@ function on(id, evento, handler) {
   return true;
 }
 
+/* ---------- Navegação (Fase 10) ----------
+   Abas principais agrupam as telas; grupos com mais de uma tela ganham uma
+   segunda linha de sub-abas. Configurações sai da barra e vai para a engrenagem. */
+const NAV_GROUPS = {
+  dashboard: ['dashboard'],
+  investments: ['investments'],
+  registry: ['accounts', 'balances', 'budgets', 'fx', 'portfolio'],
+  flows: ['transactions', 'bills'],
+  news: ['news'],
+  settings: ['settings']
+};
+function groupOf(tab) { return Object.keys(NAV_GROUPS).find((g) => NAV_GROUPS[g].includes(tab)) || 'dashboard'; }
+
+function showTab(tab) {
+  if (!document.getElementById('tab-' + tab)) tab = 'dashboard';
+  const grupo = groupOf(tab);
+  state.ui.lastSub[grupo] = tab;
+  state.ui.tab = tab;
+  document.querySelectorAll('#mainTabs .tab').forEach((b) => {
+    const ativo = b.dataset.group === grupo;
+    b.classList.toggle('active', ativo);
+    b.setAttribute('aria-selected', ativo);
+  });
+  document.querySelectorAll('.tab-panel').forEach((p) => p.classList.toggle('active', p.id === 'tab-' + tab));
+  const gear = document.getElementById('btnGear');
+  if (gear) gear.classList.toggle('active', grupo === 'settings');
+  renderSubTabs();
+  if (tab === 'dashboard') renderNAV();
+  if (tab === 'investments') renderCompare();
+  if (tab === 'news') { renderNews(); refreshNews(false).catch(() => {}); }
+  window.scrollTo({ top: 0 });
+}
+
+function renderSubTabs() {
+  const nav = document.getElementById('subTabs');
+  if (!nav) return;
+  const tab = state.ui.tab || 'dashboard';
+  const telas = NAV_GROUPS[groupOf(tab)];
+  if (telas.length < 2) { nav.classList.add('hidden'); nav.innerHTML = ''; return; }
+  nav.classList.remove('hidden');
+  nav.innerHTML = telas.map((k) => `<button type="button" class="subtab ${k === tab ? 'active' : ''}" data-tab="${k}" aria-current="${k === tab ? 'page' : 'false'}">${t('tabs.' + k)}</button>`).join('');
+}
+
+function toggleGear(abrir) {
+  const menu = document.getElementById('gearMenu');
+  const btn = document.getElementById('btnGear');
+  if (!menu || !btn) return;
+  const mostrar = abrir === undefined ? menu.classList.contains('hidden') : abrir;
+  menu.classList.toggle('hidden', !mostrar);
+  btn.setAttribute('aria-expanded', mostrar);
+}
+
+function applyHelp() {
+  const mostrar = state.settings.showHelp !== false;
+  document.body.classList.toggle('hide-help', !mostrar);
+  const chk = document.getElementById('helpToggle');
+  if (chk) chk.checked = mostrar;
+}
+
+function renderThemeOptions() {
+  const sel = document.getElementById('themeSelect');
+  if (!sel) return;
+  sel.innerHTML = ['default', 'dark', 'green', 'blue'].map((th) => `<option value="${th}">${t('theme.' + th)}</option>`).join('');
+  sel.value = state.settings.theme || 'default';
+}
+
 function bindEvents() {
   // Os botões de idioma são recriados a cada render, então o clique é capturado
   // no contêiner, que é fixo.
@@ -5870,15 +6474,30 @@ function bindEvents() {
   });
   on('modalClose', 'click', closeModal);
   on('modal', 'click', (e) => { if (e.target.id === 'modal') closeModal(); });
-  document.querySelectorAll('.tab').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.tab').forEach((b) => b.classList.remove('active'));
-      document.querySelectorAll('.tab-panel').forEach((p) => p.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
-      if (btn.dataset.tab === 'dashboard') renderNAV();
-      if (btn.dataset.tab === 'investments') renderCompare();
-    });
+  document.querySelectorAll('#mainTabs .tab').forEach((btn) => {
+    btn.addEventListener('click', () => showTab(state.ui.lastSub[btn.dataset.group] || NAV_GROUPS[btn.dataset.group][0]));
+  });
+  on('subTabs', 'click', (e) => {
+    const btn = e.target.closest('[data-tab]');
+    if (btn) showTab(btn.dataset.tab);
+  });
+
+  // Engrenagem: tema, idioma, explicações e configurações avançadas
+  on('btnGear', 'click', (e) => { e.stopPropagation(); toggleGear(); });
+  on('gearMenu', 'click', (e) => e.stopPropagation());
+  document.addEventListener('click', () => toggleGear(false));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') toggleGear(false); });
+  on('btnAdvanced', 'click', () => { toggleGear(false); showTab('settings'); });
+  on('helpToggle', 'change', async (e) => {
+    state.settings.showHelp = e.target.checked;
+    await put('settings', { key: 'showHelp', value: e.target.checked });
+    applyHelp();
+  });
+
+  // Notícias
+  on('btnNewsRefresh', 'click', () => refreshNews(true));
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') refreshNews(false).catch(() => {});
   });
 }
 /* ================= FASE 5 — Dashboard de NAV ================= */
@@ -6388,8 +7007,7 @@ async function init() {
   // 1) Interface primeiro. Abas, tema e idioma não dependem do banco de dados,
   //    então passam a funcionar mesmo que o IndexedDB falhe em abrir.
   renderLangButtons();
-  const themeSel = document.getElementById('themeSelect');
-  themeSel.innerHTML = ['default', 'dark', 'green', 'blue'].map((th) => `<option value="${th}">${th}</option>`).join('');
+  renderThemeOptions();
   applyTheme();
   try {
     bindEvents();
@@ -6417,7 +7035,10 @@ async function init() {
   state.ui.budgetMonth = currentMonth();
   applyLang();
   applyTheme();
+  applyHelp();
   renderAll();
+  showTab('dashboard');
+  startNewsSchedule();
 
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./service-worker.js').catch(() => {});
