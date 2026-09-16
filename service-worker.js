@@ -1,9 +1,9 @@
-const CACHE = 'prof-controller-v26'; // SEMPRE incremente ao publicar mudanças
+const CACHE = 'prof-controller-v27'; // SEMPRE incremente ao publicar mudanças
 const ASSETS = [
   './',
   './index.html',
-  './styles.css?v=26',
-  './app.js?v=26',
+  './styles.css?v=27',
+  './app.js?v=27',
   './manifest.json',
   './icon-192.png',
   './icon-512.png'
