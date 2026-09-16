@@ -429,5 +429,12 @@
   </div>
   <div id="toast" class="toast hidden"></div>
   <script src="app.js?v=28"></script>
+  <script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./service-worker.js');
+    });
+  }
+</script>
 </body>
 </html>
