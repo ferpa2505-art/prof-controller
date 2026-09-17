@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#1a1a2e">
   <title>ProF Controller</title>
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="styles.css?v=31">
+  <link rel="stylesheet" href="styles.css?v=32">
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 </head>
 <body>
@@ -380,6 +380,16 @@
       </div>
     </section>
 
+    <!-- CALCULADORA -->
+    <section id="tab-calculator" class="tab-panel">
+      <p class="tab-intro" data-i18n="help.calculator"></p>
+      <div class="panel-header">
+        <h2 data-i18n="calc.title">Calculadora financeira</h2>
+      </div>
+      <div id="calcTabs" class="nav-toggle calc-tabs"></div>
+      <div id="calcBody" class="calc-body"></div>
+    </section>
+
     <!-- NOTÍCIAS -->
     <section id="tab-news" class="tab-panel">
       <p class="tab-intro" data-i18n="help.news"></p>
@@ -449,6 +459,6 @@
   </div>
   <div id="toast" class="toast hidden"></div>
   <div id="secOverlay" class="sec-overlay hidden" role="dialog" aria-modal="true"></div>
-  <script src="app.js?v=31"></script>
+  <script src="app.js?v=32"></script>
 </body>
 </html>
