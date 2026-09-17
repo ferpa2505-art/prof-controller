@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#1a1a2e">
   <title>ProF Controller</title>
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="styles.css?v=33">
+  <link rel="stylesheet" href="styles.css?v=34">
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 </head>
 <body>
@@ -89,6 +89,9 @@
           <h3 data-i18n="dashboard.nav">Patrimônio Líquido</h3>
           <p id="navTotal" class="big-number">—</p>
         </div>
+      </div>
+      <div class="cards cards-spaced">
+        <div class="card nav-card hidden" id="ymCard"></div>
       </div>
       <div class="cards cards-spaced">
         <div class="card nav-card">
@@ -354,6 +357,12 @@
       </div>
 
       <div class="panel-header panel-header-spaced">
+        <h2 data-i18n="alloc.title">Metas e aporte inteligente</h2>
+      </div>
+      <p class="hint" data-i18n="alloc.intro"></p>
+      <div id="allocBox"></div>
+
+      <div class="panel-header panel-header-spaced">
         <h2 data-i18n="mkt.watchTitle">Watchlist</h2>
       </div>
       <div class="watch-add">
@@ -419,6 +428,7 @@
         <select id="baseCurrencySelect"></select>
       </div>
       <div class="settings-group sec-group" id="securityGroup"></div>
+      <div class="settings-group" id="taxGroup"></div>
       <div class="settings-group api-group">
         <h3 data-i18n="api.title">Cotações de mercado</h3>
         <p class="hint" data-i18n="api.hint">Chaves gratuitas da Finnhub, Twelve Data e brapi.dev.</p>
@@ -461,6 +471,6 @@
   </div>
   <div id="toast" class="toast hidden"></div>
   <div id="secOverlay" class="sec-overlay hidden" role="dialog" aria-modal="true"></div>
-  <script src="app.js?v=33"></script>
+  <script src="app.js?v=34"></script>
 </body>
 </html>
