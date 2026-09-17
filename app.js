@@ -1,5 +1,5 @@
 /* ============================================================
-   ProF Controller — Fases 1 a 15 (15: impostos, apuração mensal e informe anual)
+   ProF Controller — Fases 1 a 15 (15: impostos; cripto na busca; tabelas por país)
 
    Fase 1: contas, moedas, saldos diários, moeda base, importação CSV,
            i18n (pt-BR/en/es), temas, offline.
@@ -366,6 +366,25 @@ const I18N = {
     'modal.move': 'Aporte ou resgate',
     'mkt.lookup': 'Buscar ativo (ticker ou ISIN)',
     'mkt.manual': 'Cadastrar sem busca (renda fixa, CDB ou ativo sem cotação)',
+    'tax.applyPreset': 'Aplicar tabela sugerida de {p}',
+    'tax.presetApplied': 'Tabela de {p} aplicada. Revise antes de usar.',
+    'tax.note.BR': 'Brasil (PF): 15% em ações, 20% em FIIs, isenção quando as vendas de ações no mês somam até R$ 20.000. Day trade tem 20% e não é identificado pelo app.',
+    'tax.note.PT': 'Portugal: mais-valias e dividendos a 28% (taxa autónoma), com opção de englobamento; ativos vendidos com menos de 1 ano podem obrigar ao englobamento em rendimentos altos.',
+    'tax.note.ES': 'Espanha: base do poupança progressiva, começando em 19% e subindo por faixas de ganho. O app usa a alíquota inicial.',
+    'tax.note.IT': 'Itália: 26% sobre ganhos e dividendos; títulos públicos têm alíquota menor.',
+    'tax.note.DE': 'Alemanha: 25% mais solidariedade (cerca de 26,4%) e igreja quando aplicável, com isenção ANUAL por pessoa que o app não calcula.',
+    'tax.note.FR': 'França: imposto único de 30% (imposto de renda mais contribuições sociais), com opção pela tabela progressiva.',
+    'tax.note.IE': 'Irlanda: ganhos a 33% com isenção anual; ETFs seguem regime próprio, com 41% e tributação a cada 8 anos mesmo sem vender.',
+    'tax.note.LU': 'Luxemburgo: venda de ações após 6 meses costuma ser isenta para participações pequenas; abaixo disso entra na tabela progressiva.',
+    'tax.note.MT': 'Malta: ganho na venda de valores mobiliários listados costuma ser isento; para residentes não domiciliados vale o regime de remessa sobre rendimentos do exterior.',
+    'tax.note.GB': 'Reino Unido: ganhos de ações a 18% ou 24% conforme a faixa, com isenção anual; dividendos têm faixas próprias.',
+    'tax.note.CH': 'Suíça: ganho de capital privado costuma ser isento, mas dividendos e juros entram como renda e existe imposto sobre o patrimônio.',
+    'tax.note.AD': 'Andorra: alíquota geral de 10% sobre ganhos, com isenções conforme o tamanho da participação e um mínimo anual isento.',
+    'tax.note.US': 'Estados Unidos: residentes pagam 0%, 15% ou 20% em ganhos de longo prazo, mais 3,8% em rendas altas; curto prazo entra na tabela de renda. Não residentes normalmente não pagam sobre o ganho, mas sofrem retenção sobre dividendos.',
+    'mkt.searchKind': 'Tipo de busca',
+    'mkt.kindAuto': 'Automático',
+    'mkt.kindStock': 'Ação, ETF, FII',
+    'mkt.kindCrypto': 'Cripto',
     'tabs.taxes': 'Impostos',
     'tax.pageTitle': 'Impostos sobre investimentos',
     'help.taxes': 'Apuração mês a mês do imposto sobre as vendas, controle da isenção mensal, prejuízos acumulados por categoria e o resumo anual para a declaração. As regras são editáveis e valem como sugestão.',
@@ -1310,6 +1329,25 @@ const I18N = {
     'modal.move': 'Contribution or withdrawal',
     'mkt.lookup': 'Find asset (ticker or ISIN)',
     'mkt.manual': 'Add without search (fixed income, CDs or unlisted assets)',
+    'tax.applyPreset': 'Apply suggested table for {p}',
+    'tax.presetApplied': '{p} table applied. Review before using.',
+    'tax.note.BR': 'Brazil (individual): 15% on stocks, 20% on REITs, exempt when monthly stock sales stay under R$ 20,000. Day trade is 20% and the app does not identify it.',
+    'tax.note.PT': 'Portugal: capital gains and dividends at a 28% flat rate, with the option to include them in the progressive table; assets sold under one year may force inclusion at high incomes.',
+    'tax.note.ES': 'Spain: savings base is progressive, starting at 19% and rising by gain brackets. The app uses the first rate.',
+    'tax.note.IT': 'Italy: 26% on gains and dividends; government bonds have a lower rate.',
+    'tax.note.DE': 'Germany: 25% plus solidarity (about 26.4%) and church tax when applicable, with an ANNUAL personal allowance the app does not calculate.',
+    'tax.note.FR': 'France: 30% flat tax (income tax plus social contributions), with the option of the progressive table.',
+    'tax.note.IE': 'Ireland: gains at 33% with an annual exemption; ETFs follow a separate regime at 41%, taxed every 8 years even without selling.',
+    'tax.note.LU': 'Luxembourg: selling shares after six months is usually exempt for small holdings; below that it falls into the progressive table.',
+    'tax.note.MT': 'Malta: gains on listed securities are usually exempt; non-domiciled residents fall under the remittance basis for foreign income.',
+    'tax.note.GB': 'United Kingdom: share gains at 18% or 24% depending on the band, with an annual exemption; dividends have their own bands.',
+    'tax.note.CH': 'Switzerland: private capital gains are usually exempt, but dividends and interest count as income and there is a wealth tax.',
+    'tax.note.AD': 'Andorra: general 10% rate on gains, with exemptions depending on the size of the holding and an annual exempt minimum.',
+    'tax.note.US': 'United States: residents pay 0%, 15% or 20% on long-term gains, plus 3.8% at high incomes; short-term follows the income table. Non-residents usually pay no tax on the gain but face withholding on dividends.',
+    'mkt.searchKind': 'Search type',
+    'mkt.kindAuto': 'Automatic',
+    'mkt.kindStock': 'Stock, ETF, REIT',
+    'mkt.kindCrypto': 'Crypto',
     'tabs.taxes': 'Taxes',
     'tax.pageTitle': 'Investment taxes',
     'help.taxes': 'Month-by-month tax on sales, monthly exemption tracking, loss carryforward per category and the yearly summary for your tax return. Rules are editable and count as suggestions.',
@@ -2253,6 +2291,25 @@ const I18N = {
     'modal.move': 'Aporte o rescate',
     'mkt.lookup': 'Buscar activo (ticker o ISIN)',
     'mkt.manual': 'Registrar sin búsqueda (renta fija, CDB o activo sin cotización)',
+    'tax.applyPreset': 'Aplicar tabla sugerida de {p}',
+    'tax.presetApplied': 'Tabla de {p} aplicada. Revísala antes de usar.',
+    'tax.note.BR': 'Brasil (persona física): 15% en acciones, 20% en FII, exención cuando las ventas de acciones del mes suman hasta R$ 20.000. El day trade es 20% y la app no lo identifica.',
+    'tax.note.PT': 'Portugal: plusvalías y dividendos al 28% (tasa autónoma), con opción de integrarlos en la tabla progresiva; los activos vendidos antes de un año pueden obligar a ello en rentas altas.',
+    'tax.note.ES': 'España: la base del ahorro es progresiva, desde el 19% y subiendo por tramos. La app usa la tasa inicial.',
+    'tax.note.IT': 'Italia: 26% sobre ganancias y dividendos; la deuda pública tiene una tasa menor.',
+    'tax.note.DE': 'Alemania: 25% más solidaridad (cerca del 26,4%) e impuesto eclesiástico cuando aplica, con una exención ANUAL por persona que la app no calcula.',
+    'tax.note.FR': 'Francia: impuesto único del 30% (renta más contribuciones sociales), con opción por la tabla progresiva.',
+    'tax.note.IE': 'Irlanda: ganancias al 33% con exención anual; los ETF siguen un régimen propio al 41%, tributando cada 8 años aunque no vendas.',
+    'tax.note.LU': 'Luxemburgo: vender acciones tras seis meses suele estar exento para participaciones pequeñas; por debajo entra en la tabla progresiva.',
+    'tax.note.MT': 'Malta: la ganancia por venta de valores cotizados suele estar exenta; para residentes no domiciliados rige el régimen de remesa sobre rentas del exterior.',
+    'tax.note.GB': 'Reino Unido: ganancias de acciones al 18% o 24% según el tramo, con exención anual; los dividendos tienen tramos propios.',
+    'tax.note.CH': 'Suiza: la ganancia de capital privada suele estar exenta, pero dividendos e intereses son renta y existe impuesto sobre el patrimonio.',
+    'tax.note.AD': 'Andorra: tasa general del 10% sobre ganancias, con exenciones según el tamaño de la participación y un mínimo anual exento.',
+    'tax.note.US': 'Estados Unidos: los residentes pagan 0%, 15% o 20% en ganancias de largo plazo, más 3,8% en rentas altas; el corto plazo va a la tabla de renta. Los no residentes normalmente no pagan por la ganancia, pero sufren retención sobre dividendos.',
+    'mkt.searchKind': 'Tipo de búsqueda',
+    'mkt.kindAuto': 'Automático',
+    'mkt.kindStock': 'Acción, ETF, FII',
+    'mkt.kindCrypto': 'Cripto',
     'tabs.taxes': 'Impuestos',
     'tax.pageTitle': 'Impuestos sobre inversiones',
     'help.taxes': 'Cálculo mes a mes del impuesto sobre las ventas, control de la exención mensual, pérdidas acumuladas por categoría y el resumen anual para la declaración. Las reglas son editables y valen como sugerencia.',
@@ -5435,6 +5492,16 @@ function apiKey(nome) { return (state.settings[nome] || '').trim(); }
 
 function isISIN(s) { return /^[A-Z]{2}[A-Z0-9]{9}[0-9]$/.test(s); }
 function isB3Ticker(s) { return /^[A-Z]{4}\d{1,2}F?$/.test(s); }
+// Criptos mais negociadas: reconhecidas pelo código, sem depender de busca por nome
+const CRYPTO_LIST = ['BTC', 'ETH', 'USDT', 'USDC', 'BNB', 'SOL', 'XRP', 'ADA', 'DOGE', 'AVAX', 'DOT', 'MATIC', 'LTC',
+  'LINK', 'XLM', 'TRX', 'SHIB', 'UNI', 'ATOM', 'ETC', 'BCH', 'NEAR', 'FIL', 'AAVE', 'ALGO', 'XMR', 'TON', 'SUI'];
+const CRYPTO_QUOTES = ['USD', 'BRL', 'EUR', 'USDT'];
+function splitCryptoPair(s) {
+  const m = String(s || '').toUpperCase().match(/^([A-Z]{2,6})[-\/]([A-Z]{3,4})$/);
+  if (m && CRYPTO_QUOTES.includes(m[2])) return { base: m[1], quote: m[2] === 'USDT' ? 'USD' : m[2] };
+  if (CRYPTO_LIST.includes(String(s || '').toUpperCase())) return { base: String(s).toUpperCase(), quote: null };
+  return null;
+}
 
 function marketOf(item) {
   if (item.assetType === 'crypto') return 'crypto';
@@ -5518,7 +5585,17 @@ async function quoteB3(ticker) {
 }
 
 async function quoteCrypto(ticker, moeda) {
-  const par = `${ticker}-${moeda || 'BRL'}`;
+  const cur = moeda || 'USD';
+  // Twelve Data cobre mais pares; a AwesomeAPI fica como reserva e não precisa de chave
+  const tk = apiKey('apiTwelve');
+  if (tk) {
+    try {
+      const q = await getJSON(`https://api.twelvedata.com/quote?symbol=${encodeURIComponent(ticker + '/' + cur)}&apikey=${tk}`);
+      const preco = Number(q.close);
+      if (preco > 0) return { price: preco, changePct: Number(q.percent_change) || 0, currency: cur, name: q.name || ticker, exchange: q.exchange || 'Crypto', source: 'Twelve Data' };
+    } catch (e) { console.warn('Cripto na Twelve Data:', e.message); }
+  }
+  const par = `${ticker}-${cur}`;
   const d = await getJSON(`https://economia.awesomeapi.com.br/json/last/${encodeURIComponent(par)}`);
   const chave = d && Object.keys(d)[0];
   const preco = chave && Number(d[chave].bid);
@@ -5543,11 +5620,19 @@ async function fetchQuoteFor(ticker, item) {
 }
 
 /* ----- Descobrir um ativo a partir do que o usuário digitou ----- */
-async function resolveAsset(entrada) {
+async function resolveAsset(entrada, forcar) {
   let q = String(entrada || '').trim().toUpperCase();
   if (!q) throw new Error(t('mkt.noTicker'));
   let info = { isin: '', ticker: q, name: '', market: '', type: '' };
 
+  const cripto = splitCryptoPair(q);
+  if (forcar === 'crypto' || (cripto && forcar !== 'stock')) {
+    const base = cripto ? cripto.base : q.replace(/[-\/].*$/, '');
+    const moeda = (cripto && cripto.quote) || (CRYPTO_QUOTES.includes(state.settings.baseCurrency) ? state.settings.baseCurrency : 'USD');
+    const c = await quoteCrypto(base, moeda);
+    return { isin: '', ticker: base, market: 'crypto', name: c.name || base, currency: moeda,
+      exchange: c.exchange || 'Crypto', price: c.price, changePct: c.changePct, source: c.source, assetType: 'crypto' };
+  }
   if (isISIN(q)) {
     const r = await isinToTicker(q);
     info = { isin: q, ticker: r.ticker, name: r.name, market: r.market, type: r.type };
@@ -5598,13 +5683,19 @@ const esperar = (ms) => new Promise((r) => setTimeout(r, ms));
 async function fetchHistory(item, aoEsperar) {
   const tk = (item.ticker || '').toUpperCase();
   const mk = marketOf(item);
-  if (!tk || mk === 'crypto') return [];
-  const chave = HIST_PREFIX + mk + ':' + tk;
+  if (!tk) return [];
+  const chave = HIST_PREFIX + mk + ':' + tk + (mk === 'crypto' ? '-' + (item.currency || 'USD') : '');
   const cache = await getSetting(chave);
   if (cache && cache.fetchedAt === todayISO() && cache.points && cache.points.length) return cache.points;
 
   let pontos = [];
-  if (mk === 'b3') {
+  if (mk === 'crypto') {
+    const key = apiKey('apiTwelve');
+    if (!key) return cache ? cache.points : [];
+    const par = tk + '/' + (item.currency || 'USD');
+    const d = await getJSON(`https://api.twelvedata.com/time_series?symbol=${encodeURIComponent(par)}&interval=1day&outputsize=5000&apikey=${key}`);
+    pontos = ((d && d.values) || []).map((v) => [v.datetime.slice(0, 10), Number(v.close)]);
+  } else if (mk === 'b3') {
     // O plano gratuito da brapi limita o período; tenta do maior para o menor.
     for (const range of ['5y', '1y', '3mo']) {
       try {
@@ -5675,7 +5766,7 @@ function buyFormHtml(p, currency, tipoMov) {
     <div id="${p}AmountWrap">
       <label>${t(venda ? 'mkt.amountSell' : 'mkt.amount')} (<span class="cur-code">${currency}</span>)</label>
       <input id="${p}Amount" type="text" inputmode="decimal" oninput="updateBuyPreview('${p}')">
-      <label class="checkline"><input type="checkbox" id="${p}Whole" checked onchange="updateBuyPreview('${p}')"> ${t('mkt.whole')}</label>
+      <label class="checkline"><input type="checkbox" id="${p}Whole" ${(buyCtx[p] && buyCtx[p].item && buyCtx[p].item.assetType === 'crypto') ? '' : 'checked'} onchange="updateBuyPreview('${p}')"> ${t('mkt.whole')}</label>
     </div>
     <div id="${p}QtyWrap" class="hidden">
       <label>${t('inv.moveQty')}</label>
@@ -5789,7 +5880,8 @@ async function lookupAsset(prefill) {
   info.classList.remove('hidden');
   info.innerHTML = `<span class="hint">${t('mkt.searching')}</span>`;
   try {
-    const a = await resolveAsset(q);
+    const forcar = (document.getElementById('poLookupKind') || {}).value || undefined;
+    const a = await resolveAsset(q, forcar);
     const set = (id, v) => { const el = document.getElementById(id); if (el && v != null && v !== '') el.value = v; };
     set('poName', a.name);
     set('poTicker', a.ticker);
@@ -5806,6 +5898,8 @@ async function lookupAsset(prefill) {
         <span class="${a.changePct >= 0 ? 'amount-in' : 'amount-out'}">${fmtPct(a.changePct)}</span></div>
       <div class="hint">${t('mkt.source')}: ${a.source}</div>
       ${suportada ? '' : `<div class="amount-out">${t('mkt.currencyUnsupported').replace('{code}', a.currency)}</div>`}`;
+    const inteiras = document.getElementById('poWhole');
+    if (inteiras) inteiras.checked = a.assetType !== 'crypto';
     onPositionAccountChange();
     unlockPositionForm(false);
     await refreshRefPrice('po');
@@ -7311,6 +7405,37 @@ const TAX_DEFAULTS = {
 };
 const taxUi = { year: String(new Date().getFullYear()) };
 
+/* Tabelas sugeridas por país — pessoa física, valores mobiliários listados.
+   São generalizações: cada país tem faixas, isenções anuais e exceções que o
+   app não modela. Servem de ponto de partida; a nota explica o principal. */
+const TAX_PRESETS = {
+  BR: { rates: { stock: 15, fii: 20, etf: 15, bdr: 15, foreign: 15 }, exempt: { stock: 20000 } },
+  PT: { rates: { stock: 28, fii: 28, etf: 28, bdr: 28, foreign: 28 }, exempt: {} },
+  ES: { rates: { stock: 19, fii: 19, etf: 19, bdr: 19, foreign: 19 }, exempt: {} },
+  IT: { rates: { stock: 26, fii: 26, etf: 26, bdr: 26, foreign: 26 }, exempt: {} },
+  DE: { rates: { stock: 26.375, fii: 26.375, etf: 26.375, bdr: 26.375, foreign: 26.375 }, exempt: {} },
+  FR: { rates: { stock: 30, fii: 30, etf: 30, bdr: 30, foreign: 30 }, exempt: {} },
+  IE: { rates: { stock: 33, fii: 33, etf: 41, bdr: 33, foreign: 33 }, exempt: {} },
+  LU: { rates: { stock: 0, fii: 0, etf: 0, bdr: 0, foreign: 0 }, exempt: {} },
+  MT: { rates: { stock: 0, fii: 0, etf: 0, bdr: 0, foreign: 0 }, exempt: {} },
+  GB: { rates: { stock: 24, fii: 24, etf: 24, bdr: 24, foreign: 24 }, exempt: {} },
+  CH: { rates: { stock: 0, fii: 0, etf: 0, bdr: 0, foreign: 0 }, exempt: {} },
+  AD: { rates: { stock: 10, fii: 10, etf: 10, bdr: 10, foreign: 10 }, exempt: {} },
+  US: { rates: { stock: 15, fii: 15, etf: 15, bdr: 15, foreign: 15 }, exempt: {} }
+};
+async function applyTaxPreset(pais) {
+  const preset = TAX_PRESETS[pais];
+  if (!preset) return;
+  const cfg = taxCfg();
+  cfg.country = pais;
+  cfg.rates = { ...cfg.rates, ...preset.rates };
+  cfg.exemptMonthly = { ...preset.exempt };
+  await saveTaxCfg(cfg);
+  openTaxRules();
+  renderTaxes();
+  showToast(t('tax.presetApplied').replace('{p}', t('country.' + pais)));
+}
+
 function taxCfg() {
   const salvo = state.settings.taxRules || {};
   return {
@@ -7337,6 +7462,8 @@ async function setTaxRule(caminho, valor) {
   else if (caminho === 'country') cfg.country = valor;
   else if (caminho === 'holder') cfg.holder = valor;
   await saveTaxCfg(cfg);
+  // Trocar país ou titularidade redesenha a janela, para a nota e o botão acompanharem
+  if ((caminho === 'country' || caminho === 'holder') && !document.getElementById('modal').classList.contains('hidden')) openTaxRules();
   renderTaxes();
   renderTaxSettings();
 }
@@ -7568,7 +7695,11 @@ function openTaxRules() {
       <option value="individual" ${cfg.holder === 'individual' ? 'selected' : ''}>${t('accounts.holder.individual')}</option>
       <option value="company" ${cfg.holder === 'company' ? 'selected' : ''}>${t('accounts.holder.company')}</option>
     </select>
-    ${cfg.country !== 'BR' ? `<p class="sec-warning">${t('tax.noTable')}</p>` : ''}
+    ${TAX_PRESETS[cfg.country] ? `
+      <div class="tax-preset">
+        <p>${t('tax.note.' + cfg.country)}</p>
+        <button type="button" class="secondary-btn" onclick="applyTaxPreset('${cfg.country}')">${t('tax.applyPreset').replace('{p}', t('country.' + cfg.country))}</button>
+      </div>` : `<p class="sec-warning">${t('tax.noTable')}</p>`}
     <h3 class="section-sub">${t('tax.ratesTitle')}</h3>
     <div class="table-scroll"><table class="mini-table">
       <thead><tr><th>${t('tax.category')}</th><th>${t('tax.rate')}</th><th>${t('tax.exemptLimit')}</th></tr></thead>
@@ -9520,6 +9651,11 @@ function openPositionModal(id, prefill) {
     <div class="lookup-row">
       <input id="poLookup" placeholder="TTWO, PETR4, US8740541094" value="${prefill ? escapeHtml(prefill) : ''}"
         onkeydown="if(event.key==='Enter'){event.preventDefault();lookupAsset();}">
+      <select id="poLookupKind" aria-label="${t('mkt.searchKind')}">
+        <option value="">${t('mkt.kindAuto')}</option>
+        <option value="stock">${t('mkt.kindStock')}</option>
+        <option value="crypto">${t('mkt.kindCrypto')}</option>
+      </select>
       <button id="poLookupBtn" class="secondary-btn" type="button" onclick="lookupAsset()">${t('mkt.search')}</button>
     </div>
     <p class="hint">${t('mkt.lookupHint')}</p>
