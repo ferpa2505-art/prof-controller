@@ -18,18 +18,20 @@
   --positive: #4ade80;
   --negative: #f87171;
 }
-/* Cinza: fundo claro e destaques em cinza escuro */
+/* Cinza: cinza-escuro quente, no estilo da interface do Claude */
 [data-theme="gray"] {
-  --bg: #f2f1ee;
-  --surface: #ffffff;
-  --text: #262625;
-  --muted: #73726c;
-  --primary: #30302e;
-  --accent: #5f5e58;
-  --border: #dcdad3;
-  --positive: #3f7d4e;
-  --negative: #a83b32;
+  --bg: #262624;
+  --surface: #30302e;
+  --text: #f5f4ef;
+  --muted: #a8a59c;
+  --primary: #1f1e1d;
+  --accent: #d97757;
+  --border: #45443f;
+  --positive: #7cc08a;
+  --negative: #e8836f;
 }
+[data-theme="gray"] .badge-warn { color: #e3b341; }
+[data-theme="gray"] .b3-warn { color: #e3b341; }
 [data-theme="green"] {
   --bg: #f0fdf4;
   --surface: #ffffff;
