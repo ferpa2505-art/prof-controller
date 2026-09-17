@@ -366,6 +366,34 @@ const I18N = {
     'modal.move': 'Aporte ou resgate',
     'mkt.lookup': 'Buscar ativo (ticker ou ISIN)',
     'mkt.manual': 'Cadastrar sem busca (renda fixa, CDB ou ativo sem cotação)',
+    'accounts.holder': 'Titularidade',
+    'accounts.holder.individual': 'Pessoa física',
+    'accounts.holder.company': 'Pessoa jurídica',
+    'accounts.country': 'País da conta',
+    'accounts.countryHint': 'País e titularidade definem os impostos que o app vai sugerir na fase de tributação.',
+    'country.BR': 'Brasil',
+    'country.PT': 'Portugal',
+    'country.MT': 'Malta',
+    'country.ES': 'Espanha',
+    'country.US': 'Estados Unidos',
+    'country.GB': 'Reino Unido',
+    'country.CH': 'Suíça',
+    'country.AD': 'Andorra',
+    'country.IT': 'Itália',
+    'country.RS': 'Sérvia',
+    'country.KY': 'Ilhas Cayman',
+    'country.DE': 'Alemanha',
+    'country.FR': 'França',
+    'country.IE': 'Irlanda',
+    'country.LU': 'Luxemburgo',
+    'country.AE': 'Emirados Árabes',
+    'country.UY': 'Uruguai',
+    'country.AR': 'Argentina',
+    'country.CL': 'Chile',
+    'country.MX': 'México',
+    'country.CA': 'Canadá',
+    'country.JP': 'Japão',
+    'country.other': 'Outro país',
     'tabs.calculator': 'Calculadora',
     'calc.title': 'Calculadora financeira',
     'help.calculator': 'Calculadora comum, simulação de juros simples e compostos, solução de qualquer variável (capital, aporte, taxa, prazo ou montante) e a simulação "e se eu tivesse comprado tal ativo naquela data".',
@@ -653,6 +681,7 @@ const I18N = {
     'gear.advanced': 'Configurações avançadas',
     'theme.default': 'Claro',
     'theme.dark': 'Escuro',
+    'theme.gray': 'Cinza',
     'theme.green': 'Verde',
     'theme.blue': 'Azul',
     'help.dashboard': 'Visão geral do seu patrimônio: saldo das contas, investimentos, imóveis e veículos, tudo somado na moeda base, com gráficos de evolução e de fluxo de caixa.',
@@ -1170,6 +1199,34 @@ const I18N = {
     'modal.move': 'Contribution or withdrawal',
     'mkt.lookup': 'Find asset (ticker or ISIN)',
     'mkt.manual': 'Add without search (fixed income, CDs or unlisted assets)',
+    'accounts.holder': 'Held by',
+    'accounts.holder.individual': 'Individual',
+    'accounts.holder.company': 'Company',
+    'accounts.country': 'Account country',
+    'accounts.countryHint': 'Country and ownership determine the taxes the app will suggest in the tax module.',
+    'country.BR': 'Brazil',
+    'country.PT': 'Portugal',
+    'country.MT': 'Malta',
+    'country.ES': 'Spain',
+    'country.US': 'United States',
+    'country.GB': 'United Kingdom',
+    'country.CH': 'Switzerland',
+    'country.AD': 'Andorra',
+    'country.IT': 'Italy',
+    'country.RS': 'Serbia',
+    'country.KY': 'Cayman Islands',
+    'country.DE': 'Germany',
+    'country.FR': 'France',
+    'country.IE': 'Ireland',
+    'country.LU': 'Luxembourg',
+    'country.AE': 'United Arab Emirates',
+    'country.UY': 'Uruguay',
+    'country.AR': 'Argentina',
+    'country.CL': 'Chile',
+    'country.MX': 'Mexico',
+    'country.CA': 'Canada',
+    'country.JP': 'Japan',
+    'country.other': 'Other country',
     'tabs.calculator': 'Calculator',
     'calc.title': 'Financial calculator',
     'help.calculator': 'A plain calculator, simple and compound interest simulation, solving for any variable (present value, payment, rate, term or future value) and the "what if I had bought this asset back then" simulation.',
@@ -1457,6 +1514,7 @@ const I18N = {
     'gear.advanced': 'Advanced settings',
     'theme.default': 'Light',
     'theme.dark': 'Dark',
+    'theme.gray': 'Gray',
     'theme.green': 'Green',
     'theme.blue': 'Blue',
     'help.dashboard': 'Overview of your net worth: account balances, investments, property and vehicles, all added up in the base currency, with growth and cash flow charts.',
@@ -1973,6 +2031,34 @@ const I18N = {
     'modal.move': 'Aporte o rescate',
     'mkt.lookup': 'Buscar activo (ticker o ISIN)',
     'mkt.manual': 'Registrar sin búsqueda (renta fija, CDB o activo sin cotización)',
+    'accounts.holder': 'Titularidad',
+    'accounts.holder.individual': 'Persona física',
+    'accounts.holder.company': 'Persona jurídica',
+    'accounts.country': 'País de la cuenta',
+    'accounts.countryHint': 'País y titularidad definen los impuestos que la app sugerirá en el módulo de impuestos.',
+    'country.BR': 'Brasil',
+    'country.PT': 'Portugal',
+    'country.MT': 'Malta',
+    'country.ES': 'España',
+    'country.US': 'Estados Unidos',
+    'country.GB': 'Reino Unido',
+    'country.CH': 'Suiza',
+    'country.AD': 'Andorra',
+    'country.IT': 'Italia',
+    'country.RS': 'Serbia',
+    'country.KY': 'Islas Caimán',
+    'country.DE': 'Alemania',
+    'country.FR': 'Francia',
+    'country.IE': 'Irlanda',
+    'country.LU': 'Luxemburgo',
+    'country.AE': 'Emiratos Árabes',
+    'country.UY': 'Uruguay',
+    'country.AR': 'Argentina',
+    'country.CL': 'Chile',
+    'country.MX': 'México',
+    'country.CA': 'Canadá',
+    'country.JP': 'Japón',
+    'country.other': 'Otro país',
     'tabs.calculator': 'Calculadora',
     'calc.title': 'Calculadora financiera',
     'help.calculator': 'Calculadora común, simulación de interés simple y compuesto, cálculo de cualquier variable (capital, aporte, tasa, plazo o monto) y la simulación "y si hubiera comprado tal activo en aquella fecha".',
@@ -2260,6 +2346,7 @@ const I18N = {
     'gear.advanced': 'Configuración avanzada',
     'theme.default': 'Claro',
     'theme.dark': 'Oscuro',
+    'theme.gray': 'Gris',
     'theme.green': 'Verde',
     'theme.blue': 'Azul',
     'help.dashboard': 'Visión general de tu patrimonio: saldos, inversiones, inmuebles y vehículos, sumados en la moneda base, con gráficos de evolución y flujo de caja.',
@@ -3830,6 +3917,10 @@ function allInstallments(de, ate) {
    Registrar uma avaliação nova sempre substitui o cálculo: número real
    vence número estimado. */
 
+/* Países usados no cadastro de contas: definem a tributação que a fase de
+   impostos vai sugerir. "other" deixa o usuário informar o regime à mão. */
+const COUNTRIES = ['BR', 'PT', 'MT', 'ES', 'US', 'GB', 'CH', 'AD', 'IT', 'RS', 'KY', 'DE', 'FR', 'IE', 'LU', 'AE', 'UY', 'AR', 'CL', 'MX', 'CA', 'JP', 'other'];
+
 const INV_TYPES = ['stock', 'fii', 'etf', 'bdr', 'treasury', 'cdb', 'fund', 'crypto', 'other'];
 const VEHICLE_KINDS = ['car', 'motorcycle', 'boat', 'helicopter', 'plane'];
 
@@ -4068,7 +4159,7 @@ function renderAccounts() {
   // Uma única escrita no DOM em vez de uma por linha
   tbody.innerHTML = state.accounts.map((a) => `
     <tr>
-      <td>${escapeHtml(a.name)}</td>
+      <td>${escapeHtml(a.name)}${a.country || a.holderType ? `<br><span class="acc-tags">${a.country ? `<span class="tag">${t('country.' + a.country)}</span>` : ''}${a.holderType ? `<span class="tag">${t('accounts.holder.' + a.holderType)}</span>` : ''}</span>` : ''}</td>
       <td>${t('accounts.type.' + a.type)}</td>
       <td>${a.currency}</td>
       <td>${fmtMoney(a.initialBalance, a.currency)}</td>
@@ -8811,6 +8902,16 @@ function openAccountModal(id) {
     <select id="accCurrency">
       ${CURRENCIES.map((c) => `<option value="${c.code}" ${a && a.currency === c.code ? 'selected' : ''}>${c.code}</option>`).join('')}
     </select>
+    <label>${t('accounts.holder')}</label>
+    <select id="accHolder">
+      <option value="individual" ${!a || a.holderType !== 'company' ? 'selected' : ''}>${t('accounts.holder.individual')}</option>
+      <option value="company" ${a && a.holderType === 'company' ? 'selected' : ''}>${t('accounts.holder.company')}</option>
+    </select>
+    <label>${t('accounts.country')}</label>
+    <select id="accCountry">
+      ${COUNTRIES.map((c) => `<option value="${c}" ${(a && a.country === c) || (!a && c === 'BR') ? 'selected' : ''}>${t('country.' + c)}</option>`).join('')}
+    </select>
+    <p class="hint">${t('accounts.countryHint')}</p>
     <label>${t('accounts.initialBalance')}</label>
     <input id="accBalance" type="text" inputmode="decimal" value="${a ? a.initialBalance : '0'}">
     <button class="primary-btn" onclick="saveAccount('${a ? a.id : ''}')">${t('modal.save')}</button>
@@ -8820,11 +8921,15 @@ function openAccountModal(id) {
 async function saveAccount(id) {
   const name = document.getElementById('accName').value.trim();
   if (!name) return;
+  const anterior = id ? accountById(id) : null;
   const account = {
+    ...(anterior || {}),
     id: id || uid(),
     name,
     type: document.getElementById('accType').value,
     currency: document.getElementById('accCurrency').value,
+    holderType: document.getElementById('accHolder').value,
+    country: document.getElementById('accCountry').value,
     initialBalance: parseMoney(document.getElementById('accBalance').value) || 0
   };
   if (id) state.accounts = state.accounts.map((x) => (x.id === id ? account : x));
@@ -9402,7 +9507,7 @@ function applyHelp() {
 function renderThemeOptions() {
   const sel = document.getElementById('themeSelect');
   if (!sel) return;
-  sel.innerHTML = ['default', 'dark', 'green', 'blue'].map((th) => `<option value="${th}">${t('theme.' + th)}</option>`).join('');
+  sel.innerHTML = ['default', 'dark', 'gray', 'green', 'blue'].map((th) => `<option value="${th}">${t('theme.' + th)}</option>`).join('');
   sel.value = state.settings.theme || 'default';
 }
 
