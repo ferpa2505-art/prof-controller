@@ -3222,6 +3222,215 @@ async function updateBCBRates() {
   return count === types.length;
 }
 
+// Busca IBOV via Alpha Vantage (fallback se B3 não responder)
+async function fetchIBOV() {
+  try {
+    const apiKey = state.settings.apiAlphaVantage || '';
+    if (!apiKey) {
+      console.warn('⚠ Alpha Vantage key não configurada');
+      return null;
+    }
+    const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=^BVSP&apikey=${apiKey}`;
+    const response = await fetch(url);
+    if (!response.ok) return null;
+    const data = await response.json();
+    
+    if (data['Global Quote'] && data['Global Quote']['05. price']) {
+      return {
+        symbol: 'IBOV',
+        date: todayISO(),
+        value: parseFloat(data['Global Quote']['05. price']),
+        type: 'index',
+        source: 'AlphaVantage'
+      };
+    }
+  } catch (err) {
+    console.error('Erro ao buscar IBOV:', err);
+  }
+  return null;
+}
+
+/* ========== Fase 13: Tarefa 4 - Assistente de IR ========== */
+
+// Calcula IR simplificado (operações comuns BR)
+function calculateSimpleIR(year) {
+  const irTransactions = state.transactions.filter(tx => {
+    const txYear = tx.date.split('-')[0];
+    return txYear === String(year) && (tx.type === 'dividend' || tx.category === 'investimentos');
+  });
+
+  let gainLoss = 0;
+  let dividendIncome = 0;
+  let investmentCost = 0;
+
+  irTransactions.forEach(tx => {
+    if (tx.category === 'investimentos') {
+      gainLoss += (tx.value || 0);
+      if (tx.type === 'expense') investmentCost += Math.abs(tx.value || 0);
+    }
+    if (tx.type === 'dividend' || tx.category === 'dividendos') {
+      dividendIncome += (tx.value || 0);
+    }
+  });
+
+  const netGain = gainLoss;
+  const taxRate = netGain > 0 ? 0.15 : 0; // 15% IR sobre ganho
+  const estimatedTax = netGain > 0 ? netGain * taxRate : 0;
+
+  return {
+    year,
+    gainLoss,
+    dividendIncome,
+    investmentCost,
+    estimatedTax,
+    summary: {
+      'Ganho/Perda em investimentos': gainLoss,
+      'Renda de dividendos': dividendIncome,
+      'Alíquota IR': `${(taxRate * 100).toFixed(0)}%`,
+      'IR estimado': estimatedTax
+    }
+  };
+}
+
+// Abre modal do Assistente de IR
+function openIRAssistant() {
+  const currentYear = new Date().getFullYear();
+  const ir = calculateSimpleIR(currentYear);
+
+  const html = `
+    <h2>Assistente de Imposto de Renda</h2>
+    <div style="background: var(--bg); padding: 16px; border-radius: 8px; margin-top: 16px;">
+      <h3>${currentYear}</h3>
+      <table style="width: 100%; border-collapse: collapse; margin-top: 12px;">
+        <tr>
+          <td style="padding: 8px; border-bottom: 1px solid var(--border);">Ganho/Perda em investimentos</td>
+          <td style="padding: 8px; border-bottom: 1px solid var(--border); text-align: right; font-weight: bold;">
+            ${fmtMoney(ir.gainLoss, 'BRL')}
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border-bottom: 1px solid var(--border);">Renda de dividendos</td>
+          <td style="padding: 8px; border-bottom: 1px solid var(--border); text-align: right;">
+            ${fmtMoney(ir.dividendIncome, 'BRL')}
+          </td>
+        </tr>
+        <tr style="background: var(--warning);">
+          <td style="padding: 8px; font-weight: bold;">IR estimado (15%)</td>
+          <td style="padding: 8px; text-align: right; font-weight: bold;">
+            ${fmtMoney(ir.estimatedTax, 'BRL')}
+          </td>
+        </tr>
+      </table>
+      <p style="margin-top: 16px; font-size: 12px; color: var(--muted);">
+        ⚠️ Cálculo simplificado. Consulte contador para declaração oficial.
+      </p>
+    </div>
+  `;
+  
+  showModal(html);
+}
+
+/* ========== Fase 13: Tarefa 5 - Notificações de Eventos ========== */
+
+// Monitora eventos do mercado e cria notificações
+async function checkMarketEvents() {
+  const today = todayISO();
+  const eventsDue = state.marketEvents.filter(e => 
+    e.date <= today && e.status !== 'notified'
+  );
+
+  for (const event of eventsDue) {
+    const title = `📈 ${event.type.toUpperCase()}: ${event.symbol}`;
+    const body = event.description || `Evento: ${event.type}`;
+
+    // Notificação no browser
+    if ('Notification' in window && Notification.permission === 'granted') {
+      new Notification(title, {
+        body,
+        icon: 'icon-192.png',
+        tag: `event-${event.id}`
+      });
+    }
+
+    // Salva como notificação no app
+    const notif = {
+      id: uid(),
+      type: 'marketEvent',
+      title,
+      message: body,
+      eventId: event.id,
+      read: false,
+      createdAt: new Date().toISOString()
+    };
+    state.notifications.push(notif);
+    await put('notifications', notif);
+
+    // Marca evento como notificado
+    event.status = 'notified';
+    await put('marketEvents', event);
+  }
+
+  return eventsDue.length;
+}
+
+// Agenda check de eventos (executar a cada hora)
+async function scheduleEventCheck() {
+  setInterval(async () => {
+    const count = await checkMarketEvents();
+    if (count > 0) console.log(`✓ ${count} eventos notificados`);
+  }, 60 * 60 * 1000); // A cada 1 hora
+}
+
+/* ========== Fase 13: Tarefa 3 - UI Dashboard ========== */
+
+// Renderiza seção "Você x Mercado" no dashboard
+function renderPortfolioComparison() {
+  const container = document.getElementById('youVsMarket');
+  if (!container) return;
+  
+  const totalValue = state.positions.reduce((sum, p) => {
+    const pos = p.quantity * (p.currentPrice || 0);
+    return sum + (pos / (state.settings.baseCurrency === 'BRL' ? 1 : 1));
+  }, 0);
+  
+  const lastIBOV = state.benchmarks.find(b => b.symbol === 'IBOV') || {};
+  const lastCDI = state.benchmarks.find(b => b.symbol === 'CDI') || {};
+  
+  const html = `
+    <div class="comparison-card" style="background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-top: 20px;">
+      <h3>📊 Você x Mercado</h3>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px;">
+        <div class="metric-box" style="background: var(--bg); padding: 12px; border-radius: 8px;">
+          <p style="font-size: 12px; color: var(--muted); margin: 0 0 4px 0;">Seu Portfólio</p>
+          <p style="font-size: 20px; font-weight: bold; color: var(--text); margin: 0;">
+            ${fmtCompact(totalValue)} ${state.settings.baseCurrency}
+          </p>
+        </div>
+        <div class="metric-box" style="background: var(--bg); padding: 12px; border-radius: 8px;">
+          <p style="font-size: 12px; color: var(--muted); margin: 0 0 4px 0;">IBOV</p>
+          <p style="font-size: 20px; font-weight: bold; color: var(--text); margin: 0;">
+            ${lastIBOV.value ? lastIBOV.value.toFixed(2) : '—'}
+          </p>
+        </div>
+        <div class="metric-box" style="background: var(--bg); padding: 12px; border-radius: 8px;">
+          <p style="font-size: 12px; color: var(--muted); margin: 0 0 4px 0;">CDI (ref-livre)</p>
+          <p style="font-size: 20px; font-weight: bold; color: var(--text); margin: 0;">
+            ${lastCDI.value ? (lastCDI.value * 100).toFixed(2) + '%' : '—'}
+          </p>
+        </div>
+        <div class="metric-box" style="background: var(--bg); padding: 12px; border-radius: 8px;">
+          <p style="font-size: 12px; color: var(--muted); margin: 0 0 4px 0;">Datas atualizadas</p>
+          <p style="font-size: 12px; color: var(--text); margin: 0;">
+            IBOV: ${lastIBOV.date || '—'}<br>
+            CDI: ${lastCDI.date || '—'}
+          </p>
+        </div>
+      </div>
+    </div>
+  `;
+  container.innerHTML = html;
+}
+
 // Handler UI para atualizar taxas BCB
 async function handleUpdateBCB() {
   const btn = document.getElementById('btnUpdateBCB');
@@ -3234,12 +3443,16 @@ async function handleUpdateBCB() {
   result.innerHTML = '';
   
   try {
-    const success = await updateBCBRates();
-    result.innerHTML = success 
-      ? '<p style="color: green;">✓ Taxas atualizadas com sucesso!</p>'
+    const bcbSuccess = await updateBCBRates();
+    const ibov = await fetchIBOV();
+    if (ibov) {
+      await saveBenchmark(ibov);
+    }
+    result.innerHTML = (bcbSuccess && ibov)
+      ? '<p style="color: green;">✓ Taxas e IBOV atualizados!</p>'
       : '<p style="color: orange;">⚠ Algumas taxas não foram obtidas</p>';
   } catch (err) {
-    console.error('Erro ao atualizar BCB:', err);
+    console.error('Erro ao atualizar:', err);
     result.innerHTML = '<p style="color: red;">✗ Erro: ' + err.message + '</p>';
   } finally {
     btn.disabled = false;
@@ -4982,7 +5195,7 @@ function renderAll() {
     ['dashboard', renderDashboard], ['contas', renderAccounts], ['saldos', renderBalances],
     ['transações', renderTransactions], ['recorrências', renderRecurrences], ['orçamentos', renderBudgets], ['câmbio', renderFx],
     ['portfólio', renderPortfolio], ['gráfico', renderNAV], ['fluxo', renderCashflow], ['títulos', renderBills], ['investimentos', renderInvestments], ['notícias', () => { if (state.ui.tab === 'news') renderNews(); }], ['calculadora', renderCalculator], ['configurações', renderSettings],
-    ['notificações', renderNotificationsBadge]
+    ['notificações', renderNotificationsBadge], ['fase13', renderPortfolioComparison]
   ];
   etapas.forEach(([nome, fn]) => {
     try { fn(); } catch (e) { console.error('Falha ao renderizar ' + nome + ':', e); }
@@ -11485,6 +11698,7 @@ function bindEvents() {
   on('btnTestApi', 'click', testApis);
   on('btnApiWizard', 'click', openApiSetup);
   on('btnUpdateBCB', 'click', handleUpdateBCB);
+  on('btnOpenIR', 'click', openIRAssistant);
   on('btnB3Import', 'click', openB3Import);
   on('btnDivFetch', 'click', () => fetchAutoDividends(false));
   on('btnDivAdd', 'click', () => openDividendModal());
@@ -12185,6 +12399,9 @@ async function init() {
   // Service Worker e notificações nativas
   registerServiceWorker().catch((e) => console.warn('Erro ao registrar SW:', e));
   requestNotificationPermission().catch((e) => console.warn('Erro ao pedir permissão de notificação:', e));
+  
+  // Fase 13: Inicializar monitor de eventos do mercado
+  scheduleEventCheck().catch((e) => console.warn('Erro ao agendar verificação de eventos:', e));
 }
 
 init();
