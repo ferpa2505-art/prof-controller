@@ -3060,6 +3060,21 @@ function groupLabel(g) {
 const DB_NAME = 'prof-controller';
 const DB_VERSION = 7; // Fase 13: Você x Mercado (benchmarks, marketEvents, portfolioMetrics)
 let db = null;
+
+// Reset IndexedDB se versão não corresponder (útil para développement)
+async function resetIndexedDB() {
+  const req = indexedDB.databases();
+  for (const db of await req) {
+    if (db.name === DB_NAME) {
+      indexedDB.deleteDatabase(DB_NAME);
+      console.log('✓ IndexedDB deletado. Recarregue a página para recriar com v' + DB_VERSION);
+      setTimeout(() => location.reload(), 500);
+      return;
+    }
+  }
+  console.log('Banco não encontrado');
+}
+window.resetIndexedDB = resetIndexedDB;
 let state = {
   accounts: [],
   balances: [],
