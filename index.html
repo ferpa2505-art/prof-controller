@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#1a1a2e">
   <title>ProF Controller</title>
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="styles.css?v=34">
+  <link rel="stylesheet" href="styles.css?v=35">
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 </head>
 <body>
@@ -401,6 +401,15 @@
       <div id="calcBody" class="calc-body"></div>
     </section>
 
+    <!-- IMPOSTOS -->
+    <section id="tab-taxes" class="tab-panel">
+      <p class="tab-intro" data-i18n="help.taxes"></p>
+      <div class="panel-header">
+        <h2 data-i18n="tax.pageTitle">Impostos sobre investimentos</h2>
+      </div>
+      <div id="taxBody"></div>
+    </section>
+
     <!-- NOTÍCIAS -->
     <section id="tab-news" class="tab-panel">
       <p class="tab-intro" data-i18n="help.news"></p>
@@ -471,6 +480,6 @@
   </div>
   <div id="toast" class="toast hidden"></div>
   <div id="secOverlay" class="sec-overlay hidden" role="dialog" aria-modal="true"></div>
-  <script src="app.js?v=34"></script>
+  <script src="app.js?v=35"></script>
 </body>
 </html>
