@@ -18,6 +18,18 @@
   --positive: #4ade80;
   --negative: #f87171;
 }
+/* Cinza: fundo claro e destaques em cinza escuro */
+[data-theme="gray"] {
+  --bg: #f2f1ee;
+  --surface: #ffffff;
+  --text: #262625;
+  --muted: #73726c;
+  --primary: #30302e;
+  --accent: #5f5e58;
+  --border: #dcdad3;
+  --positive: #3f7d4e;
+  --negative: #a83b32;
+}
 [data-theme="green"] {
   --bg: #f0fdf4;
   --surface: #ffffff;
@@ -653,3 +665,11 @@ body.sec-open { overflow: hidden; }
 @media (max-width: 600px) { .calc-basic { max-width: 100%; } .calc-key { padding: 18px 0; } }
 .calc-mode { display: flex; flex-direction: column; gap: 5px; font-size: 13px; color: var(--muted); max-width: 320px; margin-bottom: 14px; }
 .calc-mode select { padding: 9px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 15px; }
+
+/* ===== Cabeçalho fixo ao rolar a página ===== */
+.app-head { position: sticky; top: 0; z-index: 90; }
+.app-head .topbar, .app-head .tabs, .app-head .subtabs { margin: 0; }
+.app-head .tabs { box-shadow: 0 1px 0 var(--border); }
+@supports not (position: sticky) { .app-head { position: static; } }
+.acc-tags { display: inline-flex; gap: 4px; flex-wrap: wrap; margin-top: 4px; }
+.acc-tags .tag { font-size: 11px; }
