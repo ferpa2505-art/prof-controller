@@ -84,6 +84,26 @@ const I18N = {
     'tx.clearFilters': 'Limpar filtros',
     'tx.empty': 'Nenhum lançamento neste filtro. Use "Novo lançamento" para começar.',
     'tx.noAccounts': 'Cadastre uma conta antes de registrar lançamentos.',
+    'recurrence.title': 'Recorrências',
+    'recurrence.add': '+ Nova recorrência',
+    'recurrence.frequency': 'Frequência',
+    'recurrence.freq.daily': 'Diária',
+    'recurrence.freq.weekly': 'Semanal',
+    'recurrence.freq.monthly': 'Mensal',
+    'recurrence.freq.annual': 'Anual',
+    'recurrence.endCondition': 'Até quando',
+    'recurrence.endNever': 'Nunca termina',
+    'recurrence.endDate': 'Data final',
+    'recurrence.endCount': 'Número de instâncias',
+    'recurrence.enabled': 'Ativa',
+    'recurrence.nextDate': 'Próximo lançamento',
+    'recurrence.created': 'Recorrência criada.',
+    'recurrence.empty': 'Nenhuma recorrência cadastrada.',
+    'notification.title': 'Notificações',
+    'notification.upcoming': 'Lançamento recorrente próximo',
+    'notification.reminder': 'Lembrete de transação pendente',
+    'notification.budgetAlert': 'Alerta de orçamento',
+    'notification.noNew': 'Sem notificações novas.',
     'budget.title': 'Orçamentos',
     'budget.add': '+ Novo orçamento',
     'budget.hint': 'Cada orçamento tem moeda própria e vale todos os meses. O gasto considera apenas despesas na mesma moeda.',
@@ -1047,6 +1067,26 @@ const I18N = {
     'tx.clearFilters': 'Clear filters',
     'tx.empty': 'No entries for this filter. Use "New entry" to start.',
     'tx.noAccounts': 'Create an account before recording entries.',
+    'recurrence.title': 'Recurrences',
+    'recurrence.add': '+ New recurrence',
+    'recurrence.frequency': 'Frequency',
+    'recurrence.freq.daily': 'Daily',
+    'recurrence.freq.weekly': 'Weekly',
+    'recurrence.freq.monthly': 'Monthly',
+    'recurrence.freq.annual': 'Annual',
+    'recurrence.endCondition': 'Until when',
+    'recurrence.endNever': 'Never ends',
+    'recurrence.endDate': 'End date',
+    'recurrence.endCount': 'Number of instances',
+    'recurrence.enabled': 'Active',
+    'recurrence.nextDate': 'Next entry',
+    'recurrence.created': 'Recurrence created.',
+    'recurrence.empty': 'No recurrences yet.',
+    'notification.title': 'Notifications',
+    'notification.upcoming': 'Upcoming recurring entry',
+    'notification.reminder': 'Transaction reminder',
+    'notification.budgetAlert': 'Budget alert',
+    'notification.noNew': 'No new notifications.',
     'budget.title': 'Budgets',
     'budget.add': '+ New budget',
     'budget.hint': 'Each budget has its own currency and applies every month. Spending counts only expenses in the same currency.',
@@ -2009,6 +2049,26 @@ const I18N = {
     'tx.clearFilters': 'Limpiar filtros',
     'tx.empty': 'Sin registros para este filtro. Use "Nuevo registro" para empezar.',
     'tx.noAccounts': 'Cree una cuenta antes de registrar movimientos.',
+    'recurrence.title': 'Recurrencias',
+    'recurrence.add': '+ Nueva recurrencia',
+    'recurrence.frequency': 'Frecuencia',
+    'recurrence.freq.daily': 'Diaria',
+    'recurrence.freq.weekly': 'Semanal',
+    'recurrence.freq.monthly': 'Mensual',
+    'recurrence.freq.annual': 'Anual',
+    'recurrence.endCondition': 'Hasta cuándo',
+    'recurrence.endNever': 'Nunca termina',
+    'recurrence.endDate': 'Fecha final',
+    'recurrence.endCount': 'Número de instancias',
+    'recurrence.enabled': 'Activa',
+    'recurrence.nextDate': 'Próximo lanzamiento',
+    'recurrence.created': 'Recurrencia creada.',
+    'recurrence.empty': 'Sin recurrencias registradas.',
+    'notification.title': 'Notificaciones',
+    'notification.upcoming': 'Lanzamiento recurrente próximo',
+    'notification.reminder': 'Recordatorio de transacción',
+    'notification.budgetAlert': 'Alerta de presupuesto',
+    'notification.noNew': 'Sin notificaciones nuevas.',
     'budget.title': 'Presupuestos',
     'budget.add': '+ Nuevo presupuesto',
     'budget.hint': 'Cada presupuesto tiene su moneda y vale todos los meses. El gasto considera solo gastos en la misma moneda.',
@@ -3011,6 +3071,8 @@ let state = {
   dividends: [],
   assets: [],
   valuations: [],
+  recurrences: [],
+  notifications: [],
   settings: { lang: 'pt-BR', theme: 'default', baseCurrency: 'EUR' },
   ui: { txType: 'all', txAccount: 'all', txMonth: '', budgetMonth: '', navView: 'pie', navBreak: 'currency', cashGrain: 'monthly',
         billKind: 'all', billStatus: 'open', billFrom: '', billTo: '', tab: 'dashboard', lastSub: {} }
@@ -3093,6 +3155,19 @@ function openDB() {
         const s = d.createObjectStore('dividends', { keyPath: 'id' });
         s.createIndex('positionId', 'positionId');
       }
+      // Fase 16 — Notificações e Recorrência de Transações
+      if (!d.objectStoreNames.contains('recurrences')) {
+        const s = d.createObjectStore('recurrences', { keyPath: 'id' });
+        s.createIndex('accountId', 'accountId');
+        s.createIndex('enabled', 'enabled');
+        s.createIndex('nextDate', 'nextDate');
+      }
+      if (!d.objectStoreNames.contains('notifications')) {
+        const s = d.createObjectStore('notifications', { keyPath: 'id' });
+        s.createIndex('type', 'type');
+        s.createIndex('read', 'read');
+        s.createIndex('date', 'date');
+      }
       // Preparado para fases futuras (patrimônio)
       ['fx', 'receitas', 'lancamentos', 'imoveis', 'veiculos', 'posicoes', 'nav', 'orcamentos']
         .forEach((name) => { if (!d.objectStoreNames.contains(name)) d.createObjectStore(name, { keyPath: 'id' }); });
@@ -3136,6 +3211,8 @@ async function loadAll() {
   state.assets = await getAll('assets');
   state.valuations = await getAll('valuations');
   state.dividends = await getAll('dividends');
+  state.recurrences = await getAll('recurrences');
+  state.notifications = await getAll('notifications');
   const brutos = (await rawGetAll('settings')).filter((r) => !String(r.key).startsWith(HIST_PREFIX) && r.key !== SEC_KEY);
   for (const r of brutos) {
     const s = await decodeRecord(r);
@@ -3949,6 +4026,119 @@ function uid() { return Date.now().toString(36) + Math.random().toString(36).sli
 function todayISO() { return new Date().toISOString().slice(0, 10); }
 function currentMonth() { return todayISO().slice(0, 7); }
 function monthOf(date) { return String(date || '').slice(0, 7); }
+function addDays(date, days) {
+  const d = new Date(date);
+  d.setDate(d.getDate() + days);
+  return d.toISOString().slice(0, 10);
+}
+function frequencyDays(freq) {
+  switch (freq) {
+    case 'daily': return 1;
+    case 'weekly': return 7;
+    case 'monthly': return 30;
+    case 'annual': return 365;
+    default: return 7;
+  }
+}
+
+async function generateRecurringInstances() {
+  const today = todayISO();
+  const toGenerate = [];
+
+  for (const rec of state.recurrences) {
+    if (!rec.enabled) continue;
+
+    // Verificar se deve gerar
+    const shouldGenerate = rec.nextDate && rec.nextDate <= today;
+    if (!shouldGenerate) continue;
+
+    // Verificar se terminou
+    if (rec.endCondition === 'date' && today > rec.endDate) {
+      rec.enabled = false;
+      await put('recurrences', rec);
+      continue;
+    }
+    if (rec.endCondition === 'count' && rec.generatedCount >= rec.endCount) {
+      rec.enabled = false;
+      await put('recurrences', rec);
+      continue;
+    }
+
+    // Criar a transação
+    const trn = {
+      id: uid(),
+      type: rec.type,
+      date: rec.nextDate,
+      accountId: rec.accountId,
+      description: rec.description,
+      value: rec.value
+    };
+
+    if (rec.type === 'transfer') {
+      trn.toAccountId = rec.toAccountId;
+      trn.toValue = rec.toValue;
+      trn.category = null;
+    } else {
+      trn.category = rec.category;
+    }
+
+    state.transactions.push(trn);
+    await put('transactions', trn);
+    toGenerate.push(trn.id);
+
+    // Atualizar recorrência
+    rec.generatedCount = (rec.generatedCount || 0) + 1;
+    rec.nextDate = addDays(rec.nextDate, frequencyDays(rec.frequency));
+
+    // Marcar como desabilitada se terminou
+    if (rec.endCondition === 'count' && rec.generatedCount >= rec.endCount) {
+      rec.enabled = false;
+    }
+
+    await put('recurrences', rec);
+  }
+
+  return toGenerate;
+}
+
+async function shouldNotify() {
+  const today = todayISO();
+  const tomorrow = addDays(today, 1);
+  const newNotifications = [];
+
+  // Notificar sobre recorrências próximas (próximas 3 dias)
+  for (const rec of state.recurrences) {
+    if (!rec.enabled) continue;
+    if (!rec.nextDate) continue;
+
+    // Verificar se é nos próximos 3 dias e se ainda não há notificação
+    const daysUntil = (new Date(rec.nextDate) - new Date(today)) / (1000 * 60 * 60 * 24);
+    if (daysUntil > 0 && daysUntil <= 3) {
+      const exists = state.notifications.some((n) => 
+        n.type === 'recurring_upcoming' && n.relatedId === rec.id && n.date === rec.nextDate
+      );
+
+      if (!exists) {
+        const notif = {
+          id: uid(),
+          type: 'recurring_upcoming',
+          title: t('recurrence.title'),
+          message: `${rec.description || '(sem descrição)'} — ${fmtMoney(rec.value, accountById(rec.accountId)?.currency || '')}`,
+          relatedId: rec.id,
+          date: rec.nextDate,
+          read: false,
+          createdAt: new Date().toISOString()
+        };
+        newNotifications.push(notif);
+        state.notifications.push(notif);
+        await put('notifications', notif);
+      }
+    }
+  }
+
+  return newNotifications;
+}
+
 function t(key) {
   const lang = state.settings.lang || 'pt-BR';
   return (I18N[lang] && I18N[lang][key]) || I18N['pt-BR'][key] || key;
@@ -10188,9 +10378,53 @@ function openTxModal(id) {
       <p class="hint">${t('tx.receivedHint')}</p>
     </div>
 
+    <hr style="margin: 16px 0; border: none; border-top: 1px solid var(--border);">
+    
+    <label class="checkline"><input type="checkbox" id="txMakeRecurrent" onchange="onTxMakeRecurrent()"> <span>${t('recurrence.title')}</span></label>
+
+    <div id="txRecurrenceWrap" class="hidden">
+      <label>${t('recurrence.frequency')}</label>
+      <select id="txFrequency">
+        <option value="daily">${t('recurrence.freq.daily')}</option>
+        <option value="weekly" selected>${t('recurrence.freq.weekly')}</option>
+        <option value="monthly">${t('recurrence.freq.monthly')}</option>
+        <option value="annual">${t('recurrence.freq.annual')}</option>
+      </select>
+
+      <label>${t('recurrence.endCondition')}</label>
+      <select id="txEndCondition" onchange="onTxEndConditionChange()">
+        <option value="never" selected>${t('recurrence.endNever')}</option>
+        <option value="date">${t('recurrence.endDate')}</option>
+        <option value="count">${t('recurrence.endCount')}</option>
+      </select>
+
+      <div id="txEndDateWrap" class="hidden">
+        <label>${t('recurrence.endDate')}</label>
+        <input id="txEndDate" type="date">
+      </div>
+
+      <div id="txEndCountWrap" class="hidden">
+        <label>${t('recurrence.endCount')}</label>
+        <input id="txEndCount" type="number" min="1" value="12">
+      </div>
+    </div>
+
     <button class="primary-btn" onclick="saveTx('${trn ? trn.id : ''}')">${t('modal.save')}</button>
   `);
   onTxTypeChange();
+  // Carregar dados de recorrência se editando
+  if (id) {
+    const rec = state.recurrences.find((r) => r.baseTransactionId === id);
+    if (rec) {
+      document.getElementById('txMakeRecurrent').checked = true;
+      document.getElementById('txFrequency').value = rec.frequency || 'weekly';
+      document.getElementById('txEndCondition').value = rec.endCondition || 'never';
+      if (rec.endCondition === 'date') document.getElementById('txEndDate').value = rec.endDate || '';
+      if (rec.endCondition === 'count') document.getElementById('txEndCount').value = rec.endCount || 12;
+      onTxMakeRecurrent();
+      onTxEndConditionChange();
+    }
+  }
 }
 
 // Mostra/esconde campos conforme o tipo escolhido e as moedas envolvidas.
@@ -10216,6 +10450,17 @@ function onTxTypeChange() {
   const from = accountCurrency(document.getElementById('txAccount').value);
   const to = accountCurrency(document.getElementById('txToAccount').value);
   toValWrap.classList.toggle('hidden', from === to);
+}
+
+function onTxMakeRecurrent() {
+  const checked = document.getElementById('txMakeRecurrent').checked;
+  document.getElementById('txRecurrenceWrap').classList.toggle('hidden', !checked);
+}
+
+function onTxEndConditionChange() {
+  const condition = document.getElementById('txEndCondition').value;
+  document.getElementById('txEndDateWrap').classList.toggle('hidden', condition !== 'date');
+  document.getElementById('txEndCountWrap').classList.toggle('hidden', condition !== 'count');
 }
 
 async function saveTx(id) {
@@ -10249,6 +10494,60 @@ async function saveTx(id) {
   if (id) state.transactions = state.transactions.map((x) => (x.id === id ? trn : x));
   else state.transactions.push(trn);
   await put('transactions', trn);
+
+  // Salvar recorrência se marcada
+  const makeRecurrent = document.getElementById('txMakeRecurrent');
+  if (makeRecurrent && makeRecurrent.checked) {
+    const frequency = document.getElementById('txFrequency').value;
+    const endCondition = document.getElementById('txEndCondition').value;
+    const endDate = endCondition === 'date' ? document.getElementById('txEndDate').value : null;
+    const endCount = endCondition === 'count' ? parseInt(document.getElementById('txEndCount').value, 10) : null;
+    
+    const rec = {
+      id: uid(),
+      baseTransactionId: trn.id,
+      type: trn.type,
+      accountId: trn.accountId,
+      description: trn.description,
+      value: trn.value,
+      category: trn.category,
+      toAccountId: trn.toAccountId,
+      toValue: trn.toValue,
+      frequency,
+      nextDate: addDays(trn.date, frequencyDays(frequency)),
+      endCondition,
+      endDate,
+      endCount,
+      generatedCount: 0,
+      enabled: true,
+      createdAt: new Date().toISOString()
+    };
+
+    const existingRec = state.recurrences.find((r) => r.baseTransactionId === trn.id);
+    if (existingRec) {
+      state.recurrences = state.recurrences.map((r) => (r.id === existingRec.id ? { ...existingRec, ...rec, id: existingRec.id } : r));
+      await put('recurrences', { ...existingRec, ...rec, id: existingRec.id });
+    } else {
+      state.recurrences.push(rec);
+      await put('recurrences', rec);
+    }
+  } else if (id) {
+    // Deletar recorrência se editando e desmarcou
+    const existingRec = state.recurrences.find((r) => r.baseTransactionId === id);
+    if (existingRec) {
+      state.recurrences = state.recurrences.filter((r) => r.id !== existingRec.id);
+      await del('recurrences', existingRec.id);
+    }
+  }
+
+  // Gerar instâncias recorrentes e notificações se necessário
+  try {
+    await generateRecurringInstances();
+    await shouldNotify();
+  } catch (e) {
+    console.warn('Falha ao gerar instâncias recorrentes ou notificações:', e);
+  }
+
   closeModal();
   renderAll();
   showToast(t('toast.saved'));
@@ -10325,7 +10624,7 @@ function download(filename, content, type) {
 
 function buildBackupData() {
   return {
-    version: 6,
+    version: 7,
     exportedAt: new Date().toISOString(),
     accounts: state.accounts,
     balances: state.balances,
@@ -10340,6 +10639,8 @@ function buildBackupData() {
     assets: state.assets,
     valuations: state.valuations,
     dividends: state.dividends,
+    recurrences: state.recurrences,
+    notifications: state.notifications,
     // Chaves de API não saem do navegador: um backup é fácil de compartilhar por engano
     settings: Object.fromEntries(Object.entries(state.settings).filter(([k]) => !API_KEYS.includes(k) && !k.startsWith(HIST_PREFIX) && k !== SEC_KEY))
   };
@@ -11320,6 +11621,21 @@ async function init() {
   applyLang();
   applyTheme();
   applyHelp();
+  
+  // Gerar instâncias de recorrências vencidas
+  try {
+    await generateRecurringInstances();
+  } catch (e) {
+    console.warn('Falha ao gerar instâncias recorrentes:', e);
+  }
+
+  // Gerar notificações
+  try {
+    await shouldNotify();
+  } catch (e) {
+    console.warn('Falha ao gerar notificações:', e);
+  }
+  
   renderAll();
   showTab('dashboard');
   renderSecuritySettings();
