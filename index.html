@@ -6,10 +6,11 @@
   <meta name="theme-color" content="#1a1a2e">
   <title>ProF Controller</title>
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="styles.css?v=32">
+  <link rel="stylesheet" href="styles.css?v=33">
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 </head>
 <body>
+  <div class="app-head">
   <header class="topbar">
     <h1 class="brand">
       <img src="icon-192.png" alt="ProF Controller" class="brand-logo">
@@ -39,6 +40,7 @@
     <button class="tab" type="button" data-group="news" data-i18n="tabs.news">Notícias</button>
   </nav>
   <nav class="subtabs hidden" id="subTabs" aria-label="Submenu"></nav>
+  </div>
   <main>
     <!-- DASHBOARD -->
     <section id="tab-dashboard" class="tab-panel active">
@@ -459,6 +461,6 @@
   </div>
   <div id="toast" class="toast hidden"></div>
   <div id="secOverlay" class="sec-overlay hidden" role="dialog" aria-modal="true"></div>
-  <script src="app.js?v=32"></script>
+  <script src="app.js?v=33"></script>
 </body>
 </html>
