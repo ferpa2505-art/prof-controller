@@ -691,3 +691,6 @@ body.sec-open { overflow: hidden; }
 .tax-income div { border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; }
 .tax-income span { display: block; font-size: 12px; color: var(--muted); }
 .tax-income strong { font-size: 18px; }
+.tax-preset { margin: 12px 0; padding: 12px 14px; border-radius: 10px; background: var(--bg); border: 1px solid var(--border); font-size: 13px; line-height: 1.5; }
+.tax-preset .secondary-btn { margin: 10px 0 0; }
+.lookup-row select { padding: 8px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 13px; }
