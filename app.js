@@ -842,6 +842,7 @@ const I18N = {
     'help.fx': 'Taxas de câmbio usadas para somar valores em moedas diferentes. Busque as taxas do dia com um clique ou cadastre manualmente.',
     'help.portfolio': 'Bens como imóveis e veículos, com valor de avaliação e dívidas ligadas a eles (financiamentos). Entram no patrimônio total.',
     'help.transactions': 'Dinheiro que já entrou ou saiu: receitas, despesas e transferências entre contas. Cada lançamento atualiza o saldo da conta.',
+    'help.recurrences': 'Configure lançamentos automáticos que se repetem em intervalos regulares. O app cria as instâncias automaticamente e você gerencia (pausar, editar ou deletar).',
     'help.bills': 'Contas futuras a pagar e valores a receber, inclusive parcelados ou recorrentes. Ao quitar, o app gera o lançamento na conta.',
     'help.news': 'Manchetes sobre os ativos da sua carteira, da watchlist e do mercado. Clique para ler no site original. Atualiza ao abrir o app e a cada 2 horas.',
     'help.settings': 'Moeda base, chaves das fontes de cotação e notícias, backup e importação de dados.',
@@ -1825,6 +1826,7 @@ const I18N = {
     'help.fx': 'Exchange rates used to add up amounts in different currencies. Fetch today\'s rates in one click or add them manually.',
     'help.portfolio': 'Assets such as property and vehicles, with valuation and related debts (loans). They count toward total net worth.',
     'help.transactions': 'Money that has already come in or gone out: income, expenses and transfers. Each entry updates the account balance.',
+    'help.recurrences': 'Set up automatic entries that repeat at regular intervals. The app creates instances automatically, and you manage them (pause, edit or delete).',
     'help.bills': 'Future bills to pay and amounts to receive, including installments or recurring ones. When settled, the app creates the entry.',
     'help.news': 'Headlines about your portfolio, watchlist and the market. Click to read on the original site. Refreshes when you open the app and every 2 hours.',
     'help.settings': 'Base currency, keys for price and news sources, backup and data import.',
@@ -2807,6 +2809,7 @@ const I18N = {
     'help.fx': 'Tipos de cambio usados para sumar importes en monedas distintas. Busca los tipos del día con un clic o regístralos manualmente.',
     'help.portfolio': 'Bienes como inmuebles y vehículos, con su valoración y deudas asociadas (financiaciones). Cuentan en el patrimonio total.',
     'help.transactions': 'Dinero que ya entró o salió: ingresos, gastos y transferencias. Cada movimiento actualiza el saldo de la cuenta.',
+    'help.recurrences': 'Configura movimientos automáticos que se repiten en intervalos regulares. La app crea las instancias automáticamente, y tú las gestionas (pausar, editar o eliminar).',
     'help.bills': 'Cuentas futuras por pagar e importes por cobrar, incluso a plazos o recurrentes. Al liquidar, la app crea el movimiento.',
     'help.news': 'Titulares sobre tu cartera, tu watchlist y el mercado. Haz clic para leer en el sitio original. Se actualiza al abrir la app y cada 2 horas.',
     'help.settings': 'Moneda base, claves de las fuentes de cotización y noticias, copia de seguridad e importación.',
@@ -4636,11 +4639,81 @@ function applyTheme() {
 /* Cada seção é renderizada isoladamente. Se uma falhar — por elemento ausente
    num HTML defasado, por exemplo — as outras continuam aparecendo, em vez de a
    tela inteira ficar em branco. */
+function renderNotificationsBadge() {
+  const unread = state.notifications.filter((n) => !n.read).length;
+  const badge = document.getElementById('notifBadge');
+  if (unread > 0) {
+    badge.textContent = unread;
+    badge.classList.remove('hidden');
+  } else {
+    badge.classList.add('hidden');
+  }
+}
+
+function toggleNotificationsPanel(e) {
+  e.stopPropagation();
+  const panel = document.getElementById('notificationsPanel');
+  const gear = document.getElementById('gearMenu');
+  gear.classList.add('hidden');
+  panel.classList.toggle('hidden');
+  if (!panel.classList.contains('hidden')) {
+    renderNotificationsPanel();
+  }
+}
+
+function closeNotificationsPanel() {
+  document.getElementById('notificationsPanel').classList.add('hidden');
+}
+
+function renderNotificationsPanel() {
+  const list = document.getElementById('notificationsList');
+  const empty = document.getElementById('notifEmpty');
+  const unread = state.notifications.filter((n) => !n.read);
+
+  if (unread.length === 0) {
+    list.innerHTML = '';
+    empty.classList.remove('hidden');
+  } else {
+    empty.classList.add('hidden');
+    list.innerHTML = unread.map((n) => `
+      <div class="notification-item" style="padding: 12px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: flex-start;">
+        <div style="flex: 1;">
+          <p style="font-weight: 600; margin-bottom: 4px; font-size: 13px;">${escapeHtml(n.title)}</p>
+          <p style="color: var(--muted); font-size: 13px; margin-bottom: 4px;">${escapeHtml(n.message)}</p>
+          <p style="color: var(--muted); font-size: 11px;">${n.date}</p>
+        </div>
+        <div style="display: flex; gap: 8px; margin-left: 8px;">
+          <button class="icon-btn" title="Marcar como lida" onclick="markNotificationRead('${n.id}')">✓</button>
+          <button class="icon-btn" title="Deletar" onclick="deleteNotification('${n.id}')">✕</button>
+        </div>
+      </div>
+    `).join('');
+  }
+}
+
+async function markNotificationRead(id) {
+  const notif = state.notifications.find((n) => n.id === id);
+  if (notif) {
+    notif.read = true;
+    await put('notifications', notif);
+    renderNotificationsBadge();
+    renderNotificationsPanel();
+  }
+}
+
+async function deleteNotification(id) {
+  state.notifications = state.notifications.filter((n) => n.id !== id);
+  await del('notifications', id);
+  renderNotificationsBadge();
+  renderNotificationsPanel();
+}
+
 function renderAll() {
   const etapas = [
     ['dashboard', renderDashboard], ['contas', renderAccounts], ['saldos', renderBalances],
-    ['transações', renderTransactions], ['orçamentos', renderBudgets], ['câmbio', renderFx],
-    ['portfólio', renderPortfolio], ['gráfico', renderNAV], ['fluxo', renderCashflow], ['títulos', renderBills], ['investimentos', renderInvestments], ['notícias', () => { if (state.ui.tab === 'news') renderNews(); }], ['calculadora', renderCalculator], ['configurações', renderSettings]
+    ['transações', renderTransactions], ['recorrências', renderRecurrences], ['orçamentos', renderBudgets], ['câmbio', renderFx],
+    ['portfólio', renderPortfolio], ['gráfico', renderNAV], ['fluxo', renderCashflow], ['títulos', renderBills], ['investimentos', renderInvestments], ['notícias', () => { if (state.ui.tab === 'news') renderNews(); }], ['calculadora', renderCalculator], ['configurações', renderSettings],
+    ['notificações', renderNotificationsBadge]
   ];
   etapas.forEach(([nome, fn]) => {
     try { fn(); } catch (e) { console.error('Falha ao renderizar ' + nome + ':', e); }
@@ -4852,6 +4925,174 @@ function renderTransactions() {
       </tr>`;
   });
   tbody.innerHTML = linhas.join('');
+}
+
+function renderRecurrences() {
+  const list = document.getElementById('recurrencesList');
+  const empty = document.getElementById('recurrencesEmpty');
+  
+  if (!list) return; // Não há elemento de recorrências
+
+  if (!state.recurrences.length) {
+    list.innerHTML = '';
+    empty.classList.remove('hidden');
+    return;
+  }
+  empty.classList.add('hidden');
+
+  list.innerHTML = state.recurrences.map((rec) => {
+    const acc = accountById(rec.accountId);
+    const freq = t(`recurrence.freq.${rec.frequency}`);
+    const status = rec.enabled ? '✓ Ativa' : '⊗ Pausada';
+    const freqDays = frequencyDays(rec.frequency);
+    const nextDate = rec.nextDate || addDays(todayISO(), freqDays);
+    
+    return `
+      <div class="recurrence-item" style="padding: 12px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 8px; background: var(--surface);">
+        <div style="display: flex; justify-content: space-between; align-items: start;">
+          <div style="flex: 1;">
+            <p style="font-weight: 600; margin-bottom: 4px;">${escapeHtml(rec.description || '(sem descrição)')}</p>
+            <p style="font-size: 12px; color: var(--muted); margin-bottom: 4px;">
+              ${freq} · Próximo: ${nextDate}
+              ${rec.endCondition === 'date' ? ` · Até ${rec.endDate}` : ''}
+              ${rec.endCondition === 'count' ? ` · ${rec.generatedCount}/${rec.endCount}` : ''}
+            </p>
+            <p style="font-size: 13px; color: var(--text); margin-bottom: 4px;">
+              ${fmtMoney(rec.value, acc?.currency || '')} ${acc?.name || '(conta não encontrada)'}
+            </p>
+            <p style="font-size: 11px; color: var(--muted);">${status}</p>
+          </div>
+          <div style="display: flex; gap: 8px; margin-left: 8px;">
+            <button class="icon-btn" title="Editar" onclick="openRecurrenceModal('${rec.id}')">✎</button>
+            <button class="icon-btn" title="${rec.enabled ? 'Pausar' : 'Ativar'}" onclick="toggleRecurrence('${rec.id}')">${rec.enabled ? '⏸' : '▶'}</button>
+            <button class="icon-btn" title="Deletar" onclick="deleteRecurrence('${rec.id}')">✕</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function openRecurrenceModal(id) {
+  const rec = id ? state.recurrences.find((r) => r.id === id) : null;
+  openModal(`
+    <h2>${rec ? t('modal.edit') : t('recurrence.add')}</h2>
+    <label>${t('tx.description')}</label>
+    <input id="recDescription" value="${rec ? escapeHtml(rec.description || '') : ''}">
+
+    <label>${t('tx.account')}</label>
+    <select id="recAccount">
+      ${state.accounts.map((a) => `<option value="${a.id}" ${rec && rec.accountId === a.id ? 'selected' : ''}>${escapeHtml(a.name)} (${a.currency})</option>`).join('')}
+    </select>
+
+    <label>${t('tx.value')}</label>
+    <input id="recValue" type="text" inputmode="decimal" value="${rec ? rec.value : ''}">
+
+    <label>${t('recurrence.frequency')}</label>
+    <select id="recFrequency">
+      <option value="daily" ${rec?.frequency === 'daily' ? 'selected' : ''}>${t('recurrence.freq.daily')}</option>
+      <option value="weekly" ${rec?.frequency === 'weekly' ? 'selected' : ''}>${t('recurrence.freq.weekly')}</option>
+      <option value="monthly" ${rec?.frequency === 'monthly' ? 'selected' : ''}>${t('recurrence.freq.monthly')}</option>
+      <option value="annual" ${rec?.frequency === 'annual' ? 'selected' : ''}>${t('recurrence.freq.annual')}</option>
+    </select>
+
+    <label>${t('recurrence.endCondition')}</label>
+    <select id="recEndCondition" onchange="onRecEndConditionChange()">
+      <option value="never" ${rec?.endCondition === 'never' ? 'selected' : ''}>${t('recurrence.endNever')}</option>
+      <option value="date" ${rec?.endCondition === 'date' ? 'selected' : ''}>${t('recurrence.endDate')}</option>
+      <option value="count" ${rec?.endCondition === 'count' ? 'selected' : ''}>${t('recurrence.endCount')}</option>
+    </select>
+
+    <div id="recEndDateWrap" class="hidden">
+      <label>${t('recurrence.endDate')}</label>
+      <input id="recEndDate" type="date" value="${rec?.endDate || ''}">
+    </div>
+
+    <div id="recEndCountWrap" class="hidden">
+      <label>${t('recurrence.endCount')}</label>
+      <input id="recEndCount" type="number" min="1" value="${rec?.endCount || 12}">
+    </div>
+
+    <button class="primary-btn" onclick="saveRecurrence('${rec ? rec.id : ''}')">${t('modal.save')}</button>
+  `);
+  onRecEndConditionChange();
+}
+
+function onRecEndConditionChange() {
+  const condition = document.getElementById('recEndCondition').value;
+  document.getElementById('recEndDateWrap').classList.toggle('hidden', condition !== 'date');
+  document.getElementById('recEndCountWrap').classList.toggle('hidden', condition !== 'count');
+}
+
+async function saveRecurrence(id) {
+  const description = document.getElementById('recDescription').value.trim();
+  const accountId = document.getElementById('recAccount').value;
+  const value = parseMoney(document.getElementById('recValue').value);
+  const frequency = document.getElementById('recFrequency').value;
+  const endCondition = document.getElementById('recEndCondition').value;
+  const endDate = endCondition === 'date' ? document.getElementById('recEndDate').value : null;
+  const endCount = endCondition === 'count' ? parseInt(document.getElementById('recEndCount').value, 10) : null;
+
+  if (!accountId || value == null || value <= 0 || !frequency) {
+    showToast(t('toast.invalidValue'));
+    return;
+  }
+
+  const rec = {
+    id: id || uid(),
+    description,
+    accountId,
+    value,
+    frequency,
+    endCondition,
+    endDate,
+    endCount,
+    generatedCount: id ? (state.recurrences.find((r) => r.id === id)?.generatedCount || 0) : 0,
+    enabled: true,
+    createdAt: id ? (state.recurrences.find((r) => r.id === id)?.createdAt || new Date().toISOString()) : new Date().toISOString()
+  };
+
+  // Restaurar campos que existiam antes
+  if (id) {
+    const existing = state.recurrences.find((r) => r.id === id);
+    if (existing) {
+      rec.baseTransactionId = existing.baseTransactionId;
+      rec.type = existing.type;
+      rec.category = existing.category;
+      rec.toAccountId = existing.toAccountId;
+      rec.toValue = existing.toValue;
+      rec.nextDate = existing.nextDate;
+      state.recurrences = state.recurrences.map((r) => (r.id === id ? rec : r));
+    }
+  } else {
+    rec.baseTransactionId = null;
+    rec.type = 'expense';
+    rec.category = null;
+    rec.nextDate = addDays(todayISO(), frequencyDays(frequency));
+    state.recurrences.push(rec);
+  }
+
+  await put('recurrences', rec);
+  closeModal();
+  renderAll();
+  showToast(t('recurrence.created'));
+}
+
+async function toggleRecurrence(id) {
+  const rec = state.recurrences.find((r) => r.id === id);
+  if (rec) {
+    rec.enabled = !rec.enabled;
+    await put('recurrences', rec);
+    renderRecurrences();
+  }
+}
+
+async function deleteRecurrence(id) {
+  if (!confirm(t('modal.delete') + '?')) return;
+  state.recurrences = state.recurrences.filter((r) => r.id !== id);
+  await del('recurrences', id);
+  renderRecurrences();
+  showToast(t('toast.deleted'));
 }
 
 /* ---------- Orçamentos ---------- */
@@ -10867,7 +11108,7 @@ const NAV_GROUPS = {
   dashboard: ['dashboard'],
   investments: ['investments', 'calculator', 'taxes'],
   registry: ['accounts', 'balances', 'budgets', 'fx', 'portfolio'],
-  flows: ['transactions', 'payables', 'receivables'],
+  flows: ['transactions', 'recurrences', 'payables', 'receivables'],
   news: ['news'],
   settings: ['settings']
 };
@@ -10946,6 +11187,10 @@ function renderThemeOptions() {
 }
 
 function bindEvents() {
+  // Notificações
+  on('btnNotifications', 'click', toggleNotificationsPanel);
+  on('gearMenu', 'click', closeNotificationsPanel);
+
   // Os botões de idioma são recriados a cada render, então o clique é capturado
   // no contêiner, que é fixo.
   // Fase 6 — títulos a pagar e receber
@@ -11020,6 +11265,9 @@ function bindEvents() {
     state.ui.txType = 'all'; state.ui.txAccount = 'all'; state.ui.txMonth = '';
     renderTransactions();
   });
+
+  // Fase 4 — recorrências
+  on('btnAddRecurrence', 'click', () => openRecurrenceModal());
 
   // Fase 2 — orçamentos
   on('btnAddBudget', 'click', () => openBudgetModal());
