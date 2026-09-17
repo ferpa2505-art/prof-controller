@@ -396,15 +396,29 @@ th { background: var(--surface); color: var(--muted); font-weight: 600; white-sp
 /* ===== Fase 10 — Navegação, engrenagem, explicações, ranking e notícias ===== */
 .topbar { position: relative; }
 .topbar-actions { position: relative; }
-.gear-btn {
+.gear-btn, .notification-btn {
   display: inline-flex; align-items: center; justify-content: center;
   width: 40px; height: 40px; border-radius: 10px; border: 1px solid rgba(255,255,255,.18);
-  background: rgba(255,255,255,.08); color: #fff; cursor: pointer;
+  background: rgba(255,255,255,.08); color: #fff; cursor: pointer; position: relative;
 }
-.gear-btn:hover, .gear-btn.active, .gear-btn[aria-expanded="true"] { background: rgba(255,255,255,.2); }
-.gear-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.gear-btn:hover, .gear-btn.active, .gear-btn[aria-expanded="true"],
+.notification-btn:hover, .notification-btn.active { background: rgba(255,255,255,.2); }
+.gear-btn:focus-visible, .notification-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 .gear-btn svg { transition: transform .3s ease; }
 .gear-btn[aria-expanded="true"] svg { transform: rotate(60deg); }
+.notification-badge {
+  position: absolute; top: -4px; right: -4px;
+  background: var(--accent); color: #fff; font-size: 10px; font-weight: 600;
+  border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center;
+}
+.notification-badge.hidden { display: none; }
+.icon-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 24px; height: 24px; border-radius: 4px; border: none;
+  background: transparent; color: var(--muted); cursor: pointer; font-size: 12px; font-weight: 600;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.icon-btn:hover { background: var(--border); color: var(--text); }
 .gear-menu {
   position: absolute; right: 0; top: calc(100% + 10px); z-index: 150; width: 270px;
   background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 12px;
