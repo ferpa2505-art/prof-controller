@@ -3058,7 +3058,7 @@ function groupLabel(g) {
 
 /* ---------- Estado e persistência (IndexedDB) ---------- */
 const DB_NAME = 'prof-controller';
-const DB_VERSION = 6; // Fase 12: proventos (dividendos, JCP, rendimentos)
+const DB_VERSION = 7; // Fase 13: Você x Mercado (benchmarks, marketEvents, portfolioMetrics)
 let db = null;
 let state = {
   accounts: [],
@@ -3076,6 +3076,10 @@ let state = {
   valuations: [],
   recurrences: [],
   notifications: [],
+  // Fase 13 — Você x Mercado
+  benchmarks: [],
+  marketEvents: [],
+  portfolioMetrics: [],
   settings: { lang: 'pt-BR', theme: 'default', baseCurrency: 'EUR' },
   ui: { txType: 'all', txAccount: 'all', txMonth: '', budgetMonth: '', navView: 'pie', navBreak: 'currency', cashGrain: 'monthly',
         billKind: 'all', billStatus: 'open', billFrom: '', billTo: '', tab: 'dashboard', lastSub: {} }
@@ -3171,6 +3175,24 @@ function openDB() {
         s.createIndex('read', 'read');
         s.createIndex('date', 'date');
       }
+      // Fase 13 — Você x Mercado (Smart Portfolio Insights)
+      if (!d.objectStoreNames.contains('benchmarks')) {
+        const s = d.createObjectStore('benchmarks', { keyPath: 'id' });
+        s.createIndex('symbol', 'symbol');
+        s.createIndex('date', 'date');
+        s.createIndex('type', 'type');
+      }
+      if (!d.objectStoreNames.contains('marketEvents')) {
+        const s = d.createObjectStore('marketEvents', { keyPath: 'id' });
+        s.createIndex('symbol', 'symbol');
+        s.createIndex('date', 'date');
+        s.createIndex('type', 'type');
+        s.createIndex('status', 'status');
+      }
+      if (!d.objectStoreNames.contains('portfolioMetrics')) {
+        const s = d.createObjectStore('portfolioMetrics', { keyPath: 'id' });
+        s.createIndex('date', 'date');
+      }
       // Preparado para fases futuras (patrimônio)
       ['fx', 'receitas', 'lancamentos', 'imoveis', 'veiculos', 'posicoes', 'nav', 'orcamentos']
         .forEach((name) => { if (!d.objectStoreNames.contains(name)) d.createObjectStore(name, { keyPath: 'id' }); });
@@ -3216,6 +3238,10 @@ async function loadAll() {
   state.dividends = await getAll('dividends');
   state.recurrences = await getAll('recurrences');
   state.notifications = await getAll('notifications');
+  // Fase 13 — Você x Mercado
+  state.benchmarks = await getAll('benchmarks');
+  state.marketEvents = await getAll('marketEvents');
+  state.portfolioMetrics = await getAll('portfolioMetrics');
   const brutos = (await rawGetAll('settings')).filter((r) => !String(r.key).startsWith(HIST_PREFIX) && r.key !== SEC_KEY);
   for (const r of brutos) {
     const s = await decodeRecord(r);
@@ -10972,6 +10998,10 @@ function buildBackupData() {
     dividends: state.dividends,
     recurrences: state.recurrences,
     notifications: state.notifications,
+    // Fase 13 — Você x Mercado
+    benchmarks: state.benchmarks,
+    marketEvents: state.marketEvents,
+    portfolioMetrics: state.portfolioMetrics,
     // Chaves de API não saem do navegador: um backup é fácil de compartilhar por engano
     settings: Object.fromEntries(Object.entries(state.settings).filter(([k]) => !API_KEYS.includes(k) && !k.startsWith(HIST_PREFIX) && k !== SEC_KEY))
   };
@@ -11043,6 +11073,10 @@ async function importJSON(file) {
     for (const dv of (data.dividends || [])) await put('dividends', dv);
     for (const rec of (data.recurrences || [])) await put('recurrences', rec);
     for (const notif of (data.notifications || [])) await put('notifications', notif);
+    // Fase 13 — Você x Mercado
+    for (const b of (data.benchmarks || [])) await put('benchmarks', b);
+    for (const me of (data.marketEvents || [])) await put('marketEvents', me);
+    for (const pm of (data.portfolioMetrics || [])) await put('portfolioMetrics', pm);
     if (data.settings) {
       for (const [k, v] of Object.entries(data.settings)) {
         if (k === 'ui' || k === SEC_KEY || API_KEYS.includes(k) || k.startsWith(HIST_PREFIX)) continue;
