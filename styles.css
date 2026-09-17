@@ -675,3 +675,19 @@ body.sec-open { overflow: hidden; }
 @supports not (position: sticky) { .app-head { position: static; } }
 .acc-tags { display: inline-flex; gap: 4px; flex-wrap: wrap; margin-top: 4px; }
 .acc-tags .tag { font-size: 11px; }
+
+/* ===== Fase 15 — Impostos ===== */
+.tax-warning {
+  padding: 12px 14px; border-radius: 10px; margin-bottom: 16px; font-size: 13px; line-height: 1.5;
+  background: color-mix(in srgb, #f59e0b 14%, transparent); border: 1px solid color-mix(in srgb, #f59e0b 35%, transparent);
+}
+.tax-table td { white-space: nowrap; }
+.tax-table .secondary-btn { margin: 0; padding: 5px 10px; font-size: 12px; }
+#taxBody input[type="text"] {
+  width: 110px; padding: 6px 8px; border-radius: 6px; border: 1px solid var(--border);
+  background: var(--surface); color: var(--text); font-size: 14px;
+}
+.tax-income { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 14px; }
+.tax-income div { border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; }
+.tax-income span { display: block; font-size: 12px; color: var(--muted); }
+.tax-income strong { font-size: 18px; }
