@@ -3161,6 +3161,92 @@ const CURRENCIES = [
   { code: 'BRL', symbol: 'R$', decimals: 2 }
 ];
 
+/* ========== Fase 13: APIs - BCB e B3 ========== */
+
+// Busca dados do BCB (Banco Central do Brasil)
+async function fetchBCBRate(type) {
+  // type: 'SELIC', 'CDI', 'USDBRL'
+  try {
+    const url = `https://www.bcb.gov.br/api/v1/timedseriesjson/${type}/data`;
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`BCB API error: ${response.status}`);
+    const data = await response.json();
+    return data;
+  } catch (err) {
+    console.error(`Erro ao buscar ${type} do BCB:`, err);
+    return null;
+  }
+}
+
+// Processa resposta do BCB e retorna último valor
+function parseBCBResponse(data, type) {
+  if (!data || !Array.isArray(data) || data.length === 0) return null;
+  const last = data[data.length - 1];
+  return {
+    symbol: type,
+    date: last.data || todayISO(),
+    value: parseFloat(last.valor) || 0,
+    type: 'rate',
+    source: 'BCB'
+  };
+}
+
+// Salva benchmark no store
+async function saveBenchmark(benchmark) {
+  if (!benchmark) return;
+  benchmark.id = `${benchmark.symbol}-${benchmark.date}`;
+  state.benchmarks.push(benchmark);
+  await put('benchmarks', benchmark);
+}
+
+// Busca e atualiza taxas do BCB (SELIC, CDI, USD/BRL)
+async function updateBCBRates() {
+  console.log('🔄 Atualizando taxas BCB...');
+  const types = ['SELIC', 'CDI', 'USDBRL'];
+  let count = 0;
+
+  for (const type of types) {
+    const data = await fetchBCBRate(type);
+    const benchmark = parseBCBResponse(data, type);
+    if (benchmark) {
+      await saveBenchmark(benchmark);
+      count++;
+      console.log(`✓ ${type}: ${benchmark.value} em ${benchmark.date}`);
+    } else {
+      console.warn(`✗ Falha ao buscar ${type}`);
+    }
+    // Aguarda 500ms entre requisições (respeito ao servidor)
+    await new Promise(resolve => setTimeout(resolve, 500));
+  }
+  console.log(`✓ Atualização BCB concluída: ${count}/${types.length}`);
+  return count === types.length;
+}
+
+// Handler UI para atualizar taxas BCB
+async function handleUpdateBCB() {
+  const btn = document.getElementById('btnUpdateBCB');
+  const result = document.getElementById('bcbUpdateResult');
+  
+  if (!btn || !result) return;
+  
+  btn.disabled = true;
+  btn.textContent = '⏳ Atualizando...';
+  result.innerHTML = '';
+  
+  try {
+    const success = await updateBCBRates();
+    result.innerHTML = success 
+      ? '<p style="color: green;">✓ Taxas atualizadas com sucesso!</p>'
+      : '<p style="color: orange;">⚠ Algumas taxas não foram obtidas</p>';
+  } catch (err) {
+    console.error('Erro ao atualizar BCB:', err);
+    result.innerHTML = '<p style="color: red;">✗ Erro: ' + err.message + '</p>';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Atualizar taxas BCB';
+  }
+}
+
 function openDB() {
   return new Promise((resolve, reject) => {
     const req = indexedDB.open(DB_NAME, DB_VERSION);
@@ -11398,6 +11484,7 @@ function bindEvents() {
   on('btnSaveApi', 'click', saveApiKeys);
   on('btnTestApi', 'click', testApis);
   on('btnApiWizard', 'click', openApiSetup);
+  on('btnUpdateBCB', 'click', handleUpdateBCB);
   on('btnB3Import', 'click', openB3Import);
   on('btnDivFetch', 'click', () => fetchAutoDividends(false));
   on('btnDivAdd', 'click', () => openDividendModal());
