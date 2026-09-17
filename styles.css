@@ -596,3 +596,60 @@ body.sec-open { overflow: hidden; }
 .b3-ignored { margin: 12px 0; font-size: 13px; }
 .b3-ignored summary { cursor: pointer; color: var(--muted); }
 .b3-ignored ul { margin: 8px 0 0 18px; line-height: 1.7; }
+
+/* ===== Fase 13 — Calculadora ===== */
+.calc-tabs { margin-bottom: 16px; flex-wrap: wrap; }
+.calc-body { max-width: 900px; }
+.calc-basic { max-width: 380px; }
+.calc-screen { position: relative; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 14px; }
+.calc-screen input {
+  width: 100%; border: none; background: none; color: var(--muted); font-size: 16px; text-align: right;
+  font-family: ui-monospace, monospace; padding: 0;
+}
+.calc-screen input:focus { outline: none; }
+.calc-result { text-align: right; font-size: 30px; font-weight: 700; margin-top: 6px; word-break: break-all; }
+.calc-mem { position: absolute; left: 14px; top: 12px; font-size: 12px; font-weight: 700; color: var(--accent); }
+.calc-mem-row { display: flex; gap: 6px; margin: 10px 0; flex-wrap: wrap; }
+.calc-mem-row .secondary-btn { margin: 0; padding: 6px 10px; font-size: 12px; flex: 1; min-width: 42px; }
+.calc-pad { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.calc-key {
+  padding: 16px 0; font-size: 18px; border-radius: 12px; cursor: pointer;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text);
+}
+.calc-key:hover { border-color: var(--accent); }
+.calc-key:active { transform: scale(.97); }
+.calc-key.op { background: var(--bg); font-weight: 700; color: var(--accent); }
+.calc-key.fn { color: var(--muted); }
+.calc-key.eq { grid-column: span 4; background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 700; }
+.calc-history { list-style: none; margin-top: 14px; display: grid; gap: 4px; }
+.calc-history button {
+  width: 100%; display: flex; justify-content: space-between; gap: 12px; padding: 6px 10px; font-size: 13px;
+  background: none; border: none; border-radius: 8px; color: var(--muted); cursor: pointer; font-family: ui-monospace, monospace;
+}
+.calc-history button:hover { background: var(--surface); color: var(--text); }
+.calc-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin-bottom: 18px; }
+.calc-form > label { display: flex; flex-direction: column; gap: 5px; font-size: 13px; color: var(--muted); }
+.calc-form input[type="text"], .calc-form input[type="date"], .calc-form select {
+  padding: 9px; border-radius: 8px; border: 1px solid var(--border);
+  background: var(--surface); color: var(--text); font-size: 15px; width: 100%;
+}
+.calc-form .checkline { align-self: end; }
+.calc-inline { display: flex; gap: 6px; }
+.calc-inline select { max-width: 110px; }
+.calc-field { border: 1px solid var(--border); border-radius: 12px; padding: 12px; }
+.calc-field.is-target { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 8%, transparent); }
+.calc-field.is-target input[type="text"] { opacity: .45; }
+.calc-radio { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); margin-top: 8px; }
+.calc-solve { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.calc-out { margin-top: 8px; }
+.calc-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 14px; }
+.calc-cards div { border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; }
+.calc-cards span { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+.calc-cards strong { font-size: 19px; }
+.calc-cards-sub strong { font-size: 16px; }
+.calc-chart { margin: 10px 0; }
+.calc-table { margin-top: 10px; }
+.calc-table summary { cursor: pointer; color: var(--muted); font-size: 13px; }
+@media (max-width: 600px) { .calc-basic { max-width: 100%; } .calc-key { padding: 18px 0; } }
+.calc-mode { display: flex; flex-direction: column; gap: 5px; font-size: 13px; color: var(--muted); max-width: 320px; margin-bottom: 14px; }
+.calc-mode select { padding: 9px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 15px; }
