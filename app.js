@@ -3075,6 +3075,58 @@ async function resetIndexedDB() {
   console.log('Banco não encontrado');
 }
 window.resetIndexedDB = resetIndexedDB;
+
+// Força migração para v7: cria stores faltantes sem perder dados
+async function migrateToV7() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(DB_NAME, DB_VERSION);
+    req.onerror = () => { console.error('Erro ao abrir DB:', req.error); reject(req.error); };
+    req.onsuccess = () => { 
+      const database = req.result;
+      const storesNeeded = ['benchmarks', 'marketEvents', 'portfolioMetrics'];
+      const missing = storesNeeded.filter(s => !database.objectStoreNames.contains(s));
+      if (missing.length === 0) {
+        console.log('✓ Banco já em v7 com todos os stores');
+        resolve(true);
+      } else {
+        database.close();
+        console.log('⚠ Stores faltando:', missing.join(', '));
+        console.log('Incrementando DB_VERSION...');
+        const req2 = indexedDB.open(DB_NAME, DB_VERSION + 1);
+        req2.onupgradeneeded = (e) => { 
+          console.log('✓ Criando stores faltantes...');
+          const d = e.target.result;
+          missing.forEach(name => {
+            if (!d.objectStoreNames.contains(name)) {
+              if (name === 'benchmarks') {
+                const s = d.createObjectStore(name, { keyPath: 'id' });
+                s.createIndex('symbol', 'symbol');
+                s.createIndex('date', 'date');
+                s.createIndex('type', 'type');
+              } else if (name === 'marketEvents') {
+                const s = d.createObjectStore(name, { keyPath: 'id' });
+                s.createIndex('symbol', 'symbol');
+                s.createIndex('date', 'date');
+                s.createIndex('type', 'type');
+                s.createIndex('status', 'status');
+              } else if (name === 'portfolioMetrics') {
+                const s = d.createObjectStore(name, { keyPath: 'id' });
+                s.createIndex('date', 'date');
+              }
+            }
+          });
+        };
+        req2.onsuccess = () => {
+          req2.result.close();
+          console.log('✓ Migração concluída! Recarregue a página.');
+          resolve(true);
+        };
+        req2.onerror = () => reject(req2.error);
+      }
+    };
+  });
+}
+window.migrateToV7 = migrateToV7;
 let state = {
   accounts: [],
   balances: [],
