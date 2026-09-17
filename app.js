@@ -1,5 +1,5 @@
 /* ============================================================
-   ProF Controller — Fases 1 a 12 (12: importador da B3 e proventos)
+   ProF Controller — Fases 1 a 13 (13: calculadora financeira)
 
    Fase 1: contas, moedas, saldos diários, moeda base, importação CSV,
            i18n (pt-BR/en/es), temas, offline.
@@ -366,6 +366,68 @@ const I18N = {
     'modal.move': 'Aporte ou resgate',
     'mkt.lookup': 'Buscar ativo (ticker ou ISIN)',
     'mkt.manual': 'Cadastrar sem busca (renda fixa, CDB ou ativo sem cotação)',
+    'tabs.calculator': 'Calculadora',
+    'calc.title': 'Calculadora financeira',
+    'help.calculator': 'Calculadora comum, simulação de juros simples e compostos, solução de qualquer variável (capital, aporte, taxa, prazo ou montante) e a simulação "e se eu tivesse comprado tal ativo naquela data".',
+    'calc.m.basic': 'Comum',
+    'calc.m.interest': 'Juros',
+    'calc.m.solve': 'Resolver',
+    'calc.m.whatif': 'E se eu tivesse comprado',
+    'calc.err': 'Conta inválida',
+    'calc.mode': 'Tipo de simulação',
+    'calc.modeInvest': 'Investimento (você aplica)',
+    'calc.modeLoan': 'Financiamento (você recebe e paga parcelas)',
+    'calc.type': 'Tipo de juros',
+    'calc.compound': 'Compostos',
+    'calc.simple': 'Simples',
+    'calc.pv': 'Valor inicial',
+    'calc.pmt': 'Aporte por período',
+    'calc.rate': 'Taxa',
+    'calc.term': 'Prazo',
+    'calc.period': 'Período',
+    'calc.monthly': 'Mensal',
+    'calc.yearly': 'Anual',
+    'calc.perMonth': 'ao mês',
+    'calc.perYear': 'ao ano',
+    'calc.months': 'meses',
+    'calc.years': 'anos',
+    'calc.year': 'Ano',
+    'calc.inflation': 'Inflação ao ano (%) — opcional',
+    'calc.begin': 'Aportes no início do período',
+    'calc.finalAmount': 'Montante final',
+    'calc.invested': 'Total investido',
+    'calc.interestEarned': 'Juros',
+    'calc.realValue': 'Valor descontando a inflação',
+    'calc.balance': 'Saldo',
+    'calc.showTable': 'Ver tabela período a período',
+    'calc.chartTitle': 'Evolução do saldo',
+    'calc.rateEquiv': 'Taxas equivalentes: {m}% ao mês = {a}% ao ano.',
+    'calc.fillHint': 'Preencha os campos para ver o resultado.',
+    'calc.solveHint': 'Preencha quatro campos e marque qual deles o app deve calcular.',
+    'calc.solveThis': 'calcular este',
+    'calc.solveExample': 'Exemplo de parcelamento: escolha Financiamento, coloque o preço à vista no valor inicial, o valor da parcela no aporte, o prazo em meses, montante final zero e marque a taxa.',
+    'calc.f.pv': 'Valor inicial (PV)',
+    'calc.f.pmt': 'Aporte/parcela (PMT)',
+    'calc.f.i': 'Taxa (i)',
+    'calc.f.n': 'Prazo (n)',
+    'calc.f.fv': 'Montante final (FV)',
+    'calc.totalPaid': 'Total movimentado',
+    'calc.noSolution': 'Não existe resultado com esses valores. Revise os campos.',
+    'calc.nResult': '{n} {p} (≈ {y} anos)',
+    'calc.wiHint': 'Escolha o ativo, a data e quanto teria investido. O app usa os preços reais do histórico.',
+    'calc.wiDate': 'Data da compra',
+    'calc.wiAmount': 'Valor investido',
+    'calc.wiMonthly': 'Aporte mensal desde então — opcional',
+    'calc.wiSearchFirst': 'Busque um ativo para simular.',
+    'calc.wiFutureDate': 'Escolha uma data passada.',
+    'calc.wiNoHistory': 'Sem preço no histórico gratuito para {d}. Tente uma data mais recente ou outro ativo.',
+    'calc.wiBought': 'Teria comprado',
+    'calc.wiToday': 'Valeria hoje',
+    'calc.wiResult': 'Lucro ou prejuízo',
+    'calc.wiCagr': 'Rentabilidade ao ano',
+    'calc.wiDiff': 'Diferença a favor do ativo',
+    'calc.wiNote': 'Simulação baseada só no preço: não considera proventos, taxas de corretagem nem imposto.',
+    'calc.todayPrice': 'cotação de hoje',
     'tabs.payables': 'Contas a pagar',
     'tabs.receivables': 'Contas a receber',
     'help.payables': 'Contas que você ainda vai pagar, inclusive parceladas ou recorrentes (aluguel, financiamento, cartão). Ao quitar, o app lança a saída na conta.',
@@ -1108,6 +1170,68 @@ const I18N = {
     'modal.move': 'Contribution or withdrawal',
     'mkt.lookup': 'Find asset (ticker or ISIN)',
     'mkt.manual': 'Add without search (fixed income, CDs or unlisted assets)',
+    'tabs.calculator': 'Calculator',
+    'calc.title': 'Financial calculator',
+    'help.calculator': 'A plain calculator, simple and compound interest simulation, solving for any variable (present value, payment, rate, term or future value) and the "what if I had bought this asset back then" simulation.',
+    'calc.m.basic': 'Plain',
+    'calc.m.interest': 'Interest',
+    'calc.m.solve': 'Solve',
+    'calc.m.whatif': 'What if I had bought',
+    'calc.err': 'Invalid expression',
+    'calc.mode': 'Simulation type',
+    'calc.modeInvest': 'Investment (you contribute)',
+    'calc.modeLoan': 'Loan (you receive and pay instalments)',
+    'calc.type': 'Interest type',
+    'calc.compound': 'Compound',
+    'calc.simple': 'Simple',
+    'calc.pv': 'Initial amount',
+    'calc.pmt': 'Contribution per period',
+    'calc.rate': 'Rate',
+    'calc.term': 'Term',
+    'calc.period': 'Period',
+    'calc.monthly': 'Monthly',
+    'calc.yearly': 'Yearly',
+    'calc.perMonth': 'per month',
+    'calc.perYear': 'per year',
+    'calc.months': 'months',
+    'calc.years': 'years',
+    'calc.year': 'Year',
+    'calc.inflation': 'Yearly inflation (%) — optional',
+    'calc.begin': 'Contributions at the start of the period',
+    'calc.finalAmount': 'Final amount',
+    'calc.invested': 'Total invested',
+    'calc.interestEarned': 'Interest',
+    'calc.realValue': 'Value after inflation',
+    'calc.balance': 'Balance',
+    'calc.showTable': 'Show period-by-period table',
+    'calc.chartTitle': 'Balance growth',
+    'calc.rateEquiv': 'Equivalent rates: {m}% per month = {a}% per year.',
+    'calc.fillHint': 'Fill in the fields to see the result.',
+    'calc.solveHint': 'Fill in four fields and tick the one the app should calculate.',
+    'calc.solveThis': 'solve for this',
+    'calc.solveExample': 'Instalment example: choose Loan, put the cash price as initial amount, the instalment as contribution, the term in months, zero future value and tick the rate.',
+    'calc.f.pv': 'Present value (PV)',
+    'calc.f.pmt': 'Payment (PMT)',
+    'calc.f.i': 'Rate (i)',
+    'calc.f.n': 'Term (n)',
+    'calc.f.fv': 'Future value (FV)',
+    'calc.totalPaid': 'Total moved',
+    'calc.noSolution': 'No solution with these values. Check the fields.',
+    'calc.nResult': '{n} {p} (≈ {y} years)',
+    'calc.wiHint': 'Pick the asset, the date and how much you would have invested. The app uses real historical prices.',
+    'calc.wiDate': 'Purchase date',
+    'calc.wiAmount': 'Amount invested',
+    'calc.wiMonthly': 'Monthly contribution since then — optional',
+    'calc.wiSearchFirst': 'Search for an asset to simulate.',
+    'calc.wiFutureDate': 'Pick a past date.',
+    'calc.wiNoHistory': 'No free-plan price for {d}. Try a more recent date or another asset.',
+    'calc.wiBought': 'You would have bought',
+    'calc.wiToday': 'Worth today',
+    'calc.wiResult': 'Gain or loss',
+    'calc.wiCagr': 'Return per year',
+    'calc.wiDiff': 'Difference in favour of the asset',
+    'calc.wiNote': 'Price-only simulation: it ignores dividends, brokerage fees and taxes.',
+    'calc.todayPrice': 'today\'s price',
     'tabs.payables': 'Bills to pay',
     'tabs.receivables': 'Amounts to receive',
     'help.payables': 'Bills you still have to pay, including installments or recurring ones (rent, loans, credit card). When paid, the app records the outflow.',
@@ -1849,6 +1973,68 @@ const I18N = {
     'modal.move': 'Aporte o rescate',
     'mkt.lookup': 'Buscar activo (ticker o ISIN)',
     'mkt.manual': 'Registrar sin búsqueda (renta fija, CDB o activo sin cotización)',
+    'tabs.calculator': 'Calculadora',
+    'calc.title': 'Calculadora financiera',
+    'help.calculator': 'Calculadora común, simulación de interés simple y compuesto, cálculo de cualquier variable (capital, aporte, tasa, plazo o monto) y la simulación "y si hubiera comprado tal activo en aquella fecha".',
+    'calc.m.basic': 'Común',
+    'calc.m.interest': 'Intereses',
+    'calc.m.solve': 'Resolver',
+    'calc.m.whatif': 'Y si hubiera comprado',
+    'calc.err': 'Operación inválida',
+    'calc.mode': 'Tipo de simulación',
+    'calc.modeInvest': 'Inversión (tú aportas)',
+    'calc.modeLoan': 'Financiación (recibes y pagas cuotas)',
+    'calc.type': 'Tipo de interés',
+    'calc.compound': 'Compuesto',
+    'calc.simple': 'Simple',
+    'calc.pv': 'Valor inicial',
+    'calc.pmt': 'Aporte por período',
+    'calc.rate': 'Tasa',
+    'calc.term': 'Plazo',
+    'calc.period': 'Período',
+    'calc.monthly': 'Mensual',
+    'calc.yearly': 'Anual',
+    'calc.perMonth': 'al mes',
+    'calc.perYear': 'al año',
+    'calc.months': 'meses',
+    'calc.years': 'años',
+    'calc.year': 'Año',
+    'calc.inflation': 'Inflación anual (%) — opcional',
+    'calc.begin': 'Aportes al inicio del período',
+    'calc.finalAmount': 'Monto final',
+    'calc.invested': 'Total invertido',
+    'calc.interestEarned': 'Intereses',
+    'calc.realValue': 'Valor descontando la inflación',
+    'calc.balance': 'Saldo',
+    'calc.showTable': 'Ver tabla período a período',
+    'calc.chartTitle': 'Evolución del saldo',
+    'calc.rateEquiv': 'Tasas equivalentes: {m}% al mes = {a}% al año.',
+    'calc.fillHint': 'Completa los campos para ver el resultado.',
+    'calc.solveHint': 'Completa cuatro campos y marca cuál debe calcular la app.',
+    'calc.solveThis': 'calcular este',
+    'calc.solveExample': 'Ejemplo de financiación: elige Financiación, pon el precio de contado en el valor inicial, la cuota en el aporte, el plazo en meses, monto final cero y marca la tasa.',
+    'calc.f.pv': 'Valor inicial (PV)',
+    'calc.f.pmt': 'Aporte/cuota (PMT)',
+    'calc.f.i': 'Tasa (i)',
+    'calc.f.n': 'Plazo (n)',
+    'calc.f.fv': 'Monto final (FV)',
+    'calc.totalPaid': 'Total movido',
+    'calc.noSolution': 'No hay resultado con estos valores. Revisa los campos.',
+    'calc.nResult': '{n} {p} (≈ {y} años)',
+    'calc.wiHint': 'Elige el activo, la fecha y cuánto habrías invertido. La app usa precios históricos reales.',
+    'calc.wiDate': 'Fecha de compra',
+    'calc.wiAmount': 'Importe invertido',
+    'calc.wiMonthly': 'Aporte mensual desde entonces — opcional',
+    'calc.wiSearchFirst': 'Busca un activo para simular.',
+    'calc.wiFutureDate': 'Elige una fecha pasada.',
+    'calc.wiNoHistory': 'Sin precio en el histórico gratuito para {d}. Prueba una fecha más reciente u otro activo.',
+    'calc.wiBought': 'Habrías comprado',
+    'calc.wiToday': 'Valdría hoy',
+    'calc.wiResult': 'Ganancia o pérdida',
+    'calc.wiCagr': 'Rentabilidad anual',
+    'calc.wiDiff': 'Diferencia a favor del activo',
+    'calc.wiNote': 'Simulación solo por precio: no considera dividendos, comisiones ni impuestos.',
+    'calc.todayPrice': 'cotización de hoy',
     'tabs.payables': 'Cuentas por pagar',
     'tabs.receivables': 'Cuentas por cobrar',
     'help.payables': 'Cuentas que aún debes pagar, incluso a plazos o recurrentes (alquiler, préstamos, tarjeta). Al pagar, la app registra la salida.',
@@ -3783,7 +3969,7 @@ function renderAll() {
   const etapas = [
     ['dashboard', renderDashboard], ['contas', renderAccounts], ['saldos', renderBalances],
     ['transações', renderTransactions], ['orçamentos', renderBudgets], ['câmbio', renderFx],
-    ['portfólio', renderPortfolio], ['gráfico', renderNAV], ['fluxo', renderCashflow], ['títulos', renderBills], ['investimentos', renderInvestments], ['notícias', () => { if (state.ui.tab === 'news') renderNews(); }], ['configurações', renderSettings]
+    ['portfólio', renderPortfolio], ['gráfico', renderNAV], ['fluxo', renderCashflow], ['títulos', renderBills], ['investimentos', renderInvestments], ['notícias', () => { if (state.ui.tab === 'news') renderNews(); }], ['calculadora', renderCalculator], ['configurações', renderSettings]
   ];
   etapas.forEach(([nome, fn]) => {
     try { fn(); } catch (e) { console.error('Falha ao renderizar ' + nome + ':', e); }
@@ -6673,6 +6859,556 @@ async function testApis() {
 }
 
 
+/* ================= FASE 13 — Calculadora financeira =================
+   Quatro módulos:
+   1. Comum      — as quatro operações, %, memória e histórico (avaliador próprio,
+                   sem eval, para nada digitado virar código executável).
+   2. Juros      — simples ou compostos, com aportes, inflação e tabela ano a ano.
+   3. Resolver   — estilo HP-12C: informe 4 entre capital (PV), aporte (PMT),
+                   taxa (i), prazo (n) e montante (FV), e o app calcula o 5º.
+   4. E se…      — "se eu tivesse comprado X em tal data": usa o histórico real
+                   de preços e compara com CDB, Ibovespa e S&P 500. */
+
+const CALC_MODULES = ['basic', 'interest', 'solve', 'whatif'];
+const calcUi = { module: 'basic', expr: '', acc: 0, history: [], memory: 0 };
+
+/* ----- 1. Calculadora comum: tokenizador + shunting-yard ----- */
+function calcTokenize(expr) {
+  const tokens = [];
+  const s = String(expr).replace(/\s+/g, '').replace(/,/g, '.').replace(/×/g, '*').replace(/÷/g, '/').replace(/−/g, '-');
+  let i = 0;
+  while (i < s.length) {
+    const c = s[i];
+    if (/[0-9.]/.test(c)) {
+      let num = '';
+      while (i < s.length && /[0-9.]/.test(s[i])) num += s[i++];
+      tokens.push({ t: 'num', v: Number(num) });
+      continue;
+    }
+    if ('+-*/^()%'.includes(c)) { tokens.push({ t: c }); i++; continue; }
+    throw new Error('CHAR:' + c);
+  }
+  return tokens;
+}
+function calcEval(expr) {
+  const tokens = calcTokenize(expr);
+  const prec = { '+': 1, '-': 1, '*': 2, '/': 2, '^': 3 };
+  const saida = [], ops = [];
+  let anterior = null;
+  tokens.forEach((tk) => {
+    if (tk.t === 'num') saida.push(tk.v);
+    else if (tk.t === '(') ops.push(tk.t);
+    else if (tk.t === ')') {
+      while (ops.length && ops[ops.length - 1] !== '(') saida.push(ops.pop());
+      if (!ops.length) throw new Error('PAREN');
+      ops.pop();
+    } else if (tk.t === '%') {
+      saida.push('%');
+    } else {
+      // menos unário: -5 ou 3*(-2)
+      if (tk.t === '-' && (!anterior || anterior.t === '(' || '+-*/^'.includes(anterior.t))) { saida.push(0); }
+      while (ops.length && ops[ops.length - 1] !== '(' && prec[ops[ops.length - 1]] >= prec[tk.t]) saida.push(ops.pop());
+      ops.push(tk.t);
+    }
+    anterior = tk;
+  });
+  while (ops.length) { const o = ops.pop(); if (o === '(') throw new Error('PAREN'); saida.push(o); }
+  const pilha = [];
+  saida.forEach((x) => {
+    if (typeof x === 'number') { pilha.push(x); return; }
+    if (x === '%') { pilha.push(pilha.pop() / 100); return; }
+    const b = pilha.pop(), a = pilha.pop();
+    if (a === undefined || b === undefined) throw new Error('EXPR');
+    pilha.push(x === '+' ? a + b : x === '-' ? a - b : x === '*' ? a * b : x === '/' ? a / b : Math.pow(a, b));
+  });
+  if (pilha.length !== 1 || !isFinite(pilha[0])) throw new Error('EXPR');
+  return pilha[0];
+}
+function calcKey(k) {
+  const campo = document.getElementById('calcDisplay');
+  if (!campo) return;
+  if (k === 'C') { calcUi.expr = ''; }
+  else if (k === '←') calcUi.expr = calcUi.expr.slice(0, -1);
+  else if (k === '=') return calcRun();
+  else if (k === '±') {
+    const m = calcUi.expr.match(/(\d+[.,]?\d*)$/);
+    if (m) calcUi.expr = calcUi.expr.slice(0, -m[1].length) + '(0-' + m[1] + ')';
+  } else if (k === '√') {
+    calcUi.expr += '^0.5';
+  } else if (k === 'x²') {
+    calcUi.expr += '^2';
+  } else calcUi.expr += k;
+  campo.value = calcUi.expr;
+  campo.focus();
+}
+function calcRun() {
+  const campo = document.getElementById('calcDisplay');
+  const saida = document.getElementById('calcResult');
+  calcUi.expr = campo.value;
+  if (!calcUi.expr.trim()) return;
+  try {
+    const r = calcEval(calcUi.expr);
+    calcUi.history.unshift({ expr: calcUi.expr, result: r });
+    calcUi.history = calcUi.history.slice(0, 12);
+    saida.textContent = fmtNumber(r);
+    saida.className = 'calc-result';
+    calcUi.expr = String(r);
+    campo.value = calcUi.expr;
+    renderCalcHistory();
+  } catch (e) {
+    saida.textContent = t('calc.err');
+    saida.className = 'calc-result amount-out';
+  }
+}
+function calcMemory(op) {
+  const saida = document.getElementById('calcResult');
+  let atual = 0;
+  try { atual = calcEval(document.getElementById('calcDisplay').value || '0'); } catch (e) { atual = 0; }
+  if (op === 'M+') calcUi.memory += atual;
+  if (op === 'M-') calcUi.memory -= atual;
+  if (op === 'MC') calcUi.memory = 0;
+  if (op === 'MR') { calcKey(String(calcUi.memory)); return; }
+  saida.textContent = 'M = ' + fmtNumber(calcUi.memory);
+  document.getElementById('calcMem').textContent = calcUi.memory ? 'M' : '';
+}
+function renderCalcHistory() {
+  const box = document.getElementById('calcHistory');
+  if (!box) return;
+  box.innerHTML = calcUi.history.map((h) => `<li><button type="button" onclick="calcKey('${h.result}')"><span>${escapeHtml(h.expr)}</span><strong>${fmtNumber(h.result)}</strong></button></li>`).join('');
+}
+function fmtNumber(n) {
+  if (!isFinite(n)) return '—';
+  const abs = Math.abs(n);
+  const casas = abs >= 1000 ? 2 : abs >= 1 ? 4 : 8;
+  return Number(n.toFixed(casas)).toLocaleString('pt-BR', { maximumFractionDigits: casas });
+}
+
+/* ----- Matemática financeira -----
+   Convenção: capital e aportes entram positivos; a taxa é por período. */
+const powi = (i, n) => Math.pow(1 + i, n);
+function fvOf({ pv, pmt, i, n, begin, simple }) {
+  if (simple) {
+    // Juros simples: cada aporte rende sobre o tempo que ficou aplicado
+    const jurosAportes = pmt * i * ((n - (begin ? 0 : 1)) * n) / 2;
+    return pv * (1 + i * n) + pmt * n + jurosAportes;
+  }
+  if (Math.abs(i) < 1e-12) return pv + pmt * n;
+  return pv * powi(i, n) + pmt * ((powi(i, n) - 1) / i) * (begin ? 1 + i : 1);
+}
+function pvOf({ fv, pmt, i, n, begin }) {
+  if (Math.abs(i) < 1e-12) return fv - pmt * n;
+  return (fv - pmt * ((powi(i, n) - 1) / i) * (begin ? 1 + i : 1)) / powi(i, n);
+}
+function pmtOf({ pv, fv, i, n, begin }) {
+  if (n <= 0) return 0;
+  if (Math.abs(i) < 1e-12) return (fv - pv) / n;
+  return (fv - pv * powi(i, n)) / (((powi(i, n) - 1) / i) * (begin ? 1 + i : 1));
+}
+function nOf({ pv, fv, pmt, i, begin }) {
+  if (Math.abs(i) < 1e-12) return pmt !== 0 ? (fv - pv) / pmt : NaN;
+  const aj = pmt * (begin ? 1 + i : 1) / i;
+  const razao = (fv + aj) / (pv + aj);
+  if (razao <= 0) return NaN;
+  return Math.log(razao) / Math.log(1 + i);
+}
+// Taxa: busca por bisseção, que converge sempre no intervalo dado
+function iOf({ pv, fv, pmt, n, begin, simple }) {
+  const f = (x) => fvOf({ pv, pmt, i: x, n, begin, simple }) - fv;
+  let lo = -0.9999, hi = 10;
+  let flo = f(lo), fhi = f(hi);
+  if (isNaN(flo) || isNaN(fhi) || flo * fhi > 0) return NaN;
+  for (let k = 0; k < 300; k++) {
+    const mid = (lo + hi) / 2, fm = f(mid);
+    if (Math.abs(fm) < 1e-10 || hi - lo < 1e-14) return mid;
+    if (flo * fm <= 0) { hi = mid; fhi = fm; } else { lo = mid; flo = fm; }
+  }
+  return (lo + hi) / 2;
+}
+// Conversão de taxas equivalentes (mensal ↔ anual, compostas)
+const toMonthly = (anual) => powi(anual, 1 / 12) - 1;
+const toYearly = (mensal) => powi(mensal, 12) - 1;
+
+function calcRate(valor, unidade, porPeriodo) {
+  const i = (Number(valor) || 0) / 100;
+  const anual = unidade === 'year' ? i : toYearly(i);
+  const mensal = unidade === 'year' ? toMonthly(i) : i;
+  return porPeriodo === 'month' ? mensal : anual;
+}
+const numIn = (id, padrao) => {
+  const el = document.getElementById(id);
+  const v = el ? parseMoney(el.value) : null;
+  return v == null ? (padrao === undefined ? null : padrao) : v;
+};
+
+/* ----- 2. Juros simples e compostos ----- */
+function runInterest() {
+  const pv = numIn('juPV', 0), pmt = numIn('juPMT', 0);
+  const unidade = document.getElementById('juRateUnit').value;
+  const periodo = document.getElementById('juPeriod').value; // month | year
+  const i = calcRate(numIn('juRate', 0), unidade, periodo);
+  const prazoUnid = document.getElementById('juTermUnit').value;
+  const prazo = numIn('juTerm', 0);
+  const n = Math.round(periodo === 'month' ? (prazoUnid === 'year' ? prazo * 12 : prazo) : (prazoUnid === 'year' ? prazo : prazo / 12));
+  const simple = document.getElementById('juType').value === 'simple';
+  const begin = document.getElementById('juBegin').checked;
+  const inflacao = (numIn('juInflation', 0) || 0) / 100;
+  const moeda = document.getElementById('juCurrency').value;
+  const saida = document.getElementById('juResult');
+  if (n <= 0 || (pv <= 0 && pmt <= 0)) { saida.innerHTML = `<p class="hint">${t('calc.fillHint')}</p>`; return; }
+
+  const fv = fvOf({ pv, pmt, i, n, begin, simple });
+  const investido = pv + pmt * n;
+  const juros = fv - investido;
+  const anos = periodo === 'month' ? n / 12 : n;
+  const real = inflacao > 0 && anos > 0 ? fv / powi(inflacao, anos) : null;
+
+  // Série por período para a tabela e o gráfico
+  const pontos = [];
+  for (let k = 0; k <= n; k++) {
+    pontos.push({ k, saldo: fvOf({ pv, pmt, i, n: k, begin, simple }), investido: pv + pmt * k });
+  }
+  const passo = periodo === 'month' ? 12 : 1;
+  const linhas = pontos.filter((p) => p.k > 0 && (p.k % passo === 0 || p.k === n));
+
+  saida.innerHTML = `
+    <div class="calc-cards">
+      <div><span>${t('calc.finalAmount')}</span><strong class="amount-in">${fmtMoney(fv, moeda)}</strong></div>
+      <div><span>${t('calc.invested')}</span><strong>${fmtMoney(investido, moeda)}</strong></div>
+      <div><span>${t('calc.interestEarned')}</span><strong>${fmtMoney(juros, moeda)}${investido > 0 ? ` · ${fmtPct((juros / investido) * 100)}` : ''}</strong></div>
+      ${real != null ? `<div><span>${t('calc.realValue')}</span><strong>${fmtMoney(real, moeda)}</strong></div>` : ''}
+    </div>
+    <p class="hint">${t('calc.rateEquiv').replace('{m}', (calcRate(numIn('juRate', 0), unidade, 'month') * 100).toFixed(4).replace('.', ',')).replace('{a}', (calcRate(numIn('juRate', 0), unidade, 'year') * 100).toFixed(2).replace('.', ','))}</p>
+    <div id="juChart" class="nav-chart calc-chart"></div>
+    <details class="calc-table"><summary>${t('calc.showTable')}</summary>
+      <div class="table-scroll"><table class="mini-table">
+        <thead><tr><th>${t(periodo === 'month' ? 'calc.year' : 'calc.period')}</th><th>${t('calc.invested')}</th><th>${t('calc.balance')}</th><th>${t('calc.interestEarned')}</th></tr></thead>
+        <tbody>${linhas.map((p) => `<tr><td>${periodo === 'month' ? (p.k / 12).toFixed(p.k % 12 ? 1 : 0).replace('.', ',') : p.k}</td>
+          <td>${fmtMoney(p.investido, moeda)}</td><td><strong>${fmtMoney(p.saldo, moeda)}</strong></td>
+          <td class="amount-in">${fmtMoney(p.saldo - p.investido, moeda)}</td></tr>`).join('')}</tbody>
+      </table></div>
+    </details>`;
+  drawCalcChart('juChart', pontos, moeda, periodo);
+}
+
+// Área empilhada simples: investido embaixo, juros acima
+function drawCalcChart(id, pontos, moeda, periodo) {
+  const box = document.getElementById(id);
+  if (!box || pontos.length < 2) return;
+  const W = 720, H = 240, padL = 70, padR = 12, padT = 12, padB = 28;
+  const max = Math.max(...pontos.map((p) => p.saldo), 1);
+  const X = (k) => padL + (k / (pontos.length - 1)) * (W - padL - padR);
+  const Y = (v) => padT + (1 - v / max) * (H - padT - padB);
+  const area = (campo, cor, op) => `<path d="M${X(0)},${Y(0)} ${pontos.map((p) => `L${X(p.k).toFixed(1)},${Y(p[campo]).toFixed(1)}`).join(' ')} L${X(pontos.length - 1)},${Y(0)} Z" fill="${cor}" fill-opacity="${op}"/>`;
+  const pos = getComputedStyle(document.documentElement).getPropertyValue('--positive').trim() || '#15803d';
+  let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${t('calc.chartTitle')}">`;
+  for (let g = 0; g <= 4; g++) {
+    const v = (max * g) / 4;
+    svg += `<line x1="${padL}" x2="${W - padR}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--border)"/>
+      <text x="${padL - 8}" y="${Y(v) + 4}" text-anchor="end" font-size="11" fill="var(--muted)">${fmtCompact(v)}</text>`;
+  }
+  svg += area('saldo', pos, 0.25) + area('investido', 'var(--muted)', 0.35);
+  svg += `<path d="${pontos.map((p, j) => `${j ? 'L' : 'M'}${X(p.k).toFixed(1)},${Y(p.saldo).toFixed(1)}`).join(' ')}" fill="none" stroke="${pos}" stroke-width="2"/>`;
+  const marcas = Math.min(6, pontos.length);
+  for (let m = 0; m < marcas; m++) {
+    const k = Math.round((m * (pontos.length - 1)) / (marcas - 1 || 1));
+    const rotulo = periodo === 'day'
+      ? ((pontos[k] && pontos[k].label) || '').slice(2).split('-').reverse().join('/')
+      : periodo === 'month' ? (k / 12 >= 1 ? (k / 12).toFixed(0) + 'a' : k + 'm') : k + 'a';
+    svg += `<text x="${X(k)}" y="${H - 8}" text-anchor="${m === 0 ? 'start' : m === marcas - 1 ? 'end' : 'middle'}" font-size="11" fill="var(--muted)">${rotulo}</text>`;
+  }
+  box.innerHTML = svg + '</svg>';
+}
+
+/* ----- 3. Resolver (PV, PMT, i, n, FV) ----- */
+function runSolve() {
+  const alvo = document.querySelector('input[name="solveFor"]:checked').value;
+  const emprestimo = document.getElementById('slMode').value === 'loan';
+  // No financiamento o dinheiro entra (PV) e as parcelas saem: sinais opostos
+  const sinal = emprestimo ? -1 : 1;
+  const periodo = document.getElementById('slPeriod').value;
+  const begin = document.getElementById('slBegin').checked;
+  const moeda = document.getElementById('slCurrency').value;
+  const saida = document.getElementById('slResult');
+  const pvEntrada = numIn('slPV', 0), pmt = numIn('slPMT', 0), fv = numIn('slFV', 0);
+  const pv = pvEntrada * sinal;
+  const unidade = document.getElementById('slRateUnit').value;
+  const i = calcRate(numIn('slRate', 0), unidade, periodo);
+  const prazoUnid = document.getElementById('slTermUnit').value;
+  const prazoBruto = numIn('slTerm', 0);
+  const n = periodo === 'month' ? (prazoUnid === 'year' ? prazoBruto * 12 : prazoBruto) : (prazoUnid === 'year' ? prazoBruto : prazoBruto / 12);
+
+  let valor = NaN, texto = '', extra = '';
+  if (alvo === 'fv') { valor = fvOf({ pv, pmt, i, n, begin }); texto = fmtMoney(valor, moeda); }
+  else if (alvo === 'pv') { valor = pvOf({ fv, pmt, i, n, begin }) * sinal; texto = fmtMoney(valor, moeda); }
+  else if (alvo === 'pmt') { valor = pmtOf({ pv, fv, i, n, begin }); texto = fmtMoney(valor, moeda); }
+  else if (alvo === 'n') {
+    valor = nOf({ pv, fv, pmt, i, begin });
+    const meses = periodo === 'month' ? valor : valor * 12;
+    texto = isFinite(valor) ? t('calc.nResult').replace('{n}', valor.toFixed(1).replace('.', ','))
+      .replace('{p}', t(periodo === 'month' ? 'calc.months' : 'calc.years'))
+      .replace('{y}', (meses / 12).toFixed(1).replace('.', ',')) : '—';
+  } else {
+    valor = iOf({ pv, fv, pmt, n, begin });
+    if (isFinite(valor)) {
+      const mensal = periodo === 'month' ? valor : toMonthly(valor);
+      texto = `${(valor * 100).toFixed(4).replace('.', ',')}% ${t(periodo === 'month' ? 'calc.perMonth' : 'calc.perYear')}`;
+      extra = t('calc.rateEquiv').replace('{m}', (mensal * 100).toFixed(4).replace('.', ',')).replace('{a}', (toYearly(mensal) * 100).toFixed(2).replace('.', ','));
+    } else texto = '—';
+  }
+  const total = alvo === 'pmt' ? valor * (isFinite(n) ? n : 0) : pmt * (isFinite(n) ? n : 0);
+  saida.innerHTML = !isFinite(valor)
+    ? `<p class="amount-out">${t('calc.noSolution')}</p>`
+    : `<div class="calc-cards">
+        <div><span>${t('calc.f.' + alvo)}</span><strong class="amount-in">${texto}</strong></div>
+        ${alvo !== 'i' && alvo !== 'n' ? `<div><span>${t('calc.totalPaid')}</span><strong>${fmtMoney(Math.abs(pv) + Math.abs(total), moeda)}</strong></div>` : ''}
+      </div>${extra ? `<p class="hint">${extra}</p>` : ''}`;
+}
+function onSolveTargetChange() {
+  const alvo = document.querySelector('input[name="solveFor"]:checked').value;
+  ['pv', 'pmt', 'rate', 'term', 'fv'].forEach((campo) => {
+    const mapa = { pv: 'pv', pmt: 'pmt', rate: 'i', term: 'n', fv: 'fv' };
+    const wrap = document.getElementById('slWrap-' + campo);
+    if (wrap) wrap.classList.toggle('is-target', mapa[campo] === alvo);
+    const input = document.getElementById('sl' + campo.toUpperCase().slice(0, 1) + campo.slice(1));
+  });
+  runSolve();
+}
+
+/* ----- 4. "E se eu tivesse comprado" ----- */
+let whatIfAsset = null;
+
+async function whatIfLookup() {
+  const entrada = document.getElementById('wiTicker').value.trim();
+  const info = document.getElementById('wiInfo');
+  const btn = document.getElementById('wiSearch');
+  if (!entrada) { showToast(t('mkt.noTicker')); return; }
+  busy(btn, true, t('mkt.searching'));
+  info.classList.remove('hidden');
+  info.innerHTML = `<span class="hint">${t('mkt.searching')}</span>`;
+  try {
+    const a = await resolveAsset(entrada);
+    whatIfAsset = a;
+    info.innerHTML = `<div class="lookup-name">${escapeHtml(a.name)} <span class="tag">${escapeHtml(a.ticker)}</span></div>
+      <div>${a.exchange ? escapeHtml(a.exchange) + ' — ' : ''}<strong>${fmtMoney(a.price, a.currency)}</strong> <span class="hint">${t('calc.todayPrice')}</span></div>`;
+    runWhatIf();
+  } catch (e) {
+    whatIfAsset = null;
+    info.innerHTML = `<span class="amount-out">${escapeHtml(e.message || String(e))}</span>`;
+  } finally { busy(btn, false); }
+}
+
+async function runWhatIf() {
+  const saida = document.getElementById('wiResult');
+  if (!whatIfAsset) { saida.innerHTML = `<p class="hint">${t('calc.wiSearchFirst')}</p>`; return; }
+  const data = document.getElementById('wiDate').value;
+  const valor = numIn('wiAmount', 0);
+  const mensal = numIn('wiMonthly', 0) || 0;
+  const comparar = document.getElementById('wiBench').value;
+  if (!data || valor <= 0) { saida.innerHTML = `<p class="hint">${t('calc.fillHint')}</p>`; return; }
+  if (data >= todayISO()) { saida.innerHTML = `<p class="amount-out">${t('calc.wiFutureDate')}</p>`; return; }
+  saida.innerHTML = `<p class="hint">${t('mkt.loadingHist')}</p>`;
+
+  const moedaAtivo = whatIfAsset.currency;
+  let hist = [];
+  try { hist = await fetchHistory({ ticker: whatIfAsset.ticker, market: whatIfAsset.market }, () => { saida.innerHTML = `<p class="hint">${t('mkt.rateWait')}</p>`; }); }
+  catch (e) { /* segue sem histórico */ }
+  const precoInicial = closeAt(hist, data);
+  if (!precoInicial) {
+    saida.innerHTML = `<p class="amount-out">${t('calc.wiNoHistory').replace('{d}', data.split('-').reverse().join('/'))}</p>`;
+    return;
+  }
+  const precoHoje = closeAt(hist, todayISO()) || whatIfAsset.price;
+
+  // Aportes: o inicial na data escolhida e, se pedido, um por mês até hoje
+  const aportes = [{ date: data, amount: valor }];
+  if (mensal > 0) {
+    const d = new Date(data + 'T12:00:00Z');
+    d.setUTCMonth(d.getUTCMonth() + 1);
+    while (d.toISOString().slice(0, 10) < todayISO()) {
+      aportes.push({ date: d.toISOString().slice(0, 10), amount: mensal });
+      d.setUTCMonth(d.getUTCMonth() + 1);
+    }
+  }
+  let cotas = 0, investido = 0;
+  aportes.forEach((ap) => {
+    const p = closeAt(hist, ap.date) || precoHoje;
+    cotas += ap.amount / p; investido += ap.amount;
+  });
+  const hoje = cotas * precoHoje;
+  const lucro = hoje - investido;
+  const anos = Math.max((new Date(todayISO()) - new Date(data)) / (365.25 * 86400000), 0.01);
+  let cagr;
+  if (aportes.length > 1) {
+    // Com vários aportes, a taxa correta é a TIR (cada aporte rende por tempo diferente)
+    const meses = (d) => (new Date(todayISO()) - new Date(d)) / (30.44 * 86400000);
+    const f = (im) => aportes.reduce((sm, ap) => sm + ap.amount * Math.pow(1 + im, meses(ap.date)), 0) - hoje;
+    let lo = -0.99, hi = 1;
+    if (f(lo) * f(hi) <= 0) {
+      for (let k = 0; k < 200; k++) { const mid = (lo + hi) / 2; if (f(lo) * f(mid) <= 0) hi = mid; else lo = mid; }
+      cagr = (Math.pow(1 + (lo + hi) / 2, 12) - 1) * 100;
+    } else cagr = (Math.pow(hoje / investido, 1 / anos) - 1) * 100;
+  } else cagr = (Math.pow(hoje / investido, 1 / anos) - 1) * 100;
+
+  // Mesma comparação, com o dinheiro no índice escolhido
+  let compTexto = '';
+  if (comparar !== 'none') {
+    try {
+      const cfg = cmpConfig();
+      const nv = await benchmarkLevels(comparar, cfg, data, () => {});
+      if (nv.points.length) {
+        const conv = makeConverter(await fetchFxHistory(data));
+        const nivel = (d) => conv(closeAt(nv.points, d) || nv.points[0][1], nv.currency, moedaAtivo, d);
+        let cotasB = 0;
+        aportes.forEach((ap) => { const p = nivel(ap.date); if (p) cotasB += ap.amount / p; });
+        const valorB = cotasB * nivel(todayISO());
+        const difer = hoje - valorB;
+        compTexto = `<div class="calc-cards calc-cards-sub">
+          <div><span>${escapeHtml(benchLabel(comparar, cfg))}</span><strong>${fmtMoney(valorB, moedaAtivo)}</strong></div>
+          <div><span>${t('calc.wiDiff')}</span><strong class="${difer >= 0 ? 'amount-in' : 'amount-out'}">${fmtMoney(difer, moedaAtivo)}</strong></div>
+        </div>`;
+      }
+    } catch (e) { compTexto = `<p class="hint">${t('cmp.benchFail').replace('{b}', t('cmp.b.' + comparar))}</p>`; }
+  }
+
+  const pontos = [];
+  const passo = Math.max(1, Math.floor(hist.filter(([d]) => d >= data).length / 400));
+  hist.filter(([d]) => d >= data).forEach(([d, p], idx) => {
+    if (idx % passo) return;
+    let c = 0, inv = 0;
+    aportes.forEach((ap) => { if (ap.date <= d) { c += ap.amount / (closeAt(hist, ap.date) || p); inv += ap.amount; } });
+    pontos.push({ k: pontos.length, saldo: c * p, investido: inv, label: d });
+  });
+
+  saida.innerHTML = `
+    <div class="calc-cards">
+      <div><span>${t('calc.wiBought')}</span><strong>${fmtQty(cotas)} × ${fmtMoney(precoInicial, moedaAtivo)}</strong></div>
+      <div><span>${t('calc.invested')}</span><strong>${fmtMoney(investido, moedaAtivo)}</strong></div>
+      <div><span>${t('calc.wiToday')}</span><strong>${fmtMoney(hoje, moedaAtivo)}</strong></div>
+      <div><span>${t('calc.wiResult')}</span><strong class="${lucro >= 0 ? 'amount-in' : 'amount-out'}">${fmtMoney(lucro, moedaAtivo)} · ${fmtPct((lucro / investido) * 100)}</strong></div>
+      <div><span>${t('calc.wiCagr')}</span><strong>${fmtPct(cagr)}</strong></div>
+    </div>
+    ${compTexto}
+    <div id="wiChart" class="nav-chart calc-chart"></div>
+    <p class="hint">${t('calc.wiNote')}</p>`;
+  drawCalcChart('wiChart', pontos, moedaAtivo, 'day');
+}
+
+/* ----- Tela ----- */
+function renderCalculator() {
+  const painel = document.getElementById('tab-calculator');
+  if (!painel || !painel.classList.contains('active')) return;
+  const box = document.getElementById('calcBody');
+  const nav = document.getElementById('calcTabs');
+  if (!box || !nav) return;
+  nav.innerHTML = CALC_MODULES.map((m) => `<button type="button" class="${calcUi.module === m ? 'active' : ''}" onclick="setCalcModule('${m}')">${t('calc.m.' + m)}</button>`).join('');
+  const moedas = (id, atual) => `<select id="${id}">${CURRENCIES.map((c) => `<option value="${c.code}" ${c.code === (atual || state.settings.baseCurrency) ? 'selected' : ''}>${c.code}</option>`).join('')}</select>`;
+  const unidadeTaxa = (id) => `<select id="${id}" onchange="${id.startsWith('ju') ? 'runInterest' : 'runSolve'}()"><option value="year">${t('calc.perYear')}</option><option value="month">${t('calc.perMonth')}</option></select>`;
+  const unidadePrazo = (id) => `<select id="${id}" onchange="${id.startsWith('ju') ? 'runInterest' : 'runSolve'}()"><option value="year">${t('calc.years')}</option><option value="month">${t('calc.months')}</option></select>`;
+
+  if (calcUi.module === 'basic') {
+    const teclas = ['C', '←', '(', ')', '7', '8', '9', '÷', '4', '5', '6', '×', '1', '2', '3', '−', '0', '.', '%', '+'];
+    box.innerHTML = `
+      <div class="calc-basic">
+        <div class="calc-screen">
+          <input id="calcDisplay" type="text" inputmode="decimal" autocomplete="off" aria-label="${t('calc.m.basic')}"
+            value="${escapeHtml(calcUi.expr)}" onkeydown="if(event.key==='Enter'){event.preventDefault();calcRun();}">
+          <span id="calcMem" class="calc-mem">${calcUi.memory ? 'M' : ''}</span>
+          <div id="calcResult" class="calc-result">0</div>
+        </div>
+        <div class="calc-mem-row">
+          ${['MC', 'MR', 'M+', 'M-'].map((m) => `<button type="button" class="secondary-btn" onclick="calcMemory('${m}')">${m}</button>`).join('')}
+          <button type="button" class="secondary-btn" onclick="calcKey('±')">±</button>
+          <button type="button" class="secondary-btn" onclick="calcKey('√')">√</button>
+          <button type="button" class="secondary-btn" onclick="calcKey('x²')">x²</button>
+        </div>
+        <div class="calc-pad">
+          ${teclas.map((k) => `<button type="button" class="calc-key ${'÷×−+'.includes(k) ? 'op' : k === 'C' || k === '←' ? 'fn' : ''}" onclick="calcKey('${k === '−' ? '-' : k === '×' ? '*' : k === '÷' ? '/' : k}')">${k}</button>`).join('')}
+          <button type="button" class="calc-key eq" onclick="calcRun()">=</button>
+        </div>
+        <ul id="calcHistory" class="calc-history"></ul>
+      </div>`;
+    renderCalcHistory();
+    return;
+  }
+
+  if (calcUi.module === 'interest') {
+    box.innerHTML = `
+      <div class="calc-form">
+        <label>${t('calc.type')}<select id="juType" onchange="runInterest()"><option value="compound">${t('calc.compound')}</option><option value="simple">${t('calc.simple')}</option></select></label>
+        <label>${t('calc.pv')}<input id="juPV" type="text" inputmode="decimal" value="1000" oninput="runInterest()"></label>
+        <label>${t('calc.pmt')}<input id="juPMT" type="text" inputmode="decimal" value="100" oninput="runInterest()"></label>
+        <label>${t('calc.rate')}<span class="calc-inline"><input id="juRate" type="text" inputmode="decimal" value="10" oninput="runInterest()">${unidadeTaxa('juRateUnit')}</span></label>
+        <label>${t('calc.term')}<span class="calc-inline"><input id="juTerm" type="text" inputmode="decimal" value="10" oninput="runInterest()">${unidadePrazo('juTermUnit')}</span></label>
+        <label>${t('calc.period')}<select id="juPeriod" onchange="runInterest()"><option value="month">${t('calc.monthly')}</option><option value="year">${t('calc.yearly')}</option></select></label>
+        <label>${t('calc.inflation')}<input id="juInflation" type="text" inputmode="decimal" placeholder="0" oninput="runInterest()"></label>
+        <label>${t('cmp.currency')}${moedas('juCurrency')}</label>
+        <label class="checkline"><input type="checkbox" id="juBegin" onchange="runInterest()"> ${t('calc.begin')}</label>
+      </div>
+      <div id="juResult" class="calc-out"></div>`;
+    document.getElementById('juCurrency').addEventListener('change', runInterest);
+    runInterest();
+    return;
+  }
+
+  if (calcUi.module === 'solve') {
+    const campo = (id, chave, valor, extra) => `
+      <div class="calc-field" id="slWrap-${chave}">
+        <label>${t('calc.f.' + { pv: 'pv', pmt: 'pmt', rate: 'i', term: 'n', fv: 'fv' }[chave])}
+          <span class="calc-inline"><input id="${id}" type="text" inputmode="decimal" value="${valor}" oninput="runSolve()">${extra || ''}</span>
+        </label>
+        <label class="calc-radio"><input type="radio" name="solveFor" value="${{ pv: 'pv', pmt: 'pmt', rate: 'i', term: 'n', fv: 'fv' }[chave]}" onchange="onSolveTargetChange()" ${chave === 'fv' ? 'checked' : ''}> ${t('calc.solveThis')}</label>
+      </div>`;
+    box.innerHTML = `
+      <p class="hint">${t('calc.solveHint')}</p>
+      <label class="calc-mode">${t('calc.mode')}
+        <select id="slMode" onchange="runSolve()">
+          <option value="invest">${t('calc.modeInvest')}</option>
+          <option value="loan">${t('calc.modeLoan')}</option>
+        </select>
+      </label>
+      <div class="calc-form calc-solve">
+        ${campo('slPV', 'pv', '10000')}
+        ${campo('slPMT', 'pmt', '500')}
+        ${campo('slRate', 'rate', '12', unidadeTaxa('slRateUnit'))}
+        ${campo('slTerm', 'term', '5', unidadePrazo('slTermUnit'))}
+        ${campo('slFV', 'fv', '0')}
+        <label>${t('calc.period')}<select id="slPeriod" onchange="runSolve()"><option value="month">${t('calc.monthly')}</option><option value="year">${t('calc.yearly')}</option></select></label>
+        <label>${t('cmp.currency')}${moedas('slCurrency')}</label>
+        <label class="checkline"><input type="checkbox" id="slBegin" onchange="runSolve()"> ${t('calc.begin')}</label>
+      </div>
+      <div id="slResult" class="calc-out"></div>
+      <p class="hint">${t('calc.solveExample')}</p>`;
+    document.getElementById('slCurrency').addEventListener('change', runSolve);
+    onSolveTargetChange();
+    return;
+  }
+
+  // "E se eu tivesse comprado"
+  const doisAnos = (() => { const d = new Date(); d.setFullYear(d.getFullYear() - 2); return d.toISOString().slice(0, 10); })();
+  box.innerHTML = `
+    <p class="hint">${t('calc.wiHint')}</p>
+    <div class="lookup-row">
+      <input id="wiTicker" placeholder="TTWO, PETR4, US8740541094" onkeydown="if(event.key==='Enter'){event.preventDefault();whatIfLookup();}">
+      <button id="wiSearch" type="button" class="secondary-btn" onclick="whatIfLookup()">${t('mkt.search')}</button>
+    </div>
+    <div id="wiInfo" class="lookup-info hidden"></div>
+    <div class="calc-form">
+      <label>${t('calc.wiDate')}<input id="wiDate" type="date" value="${doisAnos}" max="${todayISO()}" onchange="runWhatIf()"></label>
+      <label>${t('calc.wiAmount')}<input id="wiAmount" type="text" inputmode="decimal" value="1000" oninput="runWhatIf()"></label>
+      <label>${t('calc.wiMonthly')}<input id="wiMonthly" type="text" inputmode="decimal" placeholder="0" oninput="runWhatIf()"></label>
+      <label>${t('cmp.reference')}<select id="wiBench" onchange="runWhatIf()">
+        <option value="none">${t('cmp.refNone')}</option>
+        <option value="cdi">${t('cmp.b.cdi')}</option>
+        <option value="ibov">${t('cmp.b.ibov')}</option>
+        <option value="spx">${t('cmp.b.spx')}</option>
+      </select></label>
+    </div>
+    <div id="wiResult" class="calc-out"></div>`;
+  if (whatIfAsset) runWhatIf();
+}
+function setCalcModule(m) { calcUi.module = m; renderCalculator(); }
+
+
 /* ================= FASE 12 — Importador da B3 e proventos =================
    Leitor de .xlsx próprio (ZIP + XML), sem bibliotecas externas: funciona offline
    e não expõe o extrato a nenhum servidor.
@@ -8591,7 +9327,7 @@ function on(id, evento, handler) {
    segunda linha de sub-abas. Configurações sai da barra e vai para a engrenagem. */
 const NAV_GROUPS = {
   dashboard: ['dashboard'],
-  investments: ['investments'],
+  investments: ['investments', 'calculator'],
   registry: ['accounts', 'balances', 'budgets', 'fx', 'portfolio'],
   flows: ['transactions', 'payables', 'receivables'],
   news: ['news'],
@@ -8632,6 +9368,7 @@ function showTab(tab) {
   renderSubTabs();
   if (tab === 'dashboard') renderNAV();
   if (tab === 'investments') renderCompare();
+  if (tab === 'calculator') renderCalculator();
   if (tab === 'news') { renderNews(); refreshNews(false).catch(() => {}); }
   window.scrollTo({ top: 0 });
 }
