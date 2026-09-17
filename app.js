@@ -4142,6 +4142,96 @@ async function shouldNotify() {
   return newNotifications;
 }
 
+// Envia notificação nativa do navegador via Service Worker
+async function sendBrowserNotification(title, options = {}) {
+  // Verifica se o navegador suporta notificações
+  if (!('Notification' in window)) {
+    console.log('Navegador não suporta notificações');
+    return;
+  }
+
+  // Se não tem permissão, não tenta enviar
+  if (Notification.permission !== 'granted') {
+    console.log('Sem permissão para notificações');
+    return;
+  }
+
+  // Se há Service Worker, envia via SW (funciona quando app está minimizado)
+  if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+    navigator.serviceWorker.controller.postMessage({
+      action: 'notify',
+      title,
+      options: {
+        icon: '/icon-192.png',
+        badge: '/icon-192.png',
+        ...options
+      }
+    });
+    return;
+  }
+
+  // Fallback: notificação simples do navegador (só funciona quando app está aberto)
+  try {
+    new Notification(title, {
+      icon: '/icon-192.png',
+      badge: '/icon-192.png',
+      ...options
+    });
+  } catch (e) {
+    console.error('Erro ao enviar notificação:', e);
+  }
+}
+
+// Pede permissão para notificações
+async function requestNotificationPermission() {
+  if (!('Notification' in window)) {
+    console.log('Navegador não suporta notificações');
+    return false;
+  }
+
+  if (Notification.permission === 'granted') {
+    return true;
+  }
+
+  if (Notification.permission !== 'denied') {
+    try {
+      const permission = await Notification.requestPermission();
+      return permission === 'granted';
+    } catch (e) {
+      console.error('Erro ao pedir permissão:', e);
+      return false;
+    }
+  }
+
+  return false;
+}
+
+// Registra Service Worker e handlers de notificação
+async function registerServiceWorker() {
+  if (!('serviceWorker' in navigator)) {
+    console.log('Service Workers não suportados');
+    return;
+  }
+
+  try {
+    const registration = await navigator.serviceWorker.register('./service-worker.js', { scope: './' });
+    console.log('Service Worker registrado:', registration);
+
+    // Handler para mensagens do SW
+    navigator.serviceWorker.addEventListener('message', (e) => {
+      if (e.data && e.data.action === 'notificationclick') {
+        if (e.data.url) {
+          window.location.href = e.data.url;
+        }
+      }
+    });
+
+    return registration;
+  } catch (e) {
+    console.error('Erro ao registrar Service Worker:', e);
+  }
+}
+
 function t(key) {
   const lang = state.settings.lang || 'pt-BR';
   return (I18N[lang] && I18N[lang][key]) || I18N['pt-BR'][key] || key;
@@ -10951,6 +11041,8 @@ async function importJSON(file) {
     for (const a of (data.assets || [])) await put('assets', a);
     for (const v of (data.valuations || [])) await put('valuations', v);
     for (const dv of (data.dividends || [])) await put('dividends', dv);
+    for (const rec of (data.recurrences || [])) await put('recurrences', rec);
+    for (const notif of (data.notifications || [])) await put('notifications', notif);
     if (data.settings) {
       for (const [k, v] of Object.entries(data.settings)) {
         if (k === 'ui' || k === SEC_KEY || API_KEYS.includes(k) || k.startsWith(HIST_PREFIX)) continue;
@@ -11902,9 +11994,9 @@ async function init() {
   renderYouVsMarket().catch((e) => console.warn('Você x Mercado:', e));
   askTaxPreference().catch(() => {});
 
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./service-worker.js').catch(() => {});
-  }
+  // Service Worker e notificações nativas
+  registerServiceWorker().catch((e) => console.warn('Erro ao registrar SW:', e));
+  requestNotificationPermission().catch((e) => console.warn('Erro ao pedir permissão de notificação:', e));
 }
 
 init();
