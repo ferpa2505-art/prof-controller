@@ -190,12 +190,89 @@ location.reload();
 
 ---
 
-## ✅ Pronto para Fase 13?
+---
 
-- [ ] Sim, todos os testes passaram ✅
+## 📊 FASE 13: Você x Mercado (Teste Adicional)
+
+**Tempo Estimado:** 15-20 minutos  
+**Requer:** App rodando, IndexedDB limpo
+
+### 🏦 BCB API Integration (3 min)
+- [ ] DevTools > IndexedDB > `benchmarks` store existe
+- [ ] Store mostra 0 registros inicialmente
+- [ ] Navegador > Configurações ⚙️
+- [ ] Expandir "Fase 13 — Você x Mercado"
+- [ ] Botão "Atualizar taxas BCB" visível
+- [ ] Clicar botão → mostra "⏳ Atualizando..."
+- [ ] Após 2-3 segundos → "✓ Taxas e IBOV atualizados!"
+- [ ] Console: Sem erros de API
+- [ ] DevTools > IndexedDB > `benchmarks` → 4 registros (SELIC, CDI, USD/BRL, IBOV)
+
+### 💹 Portfolio Comparison UI (3 min)
+- [ ] Dashboard > Card "Você x Mercado" visível
+- [ ] Card mostra: "Portfolio: R$X", "IBOV: +Y%", "CDI: Z%"
+- [ ] Datas de atualização presentes
+- [ ] Clicar na taxa → Tooltip explica métrica (opcional)
+
+### 📋 IR Tax Assistant (3 min)
+- [ ] Dashboard > Botão "📋 Assistente de IR" visível
+- [ ] Clicar → Modal abre
+- [ ] Tabela mostra: Ganho/Perda, Dividendos, IR Estimado
+- [ ] Ano = ano atual (ex: 2026)
+- [ ] Valores baseados em transações do app
+- [ ] Aviso em rodapé: "Cálculo simplificado..."
+- [ ] Fechar modal > Dashboard mantém estado
+
+### 🔔 Market Event Notifications (3 min)
+- [ ] Console: 
+  ```javascript
+  const event = {
+    id: 'test-event-1',
+    symbol: 'PETR4',
+    type: 'dividend',
+    date: new Date().toISOString().split('T')[0],  // hoje
+    description: 'Dividendo PETR4 - R$0.50',
+    amount: 0.50,
+    status: 'pending'
+  };
+  await put('marketEvents', event);
+  ```
+- [ ] Abrir Configurações > Notificações > Permitir
+- [ ] Aguardar até 60 seg
+- [ ] Notificação do navegador aparece: "PETR4: Dividendo..."
+- [ ] Notificação "in-app" aparece em painel 🔔
+- [ ] Notificação marca como 'notified' automaticamente
+
+### 🔧 Sem Erros Fase 13 (2 min)
+- [ ] Console sem erros vermelhos
+- [ ] Mensagens esperadas:
+  - "Banco Central - SELIC"
+  - "Banco Central - CDI"
+  - "Banco Central - USDBRL"
+  - "Alpha Vantage - IBOV"
+- [ ] Nenhum erro de rede (404, 500, etc)
+
+### 📤 Backup v7+ com Fase 13 (3 min)
+- [ ] Criar/atualizar recorrência + evento de mercado
+- [ ] Configurações ⚙️ > Exportar
+- [ ] JSON contém: `"benchmarks": [...]` ✅
+- [ ] JSON contém: `"marketEvents": [...]` ✅
+- [ ] JSON contém: `"portfolioMetrics": [...]` ✅
+
+### 📥 Import v7+ Restaura Fase 13 (3 min)
+- [ ] Deletar: `indexedDB.deleteDatabase('prof-controller')`
+- [ ] Importar JSON da backup anterior
+- [ ] DevTools > benchmarks → contém 4 registros
+- [ ] DevTools > marketEvents → contém evento teste
+- [ ] Dashboard > "Você x Mercado" mostra valores
+- [ ] Painel 🔔 mostra notificação restaurada
+
+## ✅ Pronto para Próximas Tarefas?
+
+- [ ] Sim, Fase 13 Tarefas 1-5 completas ✅
 - [ ] Sim, com avisos (listar):
-  - 
-- [ ] Não, há falhas críticas (listar):
+    - 
+- [ ] Não, há falhas (listar):
   -
 
 ---
