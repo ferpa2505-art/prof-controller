@@ -1,5 +1,5 @@
 /* ============================================================
-   ProF Controller — Fases 1 a 14 (14: Você x Mercado, metas e aporte inteligente)
+   ProF Controller — Fases 1 a 15 (15: impostos, apuração mensal e informe anual)
 
    Fase 1: contas, moedas, saldos diários, moeda base, importação CSV,
            i18n (pt-BR/en/es), temas, offline.
@@ -366,6 +366,68 @@ const I18N = {
     'modal.move': 'Aporte ou resgate',
     'mkt.lookup': 'Buscar ativo (ticker ou ISIN)',
     'mkt.manual': 'Cadastrar sem busca (renda fixa, CDB ou ativo sem cotação)',
+    'tabs.taxes': 'Impostos',
+    'tax.pageTitle': 'Impostos sobre investimentos',
+    'help.taxes': 'Apuração mês a mês do imposto sobre as vendas, controle da isenção mensal, prejuízos acumulados por categoria e o resumo anual para a declaração. As regras são editáveis e valem como sugestão.',
+    'tax.disclaimer': 'Cálculo sugerido com a tabela interna revisada em {d}. Regras mudam e casos específicos existem: confirme com seu contador antes de pagar ou declarar.',
+    'tax.cat.stock': 'Ações',
+    'tax.cat.fii': 'FIIs',
+    'tax.cat.etf': 'ETFs',
+    'tax.cat.bdr': 'BDRs',
+    'tax.cat.foreign': 'Exterior',
+    'tax.cat.fixed': 'Renda fixa',
+    'tax.cat.crypto': 'Cripto',
+    'tax.taxableGain': 'Ganho tributável no ano',
+    'tax.exemptGain': 'Ganho isento no ano',
+    'tax.taxYear': 'Imposto do ano',
+    'tax.toPay': 'Ainda a pagar',
+    'tax.monthly': 'Apuração mês a mês',
+    'tax.month': 'Mês',
+    'tax.category': 'Categoria',
+    'tax.sales': 'Vendas',
+    'tax.gain': 'Ganho ou prejuízo',
+    'tax.lossUsed': 'Prejuízo compensado',
+    'tax.base': 'Base',
+    'tax.rate': 'Alíquota',
+    'tax.tax': 'Imposto',
+    'tax.status': 'Situação',
+    'tax.exempt': 'isento',
+    'tax.markPaid': 'Marcar como pago',
+    'tax.paid': 'Pago',
+    'tax.noSales': 'Nenhuma venda apurada neste ano.',
+    'tax.losses': 'Prejuízo acumulado por categoria',
+    'tax.lossCarry': 'Saldo a compensar',
+    'tax.lossSeed': 'Prejuízo anterior ao app',
+    'tax.lossHint': 'Preencha "prejuízo anterior ao app" se você já tinha prejuízos a compensar antes de começar a usar o ProF Controller.',
+    'tax.declaration': 'Resumo para a declaração de {y}',
+    'tax.declarationHint': 'Posição e custo em 31/12, para a ficha de bens e direitos. Os proventos aparecem separados por tipo.',
+    'tax.costBefore': 'Custo em 31/12/{y}',
+    'tax.costAfter': 'Custo em 31/12/{y}',
+    'tax.noAssets': 'Sem posições ou proventos neste ano.',
+    'tax.incomeNote.div': 'dividendos',
+    'tax.incomeNote.jcp': 'JCP — IR retido na fonte',
+    'tax.incomeNote.rend': 'rendimentos de FII',
+    'tax.exportCsv': 'Exportar apuração (CSV)',
+    'tax.rules': 'Regras e alíquotas',
+    'tax.rulesHint': 'Tabela interna revisada em {d}. Tudo aqui é editável: ajuste conforme a orientação do seu contador.',
+    'tax.ratesTitle': 'Alíquotas e isenção mensal',
+    'tax.exemptLimit': 'Isenção por mês (vendas)',
+    'tax.noTable': 'Não temos tabela pronta para este país. As alíquotas abaixo começam com um valor genérico: ajuste antes de usar.',
+    'tax.dividends': 'Dividendos',
+    'tax.divEnable': 'Calcular imposto sobre dividendos',
+    'tax.divThreshold': 'Limite mensal',
+    'tax.divHint': 'A tributação de dividendos no Brasil mudou recentemente. Ative só depois de confirmar a regra vigente com seu contador.',
+    'tax.divFields': 'Primeiro campo: alíquota (%). Segundo: valor mensal a partir do qual incide.',
+    'calc.m.tax': 'Imposto (IR)',
+    'calc.irHint': 'Simule uma venda antes de fazê-la e veja quanto sobra depois do imposto.',
+    'calc.irSalePrice': 'Preço de venda',
+    'calc.irAvgCost': 'Custo médio',
+    'calc.irOtherSales': 'Outras vendas no mesmo mês',
+    'calc.irUseLoss': 'Usar prejuízo acumulado',
+    'calc.irNet': 'Líquido após imposto',
+    'calc.irExempt': 'Venda isenta: o total de vendas do mês está dentro do limite de {v}.',
+    'calc.irOverLimit': 'O total de vendas do mês ({t}) passou do limite de isenção de {v}, então o ganho é tributado.',
+    'calc.irLossAvailable': 'Você tem {v} de prejuízo acumulado que poderia abater deste ganho.',
     'ym.title': 'Você x Mercado',
     'ym.you': 'Sua carteira',
     'ym.copy': 'Copiar resumo',
@@ -1248,6 +1310,68 @@ const I18N = {
     'modal.move': 'Contribution or withdrawal',
     'mkt.lookup': 'Find asset (ticker or ISIN)',
     'mkt.manual': 'Add without search (fixed income, CDs or unlisted assets)',
+    'tabs.taxes': 'Taxes',
+    'tax.pageTitle': 'Investment taxes',
+    'help.taxes': 'Month-by-month tax on sales, monthly exemption tracking, loss carryforward per category and the yearly summary for your tax return. Rules are editable and count as suggestions.',
+    'tax.disclaimer': 'Suggested calculation using the internal table revised in {d}. Rules change and special cases exist: confirm with your accountant before paying or filing.',
+    'tax.cat.stock': 'Stocks',
+    'tax.cat.fii': 'REITs (FII)',
+    'tax.cat.etf': 'ETFs',
+    'tax.cat.bdr': 'BDRs',
+    'tax.cat.foreign': 'Abroad',
+    'tax.cat.fixed': 'Fixed income',
+    'tax.cat.crypto': 'Crypto',
+    'tax.taxableGain': 'Taxable gain this year',
+    'tax.exemptGain': 'Exempt gain this year',
+    'tax.taxYear': 'Tax for the year',
+    'tax.toPay': 'Still to pay',
+    'tax.monthly': 'Month-by-month',
+    'tax.month': 'Month',
+    'tax.category': 'Category',
+    'tax.sales': 'Sales',
+    'tax.gain': 'Gain or loss',
+    'tax.lossUsed': 'Loss used',
+    'tax.base': 'Base',
+    'tax.rate': 'Rate',
+    'tax.tax': 'Tax',
+    'tax.status': 'Status',
+    'tax.exempt': 'exempt',
+    'tax.markPaid': 'Mark as paid',
+    'tax.paid': 'Paid',
+    'tax.noSales': 'No sales assessed this year.',
+    'tax.losses': 'Loss carryforward per category',
+    'tax.lossCarry': 'Balance to offset',
+    'tax.lossSeed': 'Loss from before the app',
+    'tax.lossHint': 'Fill in "loss from before the app" if you already had losses to offset before using ProF Controller.',
+    'tax.declaration': 'Summary for the {y} tax return',
+    'tax.declarationHint': 'Holdings and cost on 31 Dec, for the assets section. Income appears split by type.',
+    'tax.costBefore': 'Cost on 31/12/{y}',
+    'tax.costAfter': 'Cost on 31/12/{y}',
+    'tax.noAssets': 'No holdings or income this year.',
+    'tax.incomeNote.div': 'dividends',
+    'tax.incomeNote.jcp': 'interest on equity — tax withheld',
+    'tax.incomeNote.rend': 'fund distributions',
+    'tax.exportCsv': 'Export assessment (CSV)',
+    'tax.rules': 'Rules and rates',
+    'tax.rulesHint': 'Internal table revised in {d}. Everything here is editable: adjust it to your accountant\u2019s guidance.',
+    'tax.ratesTitle': 'Rates and monthly exemption',
+    'tax.exemptLimit': 'Monthly exemption (sales)',
+    'tax.noTable': 'We have no built-in table for this country. The rates below start generic: adjust before using.',
+    'tax.dividends': 'Dividends',
+    'tax.divEnable': 'Calculate tax on dividends',
+    'tax.divThreshold': 'Monthly threshold',
+    'tax.divHint': 'Dividend taxation in Brazil changed recently. Turn this on only after confirming the current rule with your accountant.',
+    'tax.divFields': 'First field: rate (%). Second: monthly amount above which it applies.',
+    'calc.m.tax': 'Tax',
+    'calc.irHint': 'Simulate a sale before making it and see what is left after tax.',
+    'calc.irSalePrice': 'Sale price',
+    'calc.irAvgCost': 'Average cost',
+    'calc.irOtherSales': 'Other sales in the same month',
+    'calc.irUseLoss': 'Use loss carryforward',
+    'calc.irNet': 'Net after tax',
+    'calc.irExempt': 'Exempt sale: total sales this month are within the {v} limit.',
+    'calc.irOverLimit': 'Total sales this month ({t}) exceeded the {v} exemption limit, so the gain is taxed.',
+    'calc.irLossAvailable': 'You have {v} of carried losses that could offset this gain.',
     'ym.title': 'You vs the market',
     'ym.you': 'Your portfolio',
     'ym.copy': 'Copy summary',
@@ -2129,6 +2253,68 @@ const I18N = {
     'modal.move': 'Aporte o rescate',
     'mkt.lookup': 'Buscar activo (ticker o ISIN)',
     'mkt.manual': 'Registrar sin búsqueda (renta fija, CDB o activo sin cotización)',
+    'tabs.taxes': 'Impuestos',
+    'tax.pageTitle': 'Impuestos sobre inversiones',
+    'help.taxes': 'Cálculo mes a mes del impuesto sobre las ventas, control de la exención mensual, pérdidas acumuladas por categoría y el resumen anual para la declaración. Las reglas son editables y valen como sugerencia.',
+    'tax.disclaimer': 'Cálculo sugerido con la tabla interna revisada en {d}. Las reglas cambian y hay casos específicos: confirma con tu contador antes de pagar o declarar.',
+    'tax.cat.stock': 'Acciones',
+    'tax.cat.fii': 'FII',
+    'tax.cat.etf': 'ETF',
+    'tax.cat.bdr': 'BDR',
+    'tax.cat.foreign': 'Exterior',
+    'tax.cat.fixed': 'Renta fija',
+    'tax.cat.crypto': 'Cripto',
+    'tax.taxableGain': 'Ganancia gravable del año',
+    'tax.exemptGain': 'Ganancia exenta del año',
+    'tax.taxYear': 'Impuesto del año',
+    'tax.toPay': 'Pendiente de pago',
+    'tax.monthly': 'Cálculo mes a mes',
+    'tax.month': 'Mes',
+    'tax.category': 'Categoría',
+    'tax.sales': 'Ventas',
+    'tax.gain': 'Ganancia o pérdida',
+    'tax.lossUsed': 'Pérdida compensada',
+    'tax.base': 'Base',
+    'tax.rate': 'Tasa',
+    'tax.tax': 'Impuesto',
+    'tax.status': 'Situación',
+    'tax.exempt': 'exenta',
+    'tax.markPaid': 'Marcar como pagado',
+    'tax.paid': 'Pagado',
+    'tax.noSales': 'Ninguna venta en este año.',
+    'tax.losses': 'Pérdida acumulada por categoría',
+    'tax.lossCarry': 'Saldo por compensar',
+    'tax.lossSeed': 'Pérdida anterior a la app',
+    'tax.lossHint': 'Completa "pérdida anterior a la app" si ya tenías pérdidas por compensar antes de usar ProF Controller.',
+    'tax.declaration': 'Resumen para la declaración de {y}',
+    'tax.declarationHint': 'Posición y costo al 31/12, para el apartado de bienes. Los rendimientos aparecen separados por tipo.',
+    'tax.costBefore': 'Costo al 31/12/{y}',
+    'tax.costAfter': 'Costo al 31/12/{y}',
+    'tax.noAssets': 'Sin posiciones ni rendimientos este año.',
+    'tax.incomeNote.div': 'dividendos',
+    'tax.incomeNote.jcp': 'JCP — impuesto retenido',
+    'tax.incomeNote.rend': 'rendimientos de FII',
+    'tax.exportCsv': 'Exportar cálculo (CSV)',
+    'tax.rules': 'Reglas y tasas',
+    'tax.rulesHint': 'Tabla interna revisada en {d}. Todo es editable: ajústalo según tu contador.',
+    'tax.ratesTitle': 'Tasas y exención mensual',
+    'tax.exemptLimit': 'Exención por mes (ventas)',
+    'tax.noTable': 'No tenemos tabla lista para este país. Las tasas de abajo empiezan genéricas: ajústalas antes de usar.',
+    'tax.dividends': 'Dividendos',
+    'tax.divEnable': 'Calcular impuesto sobre dividendos',
+    'tax.divThreshold': 'Límite mensual',
+    'tax.divHint': 'La tributación de dividendos en Brasil cambió recientemente. Actívalo solo tras confirmar la regla vigente con tu contador.',
+    'tax.divFields': 'Primer campo: tasa (%). Segundo: importe mensual a partir del cual se aplica.',
+    'calc.m.tax': 'Impuesto',
+    'calc.irHint': 'Simula una venta antes de hacerla y ve cuánto queda después del impuesto.',
+    'calc.irSalePrice': 'Precio de venta',
+    'calc.irAvgCost': 'Costo medio',
+    'calc.irOtherSales': 'Otras ventas en el mismo mes',
+    'calc.irUseLoss': 'Usar pérdida acumulada',
+    'calc.irNet': 'Neto tras impuesto',
+    'calc.irExempt': 'Venta exenta: el total de ventas del mes está dentro del límite de {v}.',
+    'calc.irOverLimit': 'El total de ventas del mes ({t}) superó el límite de exención de {v}, así que la ganancia tributa.',
+    'calc.irLossAvailable': 'Tienes {v} de pérdida acumulada que podría compensar esta ganancia.',
     'ym.title': 'Tú vs el mercado',
     'ym.you': 'Tu cartera',
     'ym.copy': 'Copiar resumen',
@@ -7097,6 +7283,364 @@ async function testApis() {
 }
 
 
+/* ================= FASE 15 — Impostos =================
+   Importante: não existe API pública e confiável de regras tributárias. As regras
+   abaixo são uma TABELA INTERNA EDITÁVEL, com a data da última revisão à vista.
+   Tudo aparece como sugestão: o app calcula, você confere e ajusta. Não substitui
+   contador, e as regras mudam.
+
+   Regras padrão (Brasil, pessoa física, mercado à vista):
+   - Ações: 15% sobre o ganho; isenção quando as VENDAS de ações no mês somam até
+     R$ 20.000 (a isenção não vale para FII, ETF, BDR nem day trade).
+   - FII: 20% sobre o ganho, sem isenção; prejuízo de FII só compensa com FII.
+   - ETF de ações e BDR: 15%, sem isenção.
+   - Exterior: alíquota única editável (a legislação mudou em 2024 e o regime
+     anual difere do mensal — confirme com seu contador).
+   - Renda fixa (CDB, Tesouro): imposto retido na fonte pela tabela regressiva,
+     então entra como informação, não como imposto a pagar.
+   - Prejuízos acumulam por categoria e abatem ganhos futuros da mesma categoria. */
+
+const TAX_REVISION = '2026-09';
+const TAX_CATS = ['stock', 'fii', 'etf', 'bdr', 'foreign'];
+const TAX_DEFAULTS = {
+  country: 'BR', holder: 'individual', currency: 'BRL',
+  rates: { stock: 15, fii: 20, etf: 15, bdr: 15, foreign: 15 },
+  exemptMonthly: { stock: 20000 },
+  lossSeed: {},
+  dividendRule: { enabled: false, rate: 10, threshold: 50000 }
+};
+const taxUi = { year: String(new Date().getFullYear()) };
+
+function taxCfg() {
+  const salvo = state.settings.taxRules || {};
+  return {
+    ...TAX_DEFAULTS, ...salvo,
+    rates: { ...TAX_DEFAULTS.rates, ...(salvo.rates || {}) },
+    exemptMonthly: { ...TAX_DEFAULTS.exemptMonthly, ...(salvo.exemptMonthly || {}) },
+    lossSeed: { ...(salvo.lossSeed || {}) },
+    dividendRule: { ...TAX_DEFAULTS.dividendRule, ...(salvo.dividendRule || {}) }
+  };
+}
+async function saveTaxCfg(cfg) {
+  state.settings.taxRules = cfg;
+  await put('settings', { key: 'taxRules', value: cfg });
+}
+async function setTaxRule(caminho, valor) {
+  const cfg = taxCfg();
+  const v = Number(String(valor).replace(',', '.')) || 0;
+  if (caminho.startsWith('rate:')) cfg.rates[caminho.slice(5)] = v;
+  else if (caminho.startsWith('exempt:')) cfg.exemptMonthly[caminho.slice(7)] = v;
+  else if (caminho.startsWith('loss:')) cfg.lossSeed[caminho.slice(5)] = v;
+  else if (caminho === 'divRate') cfg.dividendRule.rate = v;
+  else if (caminho === 'divThreshold') cfg.dividendRule.threshold = v;
+  else if (caminho === 'divEnabled') cfg.dividendRule.enabled = !!valor;
+  else if (caminho === 'country') cfg.country = valor;
+  else if (caminho === 'holder') cfg.holder = valor;
+  await saveTaxCfg(cfg);
+  renderTaxes();
+  renderTaxSettings();
+}
+
+function taxCategoryOf(pos) {
+  const mercado = marketOf(pos);
+  if (mercado !== 'b3') return 'foreign';
+  const tipo = pos.assetType || 'stock';
+  if (tipo === 'fii') return 'fii';
+  if (tipo === 'etf') return 'etf';
+  if (tipo === 'bdr') return 'bdr';
+  if (tipo === 'treasury' || tipo === 'cdb') return 'fixed';
+  if (tipo === 'crypto') return 'crypto';
+  return 'stock';
+}
+const taxCatLabel = (c) => t('tax.cat.' + c);
+
+/* Vendas por mês, com custo médio apurado na ordem dos movimentos. */
+function taxSales(conv) {
+  const cfg = taxCfg();
+  const M = cfg.currency;
+  const vendas = [];
+  state.positions.forEach((pos) => {
+    const cat = taxCategoryOf(pos);
+    let qtd = 0, custo = 0;
+    invMovesOf(pos.id).forEach((m) => {
+      const q = Number(m.quantity) || 0;
+      const v = conv(Number(m.amount) || 0, pos.currency, M, m.date) || 0;
+      if (m.type === 'buy' || m.type === 'bonus') { qtd += q; custo += v; return; }
+      if (qtd <= 0) return; // venda sem compra registrada: fica de fora da apuração
+      const qv = Math.min(q, qtd);
+      const custoMedio = custo / qtd;
+      const custoVendido = custoMedio * qv;
+      const valorVenda = q > 0 ? v * (qv / q) : v;
+      vendas.push({
+        date: m.date, month: m.date.slice(0, 7), cat, ticker: pos.ticker || pos.name,
+        qty: qv, sale: valorVenda, cost: custoVendido, gain: valorVenda - custoVendido,
+        exemptEligible: cat === 'stock' && cfg.country === 'BR' && cfg.holder === 'individual'
+      });
+      custo -= custoVendido; qtd -= qv;
+    });
+  });
+  return vendas.sort((a, b) => a.date.localeCompare(b.date));
+}
+
+/* Apuração mês a mês, já compensando prejuízos anteriores por categoria. */
+function taxComputation(conv) {
+  const cfg = taxCfg();
+  const vendas = taxSales(conv);
+  const pagos = state.settings.taxPaid || {};
+  const prejuizo = { ...cfg.lossSeed };
+  const meses = [...new Set(vendas.map((v) => v.month))].sort();
+  const linhas = [];
+  meses.forEach((mes) => {
+    TAX_CATS.forEach((cat) => {
+      const doMes = vendas.filter((v) => v.month === mes && v.cat === cat);
+      if (!doMes.length) return;
+      const totalVendas = doMes.reduce((s, v) => s + v.sale, 0);
+      const ganho = doMes.reduce((s, v) => s + v.gain, 0);
+      const limite = Number(cfg.exemptMonthly[cat]) || 0;
+      const isento = doMes[0].exemptEligible && limite > 0 && totalVendas <= limite;
+      const anterior = prejuizo[cat] || 0;
+      let compensado = 0, base = 0, imposto = 0;
+      if (isento) {
+        // Em mês isento, o prejuízo também não é aproveitável
+      } else if (ganho > 0) {
+        compensado = Math.min(anterior, ganho);
+        prejuizo[cat] = anterior - compensado;
+        base = ganho - compensado;
+        imposto = base * ((Number(cfg.rates[cat]) || 0) / 100);
+      } else {
+        prejuizo[cat] = anterior + Math.abs(ganho);
+      }
+      const chave = mes + '|' + cat;
+      linhas.push({
+        month: mes, cat, sales: totalVendas, gain: ganho, exempt: isento, used: compensado,
+        base, rate: Number(cfg.rates[cat]) || 0, tax: imposto, carry: prejuizo[cat] || 0,
+        trades: doMes, key: chave, paid: pagos[chave] || null
+      });
+    });
+  });
+  return { linhas, prejuizo, vendas };
+}
+
+let taxCache = null;
+async function taxData(forcar) {
+  const assinatura = [state.invmoves.length, state.positions.length, JSON.stringify(state.settings.taxRules || {}), JSON.stringify(state.settings.taxPaid || {}), todayISO()].join('|');
+  if (!forcar && taxCache && taxCache.sig === assinatura) return taxCache;
+  const primeira = state.invmoves.map((m) => m.date).sort()[0] || todayISO();
+  const conv = makeConverter(await fetchFxHistory(primeira));
+  taxCache = { sig: assinatura, ...taxComputation(conv), conv };
+  return taxCache;
+}
+
+async function markTaxPaid(chave) {
+  const pagos = { ...(state.settings.taxPaid || {}) };
+  if (pagos[chave]) delete pagos[chave];
+  else pagos[chave] = { date: todayISO() };
+  state.settings.taxPaid = pagos;
+  await put('settings', { key: 'taxPaid', value: pagos });
+  renderTaxes();
+}
+
+/* ----- Tela ----- */
+async function renderTaxes() {
+  const painel = document.getElementById('tab-taxes');
+  if (!painel) return;
+  const sub = document.getElementById('subTabs');
+  if (!painel.classList.contains('active')) return;
+  const box = document.getElementById('taxBody');
+  const cfg = taxCfg();
+  const M = cfg.currency;
+  box.innerHTML = `<p class="hint">${t('mkt.loadingHist')}</p>`;
+  const dados = await taxData();
+  const anos = [...new Set(dados.linhas.map((l) => l.month.slice(0, 4)))].sort().reverse();
+  if (!anos.includes(taxUi.year) && anos.length) taxUi.year = anos[0];
+  const doAno = dados.linhas.filter((l) => l.month.startsWith(taxUi.year));
+  const impostoAno = doAno.reduce((s, l) => s + l.tax, 0);
+  const ganhoAno = doAno.reduce((s, l) => s + (l.exempt ? 0 : l.gain), 0);
+  const isentoAno = doAno.filter((l) => l.exempt).reduce((s, l) => s + Math.max(l.gain, 0), 0);
+  const aPagar = doAno.filter((l) => l.tax > 0 && !l.paid).reduce((s, l) => s + l.tax, 0);
+
+  box.innerHTML = `
+    <div class="tax-warning">⚠️ ${t('tax.disclaimer').replace('{d}', TAX_REVISION.split('-').reverse().join('/'))}</div>
+    <div class="filters">
+      <label><span>${t('div.fYear')}</span>
+        <select onchange="taxUi.year=this.value;renderTaxes()">${anos.map((a) => `<option ${a === taxUi.year ? 'selected' : ''}>${a}</option>`).join('')}</select>
+      </label>
+      <button type="button" class="secondary-btn" onclick="exportTaxCSV()">${t('tax.exportCsv')}</button>
+      <button type="button" class="secondary-btn" onclick="openTaxRules()">${t('tax.rules')}</button>
+    </div>
+    <div class="cards">
+      <div class="card"><h3>${t('tax.taxableGain')}</h3><p class="big-number">${fmtMoney(ganhoAno, M)}</p></div>
+      <div class="card"><h3>${t('tax.exemptGain')}</h3><p class="big-number amount-in">${fmtMoney(isentoAno, M)}</p></div>
+      <div class="card"><h3>${t('tax.taxYear')}</h3><p class="big-number">${fmtMoney(impostoAno, M)}</p></div>
+      <div class="card"><h3>${t('tax.toPay')}</h3><p class="big-number ${aPagar > 0 ? 'amount-out' : ''}">${fmtMoney(aPagar, M)}</p></div>
+    </div>
+    <h3 class="section-sub">${t('tax.monthly')}</h3>
+    ${doAno.length ? `<div class="table-scroll"><table class="mini-table tax-table">
+      <thead><tr><th>${t('tax.month')}</th><th>${t('tax.category')}</th><th>${t('tax.sales')}</th><th>${t('tax.gain')}</th>
+        <th>${t('tax.lossUsed')}</th><th>${t('tax.base')}</th><th>${t('tax.rate')}</th><th>${t('tax.tax')}</th><th>${t('tax.status')}</th></tr></thead>
+      <tbody>${doAno.map((l) => `<tr>
+        <td>${l.month.slice(5)}/${l.month.slice(0, 4)}</td>
+        <td>${escapeHtml(taxCatLabel(l.cat))}${l.exempt ? ` <span class="api-badge badge-ok">${t('tax.exempt')}</span>` : ''}</td>
+        <td>${fmtMoney(l.sales, M)}</td>
+        <td class="${l.gain >= 0 ? 'amount-in' : 'amount-out'}">${fmtMoney(l.gain, M)}</td>
+        <td>${l.used ? fmtMoney(l.used, M) : '—'}</td>
+        <td>${l.base ? fmtMoney(l.base, M) : '—'}</td>
+        <td>${l.exempt ? '—' : l.rate + '%'}</td>
+        <td><strong>${l.tax ? fmtMoney(l.tax, M) : '—'}</strong></td>
+        <td>${l.tax > 0
+          ? `<button class="secondary-btn" onclick="markTaxPaid('${l.key}')">${l.paid ? '✓ ' + t('tax.paid') : t('tax.markPaid')}</button>`
+          : '—'}</td>
+      </tr>`).join('')}</tbody>
+    </table></div>` : `<p class="empty-state">${t('tax.noSales')}</p>`}
+
+    <h3 class="section-sub">${t('tax.losses')}</h3>
+    <div class="table-scroll"><table class="mini-table">
+      <thead><tr><th>${t('tax.category')}</th><th>${t('tax.lossCarry')}</th><th>${t('tax.lossSeed')}</th></tr></thead>
+      <tbody>${TAX_CATS.map((c) => `<tr>
+        <td>${escapeHtml(taxCatLabel(c))}</td>
+        <td class="${(dados.prejuizo[c] || 0) > 0 ? 'amount-out' : ''}">${fmtMoney(dados.prejuizo[c] || 0, M)}</td>
+        <td><input type="text" inputmode="decimal" value="${cfg.lossSeed[c] || ''}" placeholder="0" onchange="setTaxRule('loss:${c}', this.value)" aria-label="${escapeHtml(taxCatLabel(c))}"></td>
+      </tr>`).join('')}</tbody>
+    </table></div>
+    <p class="hint">${t('tax.lossHint')}</p>
+
+    <h3 class="section-sub">${t('tax.declaration').replace('{y}', taxUi.year)}</h3>
+    ${renderTaxAssets(dados)}`;
+}
+
+function renderTaxAssets(dados) {
+  const cfg = taxCfg();
+  const M = cfg.currency;
+  const fim = taxUi.year + '-12-31';
+  const inicio = String(Number(taxUi.year) - 1) + '-12-31';
+  const linhas = state.positions.map((pos) => {
+    const agora = positionStateAt(pos, fim);
+    const antes = positionStateAt(pos, inicio);
+    const custoAgora = dados.conv(agora.cost, pos.currency, M, fim) || agora.cost;
+    const custoAntes = dados.conv(antes.cost, pos.currency, M, inicio) || antes.cost;
+    return { pos, qtd: agora.quantity, custoAgora, custoAntes };
+  }).filter((l) => l.qtd > 0 || l.custoAntes > 0);
+  const proventos = state.dividends.filter((d) => (d.payDate || '').startsWith(taxUi.year) && d.status === 'received');
+  const porTipo = {};
+  proventos.forEach((d) => {
+    const chave = d.type === 'jcp' ? 'jcp' : d.type === 'rend' ? 'rend' : 'div';
+    porTipo[chave] = (porTipo[chave] || 0) + (dados.conv(Number(d.amount) || 0, d.currency || 'BRL', M, d.payDate) || 0);
+  });
+  if (!linhas.length && !proventos.length) return `<p class="empty-state">${t('tax.noAssets')}</p>`;
+  return `
+    <p class="hint">${t('tax.declarationHint')}</p>
+    <div class="table-scroll"><table class="mini-table">
+      <thead><tr><th>${t('mkt.asset')}</th><th>${t('inv.quantity')}</th><th>${t('tax.costBefore').replace('{y}', Number(taxUi.year) - 1)}</th><th>${t('tax.costAfter').replace('{y}', taxUi.year)}</th></tr></thead>
+      <tbody>${linhas.map((l) => `<tr>
+        <td>${colorDot(l.pos.color)}${escapeHtml(l.pos.ticker || l.pos.name)}</td>
+        <td>${fmtQty(l.qtd)}</td><td>${fmtMoney(l.custoAntes, M)}</td><td><strong>${fmtMoney(l.custoAgora, M)}</strong></td>
+      </tr>`).join('')}</tbody>
+    </table></div>
+    ${proventos.length ? `<div class="tax-income">
+      ${Object.entries(porTipo).map(([k, v]) => `<div><span>${t('div.t.' + k)}</span><strong>${fmtMoney(v, M)}</strong><span class="hint">${t('tax.incomeNote.' + k)}</span></div>`).join('')}
+    </div>` : ''}`;
+}
+
+async function exportTaxCSV() {
+  const dados = await taxData();
+  const cfg = taxCfg();
+  const doAno = dados.linhas.filter((l) => l.month.startsWith(taxUi.year));
+  const cab = ['Mes', 'Categoria', 'Vendas', 'GanhoPerda', 'Isento', 'PrejuizoCompensado', 'Base', 'Aliquota', 'Imposto', 'Situacao'];
+  const linhas = doAno.map((l) => [l.month, taxCatLabel(l.cat), l.sales.toFixed(2).replace('.', ','), l.gain.toFixed(2).replace('.', ','),
+    l.exempt ? 'Sim' : 'Nao', l.used.toFixed(2).replace('.', ','), l.base.toFixed(2).replace('.', ','), l.rate + '%',
+    l.tax.toFixed(2).replace('.', ','), l.paid ? 'Pago' : (l.tax > 0 ? 'A pagar' : '-')]);
+  const csv = [cab, ...linhas].map((r) => r.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(';')).join('\n');
+  download(`prof-controller-impostos-${taxUi.year}.csv`, '\uFEFF' + csv, 'text/csv;charset=utf-8;');
+  showToast(t('toast.exported'));
+}
+
+function openTaxRules() {
+  const cfg = taxCfg();
+  openModal(`
+    <h2>${t('tax.rules')}</h2>
+    <p class="hint">${t('tax.rulesHint').replace('{d}', TAX_REVISION.split('-').reverse().join('/'))}</p>
+    <label>${t('accounts.country')}</label>
+    <select onchange="setTaxRule('country', this.value)">
+      ${COUNTRIES.map((c) => `<option value="${c}" ${cfg.country === c ? 'selected' : ''}>${t('country.' + c)}</option>`).join('')}
+    </select>
+    <label>${t('accounts.holder')}</label>
+    <select onchange="setTaxRule('holder', this.value)">
+      <option value="individual" ${cfg.holder === 'individual' ? 'selected' : ''}>${t('accounts.holder.individual')}</option>
+      <option value="company" ${cfg.holder === 'company' ? 'selected' : ''}>${t('accounts.holder.company')}</option>
+    </select>
+    ${cfg.country !== 'BR' ? `<p class="sec-warning">${t('tax.noTable')}</p>` : ''}
+    <h3 class="section-sub">${t('tax.ratesTitle')}</h3>
+    <div class="table-scroll"><table class="mini-table">
+      <thead><tr><th>${t('tax.category')}</th><th>${t('tax.rate')}</th><th>${t('tax.exemptLimit')}</th></tr></thead>
+      <tbody>${TAX_CATS.map((c) => `<tr>
+        <td>${escapeHtml(taxCatLabel(c))}</td>
+        <td><input type="text" inputmode="decimal" value="${cfg.rates[c]}" onchange="setTaxRule('rate:${c}', this.value)" aria-label="${escapeHtml(taxCatLabel(c))}"> %</td>
+        <td><input type="text" inputmode="decimal" value="${cfg.exemptMonthly[c] || ''}" placeholder="—" onchange="setTaxRule('exempt:${c}', this.value)" aria-label="${escapeHtml(taxCatLabel(c))}"></td>
+      </tr>`).join('')}</tbody>
+    </table></div>
+    <h3 class="section-sub">${t('tax.dividends')}</h3>
+    <label class="checkline"><input type="checkbox" ${cfg.dividendRule.enabled ? 'checked' : ''} onchange="setTaxRule('divEnabled', this.checked)"> ${t('tax.divEnable')}</label>
+    <p class="hint">${t('tax.divHint')}</p>
+    <div class="calc-inline">
+      <input type="text" inputmode="decimal" value="${cfg.dividendRule.rate}" onchange="setTaxRule('divRate', this.value)" aria-label="${t('tax.rate')}">
+      <input type="text" inputmode="decimal" value="${cfg.dividendRule.threshold}" onchange="setTaxRule('divThreshold', this.value)" aria-label="${t('tax.divThreshold')}">
+    </div>
+    <p class="hint">${t('tax.divFields')}</p>
+  `, true);
+}
+
+/* ----- Simulador de venda (aba IR da calculadora) ----- */
+async function runTaxSim() {
+  const saida = document.getElementById('irResult');
+  if (!saida) return;
+  const cfg = taxCfg();
+  const M = cfg.currency;
+  const cat = document.getElementById('irCat').value;
+  const qtd = numIn('irQty', 0), venda = numIn('irPrice', 0), custo = numIn('irCost', 0);
+  const outrasVendas = numIn('irOther', 0) || 0;
+  const usarPrejuizo = document.getElementById('irUseLoss').checked;
+  if (!qtd || !venda) { saida.innerHTML = `<p class="hint">${t('calc.fillHint')}</p>`; return; }
+  const dados = await taxData();
+  const totalVenda = qtd * venda;
+  const totalCusto = qtd * custo;
+  const ganho = totalVenda - totalCusto;
+  const limite = Number(cfg.exemptMonthly[cat]) || 0;
+  const vendasMes = totalVenda + outrasVendas;
+  const isento = cat === 'stock' && cfg.country === 'BR' && cfg.holder === 'individual' && limite > 0 && vendasMes <= limite;
+  const prejuizo = usarPrejuizo ? (dados.prejuizo[cat] || 0) : 0;
+  const compensado = isento || ganho <= 0 ? 0 : Math.min(prejuizo, ganho);
+  const base = isento ? 0 : Math.max(ganho - compensado, 0);
+  const imposto = base * ((Number(cfg.rates[cat]) || 0) / 100);
+  saida.innerHTML = `
+    <div class="calc-cards">
+      <div><span>${t('tax.sales')}</span><strong>${fmtMoney(totalVenda, M)}</strong></div>
+      <div><span>${t('tax.gain')}</span><strong class="${ganho >= 0 ? 'amount-in' : 'amount-out'}">${fmtMoney(ganho, M)}</strong></div>
+      ${compensado ? `<div><span>${t('tax.lossUsed')}</span><strong>${fmtMoney(compensado, M)}</strong></div>` : ''}
+      <div><span>${t('tax.tax')}</span><strong class="${imposto > 0 ? 'amount-out' : 'amount-in'}">${fmtMoney(imposto, M)}</strong></div>
+      <div><span>${t('calc.irNet')}</span><strong>${fmtMoney(totalVenda - imposto, M)}</strong></div>
+    </div>
+    ${isento ? `<p class="amount-in">${t('calc.irExempt').replace('{v}', fmtMoney(limite, M))}</p>` : ''}
+    ${!isento && cat === 'stock' && limite > 0 && vendasMes > limite ? `<p class="hint">${t('calc.irOverLimit').replace('{v}', fmtMoney(limite, M)).replace('{t}', fmtMoney(vendasMes, M))}</p>` : ''}
+    ${prejuizo > 0 && !usarPrejuizo ? `<p class="hint">${t('calc.irLossAvailable').replace('{v}', fmtMoney(prejuizo, M))}</p>` : ''}
+    <p class="hint">${t('tax.disclaimer').replace('{d}', TAX_REVISION.split('-').reverse().join('/'))}</p>`;
+}
+function renderTaxSim(box) {
+  const cfg = taxCfg();
+  box.innerHTML = `
+    <p class="hint">${t('calc.irHint')}</p>
+    <div class="calc-form">
+      <label>${t('tax.category')}<select id="irCat" onchange="runTaxSim()">${TAX_CATS.map((c) => `<option value="${c}">${taxCatLabel(c)}</option>`).join('')}</select></label>
+      <label>${t('inv.quantity')}<input id="irQty" type="text" inputmode="decimal" value="100" oninput="runTaxSim()"></label>
+      <label>${t('calc.irSalePrice')}<input id="irPrice" type="text" inputmode="decimal" value="30" oninput="runTaxSim()"></label>
+      <label>${t('calc.irAvgCost')}<input id="irCost" type="text" inputmode="decimal" value="20" oninput="runTaxSim()"></label>
+      <label>${t('calc.irOtherSales')}<input id="irOther" type="text" inputmode="decimal" placeholder="0" oninput="runTaxSim()"></label>
+      <label class="checkline"><input type="checkbox" id="irUseLoss" checked onchange="runTaxSim()"> ${t('calc.irUseLoss')}</label>
+    </div>
+    <div id="irResult" class="calc-out"></div>`;
+  runTaxSim();
+}
+
+
 /* ================= FASE 14 — Você x Mercado, metas e aporte inteligente =================
    Nada aqui recomenda comprar ou vender um ativo: recomendação de papel é
    atividade regulada. O card compara a SUA carteira com índices e traz
@@ -7382,6 +7926,8 @@ async function setTaxPreference(ativo) {
   await put('settings', { key: 'taxAsked', value: true });
   closeModal();
   renderTaxSettings();
+  renderSubTabs();
+  if (!ativo && state.ui.tab === 'taxes') showTab('investments');
   showToast(t(ativo ? 'tax.on' : 'tax.off'));
 }
 function renderTaxSettings() {
@@ -7404,7 +7950,7 @@ function renderTaxSettings() {
    4. E se…      — "se eu tivesse comprado X em tal data": usa o histórico real
                    de preços e compara com CDB, Ibovespa e S&P 500. */
 
-const CALC_MODULES = ['basic', 'interest', 'solve', 'whatif'];
+const CALC_MODULES = ['basic', 'interest', 'solve', 'whatif', 'tax'];
 const calcUi = { module: 'basic', expr: '', acc: 0, history: [], memory: 0 };
 
 /* ----- 1. Calculadora comum: tokenizador + shunting-yard ----- */
@@ -7835,7 +8381,9 @@ function renderCalculator() {
   const box = document.getElementById('calcBody');
   const nav = document.getElementById('calcTabs');
   if (!box || !nav) return;
-  nav.innerHTML = CALC_MODULES.map((m) => `<button type="button" class="${calcUi.module === m ? 'active' : ''}" onclick="setCalcModule('${m}')">${t('calc.m.' + m)}</button>`).join('');
+  const modulos = CALC_MODULES.filter((m) => m !== 'tax' || state.settings.taxEnabled);
+  if (!modulos.includes(calcUi.module)) calcUi.module = 'basic';
+  nav.innerHTML = modulos.map((m) => `<button type="button" class="${calcUi.module === m ? 'active' : ''}" onclick="setCalcModule('${m}')">${t('calc.m.' + m)}</button>`).join('');
   const moedas = (id, atual) => `<select id="${id}">${CURRENCIES.map((c) => `<option value="${c.code}" ${c.code === (atual || state.settings.baseCurrency) ? 'selected' : ''}>${c.code}</option>`).join('')}</select>`;
   const unidadeTaxa = (id) => `<select id="${id}" onchange="${id.startsWith('ju') ? 'runInterest' : 'runSolve'}()"><option value="year">${t('calc.perYear')}</option><option value="month">${t('calc.perMonth')}</option></select>`;
   const unidadePrazo = (id) => `<select id="${id}" onchange="${id.startsWith('ju') ? 'runInterest' : 'runSolve'}()"><option value="year">${t('calc.years')}</option><option value="month">${t('calc.months')}</option></select>`;
@@ -7917,6 +8465,8 @@ function renderCalculator() {
     onSolveTargetChange();
     return;
   }
+
+  if (calcUi.module === 'tax') { renderTaxSim(box); return; }
 
   // "E se eu tivesse comprado"
   const doisAnos = (() => { const d = new Date(); d.setFullYear(d.getFullYear() - 2); return d.toISOString().slice(0, 10); })();
@@ -9878,7 +10428,7 @@ function on(id, evento, handler) {
    segunda linha de sub-abas. Configurações sai da barra e vai para a engrenagem. */
 const NAV_GROUPS = {
   dashboard: ['dashboard'],
-  investments: ['investments', 'calculator'],
+  investments: ['investments', 'calculator', 'taxes'],
   registry: ['accounts', 'balances', 'budgets', 'fx', 'portfolio'],
   flows: ['transactions', 'payables', 'receivables'],
   news: ['news'],
@@ -9920,6 +10470,7 @@ function showTab(tab) {
   if (tab === 'dashboard') { renderNAV(); renderYouVsMarket().catch((e) => console.warn('Você x Mercado:', e)); }
   if (tab === 'investments') renderCompare();
   if (tab === 'calculator') renderCalculator();
+  if (tab === 'taxes') renderTaxes().catch((e) => console.warn('Impostos:', e));
   if (tab === 'news') { renderNews(); refreshNews(false).catch(() => {}); }
   window.scrollTo({ top: 0 });
 }
@@ -9928,7 +10479,7 @@ function renderSubTabs() {
   const nav = document.getElementById('subTabs');
   if (!nav) return;
   const tab = state.ui.tab || 'dashboard';
-  const telas = NAV_GROUPS[groupOf(tab)];
+  const telas = NAV_GROUPS[groupOf(tab)].filter((k) => k !== 'taxes' || state.settings.taxEnabled);
   if (telas.length < 2) { nav.classList.add('hidden'); nav.innerHTML = ''; return; }
   nav.classList.remove('hidden');
   nav.innerHTML = telas.map((k) => `<button type="button" class="subtab ${k === tab ? 'active' : ''}" data-tab="${k}" aria-current="${k === tab ? 'page' : 'false'}">${t('tabs.' + k)}</button>`).join('');
