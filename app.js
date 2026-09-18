@@ -8332,7 +8332,7 @@ async function toggleCmpBench(chave) {
    Atualiza ao abrir o app e a cada 2 horas com ele aberto. */
 
 const NEWS_KEY = HIST_PREFIX + 'news';
-const NEWS_TTL = 2 * 60 * 60 * 1000;
+const NEWS_TTL = 30 * 60 * 1000;
 const NEWS_MAX = 200;
 const NEWS_MARKET_TOPICS = ['Ibovespa', 'dólar hoje', 'Selic Copom', 'S&P 500'];
 let newsCache = null;         // { fetchedAt, items }
@@ -8557,7 +8557,25 @@ async function renderNews() {
   });
 
   if (!itens.length) {
-    lista.innerHTML = `<p class="empty-state">${newsLoading ? t('news.loading') : (newsCache.items || []).length ? t('news.emptyFilter') : t('news.empty')}</p>`;
+    if (newsLoading) {
+      lista.innerHTML = `<p class="empty-state">${t('news.loading')}</p>`;
+    } else if (newsCache.failed && !newsCache.items?.length) {
+      // Fallback: mostra atalhos úteis
+      const links = [
+        ['Google News', `https://news.google.com/search?q=Ibovespa`],
+        ['InfoMoney', `https://www.infomoney.com.br`],
+        ['Yahoo Finance', `https://finance.yahoo.com`],
+        ['Investidor10', `https://investidor10.com.br`]
+      ];
+      lista.innerHTML = `<div style="padding:20px;text-align:center;">
+        <p style="color:var(--muted);margin-bottom:15px">${t('news.failed')}</p>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;">
+          ${links.map(([rot, url]) => `<a href="${url}" target="_blank" class="secondary-btn" style="flex:0 0 auto">${rot}</a>`).join('')}
+        </div>
+      </div>`;
+    } else {
+      lista.innerHTML = `<p class="empty-state">${t('news.empty')}</p>`;
+    }
   } else {
     lista.innerHTML = itens.slice(0, 80).map((n) => {
       const tags = (n.tags || []).map((tg) => tg === 'market'
