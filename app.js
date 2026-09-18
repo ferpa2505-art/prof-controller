@@ -98,6 +98,19 @@ const I18N = {
     'recurrence.enabled': 'Ativa',
     'recurrence.nextDate': 'Próximo lançamento',
     'recurrence.created': 'Recorrência criada.',
+    'alerts.title': 'Alertas de Preço',
+    'alerts.add': '+ Novo Alerta',
+    'alerts.symbol': 'Ativo (ex: PETR4, BTC)',
+    'alerts.type': 'Tipo',
+    'alerts.typeAbove': 'Acima de',
+    'alerts.typeBelow': 'Abaixo de',
+    'alerts.price': 'Preço-alvo',
+    'alerts.noAlerts': 'Nenhum alerta de preço.',
+    'alerts.maxReached': 'Máximo de 3 alertas ativos atingido.',
+    'alerts.duplicateAlert': 'Alerta para este ativo + tipo já existe.',
+    'alerts.invalidPrice': 'Preço deve ser maior que 0.',
+    'alerts.fillAllFields': 'Preencha todos os campos corretamente.',
+    'alerts.created': 'Alerta de preço criado.',
     'recurrence.empty': 'Nenhuma recorrência cadastrada.',
     'notification.title': 'Notificações',
     'notification.upcoming': 'Lançamento recorrente próximo',
@@ -1082,6 +1095,19 @@ const I18N = {
     'recurrence.enabled': 'Active',
     'recurrence.nextDate': 'Next entry',
     'recurrence.created': 'Recurrence created.',
+    'alerts.title': 'Price Alerts',
+    'alerts.add': '+ New Alert',
+    'alerts.symbol': 'Asset (ex: PETR4, BTC)',
+    'alerts.type': 'Type',
+    'alerts.typeAbove': 'Above',
+    'alerts.typeBelow': 'Below',
+    'alerts.price': 'Target price',
+    'alerts.noAlerts': 'No price alerts.',
+    'alerts.maxReached': 'Maximum of 3 active alerts reached.',
+    'alerts.duplicateAlert': 'Alert for this asset + type already exists.',
+    'alerts.invalidPrice': 'Price must be greater than 0.',
+    'alerts.fillAllFields': 'Fill all fields correctly.',
+    'alerts.created': 'Price alert created.',
     'recurrence.empty': 'No recurrences yet.',
     'notification.title': 'Notifications',
     'notification.upcoming': 'Upcoming recurring entry',
@@ -2065,6 +2091,19 @@ const I18N = {
     'recurrence.enabled': 'Activa',
     'recurrence.nextDate': 'Próximo lanzamiento',
     'recurrence.created': 'Recurrencia creada.',
+    'alerts.title': 'Alertas de Precio',
+    'alerts.add': '+ Nueva Alerta',
+    'alerts.symbol': 'Activo (ej: PETR4, BTC)',
+    'alerts.type': 'Tipo',
+    'alerts.typeAbove': 'Por encima de',
+    'alerts.typeBelow': 'Por debajo de',
+    'alerts.price': 'Precio objetivo',
+    'alerts.noAlerts': 'Sin alertas de precio.',
+    'alerts.maxReached': 'Máximo de 3 alertas activas alcanzado.',
+    'alerts.duplicateAlert': 'La alerta para este activo + tipo ya existe.',
+    'alerts.invalidPrice': 'El precio debe ser mayor que 0.',
+    'alerts.fillAllFields': 'Rellene todos los campos correctamente.',
+    'alerts.created': 'Alerta de precio creada.',
     'recurrence.empty': 'Sin recurrencias registradas.',
     'notification.title': 'Notificaciones',
     'notification.upcoming': 'Lanzamiento recurrente próximo',
@@ -3058,7 +3097,7 @@ function groupLabel(g) {
 
 /* ---------- Estado e persistência (IndexedDB) ---------- */
 const DB_NAME = 'prof-controller';
-const DB_VERSION = 7; // Fase 13: Você x Mercado (benchmarks, marketEvents, portfolioMetrics)
+const DB_VERSION = 8; // Fase 16: Alertas de Preço (priceAlerts store)
 let db = null;
 
 // Reset IndexedDB se versão não corresponder (útil para développement)
@@ -3147,6 +3186,8 @@ let state = {
   benchmarks: [],
   marketEvents: [],
   portfolioMetrics: [],
+  // Fase 16 — Alertas de Preço
+  priceAlerts: [],
   settings: { lang: 'pt-BR', theme: 'default', baseCurrency: 'EUR' },
   ui: { txType: 'all', txAccount: 'all', txMonth: '', budgetMonth: '', navView: 'pie', navBreak: 'currency', cashGrain: 'monthly',
         billKind: 'all', billStatus: 'open', billFrom: '', billTo: '', tab: 'dashboard', lastSub: {} }
@@ -3559,6 +3600,13 @@ function openDB() {
         const s = d.createObjectStore('portfolioMetrics', { keyPath: 'id' });
         s.createIndex('date', 'date');
       }
+      // Fase 16 — Alertas de Preço
+      if (!d.objectStoreNames.contains('priceAlerts')) {
+        const s = d.createObjectStore('priceAlerts', { keyPath: 'id' });
+        s.createIndex('symbol', 'symbol');
+        s.createIndex('enabled', 'enabled');
+        s.createIndex('type', 'type');
+      }
       // Preparado para fases futuras (patrimônio)
       ['fx', 'receitas', 'lancamentos', 'imoveis', 'veiculos', 'posicoes', 'nav', 'orcamentos']
         .forEach((name) => { if (!d.objectStoreNames.contains(name)) d.createObjectStore(name, { keyPath: 'id' }); });
@@ -3608,6 +3656,7 @@ async function loadAll() {
   state.benchmarks = await getAll('benchmarks');
   state.marketEvents = await getAll('marketEvents');
   state.portfolioMetrics = await getAll('portfolioMetrics');
+  state.priceAlerts = await getAll('priceAlerts');
   const brutos = (await rawGetAll('settings')).filter((r) => !String(r.key).startsWith(HIST_PREFIX) && r.key !== SEC_KEY);
   for (const r of brutos) {
     const s = await decodeRecord(r);
@@ -4017,6 +4066,7 @@ function showLockScreen() {
     };
     document.getElementById('lockGo').addEventListener('click', tentarPin);
     campo.addEventListener('keydown', (e) => { if (e.key === 'Enter') tentarPin(); });
+    campo.addEventListener('input', () => { if (campo.value.length === PIN_MIN) tentarPin(); });
     if (temBio) {
       document.getElementById('lockBio').addEventListener('click', async () => {
         const btn = document.getElementById('lockBio');
@@ -10562,13 +10612,13 @@ function openPositionModal(id, prefill) {
     <h2>${p ? t('modal.editPosition') : t('modal.addPosition')}</h2>
     <label>${t('mkt.lookup')}</label>
     <div class="lookup-row">
-      <input id="poLookup" placeholder="TTWO, PETR4, US8740541094" value="${prefill ? escapeHtml(prefill) : ''}"
-        onkeydown="if(event.key==='Enter'){event.preventDefault();lookupAsset();}">
       <select id="poLookupKind" aria-label="${t('mkt.searchKind')}">
         <option value="">${t('mkt.kindAuto')}</option>
         <option value="stock">${t('mkt.kindStock')}</option>
         <option value="crypto">${t('mkt.kindCrypto')}</option>
       </select>
+      <input id="poLookup" placeholder="TTWO, PETR4, US8740541094" value="${prefill ? escapeHtml(prefill) : ''}"
+        onkeydown="if(event.key==='Enter'){event.preventDefault();lookupAsset();}">
       <button id="poLookupBtn" class="secondary-btn" type="button" onclick="lookupAsset()">${t('mkt.search')}</button>
     </div>
     <p class="hint">${t('mkt.lookupHint')}</p>
@@ -11368,6 +11418,7 @@ function buildBackupData() {
     benchmarks: state.benchmarks,
     marketEvents: state.marketEvents,
     portfolioMetrics: state.portfolioMetrics,
+    priceAlerts: state.priceAlerts,
     // Chaves de API não saem do navegador: um backup é fácil de compartilhar por engano
     settings: Object.fromEntries(Object.entries(state.settings).filter(([k]) => !API_KEYS.includes(k) && !k.startsWith(HIST_PREFIX) && k !== SEC_KEY))
   };
@@ -11443,6 +11494,7 @@ async function importJSON(file) {
     for (const b of (data.benchmarks || [])) await put('benchmarks', b);
     for (const me of (data.marketEvents || [])) await put('marketEvents', me);
     for (const pm of (data.portfolioMetrics || [])) await put('portfolioMetrics', pm);
+    for (const pa of (data.priceAlerts || [])) await put('priceAlerts', pa);
     if (data.settings) {
       for (const [k, v] of Object.entries(data.settings)) {
         if (k === 'ui' || k === SEC_KEY || API_KEYS.includes(k) || k.startsWith(HIST_PREFIX)) continue;
@@ -11638,7 +11690,7 @@ function showTab(tab) {
   if (gear) gear.classList.toggle('active', grupo === 'settings');
   renderSubTabs();
   if (tab === 'dashboard') { renderNAV(); renderYouVsMarket().catch((e) => console.warn('Você x Mercado:', e)); }
-  if (tab === 'investments') renderCompare();
+  if (tab === 'investments') { renderCompare(); renderPriceAlerts(); }
   if (tab === 'calculator') renderCalculator();
   if (tab === 'taxes') renderTaxes().catch((e) => console.warn('Impostos:', e));
   if (tab === 'news') { renderNews(); refreshNews(false).catch(() => {}); }
@@ -11678,6 +11730,136 @@ function renderThemeOptions() {
   sel.value = state.settings.theme || 'default';
 }
 
+/* ========== Fase 16: Tarefa 1 - Alertas de Preço (IndexedDB + UI) ========== */
+
+// Criar novo alerta de preço
+async function createPriceAlert(symbol, type, targetPrice, currency = 'EUR') {
+  const activeAlerts = state.priceAlerts.filter(a => a.enabled).length;
+  if (activeAlerts >= 3) {
+    notify(t('alerts.maxReached') || 'Máximo de 3 alertas ativos atingido.', 'warning');
+    return false;
+  }
+  const duplicate = state.priceAlerts.find(a => a.symbol === symbol && a.type === type);
+  if (duplicate) {
+    notify(t('alerts.duplicateAlert') || 'Alerta para este ativo + tipo já existe.', 'warning');
+    return false;
+  }
+  if (targetPrice <= 0) {
+    notify(t('alerts.invalidPrice') || 'Preço deve ser maior que 0.', 'error');
+    return false;
+  }
+  const alert = {
+    id: Date.now() + Math.random(),
+    symbol,
+    type, // 'above' | 'below'
+    targetPrice,
+    currency,
+    enabled: true,
+    triggered: false,
+    createdAt: new Date().toISOString()
+  };
+  await put('priceAlerts', alert);
+  state.priceAlerts.push(alert);
+  return true;
+}
+
+// Deletar alerta
+async function deletePriceAlert(alertId) {
+  await deleteItem('priceAlerts', alertId);
+  state.priceAlerts = state.priceAlerts.filter(a => a.id !== alertId);
+}
+
+// Atualizar alerta (ativar/desativar)
+async function updatePriceAlert(alertId, updates) {
+  const alert = state.priceAlerts.find(a => a.id === alertId);
+  if (!alert) return;
+  Object.assign(alert, updates);
+  await put('priceAlerts', alert);
+}
+
+// Listar alertas com informações de distância do target
+async function getPriceAlertsWithDistance() {
+  const alerts = [];
+  for (const a of state.priceAlerts) {
+    const quote = state.quotes.find(q => q.symbol === a.symbol);
+    const distance = quote ? ((a.targetPrice - quote.price) / quote.price * 100) : null;
+    alerts.push({ ...a, currentPrice: quote?.price || null, distance });
+  }
+  return alerts;
+}
+
+// Renderizar lista de alertas de preço
+async function renderPriceAlerts() {
+  const container = document.getElementById('priceAlertsContainer');
+  if (!container) return;
+  
+  const alerts = await getPriceAlertsWithDistance();
+  if (alerts.length === 0) {
+    container.innerHTML = `<div class="empty-state">${t('alerts.noAlerts') || 'Nenhum alerta de preço.'}</div>`;
+    return;
+  }
+  
+  container.innerHTML = alerts.map((a) => `
+    <div class="alert-item ${a.triggered ? 'triggered' : ''} ${!a.enabled ? 'disabled' : ''}">
+      <div class="alert-header">
+        <strong>${a.symbol}</strong>
+        <span class="alert-type badge ${a.type === 'above' ? 'above' : 'below'}">
+          ${a.type === 'above' ? '↑' : '↓'} ${a.targetPrice}
+        </span>
+      </div>
+      <div class="alert-details">
+        <span class="current-price">${a.currentPrice ? a.currentPrice.toFixed(2) : 'N/A'}</span>
+        ${a.distance !== null ? `<span class="distance ${a.distance > 0 ? 'positive' : 'negative'}">${a.distance.toFixed(1)}%</span>` : ''}
+      </div>
+      <div class="alert-actions">
+        <label class="checkbox-inline">
+          <input type="checkbox" ${a.enabled ? 'checked' : ''} onchange="updatePriceAlert(${a.id}, {enabled: this.checked})">
+          ${t('recurrence.enabled') || 'Ativa'}
+        </label>
+        <button type="button" onclick="deletePriceAlert(${a.id})" class="btn-small danger">${t('common.delete') || 'Deletar'}</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+// Modal de novo alerta
+function openPriceAlertModal() {
+  const modal = document.getElementById('priceAlertModal');
+  if (!modal) {
+    console.warn('priceAlertModal not found');
+    return;
+  }
+  modal.classList.remove('hidden');
+  document.getElementById('paSymbol').value = '';
+  document.getElementById('paType').value = 'above';
+  document.getElementById('paPrice').value = '';
+  document.getElementById('paSymbol').focus();
+}
+
+function closePriceAlertModal() {
+  const modal = document.getElementById('priceAlertModal');
+  if (modal) modal.classList.add('hidden');
+}
+
+async function savePriceAlert() {
+  const symbol = document.getElementById('paSymbol').value.toUpperCase().trim();
+  const type = document.getElementById('paType').value;
+  const price = parseFloat(document.getElementById('paPrice').value);
+  const currency = state.settings.baseCurrency || 'EUR';
+  
+  if (!symbol || !type || !price || price <= 0) {
+    notify(t('alerts.fillAllFields') || 'Preencha todos os campos corretamente.', 'error');
+    return;
+  }
+  
+  const success = await createPriceAlert(symbol, type, price, currency);
+  if (success) {
+    notify(t('alerts.created') || 'Alerta criado.', 'success');
+    closePriceAlertModal();
+    await renderPriceAlerts();
+  }
+}
+
 function bindEvents() {
   // Notificações
   on('btnNotifications', 'click', toggleNotificationsPanel);
@@ -11702,6 +11884,10 @@ function bindEvents() {
   on('btnB3Import', 'click', openB3Import);
   on('btnDivFetch', 'click', () => fetchAutoDividends(false));
   on('btnDivAdd', 'click', () => openDividendModal());
+  // Fase 16 — Alertas de Preço
+  on('btnPriceAlertAdd', 'click', () => openPriceAlertModal());
+  on('btnPriceAlertSave', 'click', () => savePriceAlert());
+  on('btnPriceAlertCancel', 'click', () => closePriceAlertModal());
   API_KEYS.forEach((k) => on(k, 'input', (e) => { e.target.dataset.dirty = '1'; }));
   on('cashGrain', 'change', (e) => { state.ui.cashGrain = e.target.value; renderCashflow(); });
   on('billKind', 'change', (e) => { state.ui.billKind = e.target.value; renderBills(); });
