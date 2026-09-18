@@ -14325,7 +14325,7 @@ async function init() {
   try {
     bindEvents();
     // Fase 16 — Iniciar verificador de alertas
-    startPriceAlertChecker();
+    // startPriceAlertChecker(); // DESABILITADO - Feature de alerta de preço removida
     // Fase 6 — Verificar alertas de orçamento
     await checkBudgetAlerts();
     requestNotificationPermission().catch(() => {});
