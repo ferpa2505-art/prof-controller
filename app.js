@@ -12464,40 +12464,36 @@ async function resetPriceAlerts() {
 
 const TAX_RULES = {
   'PT': {
-    name: '🇵🇹 Portugal',
+    name: '🇵🇹 Portugal (2025)',
     currency: '€',
     pf: [
       { min: 0, max: 7091, rate: 0.145 },
       { min: 7091, max: 10700, rate: 0.23 },
       { min: 10700, max: 20261, rate: 0.285 },
-      { min: 20261, max: 25000, rate: 0.35 },
-      { min: 25000, max: 36856, rate: 0.37 },
-      { min: 36856, max: 80640, rate: 0.45 },
-      { min: 80640, max: Infinity, rate: 0.48 }
+      { min: 20261, max: 40573, rate: 0.37 },
+      { min: 40573, max: 80882, rate: 0.45 },
+      { min: 80882, max: Infinity, rate: 0.48 }
     ],
     pj: 0.195,
     exemptionLimit: 7091,
-    notes: 'Imposto de solidariedade: +2,5% (€80k-€250k) +5% (>€250k)'
+    notes: 'Mainland. Solidariedade: +2.5% (€80k-€250k), +5% (>€250k). Açores/Madeira: alíquotas menores'
   },
   'ES': {
-    name: '🇪🇸 Espanha',
+    name: '🇪🇸 Espanha (2025)',
     currency: '€',
     pf: [
-      { min: 0, max: 5150, rate: 0 },
-      { min: 5150, max: 17707, rate: 0.24 },
-      { min: 17707, max: 33007, rate: 0.28 },
-      { min: 33007, max: 53407, rate: 0.37 },
-      { min: 53407, max: 120000, rate: 0.43 },
-      { min: 120000, max: 175000, rate: 0.44 },
-      { min: 175000, max: 300000, rate: 0.45 },
-      { min: 300000, max: Infinity, rate: 0.47 }
+      { min: 0, max: 18000, rate: 0.19 },
+      { min: 18000, max: 35200, rate: 0.24 },
+      { min: 35200, max: 60000, rate: 0.30 },
+      { min: 60000, max: 300000, rate: 0.37 },
+      { min: 300000, max: Infinity, rate: 0.45 }
     ],
     pj: 0.25,
-    exemptionLimit: 5150,
-    notes: 'Surcharge temporário 0,75%-6%'
+    exemptionLimit: 22000,
+    notes: 'Taxas nacionais. Regiões +0%-3%, Municípios +0%-1.5%. Startups: 15% até €1M'
   },
   'IT': {
-    name: '🇮🇹 Itália',
+    name: '🇮🇹 Itália (2025 - Lei 207/2024)',
     currency: '€',
     pf: [
       { min: 0, max: 28000, rate: 0.23 },
@@ -12506,24 +12502,24 @@ const TAX_RULES = {
     ],
     pj: 0.24,
     exemptionLimit: 8000,
-    notes: 'IRAP 3,9% (PJ) + regional/municipal 0,7%-3,33%'
+    notes: 'Reforma 2025: 3 brackets progressivos. IRAP 3.9% (PJ). Regional +0.7%-3.33%, Municipal +0.1%-0.9%'
   },
   'DE': {
-    name: '🇦🇱 Alemanha',
+    name: '🇦🇱 Alemanha (2025)',
     currency: '€',
     pf: [
       { min: 0, max: 9000, rate: 0 },
-      { min: 9000, max: 13996, rate: 0.14 },
-      { min: 13996, max: 54949, rate: 0.42 },
+      { min: 9000, max: 13996, rate: 0.20 },
+      { min: 13996, max: 54949, rate: 0.40 },
       { min: 54949, max: 260532, rate: 0.42 },
       { min: 260532, max: Infinity, rate: 0.45 }
     ],
-    pj: 0.305,
+    pj: 0.30,
     exemptionLimit: 9000,
-    notes: 'Imposto de solidariedade: +5,5% (>€972.000)'
+    notes: 'Solidariedade +5.5% (>€972k). Municipal trade tax varia 3.5%-17%'
   },
   'FR': {
-    name: '🇫🇷 França',
+    name: '🇫🇷 França (2025)',
     currency: '€',
     pf: [
       { min: 0, max: 5963, rate: 0 },
@@ -12532,12 +12528,12 @@ const TAX_RULES = {
       { min: 26420, max: 70830, rate: 0.30 },
       { min: 70830, max: Infinity, rate: 0.41 }
     ],
-    pj: 0.25,
+    pj: 0.283,
     exemptionLimit: 5963,
-    notes: 'CSG ~8% adicional'
+    notes: 'Taxas IR. Adicionar ~17% Social Security (employee+employer). Quotient familial reduz taxas'
   },
   'IE': {
-    name: '🇮🇪 Irlanda',
+    name: '🇮🇪 Irlanda (2025)',
     currency: '€',
     pf: [
       { min: 0, max: 23000, rate: 0.20 },
@@ -12545,36 +12541,37 @@ const TAX_RULES = {
     ],
     pj: 0.125,
     exemptionLimit: 23000,
-    notes: 'USC: 0,5%-8%, taxas corporativas muito competitivas'
+    notes: 'USC 0.5%-8% adicional. Taxa corporativa mais baixa EU (12.5%)'
   },
   'LU': {
-    name: '🇱🇺 Luxemburgo',
+    name: '🇱🇺 Luxemburgo (2025)',
     currency: '€',
     pf: [
-      { min: 0, max: 15000, rate: 0.23 },
-      { min: 15000, max: 28000, rate: 0.27 },
-      { min: 28000, max: 55000, rate: 0.38 },
-      { min: 55000, max: 75000, rate: 0.41 },
-      { min: 75000, max: Infinity, rate: 0.43 }
+      { min: 0, max: 15000, rate: 0.08 },
+      { min: 15000, max: 28000, rate: 0.12 },
+      { min: 28000, max: 55000, rate: 0.20 },
+      { min: 55000, max: 75000, rate: 0.30 },
+      { min: 75000, max: Infinity, rate: 0.40 }
     ],
-    pj: 0.17,
-    exemptionLimit: 800,
-    notes: 'Sistema progressivo moderado'
+    pj: 0.1926,
+    exemptionLimit: 11265,
+    notes: 'Solidariedade +7%. Wealth tax (IF) aplicável. Municipal tax varia'
   },
   'MT': {
-    name: '🇲🇹 Malta',
+    name: '🇲🇹 Malta (2025)',
     currency: '€',
     pf: [
-      { min: 0, max: 19000, rate: 0.15 },
-      { min: 19000, max: 60000, rate: 0.25 },
-      { min: 60000, max: Infinity, rate: 0.35 }
+      { min: 0, max: 9450, rate: 0 },
+      { min: 9450, max: 14500, rate: 0.15 },
+      { min: 14500, max: 19500, rate: 0.26 },
+      { min: 19500, max: Infinity, rate: 0.35 }
     ],
     pj: 0.35,
-    exemptionLimit: 19000,
-    notes: 'Alíquota PJ mais alta da UE, PF competitiva'
+    exemptionLimit: 9450,
+    notes: 'PJ alíquota mais alta EU. Imputation system em dividendos'
   },
   'GB': {
-    name: '🇬🇧 Reino Unido',
+    name: '🇬🇧 Reino Unido (2024-25)',
     currency: '£',
     pf: [
       { min: 0, max: 12570, rate: 0 },
@@ -12582,49 +12579,46 @@ const TAX_RULES = {
       { min: 50270, max: 125140, rate: 0.40 },
       { min: 125140, max: Infinity, rate: 0.45 }
     ],
-    pj: 0.25,
+    pj: 0.21,
     exemptionLimit: 12570,
-    notes: 'Efeito 60% entre £100k-£125k (taper relief)'
+    notes: 'Personal Allowance £12,570 (2024-25). NICs +8-10% adicional. Dividends £500 franquia'
   },
   'CH': {
-    name: '🇨🇭 Suíça',
+    name: '🇨🇭 Suíça (2025)',
     currency: 'CHF',
     pf: [
-      { min: 0, max: 38600, rate: 0.115 },
-      { min: 38600, max: Infinity, rate: 0.115 }
+      { min: 0, max: 100000, rate: 0.115 },
+      { min: 100000, max: Infinity, rate: 0.115 }
     ],
-    pj: 0.15,
-    exemptionLimit: 0,
-    notes: 'Federal ~11,5%, Cantonal 10%-24%. Withholding 35% (dividendos)'
+    pj: 0.188,
+    exemptionLimit: 15000,
+    notes: 'Federal 1%-13.2% + Cantonal 5%-22% + Municipal 1%-10%. Varia bastante por cantão. Zurique/Genebra: ~25% total'
   },
   'AD': {
-    name: '🇦🇩 Andorra',
+    name: '🇦🇩 Andorra (2025)',
     currency: '€',
     pf: [
-      { min: 0, max: 24000, rate: 0.10 },
-      { min: 24000, max: 48000, rate: 0.20 },
-      { min: 48000, max: 100000, rate: 0.30 },
-      { min: 100000, max: Infinity, rate: 0.40 }
+      { min: 0, max: Infinity, rate: 0.10 }
     ],
     pj: 0.10,
-    exemptionLimit: 24000,
-    notes: 'Regime fiscal preferencial europeu, alíquotas baixas'
+    exemptionLimit: 0,
+    notes: 'Flat rate 10% desde 2015. IGI (VAT) 4.95%. Saiu de "tax haven" em 2015'
   },
   'US': {
-    name: '🇺🇸 Estados Unidos (Federal)',
+    name: '🇺🇸 EUA (2024 - MFJ)',
     currency: '$',
     pf: [
-      { min: 0, max: 11600, rate: 0.10 },
-      { min: 11600, max: 47150, rate: 0.12 },
-      { min: 47150, max: 100525, rate: 0.22 },
-      { min: 100525, max: 191950, rate: 0.24 },
-      { min: 191950, max: 243725, rate: 0.32 },
-      { min: 243725, max: 609350, rate: 0.35 },
-      { min: 609350, max: Infinity, rate: 0.37 }
+      { min: 0, max: 23200, rate: 0.10 },
+      { min: 23200, max: 94300, rate: 0.12 },
+      { min: 94300, max: 201050, rate: 0.22 },
+      { min: 201050, max: 383900, rate: 0.24 },
+      { min: 383900, max: 487450, rate: 0.32 },
+      { min: 487450, max: 731200, rate: 0.35 },
+      { min: 731200, max: Infinity, rate: 0.37 }
     ],
     pj: 0.21,
-    exemptionLimit: 14600,
-    notes: 'Federal apenas. Estadual varia 0%-13,3% (CA). Capital gains: 0%/15%/20%'
+    exemptionLimit: 29200,
+    notes: 'Federal apenas. Standard Deduction $29,200 (MFJ 2024). Estadual 0%-13.3%. FICA 15.3% (SS+Medicare)'
   }
 };
 
