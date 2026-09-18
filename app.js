@@ -3896,7 +3896,6 @@ async function loadAll() {
   state.benchmarks = await getAll('benchmarks');
   state.marketEvents = await getAll('marketEvents');
   state.portfolioMetrics = await getAll('portfolioMetrics');
-  state.priceAlerts = await getAll('priceAlerts');
   const brutos = (await rawGetAll('settings')).filter((r) => !String(r.key).startsWith(HIST_PREFIX) && r.key !== SEC_KEY);
   for (const r of brutos) {
     const s = await decodeRecord(r);
@@ -9613,9 +9612,6 @@ async function handleRefresh() {
       await loadDividends();
     }
     
-    // Verificar preços das alertas
-    await checkPriceAlerts();
-    
     // Atualizar UI completamente
     await renderAll();
     
@@ -11144,7 +11140,6 @@ async function renderInvestments() {
   renderAllocation();
   renderWatchlist();
   renderCompare();
-  await renderPriceAlerts();
 }
 
 /* Quanto desta posição foi aplicado SEM sair do saldo da conta vinculada.
@@ -12318,7 +12313,7 @@ function showTab(tab) {
   if (gear) gear.classList.toggle('active', grupo === 'settings');
   renderSubTabs();
   if (tab === 'dashboard') { renderNAV(); renderYouVsMarket().catch((e) => console.warn('Você x Mercado:', e)); }
-  if (tab === 'investments') { renderCompare(); renderPriceAlerts(); }
+  if (tab === 'investments') { renderCompare(); }
   if (tab === 'calculator') renderCalculator();
   if (tab === 'taxes') renderTaxes().catch((e) => console.warn('Impostos:', e));
   if (tab === 'news') { renderNews(); refreshNews(false).catch(() => {}); }
@@ -12368,281 +12363,6 @@ function renderThemeOptions() {
   if (!sel) return;
   sel.innerHTML = ['default', 'dark', 'gray', 'green', 'blue'].map((th) => `<option value="${th}">${t('theme.' + th)}</option>`).join('');
   sel.value = state.settings.theme || 'default';
-}
-
-/* ========== Fase 16: Tarefa 1 - Alertas de Preço (IndexedDB + UI) ========== */
-
-// Criar novo alerta de preço
-async function createPriceAlert(symbol, type, targetPrice, currency = 'EUR') {
-  const activeAlerts = state.priceAlerts.filter(a => a.enabled).length;
-  if (activeAlerts >= 3) {
-    notify(t('alerts.maxReached') || 'Máximo de 3 alertas ativos atingido.', 'warning');
-    return false;
-  }
-  const duplicate = state.priceAlerts.find(a => a.symbol === symbol && a.type === type);
-  if (duplicate) {
-    notify(t('alerts.duplicateAlert') || 'Alerta para este ativo + tipo já existe.', 'warning');
-    return false;
-  }
-  if (targetPrice <= 0) {
-    notify(t('alerts.invalidPrice') || 'Preço deve ser maior que 0.', 'error');
-    return false;
-  }
-  const alert = {
-    id: Date.now() + Math.random(),
-    symbol,
-    type, // 'above' | 'below'
-    targetPrice,
-    currency,
-    enabled: true,
-    triggered: false,
-    createdAt: new Date().toISOString()
-  };
-  await put('priceAlerts', alert);
-  state.priceAlerts.push(alert);
-  return true;
-}
-
-// Deletar alerta
-async function deletePriceAlert(alertId) {
-  await deleteItem('priceAlerts', alertId);
-  state.priceAlerts = state.priceAlerts.filter(a => a.id !== alertId);
-}
-
-// Atualizar alerta (ativar/desativar)
-async function updatePriceAlert(alertId, updates) {
-  const alert = state.priceAlerts.find(a => a.id === alertId);
-  if (!alert) return;
-  Object.assign(alert, updates);
-  await put('priceAlerts', alert);
-}
-
-// Listar alertas com informações de distância do target
-async function getPriceAlertsWithDistance() {
-  const alerts = [];
-  for (const a of state.priceAlerts) {
-    const quote = state.quotes.find(q => q.symbol === a.symbol);
-    const distance = quote ? ((a.targetPrice - quote.price) / quote.price * 100) : null;
-    alerts.push({ ...a, currentPrice: quote?.price || null, distance });
-  }
-  return alerts;
-}
-
-// Renderizar lista de alertas de preço
-async function renderPriceAlerts() {
-  const container = document.getElementById('priceAlertsContainer');
-  if (!container) return;
-  
-  const alerts = await getPriceAlertsWithDistance();
-  if (alerts.length === 0) {
-    container.innerHTML = `<div class="empty-state">${t('alerts.noAlerts') || 'Nenhum alerta de preço.'}</div>`;
-    return;
-  }
-  
-  container.innerHTML = alerts.map((a) => `
-    <div class="alert-item ${a.triggered ? 'triggered' : ''} ${!a.enabled ? 'disabled' : ''}">
-      <div class="alert-header">
-        <strong>${a.symbol}</strong>
-        <span class="alert-type badge ${a.type === 'above' ? 'above' : 'below'}">
-          ${a.type === 'above' ? '↑' : '↓'} ${a.targetPrice}
-        </span>
-      </div>
-      <div class="alert-details">
-        <span class="current-price">${a.currentPrice ? a.currentPrice.toFixed(2) : 'N/A'}</span>
-        ${a.distance !== null ? `<span class="distance ${a.distance > 0 ? 'positive' : 'negative'}">${a.distance.toFixed(1)}%</span>` : ''}
-      </div>
-      <div class="alert-actions">
-        <label class="checkbox-inline">
-          <input type="checkbox" ${a.enabled ? 'checked' : ''} onchange="updatePriceAlert(${a.id}, {enabled: this.checked})">
-          ${t('recurrence.enabled') || 'Ativa'}
-        </label>
-        <button type="button" onclick="deletePriceAlert(${a.id})" class="btn-small danger">${t('common.delete') || 'Deletar'}</button>
-      </div>
-    </div>
-  `).join('');
-}
-
-// Modal de novo alerta
-function openPriceAlertModal() {
-  const modal = document.getElementById('priceAlertModal');
-  if (!modal) {
-    console.warn('priceAlertModal not found');
-    return;
-  }
-  modal.classList.remove('hidden');
-  document.getElementById('paSymbol').value = '';
-  document.getElementById('paType').value = 'above';
-  document.getElementById('paPrice').value = '';
-  document.getElementById('paSymbol').focus();
-}
-
-function closePriceAlertModal() {
-  const modal = document.getElementById('priceAlertModal');
-  if (modal) modal.classList.add('hidden');
-}
-
-async function savePriceAlert() {
-  const symbol = document.getElementById('paSymbol').value.toUpperCase().trim();
-  const type = document.getElementById('paType').value;
-  const price = parseFloat(document.getElementById('paPrice').value);
-  const currency = state.settings.baseCurrency || 'EUR';
-  
-  if (!symbol || !type || !price || price <= 0) {
-    notify(t('alerts.fillAllFields') || 'Preencha todos os campos corretamente.', 'error');
-    return;
-  }
-  
-  const success = await createPriceAlert(symbol, type, price, currency);
-  if (success) {
-    notify(t('alerts.created') || 'Alerta criado.', 'success');
-    closePriceAlertModal();
-    await renderPriceAlerts();
-  }
-}
-
-// Verificar preços e disparar alertas
-async function checkPriceAlerts() {
-  if (state.priceAlerts.length === 0) return;
-  
-  const enabledAlerts = state.priceAlerts.filter(a => a.enabled && !a.triggered);
-  if (enabledAlerts.length === 0) return;
-  
-  for (const alert of enabledAlerts) {
-    try {
-      const currentPrice = await fetchAssetPrice(alert.symbol);
-      if (currentPrice === null) continue;
-      
-      const targetReached = alert.type === 'above' 
-        ? currentPrice >= alert.targetPrice 
-        : currentPrice <= alert.targetPrice;
-      
-      if (targetReached) {
-        await triggerPriceAlert(alert, currentPrice);
-      }
-    } catch (err) {
-      console.warn(`Erro ao verificar alerta ${alert.symbol}:`, err);
-    }
-  }
-}
-
-// Disparar notificação quando alerta é atingido
-async function triggerPriceAlert(alert, currentPrice) {
-  const typeLabel = alert.type === 'above' 
-    ? t('alerts.typeAbove') || 'Acima de' 
-    : t('alerts.typeBelow') || 'Abaixo de';
-  
-  const title = `🎯 ${alert.symbol}`;
-  const message = `${typeLabel} ${alert.targetPrice} | Atual: ${currentPrice.toFixed(2)}`;
-  
-  // In-app notification
-  notify(message, 'success');
-  
-  // Browser notification
-  if ('Notification' in window && Notification.permission === 'granted') {
-    new Notification(title, {
-      body: message,
-      icon: 'icon-192.png',
-      badge: 'icon-192.png',
-      tag: `alert-${alert.id}`,
-      requireInteraction: false
-    });
-  }
-  
-  // Marcar como disparado (evita múltiplas notificações)
-  alert.triggered = true;
-  await put('priceAlerts', alert);
-  
-  // Adicionar notificação ao histórico
-  await addNotification({
-    type: 'price_alert',
-    title: title,
-    message: message,
-    data: { alertId: alert.id, symbol: alert.symbol, price: currentPrice }
-  });
-}
-
-// Buscar preço atual de um ativo
-async function fetchAssetPrice(symbol) {
-  try {
-    // Verificar se existe em quotes (dados já carregados)
-    const quote = state.quotes.find(q => q.symbol === symbol);
-    if (quote) return quote.price;
-    
-    // Tentar Finnhub API
-    const apiKey = state.settings.apiKeys?.finnhub;
-    if (apiKey) {
-      const url = `https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${apiKey}`;
-      const response = await fetch(url);
-      if (response.ok) {
-        const data = await response.json();
-        return data.c || null; // c = current price
-      }
-    }
-    
-    // Tentar Twelve Data API
-    const apiTwelve = state.settings.apiKeys?.twelve;
-    if (apiTwelve) {
-      const url = `https://api.twelvedata.com/quote?symbol=${symbol}&apikey=${apiTwelve}`;
-      const response = await fetch(url);
-      if (response.ok) {
-        const data = await response.json();
-        return data.price ? parseFloat(data.price) : null;
-      }
-    }
-    
-    // Tentar brapi.dev (ações brasileiras)
-    const apiBrapi = state.settings.apiKeys?.brapi;
-    if (apiBrapi && (symbol.includes('3') || symbol.includes('4') || symbol.includes('11'))) {
-      const url = `https://brapi.dev/api/quote/${symbol}?token=${apiBrapi}`;
-      const response = await fetch(url);
-      if (response.ok) {
-        const data = await response.json();
-        if (data.results && data.results[0]) {
-          return data.results[0].regularMarketPrice || null;
-        }
-      }
-    }
-    
-    return null;
-  } catch (err) {
-    console.error(`Erro ao buscar preço de ${symbol}:`, err);
-    return null;
-  }
-}
-
-// Iniciar verificação automática
-function startPriceAlertChecker() {
-  if (window.priceAlertCheckInterval) return; // Já está rodando
-  
-  // Primeira verificação imediatamente
-  checkPriceAlerts().catch(e => console.warn('Erro na verificação de alertas:', e));
-  
-  // Verificação a cada 5 minutos (300000 ms)
-  window.priceAlertCheckInterval = setInterval(() => {
-    checkPriceAlerts().catch(e => console.warn('Erro na verificação de alertas:', e));
-  }, 300000);
-  
-  console.log('✓ Verificador de alertas iniciado (5 min)');
-}
-
-// Parar verificação automática
-function stopPriceAlertChecker() {
-  if (window.priceAlertCheckInterval) {
-    clearInterval(window.priceAlertCheckInterval);
-    window.priceAlertCheckInterval = null;
-    console.log('✗ Verificador de alertas parado');
-  }
-}
-
-// Resetar alertas disparados para revalidação
-async function resetPriceAlerts() {
-  for (const alert of state.priceAlerts) {
-    if (alert.triggered) {
-      alert.triggered = false;
-      await put('priceAlerts', alert);
-    }
-  }
-  console.log('✓ Alertas resetados');
 }
 
 /* ========== Fase 16: Tarefa 3 - Tabela Fiscal Internacional (12 Países) ========== */
@@ -13683,10 +13403,6 @@ function bindEvents() {
   on('btnB3Import', 'click', openB3Import);
   on('btnDivFetch', 'click', () => fetchAutoDividends(false));
   on('btnDivAdd', 'click', () => openDividendModal());
-  // Fase 16 — Alertas de Preço
-  on('btnPriceAlertAdd', 'click', () => openPriceAlertModal());
-  on('btnPriceAlertSave', 'click', () => savePriceAlert());
-  on('btnPriceAlertCancel', 'click', () => closePriceAlertModal());
   API_KEYS.forEach((k) => on(k, 'input', (e) => { e.target.dataset.dirty = '1'; }));
   on('cashGrain', 'change', (e) => { state.ui.cashGrain = e.target.value; renderCashflow(); });
   on('billKind', 'change', (e) => { state.ui.billKind = e.target.value; renderBills(); });
@@ -14324,8 +14040,6 @@ async function init() {
   applyTheme();
   try {
     bindEvents();
-    // Fase 16 — Iniciar verificador de alertas
-    // startPriceAlertChecker(); // DESABILITADO - Feature de alerta de preço removida
     // Fase 6 — Verificar alertas de orçamento
     await checkBudgetAlerts();
     requestNotificationPermission().catch(() => {});
