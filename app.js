@@ -5152,13 +5152,13 @@ function assetTotals(type, date) {
   return { gross, debt };
 }
 
-function applyLang() {
+async function applyLang() {
   document.documentElement.lang = state.settings.lang;
   document.querySelectorAll('[data-i18n]').forEach((el) => { el.textContent = t(el.dataset.i18n); });
   renderLangButtons();
   renderSubTabs();
   renderThemeOptions();
-  renderAll();
+  await renderAll();
 }
 function renderLangButtons() {
   const wrap = document.getElementById('langButtons');
@@ -5249,16 +5249,21 @@ async function deleteNotification(id) {
   renderNotificationsPanel();
 }
 
-function renderAll() {
+async function renderAll() {
   const etapas = [
     ['dashboard', renderDashboard], ['contas', renderAccounts], ['saldos', renderBalances],
     ['transações', renderTransactions], ['recorrências', renderRecurrences], ['orçamentos', renderBudgets], ['câmbio', renderFx],
     ['portfólio', renderPortfolio], ['gráfico', renderNAV], ['fluxo', renderCashflow], ['títulos', renderBills], ['investimentos', renderInvestments], ['notícias', () => { if (state.ui.tab === 'news') renderNews(); }], ['calculadora', renderCalculator], ['configurações', renderSettings],
     ['notificações', renderNotificationsBadge], ['fase13', renderPortfolioComparison]
   ];
-  etapas.forEach(([nome, fn]) => {
-    try { fn(); } catch (e) { console.error('Falha ao renderizar ' + nome + ':', e); }
-  });
+  for (const [nome, fn] of etapas) {
+    try { 
+      const result = fn();
+      if (result instanceof Promise) await result;
+    } catch (e) { 
+      console.error('Falha ao renderizar ' + nome + ':', e); 
+    }
+  }
 }
 
 function renderDashboard() {
@@ -10465,7 +10470,7 @@ async function updateEverything() {
 }
 
 /* ---------- Tela da carteira de investimentos ---------- */
-function renderInvestments() {
+async function renderInvestments() {
   const base = state.settings.baseCurrency;
   const hoje = todayISO();
 
@@ -10550,6 +10555,7 @@ function renderInvestments() {
   renderAllocation();
   renderWatchlist();
   renderCompare();
+  await renderPriceAlerts();
 }
 
 /* Quanto desta posição foi aplicado SEM sair do saldo da conta vinculada.
@@ -12085,7 +12091,7 @@ function bindEvents() {
     if (!btn) return;
     state.settings.lang = btn.dataset.lang;
     await put('settings', { key: 'lang', value: btn.dataset.lang });
-    applyLang();
+    await applyLang();
   });
   on('themeSelect', 'change', async (e) => {
     state.settings.theme = e.target.value;
