@@ -976,6 +976,195 @@ body.sec-open { overflow: hidden; }
   background: #ef4444;
 }
 
+/* ===== Fase 13 — Você x Mercado (Performance Comparison) ===== */
+.performance-section {
+  margin-bottom: 24px;
+}
+
+.performance-section h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--text);
+}
+
+.performance-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.perf-card {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.perf-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.perf-label {
+  font-size: 14px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.perf-value {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.perf-value.positive {
+  color: var(--positive);
+}
+
+.perf-value.negative {
+  color: var(--negative);
+}
+
+.perf-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+}
+
+.detail-row span {
+  color: var(--muted);
+}
+
+.detail-row strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.detail-row strong.positive {
+  color: var(--positive);
+}
+
+.detail-row strong.negative {
+  color: var(--negative);
+}
+
+.benchmark-comparison {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.benchmark-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  transition: all 0.2s ease;
+}
+
+.benchmark-row:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.benchmark-name {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.benchmark-icon {
+  font-size: 16px;
+}
+
+.benchmark-return {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.return-value {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.return-value.positive {
+  color: var(--positive);
+}
+
+.badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.badge-win {
+  background: color-mix(in srgb, var(--positive) 20%, var(--surface));
+  color: var(--positive);
+  border: 1px solid var(--positive);
+}
+
+.badge-loss {
+  background: color-mix(in srgb, var(--negative) 20%, var(--surface));
+  color: var(--negative);
+  border: 1px solid var(--negative);
+}
+
+.ranking-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ranking-item {
+  display: grid;
+  grid-template-columns: 50px 1fr 100px;
+  align-items: center;
+  gap: 12px;
+  background: var(--surface);
+  border: 2px solid var(--accent);
+  border-radius: 8px;
+  padding: 12px 16px;
+}
+
+.ranking-position {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--accent);
+  text-align: center;
+}
+
+.ranking-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.ranking-return {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--positive);
+  text-align: right;
+}
+
 .budget-info {
   display: flex;
   justify-content: space-between;
