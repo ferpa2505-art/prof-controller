@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#1a1a2e">
   <title>ProF Controller</title>
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="styles.css?v=38">
+  <link rel="stylesheet" href="styles.css?v=40">
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 </head>
 <body>
@@ -385,6 +385,13 @@
       </div>
 
       <div class="panel-header panel-header-spaced">
+        <h2 data-i18n="alerts.title">Alertas de Preço</h2>
+        <button id="btnPriceAlertAdd" class="primary-btn" data-i18n="alerts.add">+ Novo Alerta</button>
+      </div>
+      <p id="priceAlertsEmpty" class="empty-state hidden"></p>
+      <div id="priceAlertsContainer" class="alerts-list"></div>
+
+      <div class="panel-header panel-header-spaced">
         <h2 data-i18n="alloc.title">Metas e aporte inteligente</h2>
       </div>
       <p class="hint" data-i18n="alloc.intro"></p>
@@ -514,8 +521,34 @@
       <div id="modalBody"></div>
     </div>
   </div>
+
+  <div id="priceAlertModal" class="modal hidden" role="dialog" aria-labelledby="paTitle">
+    <div class="modal-content">
+      <h2 id="paTitle" data-i18n="alerts.add">+ Novo Alerta de Preço</h2>
+      <div class="form-group">
+        <label for="paSymbol" data-i18n="alerts.symbol">Ativo (ex: PETR4, BTC)</label>
+        <input id="paSymbol" type="text" placeholder="PETR4" maxlength="20">
+      </div>
+      <div class="form-group">
+        <label for="paType" data-i18n="alerts.type">Tipo</label>
+        <select id="paType">
+          <option value="above" data-i18n="alerts.typeAbove">Acima de</option>
+          <option value="below" data-i18n="alerts.typeBelow">Abaixo de</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="paPrice" data-i18n="alerts.price">Preço-alvo</label>
+        <input id="paPrice" type="number" placeholder="100.50" min="0" step="0.01">
+      </div>
+      <div class="modal-actions">
+        <button id="btnPriceAlertCancel" class="secondary-btn" type="button" data-i18n="common.cancel">Cancelar</button>
+        <button id="btnPriceAlertSave" class="primary-btn" type="button" data-i18n="common.save">Salvar</button>
+      </div>
+    </div>
+  </div>
+
   <div id="toast" class="toast hidden"></div>
   <div id="secOverlay" class="sec-overlay hidden" role="dialog" aria-modal="true"></div>
-  <script src="app.js?v=38"></script>
+  <script src="app.js?v=40"></script>
 </body>
 </html>
