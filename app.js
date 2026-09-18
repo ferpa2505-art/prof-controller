@@ -5978,10 +5978,10 @@ function renderFx() {
     let arrowClass = '';
     if (prevVal !== null) {
       if (rate > prevVal) {
-        arrow = '📈';
+        arrow = '↗';
         arrowClass = 'amount-in';
       } else if (rate < prevVal) {
-        arrow = '📉';
+        arrow = '↘';
         arrowClass = 'amount-out';
       } else {
         arrow = '→';

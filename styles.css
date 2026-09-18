@@ -1334,11 +1334,12 @@ body.sec-open { overflow: hidden; }
   font-size: 13px; font-weight: 500; color: var(--text);
 }
 /* Setas de câmbio mais visíveis */
-.amount-in, .amount-out {
-  font-size: 20px; font-weight: bold; margin-left: 8px;
+.amount-in, .amount-out, .amount-neutral {
+  font-size: 24px; font-weight: bold; margin-left: 8px; display: inline-block;
 }
 .amount-in { color: var(--positive); }
 .amount-out { color: var(--negative); }
+.amount-neutral { color: var(--muted); }
 
 /* ===== Expandable Actions Toggle ===== */
 .actions-toggle-btn {
