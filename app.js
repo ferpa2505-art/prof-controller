@@ -11072,12 +11072,14 @@ async function renderInvestments() {
     if (vazio) { vazio.textContent = t('inv.empty'); vazio.classList.remove('hidden'); }
   } else {
     if (vazio) vazio.classList.add('hidden');
+    if (!state.ui.investmentsExpanded) state.ui.investmentsExpanded = new Set();
     tbody.innerHTML = state.positions.map((pos) => {
       const r = positionReturn(pos, hoje);
       const st = positionStateAt(pos, hoje);
       const cot = positionQuoteAt(pos, hoje);
       const conta = accountById(pos.accountId);
       const classe = r.profit > 0.004 ? 'amount-in' : (r.profit < -0.004 ? 'amount-out' : 'amount-neutral');
+      const isExpanded = state.ui.investmentsExpanded.has(pos.id);
       return `<tr>
         <td>${colorDot(pos.color)}${escapeHtml(pos.name)}${pos.ticker ? ` <span class="tag">${escapeHtml(pos.ticker)}</span>` : ''}</td>
         <td>${pos.assetType ? t('inv.ty.' + pos.assetType) : '—'}</td>
@@ -11088,11 +11090,14 @@ async function renderInvestments() {
         <td><strong>${fmtMoney(r.value, pos.currency)}</strong></td>
         <td class="${classe}">${fmtMoney(r.profit, pos.currency)} · ${r.pct.toFixed(1)}%</td>
         <td>
-          <button class="secondary-btn" onclick="openPositionChart('${pos.id}')">${t('mkt.chart')}</button>
-          <button class="secondary-btn" onclick="openMoveModal('${pos.id}')">${t('inv.move')}</button>
-          <button class="secondary-btn" onclick="openQuotesModal('${pos.id}')">${t('inv.quotes')}</button>
-          <button class="secondary-btn" onclick="openPositionModal('${pos.id}')">${t('modal.edit')}</button>
-          <button class="secondary-btn" onclick="deletePosition('${pos.id}')">${t('modal.delete')}</button>
+          <button class="actions-toggle-btn" onclick="toggleInvestmentActions('${pos.id}')" title="${t('accounts.actions')}">${isExpanded ? '−' : '+'}</button>
+          <div class="actions-row ${isExpanded ? '' : 'hidden'}">
+            <button class="secondary-btn" onclick="openPositionChart('${pos.id}')">${t('mkt.chart')}</button>
+            <button class="secondary-btn" onclick="openMoveModal('${pos.id}')">${t('inv.move')}</button>
+            <button class="secondary-btn" onclick="openQuotesModal('${pos.id}')">${t('inv.quotes')}</button>
+            <button class="secondary-btn" onclick="openPositionModal('${pos.id}')">${t('modal.edit')}</button>
+            <button class="secondary-btn" onclick="deletePosition('${pos.id}')">${t('modal.delete')}</button>
+          </div>
         </td>
       </tr>`;
     }).join('');
@@ -11200,6 +11205,26 @@ async function fixDuplication(positionId) {
 
   await renderAll();
   showToast(t('inv.dupFixed'));
+}
+
+function toggleInvestmentActions(positionId) {
+  if (!state.ui.investmentsExpanded) state.ui.investmentsExpanded = new Set();
+  if (state.ui.investmentsExpanded.has(positionId)) {
+    state.ui.investmentsExpanded.delete(positionId);
+  } else {
+    state.ui.investmentsExpanded.add(positionId);
+  }
+  const row = document.querySelector(`button[onclick="toggleInvestmentActions('${positionId}')"]`);
+  if (row) {
+    const parent = row.closest('td');
+    if (parent) {
+      parent.querySelector('.actions-toggle-btn').textContent = state.ui.investmentsExpanded.has(positionId) ? '−' : '+';
+      const actionsRow = parent.querySelector('.actions-row');
+      if (actionsRow) {
+        actionsRow.classList.toggle('hidden');
+      }
+    }
+  }
 }
 
 function openPositionModal(id, prefill) {
