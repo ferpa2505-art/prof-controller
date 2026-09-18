@@ -10810,7 +10810,7 @@ function openDividendModal(id) {
     <label>${t('inv.quantity')} <span class="hint">(${t('div.optional')})</span></label>
     <input id="dvQty" type="text" inputmode="decimal" value="${d && d.quantity ? d.quantity : ''}">
     <label>${t('div.status')}</label>
-    <select id="dvStatus">${['received', 'toConfirm', 'expected'].map((s) => `<option value="${s}" ${(d ? d.status : 'toConfirm') === s ? 'selected' : ''}>${divStatusLabel(s)}</option>`).join('')}</select>
+    <select id="dvStatus">${['toConfirm', 'received', 'expected'].map((s) => `<option value="${s}" ${(d ? d.status : 'toConfirm') === s ? 'selected' : ''}>${divStatusLabel(s)}</option>`).join('')}</select>
     <button class="primary-btn" onclick="saveDividend('${d ? d.id : ''}')">${t('modal.save')}</button>
   `);
 }
