@@ -558,6 +558,19 @@ const I18N = {
     'tax.off': 'Controle de IR desativado.',
     'tax.settingsHint': 'Os cálculos usam o país e a titularidade (física ou jurídica) de cada conta, como sugestão editável. Não substitui seu contador.',
     'tax.soon': 'O módulo completo chega na próxima fase.',
+    'budget.monthlyBudgets': 'Orçamentos mensais',
+    'budget.add': '+ Novo orçamento',
+    'budget.noBudgets': 'Nenhum orçamento definido para este mês.',
+    'budget.category': 'Categoria',
+    'budget.limit': 'Limite mensal',
+    'budget.limitHint': 'Defina um limite de gastos para esta categoria.',
+    'budget.totalBudget': 'Orçamento total',
+    'budget.totalSpent': 'Total gasto',
+    'budget.remaining': 'Disponível',
+    'budget.alerts': 'Alertas',
+    'budget.warning80': 'Orçamento em 80%',
+    'budget.exceeded': 'Orçamento excedido!',
+    'budget.invalidInput': 'Informe categoria e limite válidos.',
     'accounts.holder': 'Titularidade',
     'accounts.holder.individual': 'Pessoa física',
     'accounts.holder.company': 'Pessoa jurídica',
@@ -1584,6 +1597,19 @@ const I18N = {
     'tax.off': 'Tax tracking off.',
     'tax.settingsHint': 'Calculations use each account\'s country and ownership (individual or company) as an editable suggestion. It does not replace your accountant.',
     'tax.soon': 'The full module arrives in the next phase.',
+    'budget.monthlyBudgets': 'Monthly budgets',
+    'budget.add': '+ New budget',
+    'budget.noBudgets': 'No budgets set for this month.',
+    'budget.category': 'Category',
+    'budget.limit': 'Monthly limit',
+    'budget.limitHint': 'Set a spending limit for this category.',
+    'budget.totalBudget': 'Total budget',
+    'budget.totalSpent': 'Total spent',
+    'budget.remaining': 'Available',
+    'budget.alerts': 'Alerts',
+    'budget.warning80': 'Budget at 80%',
+    'budget.exceeded': 'Budget exceeded!',
+    'budget.invalidInput': 'Please enter a valid category and limit.',
     'accounts.holder': 'Held by',
     'accounts.holder.individual': 'Individual',
     'accounts.holder.company': 'Company',
@@ -2609,6 +2635,19 @@ const I18N = {
     'tax.off': 'Control de impuestos desactivado.',
     'tax.settingsHint': 'Los cálculos usan el país y la titularidad (física o jurídica) de cada cuenta como sugerencia editable. No sustituye a tu contador.',
     'tax.soon': 'El módulo completo llega en la próxima fase.',
+    'budget.monthlyBudgets': 'Presupuestos mensuales',
+    'budget.add': '+ Nuevo presupuesto',
+    'budget.noBudgets': 'Sin presupuestos definidos para este mes.',
+    'budget.category': 'Categoría',
+    'budget.limit': 'Límite mensual',
+    'budget.limitHint': 'Establece un límite de gastos para esta categoría.',
+    'budget.totalBudget': 'Presupuesto total',
+    'budget.totalSpent': 'Total gastado',
+    'budget.remaining': 'Disponible',
+    'budget.alerts': 'Alertas',
+    'budget.warning80': 'Presupuesto al 80%',
+    'budget.exceeded': '¡Presupuesto excedido!',
+    'budget.invalidInput': 'Ingresa una categoría y límite válidos.',
     'accounts.holder': 'Titularidad',
     'accounts.holder.individual': 'Persona física',
     'accounts.holder.company': 'Persona jurídica',
@@ -5330,7 +5369,7 @@ async function deleteNotification(id) {
 async function renderAll() {
   const etapas = [
     ['dashboard', renderDashboard], ['contas', renderAccounts], ['saldos', renderBalances],
-    ['transações', renderTransactions], ['recorrências', renderRecurrences], ['orçamentos', renderBudgets], ['câmbio', renderFx],
+    ['transações', renderTransactions], ['recorrências', renderRecurrences], ['orçamentos', renderBudgetDashboard], ['câmbio', renderFx],
     ['portfólio', renderPortfolio], ['gráfico', renderNAV], ['fluxo', renderCashflow], ['títulos', renderBills], ['investimentos', renderInvestments], ['notícias', () => { if (state.ui.tab === 'news') renderNews(); }], ['calculadora', renderCalculator], ['configurações', renderSettings],
     ['notificações', renderNotificationsBadge], ['fase13', renderPortfolioComparison]
   ];
@@ -9135,6 +9174,254 @@ function renderTaxSettings() {
     <p class="hint">${t('tax.soon')}</p>`;
 }
 
+/* ================= FASE 6 — Alertas de Orçamento ================= */
+
+async function createBudget() {
+  const category = document.getElementById('budgetCategory').value;
+  const limit = parseMoney(document.getElementById('budgetLimit').value);
+  
+  if (!category || !limit || limit <= 0) {
+    showToast(t('budget.invalidInput'));
+    return;
+  }
+  
+  const existing = state.budgets.find(b => b.category === category && b.month === getMonthKey());
+  if (existing) {
+    existing.limit = limit;
+    state.budgets = state.budgets.map(b => b.id === existing.id ? existing : b);
+    await put('budgets', existing);
+  } else {
+    const budget = {
+      id: uid(),
+      category,
+      limit,
+      month: getMonthKey(),
+      createdAt: new Date().toISOString(),
+      alerts: [80, 100]
+    };
+    state.budgets.push(budget);
+    await put('budgets', budget);
+  }
+  
+  closeModal();
+  renderBudgets();
+  showToast(t('toast.saved'));
+}
+
+async function deleteBudget(id) {
+  if (!confirm(t('modal.delete') + '?')) return;
+  state.budgets = state.budgets.filter(b => b.id !== id);
+  await del('budgets', id);
+  renderBudgets();
+  showToast(t('toast.deleted'));
+}
+
+function getMonthKey() {
+  const d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+}
+
+function getBudgetStatus(category) {
+  const monthKey = getMonthKey();
+  const budget = state.budgets.find(b => b.category === category && b.month === monthKey);
+  
+  if (!budget) return { spent: 0, limit: 0, percentage: 0, status: 'none' };
+  
+  const spent = state.transactions
+    .filter(tx => tx.category === category && tx.type === 'expense' && 
+                  tx.date >= monthKey + '-01' && tx.date < addMonths(monthKey, 1) + '-01')
+    .reduce((sum, tx) => sum + (tx.value || 0), 0);
+  
+  const percentage = budget.limit > 0 ? (spent / budget.limit) * 100 : 0;
+  let status = 'ok';
+  
+  if (percentage >= 100) status = 'exceeded';
+  else if (percentage >= 80) status = 'warning';
+  
+  return { spent, limit: budget.limit, percentage, status, budget };
+}
+
+function addMonths(monthKey, months) {
+  const [year, month] = monthKey.split('-').map(Number);
+  const d = new Date(year, month - 1 + months, 1);
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+}
+
+async function checkBudgetAlerts() {
+  const monthKey = getMonthKey();
+  const activeBudgets = state.budgets.filter(b => b.month === monthKey);
+  
+  for (const budget of activeBudgets) {
+    const status = getBudgetStatus(budget.category);
+    
+    if (status.percentage >= 100 && !state.notifications.some(n => n.type === 'budget' && n.budgetId === budget.id && n.level === 100)) {
+      const notif = {
+        id: uid(),
+        type: 'budget',
+        budgetId: budget.id,
+        category: budget.category,
+        level: 100,
+        message: `${catLabel(budget.category)}: ${t('budget.exceeded')}`,
+        createdAt: new Date().toISOString(),
+        read: false
+      };
+      state.notifications.push(notif);
+      await put('notifications', notif);
+      
+      triggerBrowserNotification(
+        t('budget.exceeded'),
+        `${catLabel(budget.category)}: ${formatMoney(status.spent)} / ${formatMoney(status.limit)}`
+      );
+    } else if (status.percentage >= 80 && status.percentage < 100 && !state.notifications.some(n => n.type === 'budget' && n.budgetId === budget.id && n.level === 80)) {
+      const notif = {
+        id: uid(),
+        type: 'budget',
+        budgetId: budget.id,
+        category: budget.category,
+        level: 80,
+        message: `${catLabel(budget.category)}: ${t('budget.warning80')}`,
+        createdAt: new Date().toISOString(),
+        read: false
+      };
+      state.notifications.push(notif);
+      await put('notifications', notif);
+      
+      triggerBrowserNotification(
+        t('budget.warning80'),
+        `${catLabel(budget.category)}: ${formatMoney(status.spent)} / ${formatMoney(status.limit)}`
+      );
+    }
+  }
+}
+
+function renderBudgets() {
+  const container = document.getElementById('budgetsContainer');
+  if (!container) return;
+  
+  const monthKey = getMonthKey();
+  const budgets = state.budgets.filter(b => b.month === monthKey);
+  
+  if (budgets.length === 0) {
+    container.innerHTML = `<p class="empty-state">${t('budget.noBudgets')}</p>
+      <button class="primary-btn" onclick="openBudgetModal()">${t('budget.add')}</button>`;
+    return;
+  }
+  
+  container.innerHTML = `
+    <div class="budgets-list">
+      ${budgets.map(b => {
+        const status = getBudgetStatus(b.category);
+        const statusClass = status.status;
+        const statusIcon = status.status === 'exceeded' ? '🔴' : status.status === 'warning' ? '🟡' : '🟢';
+        
+        return `
+          <div class="budget-card budget-${statusClass}">
+            <div class="budget-header">
+              <h4>${catLabel(b.category)}</h4>
+              <span class="status-badge ${statusClass}">${statusIcon} ${status.percentage.toFixed(0)}%</span>
+            </div>
+            <div class="budget-progress">
+              <div class="progress-bar">
+                <div class="progress-fill ${statusClass}" style="width: ${Math.min(status.percentage, 100)}%"></div>
+              </div>
+            </div>
+            <div class="budget-info">
+              <span>${formatMoney(status.spent)} / ${formatMoney(status.limit)}</span>
+              <button class="icon-btn" onclick="deleteBudget('${b.id}')" title="${t('modal.delete')}">🗑️</button>
+            </div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+    <button class="secondary-btn" onclick="openBudgetModal()">${t('budget.add')}</button>
+  `;
+}
+
+function openBudgetModal() {
+  const expenseCategories = EXPENSE_CATEGORIES.map(cat => `
+    <option value="${cat.key}">${catLabel(cat.key)}</option>
+  `).join('');
+  
+  openModal(`
+    <h2>${t('budget.add')}</h2>
+    <label>${t('budget.category')}</label>
+    <select id="budgetCategory">
+      <option value="">${t('common.select')}</option>
+      ${expenseCategories}
+    </select>
+    <label>${t('budget.limit')}</label>
+    <input id="budgetLimit" type="text" inputmode="decimal" placeholder="1000.00">
+    <p class="hint">${t('budget.limitHint')}</p>
+    <button class="primary-btn" onclick="createBudget()">${t('modal.save')}</button>
+  `);
+}
+
+function renderBudgetDashboard() {
+  const section = document.querySelector('[data-tab="budgets"]');
+  if (!section) return;
+  
+  const monthKey = getMonthKey();
+  const budgets = state.budgets.filter(b => b.month === monthKey);
+  
+  const totalBudget = budgets.reduce((sum, b) => sum + b.limit, 0);
+  const totalSpent = budgets.reduce((sum, b) => sum + getBudgetStatus(b.category).spent, 0);
+  
+  const alerts = state.budgets
+    .filter(b => b.month === monthKey)
+    .map(b => {
+      const status = getBudgetStatus(b.category);
+      if (status.status !== 'ok') {
+        return { category: b.category, status, budget: b };
+      }
+      return null;
+    })
+    .filter(Boolean);
+  
+  let html = `
+    <div class="panel-header">
+      <h2>${t('budget.monthlyBudgets')}</h2>
+      <button class="primary-btn" onclick="openBudgetModal()">${t('budget.add')}</button>
+    </div>
+    
+    <div class="cards">
+      <div class="card">
+        <h3>${t('budget.totalBudget')}</h3>
+        <p class="big-number">${formatMoney(totalBudget)}</p>
+      </div>
+      <div class="card">
+        <h3>${t('budget.totalSpent')}</h3>
+        <p class="big-number">${formatMoney(totalSpent)}</p>
+      </div>
+      <div class="card">
+        <h3>${t('budget.remaining')}</h3>
+        <p class="big-number ${totalBudget - totalSpent < 0 ? 'negative' : ''}">${formatMoney(Math.max(totalBudget - totalSpent, 0))}</p>
+      </div>
+    </div>
+  `;
+  
+  if (alerts.length > 0) {
+    html += `
+      <h3>${t('budget.alerts')}</h3>
+      <div class="alerts-section">
+        ${alerts.map(a => {
+          const icon = a.status.status === 'exceeded' ? '🔴' : '🟡';
+          const msg = a.status.status === 'exceeded' ? t('budget.exceeded') : t('budget.warning80');
+          return `
+            <div class="alert-badge alert-${a.status.status}">
+              ${icon} ${catLabel(a.category)}: ${msg}
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
+  }
+  
+  html += `<div id="budgetsContainer"></div>`;
+  
+  section.innerHTML = html;
+  renderBudgets();
+}
+
 function renderUpdateSettings() {
   const box = document.getElementById('updateGroup');
   if (!box) return;
@@ -11471,8 +11758,10 @@ async function saveTx(id) {
   try {
     await generateRecurringInstances();
     await shouldNotify();
+    // Fase 6 — Verificar alertas de orçamento após nova transação
+    await checkBudgetAlerts();
   } catch (e) {
-    console.warn('Falha ao gerar instâncias recorrentes ou notificações:', e);
+    console.warn('Falha ao gerar instâncias recorrentes, notificações ou alertas de orçamento:', e);
   }
 
   closeModal();
@@ -13177,6 +13466,8 @@ async function init() {
     bindEvents();
     // Fase 16 — Iniciar verificador de alertas
     startPriceAlertChecker();
+    // Fase 6 — Verificar alertas de orçamento
+    await checkBudgetAlerts();
     requestNotificationPermission().catch(() => {});
   } catch (e) {
     console.error('Falha ao ligar os eventos da interface:', e);

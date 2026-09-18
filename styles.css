@@ -884,6 +884,137 @@ body.sec-open { overflow: hidden; }
   font-weight: 600;
 }
 
+/* ===== Fase 6 — Alertas de Orçamento ===== */
+.budgets-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.budget-card {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  transition: all 0.3s ease;
+}
+
+.budget-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.budget-card.budget-ok {
+  border-left: 4px solid var(--positive-color);
+}
+
+.budget-card.budget-warning {
+  border-left: 4px solid #f59e0b;
+  background: color-mix(in srgb, #f59e0b 5%, var(--surface));
+}
+
+.budget-card.budget-exceeded {
+  border-left: 4px solid #ef4444;
+  background: color-mix(in srgb, #ef4444 5%, var(--surface));
+}
+
+.budget-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.budget-header h4 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--bg);
+}
+
+.status-badge.ok {
+  color: var(--positive-color);
+}
+
+.status-badge.warning {
+  color: #f59e0b;
+}
+
+.status-badge.exceeded {
+  color: #ef4444;
+}
+
+.budget-progress {
+  margin: 12px 0;
+}
+
+.progress-bar {
+  height: 8px;
+  background: var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--positive-color);
+  transition: width 0.3s ease, background 0.3s ease;
+}
+
+.progress-fill.warning {
+  background: #f59e0b;
+}
+
+.progress-fill.exceeded {
+  background: #ef4444;
+}
+
+.budget-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.budget-info span {
+  font-weight: 500;
+  color: var(--text);
+}
+
+.alerts-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.alert-badge {
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 500;
+  border-left: 4px solid;
+}
+
+.alert-badge.alert-warning {
+  background: color-mix(in srgb, #f59e0b 10%, var(--surface));
+  border-left-color: #f59e0b;
+  color: #f59e0b;
+}
+
+.alert-badge.alert-exceeded {
+  background: color-mix(in srgb, #ef4444 10%, var(--surface));
+  border-left-color: #ef4444;
+  color: #ef4444;
+}
+
 /* ===== Cabeçalho fixo ao rolar a página ===== */
 .app-head { position: sticky; top: 0; z-index: 90; }
 .app-head .topbar, .app-head .tabs, .app-head .subtabs { margin: 0; }
