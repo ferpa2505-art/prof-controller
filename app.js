@@ -84,42 +84,6 @@ const I18N = {
     'tx.clearFilters': 'Limpar filtros',
     'tx.empty': 'Nenhum lançamento neste filtro. Use "Novo lançamento" para começar.',
     'tx.noAccounts': 'Cadastre uma conta antes de registrar lançamentos.',
-    'recurrence.title': 'Recorrências',
-    'recurrence.add': '+ Nova recorrência',
-    'recurrence.frequency': 'Frequência',
-    'recurrence.freq.daily': 'Diária',
-    'recurrence.freq.weekly': 'Semanal',
-    'recurrence.freq.monthly': 'Mensal',
-    'recurrence.freq.annual': 'Anual',
-    'recurrence.endCondition': 'Até quando',
-    'recurrence.endNever': 'Nunca termina',
-    'recurrence.endDate': 'Data final',
-    'recurrence.endCount': 'Número de instâncias',
-    'recurrence.enabled': 'Ativa',
-    'recurrence.nextDate': 'Próximo lançamento',
-    'recurrence.created': 'Recorrência criada.',
-    'alerts.title': 'Alertas de Preço',
-    'alerts.add': '+ Novo Alerta',
-    'alerts.symbol': 'Ativo (ex: PETR4, BTC)',
-    'alerts.type': 'Tipo',
-    'alerts.typeAbove': 'Acima de',
-    'alerts.typeBelow': 'Abaixo de',
-    'alerts.price': 'Preço-alvo',
-    'alerts.noAlerts': 'Nenhum alerta de preço.',
-    'alerts.maxReached': 'Máximo de 3 alertas ativos atingido.',
-    'alerts.duplicateAlert': 'Alerta para este ativo + tipo já existe.',
-    'alerts.invalidPrice': 'Preço deve ser maior que 0.',
-    'alerts.fillAllFields': 'Preencha todos os campos corretamente.',
-    'alerts.created': 'Alerta de preço criado.',
-    'alerts.reached': 'Alerta de preço atingido!',
-    'alerts.checker.running': 'Verificador de alertas iniciado',
-    'notification.priceAlert': 'Alerta de preço',
-    'recurrence.empty': 'Nenhuma recorrência cadastrada.',
-    'notification.title': 'Notificações',
-    'notification.upcoming': 'Lançamento recorrente próximo',
-    'notification.reminder': 'Lembrete de transação pendente',
-    'notification.budgetAlert': 'Alerta de orçamento',
-    'notification.noNew': 'Sem notificações novas.',
     'budget.title': 'Orçamentos',
     'budget.add': '+ Novo orçamento',
     'budget.hint': 'Cada orçamento tem moeda própria e vale todos os meses. O gasto considera apenas despesas na mesma moeda.',
@@ -206,15 +170,6 @@ const I18N = {
     'settings.importJSON': 'Importar backup',
     'settings.importCSV': 'Importar planilha (CSV)',
     'settings.importCSVHint': 'Formato: Data;Conta;Moeda;Saldo (AAAA-MM-DD).',
-    'settings.updates': 'Atualizações',
-    'settings.lastUpdate': 'Última atualização',
-    'settings.currentVersion': 'Versão atual',
-    'settings.updateAvailable': 'Atualização disponível',
-    'settings.noUpdates': 'Seu app está atualizado',
-    'settings.checkingUpdates': 'Verificando atualizações...',
-    'settings.updateNow': 'Atualizar Agora',
-    'toast.updated': 'Atualizado com sucesso',
-    'toast.updateFailed': 'Erro ao atualizar',
     'toast.saved': 'Salvo com sucesso.',
     'toast.deleted': 'Excluído.',
     'toast.invalidValue': 'Informe um valor válido (ex.: 620.000,00).',
@@ -463,24 +418,6 @@ const I18N = {
     'tax.lossCarry': 'Saldo a compensar',
     'tax.lossSeed': 'Prejuízo anterior ao app',
     'tax.lossHint': 'Preencha "prejuízo anterior ao app" se você já tinha prejuízos a compensar antes de começar a usar o ProF Controller.',
-    'tax.intTitle': 'Alíquotas Fiscais Internacionais',
-    'tax.country': 'País/Região:',
-    'tax.type': 'Tipo:',
-    'tax.personal': 'Pessoa Física',
-    'tax.corporate': 'Pessoa Jurídica',
-    'tax.estimatedIncome': 'Renda Estimada:',
-    'tax.estimatedTax': 'Imposto Estimado',
-    'tax.effectiveRate': 'Taxa Efetiva',
-    'tax.marginalRate': 'Alíquota Marginal',
-    'tax.nextIncome': 'Próxima faixa',
-    'tax.netIncome': 'Renda Líquida',
-    'tax.afterTax': 'Após imposto',
-    'tax.taxBrackets': 'Faixas de Imposição',
-    'tax.income': 'Renda',
-    'tax.rate': 'Alíquota',
-    'tax.taxOnBracket': 'Imposto nesta faixa',
-    'tax.cumulative': 'Acumulado',
-    'tax.comparison': 'Comparação entre Países',
     'tax.declaration': 'Resumo para a declaração de {y}',
     'tax.declarationHint': 'Posição e custo em 31/12, para a ficha de bens e direitos. Os proventos aparecem separados por tipo.',
     'tax.costBefore': 'Custo em 31/12/{y}',
@@ -559,19 +496,6 @@ const I18N = {
     'tax.off': 'Controle de IR desativado.',
     'tax.settingsHint': 'Os cálculos usam o país e a titularidade (física ou jurídica) de cada conta, como sugestão editável. Não substitui seu contador.',
     'tax.soon': 'O módulo completo chega na próxima fase.',
-    'budget.monthlyBudgets': 'Orçamentos mensais',
-    'budget.add': '+ Novo orçamento',
-    'budget.noBudgets': 'Nenhum orçamento definido para este mês.',
-    'budget.category': 'Categoria',
-    'budget.limit': 'Limite mensal',
-    'budget.limitHint': 'Defina um limite de gastos para esta categoria.',
-    'budget.totalBudget': 'Orçamento total',
-    'budget.totalSpent': 'Total gasto',
-    'budget.remaining': 'Disponível',
-    'budget.alerts': 'Alertas',
-    'budget.warning80': 'Orçamento em 80%',
-    'budget.exceeded': 'Orçamento excedido!',
-    'budget.invalidInput': 'Informe categoria e limite válidos.',
     'accounts.holder': 'Titularidade',
     'accounts.holder.individual': 'Pessoa física',
     'accounts.holder.company': 'Pessoa jurídica',
@@ -898,7 +822,6 @@ const I18N = {
     'help.fx': 'Taxas de câmbio usadas para somar valores em moedas diferentes. Busque as taxas do dia com um clique ou cadastre manualmente.',
     'help.portfolio': 'Bens como imóveis e veículos, com valor de avaliação e dívidas ligadas a eles (financiamentos). Entram no patrimônio total.',
     'help.transactions': 'Dinheiro que já entrou ou saiu: receitas, despesas e transferências entre contas. Cada lançamento atualiza o saldo da conta.',
-    'help.recurrences': 'Configure lançamentos automáticos que se repetem em intervalos regulares. O app cria as instâncias automaticamente e você gerencia (pausar, editar ou deletar).',
     'help.bills': 'Contas futuras a pagar e valores a receber, inclusive parcelados ou recorrentes. Ao quitar, o app gera o lançamento na conta.',
     'help.news': 'Manchetes sobre os ativos da sua carteira, da watchlist e do mercado. Clique para ler no site original. Atualiza ao abrir o app e a cada 2 horas.',
     'help.settings': 'Moeda base, chaves das fontes de cotação e notícias, backup e importação de dados.',
@@ -1070,44 +993,7 @@ const I18N = {
     'cmp.max': 'Máximo',
     'cmp.min': 'Mínimo',
     'cmp.benchFlows': 'Aportes usados nos índices',
-    'cmp.flowsSum': 'Soma dos selecionados',
-    'phase13.yourPerformance': 'Sua Performance',
-    'phase13.returnRate': 'Retorno anual',
-    'phase13.gainLoss': 'Ganho/Perda',
-    'phase13.benchmarks': 'Comparação com Benchmarks',
-    'phase13.ranking': 'Ranking de Performance',
-    'phase13.outperformed': 'Superou',
-    'phase13.underperformed': 'Abaixo',
-    'dashboard.initial': 'Saldo Inicial',
-    'dashboard.final': 'Saldo Final',
-    'phase14.newsHub': 'Hub de Notícias',
-    'phase14.noNews': 'Nenhuma notícia disponível',
-    'phase14.source': 'Fonte',
-    'phase14.date': 'Data',
-    'phase14.category': 'Categoria',
-    'phase14.categoryMarket': 'Mercado',
-    'phase14.categoryAssets': 'Suas Ações',
-    'phase14.categoryEconomy': 'Economia',
-    'phase14.favorite': 'Favorita',
-    'phase14.archived': 'Arquivada',
-    'phase14.archive': 'Arquivar',
-    'phase14.unarchive': 'Recuperar',
-    'phase14.refresh': 'Atualizar Notícias',
-    'phase14.showArchived': 'Mostrar Arquivadas',
-    'phase15.cloudSync': 'Sincronização na Nuvem',
-    'phase15.googleLogin': 'Conectar com Google',
-    'phase15.googleLogout': 'Desconectar',
-    'phase15.syncStatus': 'Status',
-    'phase15.lastSync': 'Última sincronização',
-    'phase15.autoSync': 'Sincronização automática',
-    'phase15.syncNow': 'Sincronizar agora',
-    'phase15.backupCloud': 'Backup na nuvem',
-    'phase15.restoreCloud': 'Restaurar da nuvem',
-    'phase15.syncEnabled': 'Sincronização ativada',
-    'phase15.syncDisabled': 'Desconectado',
-    'phase15.syncing': 'Sincronizando...',
-    'phase15.syncSuccess': 'Sincronizado com sucesso',
-    'phase15.syncError': 'Erro na sincronização'
+    'cmp.flowsSum': 'Soma dos selecionados'
 
   },
   'en': {
@@ -1161,42 +1047,6 @@ const I18N = {
     'tx.clearFilters': 'Clear filters',
     'tx.empty': 'No entries for this filter. Use "New entry" to start.',
     'tx.noAccounts': 'Create an account before recording entries.',
-    'recurrence.title': 'Recurrences',
-    'recurrence.add': '+ New recurrence',
-    'recurrence.frequency': 'Frequency',
-    'recurrence.freq.daily': 'Daily',
-    'recurrence.freq.weekly': 'Weekly',
-    'recurrence.freq.monthly': 'Monthly',
-    'recurrence.freq.annual': 'Annual',
-    'recurrence.endCondition': 'Until when',
-    'recurrence.endNever': 'Never ends',
-    'recurrence.endDate': 'End date',
-    'recurrence.endCount': 'Number of instances',
-    'recurrence.enabled': 'Active',
-    'recurrence.nextDate': 'Next entry',
-    'recurrence.created': 'Recurrence created.',
-    'alerts.title': 'Price Alerts',
-    'alerts.add': '+ New Alert',
-    'alerts.symbol': 'Asset (ex: PETR4, BTC)',
-    'alerts.type': 'Type',
-    'alerts.typeAbove': 'Above',
-    'alerts.typeBelow': 'Below',
-    'alerts.price': 'Target price',
-    'alerts.noAlerts': 'No price alerts.',
-    'alerts.maxReached': 'Maximum of 3 active alerts reached.',
-    'alerts.duplicateAlert': 'Alert for this asset + type already exists.',
-    'alerts.invalidPrice': 'Price must be greater than 0.',
-    'alerts.fillAllFields': 'Fill all fields correctly.',
-    'alerts.created': 'Price alert created.',
-    'alerts.reached': 'Price alert triggered!',
-    'alerts.checker.running': 'Alert checker started',
-    'notification.priceAlert': 'Price alert',
-    'recurrence.empty': 'No recurrences yet.',
-    'notification.title': 'Notifications',
-    'notification.upcoming': 'Upcoming recurring entry',
-    'notification.reminder': 'Transaction reminder',
-    'notification.budgetAlert': 'Budget alert',
-    'notification.noNew': 'No new notifications.',
     'budget.title': 'Budgets',
     'budget.add': '+ New budget',
     'budget.hint': 'Each budget has its own currency and applies every month. Spending counts only expenses in the same currency.',
@@ -1283,15 +1133,6 @@ const I18N = {
     'settings.importJSON': 'Import backup',
     'settings.importCSV': 'Import spreadsheet (CSV)',
     'settings.importCSVHint': 'Format: Date;Account;Currency;Balance (YYYY-MM-DD).',
-    'settings.updates': 'Updates',
-    'settings.lastUpdate': 'Last update',
-    'settings.currentVersion': 'Current version',
-    'settings.updateAvailable': 'Update available',
-    'settings.noUpdates': 'Your app is up to date',
-    'settings.checkingUpdates': 'Checking for updates...',
-    'settings.updateNow': 'Update Now',
-    'toast.updated': 'Updated successfully',
-    'toast.updateFailed': 'Update failed',
     'toast.saved': 'Saved successfully.',
     'toast.deleted': 'Deleted.',
     'toast.invalidValue': 'Enter a valid amount (e.g. 620,000.00).',
@@ -1540,24 +1381,6 @@ const I18N = {
     'tax.lossCarry': 'Balance to offset',
     'tax.lossSeed': 'Loss from before the app',
     'tax.lossHint': 'Fill in "loss from before the app" if you already had losses to offset before using ProF Controller.',
-    'tax.intTitle': 'International Tax Rates',
-    'tax.country': 'Country/Region:',
-    'tax.type': 'Type:',
-    'tax.personal': 'Individual',
-    'tax.corporate': 'Corporate',
-    'tax.estimatedIncome': 'Estimated Income:',
-    'tax.estimatedTax': 'Estimated Tax',
-    'tax.effectiveRate': 'Effective Rate',
-    'tax.marginalRate': 'Marginal Rate',
-    'tax.nextIncome': 'Next bracket',
-    'tax.netIncome': 'Net Income',
-    'tax.afterTax': 'After tax',
-    'tax.taxBrackets': 'Tax Brackets',
-    'tax.income': 'Income',
-    'tax.rate': 'Rate',
-    'tax.taxOnBracket': 'Tax on this bracket',
-    'tax.cumulative': 'Cumulative',
-    'tax.comparison': 'Country Comparison',
     'tax.declaration': 'Summary for the {y} tax return',
     'tax.declarationHint': 'Holdings and cost on 31 Dec, for the assets section. Income appears split by type.',
     'tax.costBefore': 'Cost on 31/12/{y}',
@@ -1636,19 +1459,6 @@ const I18N = {
     'tax.off': 'Tax tracking off.',
     'tax.settingsHint': 'Calculations use each account\'s country and ownership (individual or company) as an editable suggestion. It does not replace your accountant.',
     'tax.soon': 'The full module arrives in the next phase.',
-    'budget.monthlyBudgets': 'Monthly budgets',
-    'budget.add': '+ New budget',
-    'budget.noBudgets': 'No budgets set for this month.',
-    'budget.category': 'Category',
-    'budget.limit': 'Monthly limit',
-    'budget.limitHint': 'Set a spending limit for this category.',
-    'budget.totalBudget': 'Total budget',
-    'budget.totalSpent': 'Total spent',
-    'budget.remaining': 'Available',
-    'budget.alerts': 'Alerts',
-    'budget.warning80': 'Budget at 80%',
-    'budget.exceeded': 'Budget exceeded!',
-    'budget.invalidInput': 'Please enter a valid category and limit.',
     'accounts.holder': 'Held by',
     'accounts.holder.individual': 'Individual',
     'accounts.holder.company': 'Company',
@@ -1975,7 +1785,6 @@ const I18N = {
     'help.fx': 'Exchange rates used to add up amounts in different currencies. Fetch today\'s rates in one click or add them manually.',
     'help.portfolio': 'Assets such as property and vehicles, with valuation and related debts (loans). They count toward total net worth.',
     'help.transactions': 'Money that has already come in or gone out: income, expenses and transfers. Each entry updates the account balance.',
-    'help.recurrences': 'Set up automatic entries that repeat at regular intervals. The app creates instances automatically, and you manage them (pause, edit or delete).',
     'help.bills': 'Future bills to pay and amounts to receive, including installments or recurring ones. When settled, the app creates the entry.',
     'help.news': 'Headlines about your portfolio, watchlist and the market. Click to read on the original site. Refreshes when you open the app and every 2 hours.',
     'help.settings': 'Base currency, keys for price and news sources, backup and data import.',
@@ -2147,44 +1956,7 @@ const I18N = {
     'cmp.max': 'High',
     'cmp.min': 'Low',
     'cmp.benchFlows': 'Contributions used for indices',
-    'cmp.flowsSum': 'Sum of selected',
-    'phase13.yourPerformance': 'Your Performance',
-    'phase13.returnRate': 'Annual return',
-    'phase13.gainLoss': 'Gain/Loss',
-    'phase13.benchmarks': 'Benchmark Comparison',
-    'phase13.ranking': 'Performance Ranking',
-    'phase13.outperformed': 'Outperformed',
-    'phase13.underperformed': 'Underperformed',
-    'dashboard.initial': 'Initial Balance',
-    'dashboard.final': 'Final Balance',
-    'phase14.newsHub': 'News Hub',
-    'phase14.noNews': 'No news available',
-    'phase14.source': 'Source',
-    'phase14.date': 'Date',
-    'phase14.category': 'Category',
-    'phase14.categoryMarket': 'Market',
-    'phase14.categoryAssets': 'Your Assets',
-    'phase14.categoryEconomy': 'Economy',
-    'phase14.favorite': 'Favorite',
-    'phase14.archived': 'Archived',
-    'phase14.archive': 'Archive',
-    'phase14.unarchive': 'Recover',
-    'phase14.refresh': 'Refresh News',
-    'phase14.showArchived': 'Show Archived',
-    'phase15.cloudSync': 'Cloud Sync',
-    'phase15.googleLogin': 'Sign in with Google',
-    'phase15.googleLogout': 'Sign out',
-    'phase15.syncStatus': 'Status',
-    'phase15.lastSync': 'Last sync',
-    'phase15.autoSync': 'Auto-sync',
-    'phase15.syncNow': 'Sync now',
-    'phase15.backupCloud': 'Cloud backup',
-    'phase15.restoreCloud': 'Restore from cloud',
-    'phase15.syncEnabled': 'Sync enabled',
-    'phase15.syncDisabled': 'Disconnected',
-    'phase15.syncing': 'Syncing...',
-    'phase15.syncSuccess': 'Synced successfully',
-    'phase15.syncError': 'Sync error'
+    'cmp.flowsSum': 'Sum of selected'
   },
   'es': {
     'tabs.dashboard': 'Panel',
@@ -2237,42 +2009,6 @@ const I18N = {
     'tx.clearFilters': 'Limpiar filtros',
     'tx.empty': 'Sin registros para este filtro. Use "Nuevo registro" para empezar.',
     'tx.noAccounts': 'Cree una cuenta antes de registrar movimientos.',
-    'recurrence.title': 'Recurrencias',
-    'recurrence.add': '+ Nueva recurrencia',
-    'recurrence.frequency': 'Frecuencia',
-    'recurrence.freq.daily': 'Diaria',
-    'recurrence.freq.weekly': 'Semanal',
-    'recurrence.freq.monthly': 'Mensual',
-    'recurrence.freq.annual': 'Anual',
-    'recurrence.endCondition': 'Hasta cuándo',
-    'recurrence.endNever': 'Nunca termina',
-    'recurrence.endDate': 'Fecha final',
-    'recurrence.endCount': 'Número de instancias',
-    'recurrence.enabled': 'Activa',
-    'recurrence.nextDate': 'Próximo lanzamiento',
-    'recurrence.created': 'Recurrencia creada.',
-    'alerts.title': 'Alertas de Precio',
-    'alerts.add': '+ Nueva Alerta',
-    'alerts.symbol': 'Activo (ej: PETR4, BTC)',
-    'alerts.type': 'Tipo',
-    'alerts.typeAbove': 'Por encima de',
-    'alerts.typeBelow': 'Por debajo de',
-    'alerts.price': 'Precio objetivo',
-    'alerts.noAlerts': 'Sin alertas de precio.',
-    'alerts.maxReached': 'Máximo de 3 alertas activas alcanzado.',
-    'alerts.duplicateAlert': 'La alerta para este activo + tipo ya existe.',
-    'alerts.invalidPrice': 'El precio debe ser mayor que 0.',
-    'alerts.fillAllFields': 'Rellene todos los campos correctamente.',
-    'alerts.created': 'Alerta de precio creada.',
-    'alerts.reached': '¡Alerta de precio alcanzado!',
-    'alerts.checker.running': 'Verificador de alertas iniciado',
-    'notification.priceAlert': 'Alerta de precio',
-    'recurrence.empty': 'Sin recurrencias registradas.',
-    'notification.title': 'Notificaciones',
-    'notification.upcoming': 'Lanzamiento recurrente próximo',
-    'notification.reminder': 'Recordatorio de transacción',
-    'notification.budgetAlert': 'Alerta de presupuesto',
-    'notification.noNew': 'Sin notificaciones nuevas.',
     'budget.title': 'Presupuestos',
     'budget.add': '+ Nuevo presupuesto',
     'budget.hint': 'Cada presupuesto tiene su moneda y vale todos los meses. El gasto considera solo gastos en la misma moneda.',
@@ -2359,15 +2095,6 @@ const I18N = {
     'settings.importJSON': 'Importar respaldo',
     'settings.importCSV': 'Importar hoja de cálculo (CSV)',
     'settings.importCSVHint': 'Formato: Fecha;Cuenta;Moneda;Saldo (AAAA-MM-DD).',
-    'settings.updates': 'Actualizaciones',
-    'settings.lastUpdate': 'Última actualización',
-    'settings.currentVersion': 'Versión actual',
-    'settings.updateAvailable': 'Actualización disponible',
-    'settings.noUpdates': 'Tu app está actualizada',
-    'settings.checkingUpdates': 'Buscando actualizaciones...',
-    'settings.updateNow': 'Actualizar Ahora',
-    'toast.updated': 'Actualizado correctamente',
-    'toast.updateFailed': 'Error al actualizar',
     'toast.saved': 'Guardado correctamente.',
     'toast.deleted': 'Eliminado.',
     'toast.invalidValue': 'Introduzca un importe válido (ej.: 620.000,00).',
@@ -2616,24 +2343,6 @@ const I18N = {
     'tax.lossCarry': 'Saldo por compensar',
     'tax.lossSeed': 'Pérdida anterior a la app',
     'tax.lossHint': 'Completa "pérdida anterior a la app" si ya tenías pérdidas por compensar antes de usar ProF Controller.',
-    'tax.intTitle': 'Tasas Fiscales Internacionales',
-    'tax.country': 'País/Región:',
-    'tax.type': 'Tipo:',
-    'tax.personal': 'Persona Física',
-    'tax.corporate': 'Persona Jurídica',
-    'tax.estimatedIncome': 'Ingresos Estimados:',
-    'tax.estimatedTax': 'Impuesto Estimado',
-    'tax.effectiveRate': 'Tasa Efectiva',
-    'tax.marginalRate': 'Tasa Marginal',
-    'tax.nextIncome': 'Próximo tramo',
-    'tax.netIncome': 'Ingresos Netos',
-    'tax.afterTax': 'Después del impuesto',
-    'tax.taxBrackets': 'Tramos Fiscales',
-    'tax.income': 'Ingresos',
-    'tax.rate': 'Tasa',
-    'tax.taxOnBracket': 'Impuesto en este tramo',
-    'tax.cumulative': 'Acumulado',
-    'tax.comparison': 'Comparación entre Países',
     'tax.declaration': 'Resumen para la declaración de {y}',
     'tax.declarationHint': 'Posición y costo al 31/12, para el apartado de bienes. Los rendimientos aparecen separados por tipo.',
     'tax.costBefore': 'Costo al 31/12/{y}',
@@ -2712,19 +2421,6 @@ const I18N = {
     'tax.off': 'Control de impuestos desactivado.',
     'tax.settingsHint': 'Los cálculos usan el país y la titularidad (física o jurídica) de cada cuenta como sugerencia editable. No sustituye a tu contador.',
     'tax.soon': 'El módulo completo llega en la próxima fase.',
-    'budget.monthlyBudgets': 'Presupuestos mensuales',
-    'budget.add': '+ Nuevo presupuesto',
-    'budget.noBudgets': 'Sin presupuestos definidos para este mes.',
-    'budget.category': 'Categoría',
-    'budget.limit': 'Límite mensual',
-    'budget.limitHint': 'Establece un límite de gastos para esta categoría.',
-    'budget.totalBudget': 'Presupuesto total',
-    'budget.totalSpent': 'Total gastado',
-    'budget.remaining': 'Disponible',
-    'budget.alerts': 'Alertas',
-    'budget.warning80': 'Presupuesto al 80%',
-    'budget.exceeded': '¡Presupuesto excedido!',
-    'budget.invalidInput': 'Ingresa una categoría y límite válidos.',
     'accounts.holder': 'Titularidad',
     'accounts.holder.individual': 'Persona física',
     'accounts.holder.company': 'Persona jurídica',
@@ -3051,7 +2747,6 @@ const I18N = {
     'help.fx': 'Tipos de cambio usados para sumar importes en monedas distintas. Busca los tipos del día con un clic o regístralos manualmente.',
     'help.portfolio': 'Bienes como inmuebles y vehículos, con su valoración y deudas asociadas (financiaciones). Cuentan en el patrimonio total.',
     'help.transactions': 'Dinero que ya entró o salió: ingresos, gastos y transferencias. Cada movimiento actualiza el saldo de la cuenta.',
-    'help.recurrences': 'Configura movimientos automáticos que se repiten en intervalos regulares. La app crea las instancias automáticamente, y tú las gestionas (pausar, editar o eliminar).',
     'help.bills': 'Cuentas futuras por pagar e importes por cobrar, incluso a plazos o recurrentes. Al liquidar, la app crea el movimiento.',
     'help.news': 'Titulares sobre tu cartera, tu watchlist y el mercado. Haz clic para leer en el sitio original. Se actualiza al abrir la app y cada 2 horas.',
     'help.settings': 'Moneda base, claves de las fuentes de cotización y noticias, copia de seguridad e importación.',
@@ -3223,44 +2918,7 @@ const I18N = {
     'cmp.max': 'Máximo',
     'cmp.min': 'Mínimo',
     'cmp.benchFlows': 'Aportes usados en los índices',
-    'cmp.flowsSum': 'Suma de los seleccionados',
-    'phase13.yourPerformance': 'Tu Desempeño',
-    'phase13.returnRate': 'Retorno anual',
-    'phase13.gainLoss': 'Ganancia/Pérdida',
-    'phase13.benchmarks': 'Comparación con Benchmarks',
-    'phase13.ranking': 'Ranking de Desempeño',
-    'phase13.outperformed': 'Superó',
-    'phase13.underperformed': 'Por debajo',
-    'dashboard.initial': 'Saldo Inicial',
-    'dashboard.final': 'Saldo Final',
-    'phase14.newsHub': 'Hub de Notícias',
-    'phase14.noNews': 'Nenhuma notícia disponível',
-    'phase14.source': 'Fonte',
-    'phase14.date': 'Data',
-    'phase14.category': 'Categoría',
-    'phase14.categoryMarket': 'Mercado',
-    'phase14.categoryAssets': 'Suas Ações',
-    'phase14.categoryEconomy': 'Economia',
-    'phase14.favorite': 'Favorita',
-    'phase14.archived': 'Arquivada',
-    'phase14.archive': 'Arquivar',
-    'phase14.unarchive': 'Recuperar',
-    'phase14.refresh': 'Atualizar Notícias',
-    'phase14.showArchived': 'Mostrar Arquivadas',
-    'phase15.cloudSync': 'Sincronización en la Nube',
-    'phase15.googleLogin': 'Iniciar sesión con Google',
-    'phase15.googleLogout': 'Cerrar sesión',
-    'phase15.syncStatus': 'Estado',
-    'phase15.lastSync': 'Última sincronización',
-    'phase15.autoSync': 'Sincronización automática',
-    'phase15.syncNow': 'Sincronizar ahora',
-    'phase15.backupCloud': 'Copia de seguridad en la nube',
-    'phase15.restoreCloud': 'Restaurar desde la nube',
-    'phase15.syncEnabled': 'Sincronización activada',
-    'phase15.syncDisabled': 'Desconectado',
-    'phase15.syncing': 'Sincronizando...',
-    'phase15.syncSuccess': 'Sincronizado correctamente',
-    'phase15.syncError': 'Error de sincronización'
+    'cmp.flowsSum': 'Suma de los seleccionados'
   }
 };
 
@@ -3337,75 +2995,8 @@ function groupLabel(g) {
 
 /* ---------- Estado e persistência (IndexedDB) ---------- */
 const DB_NAME = 'prof-controller';
-const DB_VERSION = 8; // Fase 16: Alertas de Preço (priceAlerts store)
+const DB_VERSION = 6; // Fase 12: proventos (dividendos, JCP, rendimentos)
 let db = null;
-
-// Reset IndexedDB se versão não corresponder (útil para développement)
-async function resetIndexedDB() {
-  const req = indexedDB.databases();
-  for (const db of await req) {
-    if (db.name === DB_NAME) {
-      indexedDB.deleteDatabase(DB_NAME);
-      console.log('✓ IndexedDB deletado. Recarregue a página para recriar com v' + DB_VERSION);
-      setTimeout(() => location.reload(), 500);
-      return;
-    }
-  }
-  console.log('Banco não encontrado');
-}
-window.resetIndexedDB = resetIndexedDB;
-
-// Força migração para v7: cria stores faltantes sem perder dados
-async function migrateToV7() {
-  return new Promise((resolve, reject) => {
-    const req = indexedDB.open(DB_NAME, DB_VERSION);
-    req.onerror = () => { console.error('Erro ao abrir DB:', req.error); reject(req.error); };
-    req.onsuccess = () => { 
-      const database = req.result;
-      const storesNeeded = ['benchmarks', 'marketEvents', 'portfolioMetrics'];
-      const missing = storesNeeded.filter(s => !database.objectStoreNames.contains(s));
-      if (missing.length === 0) {
-        console.log('✓ Banco já em v7 com todos os stores');
-        resolve(true);
-      } else {
-        database.close();
-        console.log('⚠ Stores faltando:', missing.join(', '));
-        console.log('Incrementando DB_VERSION...');
-        const req2 = indexedDB.open(DB_NAME, DB_VERSION + 1);
-        req2.onupgradeneeded = (e) => { 
-          console.log('✓ Criando stores faltantes...');
-          const d = e.target.result;
-          missing.forEach(name => {
-            if (!d.objectStoreNames.contains(name)) {
-              if (name === 'benchmarks') {
-                const s = d.createObjectStore(name, { keyPath: 'id' });
-                s.createIndex('symbol', 'symbol');
-                s.createIndex('date', 'date');
-                s.createIndex('type', 'type');
-              } else if (name === 'marketEvents') {
-                const s = d.createObjectStore(name, { keyPath: 'id' });
-                s.createIndex('symbol', 'symbol');
-                s.createIndex('date', 'date');
-                s.createIndex('type', 'type');
-                s.createIndex('status', 'status');
-              } else if (name === 'portfolioMetrics') {
-                const s = d.createObjectStore(name, { keyPath: 'id' });
-                s.createIndex('date', 'date');
-              }
-            }
-          });
-        };
-        req2.onsuccess = () => {
-          req2.result.close();
-          console.log('✓ Migração concluída! Recarregue a página.');
-          resolve(true);
-        };
-        req2.onerror = () => reject(req2.error);
-      }
-    };
-  });
-}
-window.migrateToV7 = migrateToV7;
 let state = {
   accounts: [],
   balances: [],
@@ -3420,16 +3011,8 @@ let state = {
   dividends: [],
   assets: [],
   valuations: [],
-  recurrences: [],
-  notifications: [],
-  // Fase 13 — Você x Mercado
-  benchmarks: [],
-  marketEvents: [],
-  portfolioMetrics: [],
-  // Fase 16 — Alertas de Preço
-  priceAlerts: [],
   settings: { lang: 'pt-BR', theme: 'default', baseCurrency: 'EUR' },
-  ui: { txType: 'all', txAccount: 'all', txMonth: '', budgetMonth: '', navView: 'pie', navBreak: 'account', cashGrain: 'monthly',
+  ui: { txType: 'all', txAccount: 'all', txMonth: '', budgetMonth: '', navView: 'pie', navBreak: 'currency', cashGrain: 'monthly',
         billKind: 'all', billStatus: 'open', billFrom: '', billTo: '', tab: 'dashboard', lastSub: {} }
 };
 
@@ -3441,305 +3024,6 @@ const CURRENCIES = [
   { code: 'GBP', symbol: '£', decimals: 2 },
   { code: 'BRL', symbol: 'R$', decimals: 2 }
 ];
-
-/* ========== Fase 13: APIs - BCB e B3 ========== */
-
-// Busca dados do BCB (Banco Central do Brasil)
-async function fetchBCBRate(type) {
-  // type: 'SELIC', 'CDI', 'USDBRL'
-  try {
-    const url = `https://www.bcb.gov.br/api/v1/timedseriesjson/${type}/data`;
-    const response = await fetch(url);
-    if (!response.ok) throw new Error(`BCB API error: ${response.status}`);
-    const data = await response.json();
-    return data;
-  } catch (err) {
-    console.error(`Erro ao buscar ${type} do BCB:`, err);
-    return null;
-  }
-}
-
-// Processa resposta do BCB e retorna último valor
-function parseBCBResponse(data, type) {
-  if (!data || !Array.isArray(data) || data.length === 0) return null;
-  const last = data[data.length - 1];
-  return {
-    symbol: type,
-    date: last.data || todayISO(),
-    value: parseFloat(last.valor) || 0,
-    type: 'rate',
-    source: 'BCB'
-  };
-}
-
-// Salva benchmark no store
-async function saveBenchmark(benchmark) {
-  if (!benchmark) return;
-  benchmark.id = `${benchmark.symbol}-${benchmark.date}`;
-  state.benchmarks.push(benchmark);
-  await put('benchmarks', benchmark);
-}
-
-// Busca e atualiza taxas do BCB (SELIC, CDI, USD/BRL)
-async function updateBCBRates() {
-  console.log('🔄 Atualizando taxas BCB...');
-  const types = ['SELIC', 'CDI', 'USDBRL'];
-  let count = 0;
-
-  for (const type of types) {
-    const data = await fetchBCBRate(type);
-    const benchmark = parseBCBResponse(data, type);
-    if (benchmark) {
-      await saveBenchmark(benchmark);
-      count++;
-      console.log(`✓ ${type}: ${benchmark.value} em ${benchmark.date}`);
-    } else {
-      console.warn(`✗ Falha ao buscar ${type}`);
-    }
-    // Aguarda 500ms entre requisições (respeito ao servidor)
-    await new Promise(resolve => setTimeout(resolve, 500));
-  }
-  console.log(`✓ Atualização BCB concluída: ${count}/${types.length}`);
-  return count === types.length;
-}
-
-// Busca IBOV via Alpha Vantage (fallback se B3 não responder)
-async function fetchIBOV() {
-  try {
-    const apiKey = state.settings.apiAlphaVantage || '';
-    if (!apiKey) {
-      console.warn('⚠ Alpha Vantage key não configurada');
-      return null;
-    }
-    const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=^BVSP&apikey=${apiKey}`;
-    const response = await fetch(url);
-    if (!response.ok) return null;
-    const data = await response.json();
-    
-    if (data['Global Quote'] && data['Global Quote']['05. price']) {
-      return {
-        symbol: 'IBOV',
-        date: todayISO(),
-        value: parseFloat(data['Global Quote']['05. price']),
-        type: 'index',
-        source: 'AlphaVantage'
-      };
-    }
-  } catch (err) {
-    console.error('Erro ao buscar IBOV:', err);
-  }
-  return null;
-}
-
-/* ========== Fase 13: Tarefa 4 - Assistente de IR ========== */
-
-// Calcula IR simplificado (operações comuns BR)
-function calculateSimpleIR(year) {
-  const irTransactions = state.transactions.filter(tx => {
-    const txYear = tx.date.split('-')[0];
-    return txYear === String(year) && (tx.type === 'dividend' || tx.category === 'investimentos');
-  });
-
-  let gainLoss = 0;
-  let dividendIncome = 0;
-  let investmentCost = 0;
-
-  irTransactions.forEach(tx => {
-    if (tx.category === 'investimentos') {
-      gainLoss += (tx.value || 0);
-      if (tx.type === 'expense') investmentCost += Math.abs(tx.value || 0);
-    }
-    if (tx.type === 'dividend' || tx.category === 'dividendos') {
-      dividendIncome += (tx.value || 0);
-    }
-  });
-
-  const netGain = gainLoss;
-  const taxRate = netGain > 0 ? 0.15 : 0; // 15% IR sobre ganho
-  const estimatedTax = netGain > 0 ? netGain * taxRate : 0;
-
-  return {
-    year,
-    gainLoss,
-    dividendIncome,
-    investmentCost,
-    estimatedTax,
-    summary: {
-      'Ganho/Perda em investimentos': gainLoss,
-      'Renda de dividendos': dividendIncome,
-      'Alíquota IR': `${(taxRate * 100).toFixed(0)}%`,
-      'IR estimado': estimatedTax
-    }
-  };
-}
-
-// Abre modal do Assistente de IR
-function openIRAssistant() {
-  const currentYear = new Date().getFullYear();
-  const ir = calculateSimpleIR(currentYear);
-
-  const html = `
-    <h2>Assistente de Imposto de Renda</h2>
-    <div style="background: var(--bg); padding: 16px; border-radius: 8px; margin-top: 16px;">
-      <h3>${currentYear}</h3>
-      <table style="width: 100%; border-collapse: collapse; margin-top: 12px;">
-        <tr>
-          <td style="padding: 8px; border-bottom: 1px solid var(--border);">Ganho/Perda em investimentos</td>
-          <td style="padding: 8px; border-bottom: 1px solid var(--border); text-align: right; font-weight: bold;">
-            ${fmtMoney(ir.gainLoss, 'BRL')}
-          </td>
-        </tr>
-        <tr>
-          <td style="padding: 8px; border-bottom: 1px solid var(--border);">Renda de dividendos</td>
-          <td style="padding: 8px; border-bottom: 1px solid var(--border); text-align: right;">
-            ${fmtMoney(ir.dividendIncome, 'BRL')}
-          </td>
-        </tr>
-        <tr style="background: var(--warning);">
-          <td style="padding: 8px; font-weight: bold;">IR estimado (15%)</td>
-          <td style="padding: 8px; text-align: right; font-weight: bold;">
-            ${fmtMoney(ir.estimatedTax, 'BRL')}
-          </td>
-        </tr>
-      </table>
-      <p style="margin-top: 16px; font-size: 12px; color: var(--muted);">
-        ⚠️ Cálculo simplificado. Consulte contador para declaração oficial.
-      </p>
-    </div>
-  `;
-  
-  showModal(html);
-}
-
-/* ========== Fase 13: Tarefa 5 - Notificações de Eventos ========== */
-
-// Monitora eventos do mercado e cria notificações
-async function checkMarketEvents() {
-  const today = todayISO();
-  const eventsDue = state.marketEvents.filter(e => 
-    e.date <= today && e.status !== 'notified'
-  );
-
-  for (const event of eventsDue) {
-    const title = `📈 ${event.type.toUpperCase()}: ${event.symbol}`;
-    const body = event.description || `Evento: ${event.type}`;
-
-    // Notificação no browser
-    if ('Notification' in window && Notification.permission === 'granted') {
-      new Notification(title, {
-        body,
-        icon: 'icon-192.png',
-        tag: `event-${event.id}`
-      });
-    }
-
-    // Salva como notificação no app
-    const notif = {
-      id: uid(),
-      type: 'marketEvent',
-      title,
-      message: body,
-      eventId: event.id,
-      read: false,
-      createdAt: new Date().toISOString()
-    };
-    state.notifications.push(notif);
-    await put('notifications', notif);
-
-    // Marca evento como notificado
-    event.status = 'notified';
-    await put('marketEvents', event);
-  }
-
-  return eventsDue.length;
-}
-
-// Agenda check de eventos (executar a cada hora)
-async function scheduleEventCheck() {
-  setInterval(async () => {
-    const count = await checkMarketEvents();
-    if (count > 0) console.log(`✓ ${count} eventos notificados`);
-  }, 60 * 60 * 1000); // A cada 1 hora
-}
-
-/* ========== Fase 13: Tarefa 3 - UI Dashboard ========== */
-
-// Renderiza seção "Você x Mercado" no dashboard
-function renderPortfolioComparison() {
-  const container = document.getElementById('youVsMarket');
-  if (!container) return;
-  
-  const totalValue = state.positions.reduce((sum, p) => {
-    const pos = p.quantity * (p.currentPrice || 0);
-    return sum + (pos / (state.settings.baseCurrency === 'BRL' ? 1 : 1));
-  }, 0);
-  
-  const lastIBOV = state.benchmarks.find(b => b.symbol === 'IBOV') || {};
-  const lastCDI = state.benchmarks.find(b => b.symbol === 'CDI') || {};
-  
-  const html = `
-    <div class="comparison-card" style="background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-top: 20px;">
-      <h3>📊 Você x Mercado</h3>
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px;">
-        <div class="metric-box" style="background: var(--bg); padding: 12px; border-radius: 8px;">
-          <p style="font-size: 12px; color: var(--muted); margin: 0 0 4px 0;">Seu Portfólio</p>
-          <p style="font-size: 20px; font-weight: bold; color: var(--text); margin: 0;">
-            ${fmtCompact(totalValue)} ${state.settings.baseCurrency}
-          </p>
-        </div>
-        <div class="metric-box" style="background: var(--bg); padding: 12px; border-radius: 8px;">
-          <p style="font-size: 12px; color: var(--muted); margin: 0 0 4px 0;">IBOV</p>
-          <p style="font-size: 20px; font-weight: bold; color: var(--text); margin: 0;">
-            ${lastIBOV.value ? lastIBOV.value.toFixed(2) : '—'}
-          </p>
-        </div>
-        <div class="metric-box" style="background: var(--bg); padding: 12px; border-radius: 8px;">
-          <p style="font-size: 12px; color: var(--muted); margin: 0 0 4px 0;">CDI (ref-livre)</p>
-          <p style="font-size: 20px; font-weight: bold; color: var(--text); margin: 0;">
-            ${lastCDI.value ? (lastCDI.value * 100).toFixed(2) + '%' : '—'}
-          </p>
-        </div>
-        <div class="metric-box" style="background: var(--bg); padding: 12px; border-radius: 8px;">
-          <p style="font-size: 12px; color: var(--muted); margin: 0 0 4px 0;">Datas atualizadas</p>
-          <p style="font-size: 12px; color: var(--text); margin: 0;">
-            IBOV: ${lastIBOV.date || '—'}<br>
-            CDI: ${lastCDI.date || '—'}
-          </p>
-        </div>
-      </div>
-    </div>
-  `;
-  container.innerHTML = html;
-}
-
-// Handler UI para atualizar taxas BCB
-async function handleUpdateBCB() {
-  const btn = document.getElementById('btnUpdateBCB');
-  const result = document.getElementById('bcbUpdateResult');
-  
-  if (!btn || !result) return;
-  
-  btn.disabled = true;
-  btn.textContent = '⏳ Atualizando...';
-  result.innerHTML = '';
-  
-  try {
-    const bcbSuccess = await updateBCBRates();
-    const ibov = await fetchIBOV();
-    if (ibov) {
-      await saveBenchmark(ibov);
-    }
-    result.innerHTML = (bcbSuccess && ibov)
-      ? '<p style="color: green;">✓ Taxas e IBOV atualizados!</p>'
-      : '<p style="color: orange;">⚠ Algumas taxas não foram obtidas</p>';
-  } catch (err) {
-    console.error('Erro ao atualizar:', err);
-    result.innerHTML = '<p style="color: red;">✗ Erro: ' + err.message + '</p>';
-  } finally {
-    btn.disabled = false;
-    btn.textContent = 'Atualizar taxas BCB';
-  }
-}
 
 function openDB() {
   return new Promise((resolve, reject) => {
@@ -3809,44 +3093,6 @@ function openDB() {
         const s = d.createObjectStore('dividends', { keyPath: 'id' });
         s.createIndex('positionId', 'positionId');
       }
-      // Fase 16 — Notificações e Recorrência de Transações
-      if (!d.objectStoreNames.contains('recurrences')) {
-        const s = d.createObjectStore('recurrences', { keyPath: 'id' });
-        s.createIndex('accountId', 'accountId');
-        s.createIndex('enabled', 'enabled');
-        s.createIndex('nextDate', 'nextDate');
-      }
-      if (!d.objectStoreNames.contains('notifications')) {
-        const s = d.createObjectStore('notifications', { keyPath: 'id' });
-        s.createIndex('type', 'type');
-        s.createIndex('read', 'read');
-        s.createIndex('date', 'date');
-      }
-      // Fase 13 — Você x Mercado (Smart Portfolio Insights)
-      if (!d.objectStoreNames.contains('benchmarks')) {
-        const s = d.createObjectStore('benchmarks', { keyPath: 'id' });
-        s.createIndex('symbol', 'symbol');
-        s.createIndex('date', 'date');
-        s.createIndex('type', 'type');
-      }
-      if (!d.objectStoreNames.contains('marketEvents')) {
-        const s = d.createObjectStore('marketEvents', { keyPath: 'id' });
-        s.createIndex('symbol', 'symbol');
-        s.createIndex('date', 'date');
-        s.createIndex('type', 'type');
-        s.createIndex('status', 'status');
-      }
-      if (!d.objectStoreNames.contains('portfolioMetrics')) {
-        const s = d.createObjectStore('portfolioMetrics', { keyPath: 'id' });
-        s.createIndex('date', 'date');
-      }
-      // Fase 16 — Alertas de Preço
-      if (!d.objectStoreNames.contains('priceAlerts')) {
-        const s = d.createObjectStore('priceAlerts', { keyPath: 'id' });
-        s.createIndex('symbol', 'symbol');
-        s.createIndex('enabled', 'enabled');
-        s.createIndex('type', 'type');
-      }
       // Preparado para fases futuras (patrimônio)
       ['fx', 'receitas', 'lancamentos', 'imoveis', 'veiculos', 'posicoes', 'nav', 'orcamentos']
         .forEach((name) => { if (!d.objectStoreNames.contains(name)) d.createObjectStore(name, { keyPath: 'id' }); });
@@ -3890,12 +3136,6 @@ async function loadAll() {
   state.assets = await getAll('assets');
   state.valuations = await getAll('valuations');
   state.dividends = await getAll('dividends');
-  state.recurrences = await getAll('recurrences');
-  state.notifications = await getAll('notifications');
-  // Fase 13 — Você x Mercado
-  state.benchmarks = await getAll('benchmarks');
-  state.marketEvents = await getAll('marketEvents');
-  state.portfolioMetrics = await getAll('portfolioMetrics');
   const brutos = (await rawGetAll('settings')).filter((r) => !String(r.key).startsWith(HIST_PREFIX) && r.key !== SEC_KEY);
   for (const r of brutos) {
     const s = await decodeRecord(r);
@@ -4263,7 +3503,8 @@ function showLockScreen() {
       <button id="lockForgot" class="link-btn" type="button">${t('sec.forgot')}</button>
     `);
     const campo = document.getElementById('lockPin');
-    let contagem = null;
+    const tamanho = Number(VAULT.meta.pinLen) || 0;
+    let contagem = null, tentandoAuto = false;
     const atualizarEspera = () => {
       const ms = lockWaitMs();
       const go = document.getElementById('lockGo');
@@ -4280,8 +3521,10 @@ function showLockScreen() {
     const iniciarEspera = () => { if (!contagem && lockWaitMs() > 0) { atualizarEspera(); contagem = setInterval(atualizarEspera, 1000); } };
     iniciarEspera();
 
-    const abrir = async (dek) => {
+    const abrir = async (dek, pin) => {
       await openVault(dek);
+      // Senha criada antes desta versão: guarda o tamanho para o desbloqueio automático
+      if (pin && !VAULT.meta.pinLen) await saveSecurityMeta({ ...VAULT.meta, pinLen: pin.length, fails: 0, lockUntil: 0 });
       await clearFailures();
       closeOverlay();
       resolve();
@@ -4293,7 +3536,7 @@ function showLockScreen() {
       const btn = document.getElementById('lockGo');
       busy(btn, true);
       try {
-        await abrir(await unlockWithPin(pin));
+        await abrir(await unlockWithPin(pin), pin);
       } catch (e) {
         busy(btn, false);
         await registerFailure();
@@ -4305,7 +3548,14 @@ function showLockScreen() {
     };
     document.getElementById('lockGo').addEventListener('click', tentarPin);
     campo.addEventListener('keydown', (e) => { if (e.key === 'Enter') tentarPin(); });
-    campo.addEventListener('input', () => { if (campo.value.length === PIN_MIN) tentarPin(); });
+    // Com o tamanho da senha conhecido, o app abre sozinho ao completar os dígitos
+    campo.addEventListener('input', () => {
+      if (!tamanho || tentandoAuto || lockWaitMs() > 0) return;
+      if (campo.value.length === tamanho) {
+        tentandoAuto = true;
+        Promise.resolve(tentarPin()).finally(() => { tentandoAuto = false; });
+      }
+    });
     if (temBio) {
       document.getElementById('lockBio').addEventListener('click', async () => {
         const btn = document.getElementById('lockBio');
@@ -4388,8 +3638,9 @@ function runPinAndRecoverySetup({ dek, modo }) {
         const btn = document.getElementById('pinGo');
         busy(btn, true, t('sec.protecting'));
         const pinWrap = await wrapForPin(dek, p1.value);
+        pinWrap.len = p1.value.length;
         if (modo === 'change') {
-          await saveSecurityMeta({ ...VAULT.meta, pin: pinWrap, fails: 0, lockUntil: 0 });
+          await saveSecurityMeta({ ...VAULT.meta, pin: pinWrap, pinLen: p1.value.length, fails: 0, lockUntil: 0 });
           closeOverlay(); resolve(); return;
         }
         passoCodigo(pinWrap);
@@ -4432,9 +3683,10 @@ function runPinAndRecoverySetup({ dek, modo }) {
           if (modo === 'setup') {
             if (document.getElementById('codeBackup').checked) await exportJSONPlain(true);
             await activateEncryption(dek, pinWrap, recWrap, (f) => setMsg('codeMsg', t('sec.encrypting').replace('{p}', Math.round(f * 100)), ''));
+            await saveSecurityMeta({ ...VAULT.meta, pinLen: pinWrap.len });
           } else {
             // reset: senha e código novos; a biometria antiga deixa de valer por segurança
-            await saveSecurityMeta({ ...VAULT.meta, pin: pinWrap, rec: recWrap, bio: null, fails: 0, lockUntil: 0 });
+            await saveSecurityMeta({ ...VAULT.meta, pin: pinWrap, pinLen: pinWrap.len, rec: recWrap, bio: null, fails: 0, lockUntil: 0 });
           }
           closeOverlay();
           resolve();
@@ -4710,209 +3962,6 @@ function uid() { return Date.now().toString(36) + Math.random().toString(36).sli
 function todayISO() { return new Date().toISOString().slice(0, 10); }
 function currentMonth() { return todayISO().slice(0, 7); }
 function monthOf(date) { return String(date || '').slice(0, 7); }
-function addDays(date, days) {
-  const d = new Date(date);
-  d.setDate(d.getDate() + days);
-  return d.toISOString().slice(0, 10);
-}
-function frequencyDays(freq) {
-  switch (freq) {
-    case 'daily': return 1;
-    case 'weekly': return 7;
-    case 'monthly': return 30;
-    case 'annual': return 365;
-    default: return 7;
-  }
-}
-
-async function generateRecurringInstances() {
-  const today = todayISO();
-  const toGenerate = [];
-
-  for (const rec of state.recurrences) {
-    if (!rec.enabled) continue;
-
-    // Verificar se deve gerar
-    const shouldGenerate = rec.nextDate && rec.nextDate <= today;
-    if (!shouldGenerate) continue;
-
-    // Verificar se terminou
-    if (rec.endCondition === 'date' && today > rec.endDate) {
-      rec.enabled = false;
-      await put('recurrences', rec);
-      continue;
-    }
-    if (rec.endCondition === 'count' && rec.generatedCount >= rec.endCount) {
-      rec.enabled = false;
-      await put('recurrences', rec);
-      continue;
-    }
-
-    // Criar a transação
-    const trn = {
-      id: uid(),
-      type: rec.type,
-      date: rec.nextDate,
-      accountId: rec.accountId,
-      description: rec.description,
-      value: rec.value
-    };
-
-    if (rec.type === 'transfer') {
-      trn.toAccountId = rec.toAccountId;
-      trn.toValue = rec.toValue;
-      trn.category = null;
-    } else {
-      trn.category = rec.category;
-    }
-
-    state.transactions.push(trn);
-    await put('transactions', trn);
-    toGenerate.push(trn.id);
-
-    // Atualizar recorrência
-    rec.generatedCount = (rec.generatedCount || 0) + 1;
-    rec.nextDate = addDays(rec.nextDate, frequencyDays(rec.frequency));
-
-    // Marcar como desabilitada se terminou
-    if (rec.endCondition === 'count' && rec.generatedCount >= rec.endCount) {
-      rec.enabled = false;
-    }
-
-    await put('recurrences', rec);
-  }
-
-  return toGenerate;
-}
-
-async function shouldNotify() {
-  const today = todayISO();
-  const tomorrow = addDays(today, 1);
-  const newNotifications = [];
-
-  // Notificar sobre recorrências próximas (próximas 3 dias)
-  for (const rec of state.recurrences) {
-    if (!rec.enabled) continue;
-    if (!rec.nextDate) continue;
-
-    // Verificar se é nos próximos 3 dias e se ainda não há notificação
-    const daysUntil = (new Date(rec.nextDate) - new Date(today)) / (1000 * 60 * 60 * 24);
-    if (daysUntil > 0 && daysUntil <= 3) {
-      const exists = state.notifications.some((n) => 
-        n.type === 'recurring_upcoming' && n.relatedId === rec.id && n.date === rec.nextDate
-      );
-
-      if (!exists) {
-        const notif = {
-          id: uid(),
-          type: 'recurring_upcoming',
-          title: t('recurrence.title'),
-          message: `${rec.description || '(sem descrição)'} — ${fmtMoney(rec.value, accountById(rec.accountId)?.currency || '')}`,
-          relatedId: rec.id,
-          date: rec.nextDate,
-          read: false,
-          createdAt: new Date().toISOString()
-        };
-        newNotifications.push(notif);
-        state.notifications.push(notif);
-        await put('notifications', notif);
-      }
-    }
-  }
-
-  return newNotifications;
-}
-
-// Envia notificação nativa do navegador via Service Worker
-async function sendBrowserNotification(title, options = {}) {
-  // Verifica se o navegador suporta notificações
-  if (!('Notification' in window)) {
-    console.log('Navegador não suporta notificações');
-    return;
-  }
-
-  // Se não tem permissão, não tenta enviar
-  if (Notification.permission !== 'granted') {
-    console.log('Sem permissão para notificações');
-    return;
-  }
-
-  // Se há Service Worker, envia via SW (funciona quando app está minimizado)
-  if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
-    navigator.serviceWorker.controller.postMessage({
-      action: 'notify',
-      title,
-      options: {
-        icon: '/icon-192.png',
-        badge: '/icon-192.png',
-        ...options
-      }
-    });
-    return;
-  }
-
-  // Fallback: notificação simples do navegador (só funciona quando app está aberto)
-  try {
-    new Notification(title, {
-      icon: '/icon-192.png',
-      badge: '/icon-192.png',
-      ...options
-    });
-  } catch (e) {
-    console.error('Erro ao enviar notificação:', e);
-  }
-}
-
-// Pede permissão para notificações
-async function requestNotificationPermission() {
-  if (!('Notification' in window)) {
-    console.log('Navegador não suporta notificações');
-    return false;
-  }
-
-  if (Notification.permission === 'granted') {
-    return true;
-  }
-
-  if (Notification.permission !== 'denied') {
-    try {
-      const permission = await Notification.requestPermission();
-      return permission === 'granted';
-    } catch (e) {
-      console.error('Erro ao pedir permissão:', e);
-      return false;
-    }
-  }
-
-  return false;
-}
-
-// Registra Service Worker e handlers de notificação
-async function registerServiceWorker() {
-  if (!('serviceWorker' in navigator)) {
-    console.log('Service Workers não suportados');
-    return;
-  }
-
-  try {
-    const registration = await navigator.serviceWorker.register('./service-worker.js', { scope: './' });
-    console.log('Service Worker registrado:', registration);
-
-    // Handler para mensagens do SW
-    navigator.serviceWorker.addEventListener('message', (e) => {
-      if (e.data && e.data.action === 'notificationclick') {
-        if (e.data.url) {
-          window.location.href = e.data.url;
-        }
-      }
-    });
-
-    return registration;
-  } catch (e) {
-    console.error('Erro ao registrar Service Worker:', e);
-  }
-}
-
 function t(key) {
   const lang = state.settings.lang || 'pt-BR';
   return (I18N[lang] && I18N[lang][key]) || I18N['pt-BR'][key] || key;
@@ -5382,13 +4431,13 @@ function assetTotals(type, date) {
   return { gross, debt };
 }
 
-async function applyLang() {
+function applyLang() {
   document.documentElement.lang = state.settings.lang;
   document.querySelectorAll('[data-i18n]').forEach((el) => { el.textContent = t(el.dataset.i18n); });
   renderLangButtons();
   renderSubTabs();
   renderThemeOptions();
-  await renderAll();
+  renderAll();
 }
 function renderLangButtons() {
   const wrap = document.getElementById('langButtons');
@@ -5410,90 +4459,15 @@ function applyTheme() {
 /* Cada seção é renderizada isoladamente. Se uma falhar — por elemento ausente
    num HTML defasado, por exemplo — as outras continuam aparecendo, em vez de a
    tela inteira ficar em branco. */
-function renderNotificationsBadge() {
-  const unread = state.notifications.filter((n) => !n.read).length;
-  const badge = document.getElementById('notifBadge');
-  if (unread > 0) {
-    badge.textContent = unread;
-    badge.classList.remove('hidden');
-  } else {
-    badge.classList.add('hidden');
-  }
-}
-
-function toggleNotificationsPanel(e) {
-  e.stopPropagation();
-  const panel = document.getElementById('notificationsPanel');
-  const gear = document.getElementById('gearMenu');
-  gear.classList.add('hidden');
-  panel.classList.toggle('hidden');
-  if (!panel.classList.contains('hidden')) {
-    renderNotificationsPanel();
-  }
-}
-
-function closeNotificationsPanel() {
-  document.getElementById('notificationsPanel').classList.add('hidden');
-}
-
-function renderNotificationsPanel() {
-  const list = document.getElementById('notificationsList');
-  const empty = document.getElementById('notifEmpty');
-  const unread = state.notifications.filter((n) => !n.read);
-
-  if (unread.length === 0) {
-    list.innerHTML = '';
-    empty.classList.remove('hidden');
-  } else {
-    empty.classList.add('hidden');
-    list.innerHTML = unread.map((n) => `
-      <div class="notification-item" style="padding: 12px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: flex-start;">
-        <div style="flex: 1;">
-          <p style="font-weight: 600; margin-bottom: 4px; font-size: 13px;">${escapeHtml(n.title)}</p>
-          <p style="color: var(--muted); font-size: 13px; margin-bottom: 4px;">${escapeHtml(n.message)}</p>
-          <p style="color: var(--muted); font-size: 11px;">${n.date}</p>
-        </div>
-        <div style="display: flex; gap: 8px; margin-left: 8px;">
-          <button class="icon-btn" title="Marcar como lida" onclick="markNotificationRead('${n.id}')">✓</button>
-          <button class="icon-btn" title="Deletar" onclick="deleteNotification('${n.id}')">✕</button>
-        </div>
-      </div>
-    `).join('');
-  }
-}
-
-async function markNotificationRead(id) {
-  const notif = state.notifications.find((n) => n.id === id);
-  if (notif) {
-    notif.read = true;
-    await put('notifications', notif);
-    renderNotificationsBadge();
-    renderNotificationsPanel();
-  }
-}
-
-async function deleteNotification(id) {
-  state.notifications = state.notifications.filter((n) => n.id !== id);
-  await del('notifications', id);
-  renderNotificationsBadge();
-  renderNotificationsPanel();
-}
-
-async function renderAll() {
+function renderAll() {
   const etapas = [
     ['dashboard', renderDashboard], ['contas', renderAccounts], ['saldos', renderBalances],
-    ['transações', renderTransactions], ['recorrências', renderRecurrences], ['orçamentos', renderBudgetDashboard], ['câmbio', renderFx],
-    ['portfólio', renderPortfolio], ['gráfico', renderNAV], ['fluxo', renderCashflow], ['títulos', renderBills], ['investimentos', renderInvestments], ['notícias', renderNewsHub], ['calculadora', renderCalculator], ['configurações', renderSettings],
-    ['notificações', renderNotificationsBadge], ['fase13', renderPerformanceComparison]
+    ['transações', renderTransactions], ['orçamentos', renderBudgets], ['câmbio', renderFx],
+    ['portfólio', renderPortfolio], ['gráfico', renderNAV], ['fluxo', renderCashflow], ['títulos', renderBills], ['investimentos', renderInvestments], ['notícias', () => { if (state.ui.tab === 'news') renderNews(); }], ['calculadora', renderCalculator], ['configurações', renderSettings]
   ];
-  for (const [nome, fn] of etapas) {
-    try { 
-      const result = fn();
-      if (result instanceof Promise) await result;
-    } catch (e) { 
-      console.error('Falha ao renderizar ' + nome + ':', e); 
-    }
-  }
+  etapas.forEach(([nome, fn]) => {
+    try { fn(); } catch (e) { console.error('Falha ao renderizar ' + nome + ':', e); }
+  });
 }
 
 function renderDashboard() {
@@ -5703,174 +4677,6 @@ function renderTransactions() {
   tbody.innerHTML = linhas.join('');
 }
 
-function renderRecurrences() {
-  const list = document.getElementById('recurrencesList');
-  const empty = document.getElementById('recurrencesEmpty');
-  
-  if (!list) return; // Não há elemento de recorrências
-
-  if (!state.recurrences.length) {
-    list.innerHTML = '';
-    empty.classList.remove('hidden');
-    return;
-  }
-  empty.classList.add('hidden');
-
-  list.innerHTML = state.recurrences.map((rec) => {
-    const acc = accountById(rec.accountId);
-    const freq = t(`recurrence.freq.${rec.frequency}`);
-    const status = rec.enabled ? '✓ Ativa' : '⊗ Pausada';
-    const freqDays = frequencyDays(rec.frequency);
-    const nextDate = rec.nextDate || addDays(todayISO(), freqDays);
-    
-    return `
-      <div class="recurrence-item" style="padding: 12px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 8px; background: var(--surface);">
-        <div style="display: flex; justify-content: space-between; align-items: start;">
-          <div style="flex: 1;">
-            <p style="font-weight: 600; margin-bottom: 4px;">${escapeHtml(rec.description || '(sem descrição)')}</p>
-            <p style="font-size: 12px; color: var(--muted); margin-bottom: 4px;">
-              ${freq} · Próximo: ${nextDate}
-              ${rec.endCondition === 'date' ? ` · Até ${rec.endDate}` : ''}
-              ${rec.endCondition === 'count' ? ` · ${rec.generatedCount}/${rec.endCount}` : ''}
-            </p>
-            <p style="font-size: 13px; color: var(--text); margin-bottom: 4px;">
-              ${fmtMoney(rec.value, acc?.currency || '')} ${acc?.name || '(conta não encontrada)'}
-            </p>
-            <p style="font-size: 11px; color: var(--muted);">${status}</p>
-          </div>
-          <div style="display: flex; gap: 8px; margin-left: 8px;">
-            <button class="icon-btn" title="Editar" onclick="openRecurrenceModal('${rec.id}')">✎</button>
-            <button class="icon-btn" title="${rec.enabled ? 'Pausar' : 'Ativar'}" onclick="toggleRecurrence('${rec.id}')">${rec.enabled ? '⏸' : '▶'}</button>
-            <button class="icon-btn" title="Deletar" onclick="deleteRecurrence('${rec.id}')">✕</button>
-          </div>
-        </div>
-      </div>
-    `;
-  }).join('');
-}
-
-function openRecurrenceModal(id) {
-  const rec = id ? state.recurrences.find((r) => r.id === id) : null;
-  openModal(`
-    <h2>${rec ? t('modal.edit') : t('recurrence.add')}</h2>
-    <label>${t('tx.description')}</label>
-    <input id="recDescription" value="${rec ? escapeHtml(rec.description || '') : ''}">
-
-    <label>${t('tx.account')}</label>
-    <select id="recAccount">
-      ${state.accounts.map((a) => `<option value="${a.id}" ${rec && rec.accountId === a.id ? 'selected' : ''}>${escapeHtml(a.name)} (${a.currency})</option>`).join('')}
-    </select>
-
-    <label>${t('tx.value')}</label>
-    <input id="recValue" type="text" inputmode="decimal" value="${rec ? rec.value : ''}">
-
-    <label>${t('recurrence.frequency')}</label>
-    <select id="recFrequency">
-      <option value="daily" ${rec?.frequency === 'daily' ? 'selected' : ''}>${t('recurrence.freq.daily')}</option>
-      <option value="weekly" ${rec?.frequency === 'weekly' ? 'selected' : ''}>${t('recurrence.freq.weekly')}</option>
-      <option value="monthly" ${rec?.frequency === 'monthly' ? 'selected' : ''}>${t('recurrence.freq.monthly')}</option>
-      <option value="annual" ${rec?.frequency === 'annual' ? 'selected' : ''}>${t('recurrence.freq.annual')}</option>
-    </select>
-
-    <label>${t('recurrence.endCondition')}</label>
-    <select id="recEndCondition" onchange="onRecEndConditionChange()">
-      <option value="never" ${rec?.endCondition === 'never' ? 'selected' : ''}>${t('recurrence.endNever')}</option>
-      <option value="date" ${rec?.endCondition === 'date' ? 'selected' : ''}>${t('recurrence.endDate')}</option>
-      <option value="count" ${rec?.endCondition === 'count' ? 'selected' : ''}>${t('recurrence.endCount')}</option>
-    </select>
-
-    <div id="recEndDateWrap" class="hidden">
-      <label>${t('recurrence.endDate')}</label>
-      <input id="recEndDate" type="date" value="${rec?.endDate || ''}">
-    </div>
-
-    <div id="recEndCountWrap" class="hidden">
-      <label>${t('recurrence.endCount')}</label>
-      <input id="recEndCount" type="number" min="1" value="${rec?.endCount || 12}">
-    </div>
-
-    <button class="primary-btn" onclick="saveRecurrence('${rec ? rec.id : ''}')">${t('modal.save')}</button>
-  `);
-  onRecEndConditionChange();
-}
-
-function onRecEndConditionChange() {
-  const condition = document.getElementById('recEndCondition').value;
-  document.getElementById('recEndDateWrap').classList.toggle('hidden', condition !== 'date');
-  document.getElementById('recEndCountWrap').classList.toggle('hidden', condition !== 'count');
-}
-
-async function saveRecurrence(id) {
-  const description = document.getElementById('recDescription').value.trim();
-  const accountId = document.getElementById('recAccount').value;
-  const value = parseMoney(document.getElementById('recValue').value);
-  const frequency = document.getElementById('recFrequency').value;
-  const endCondition = document.getElementById('recEndCondition').value;
-  const endDate = endCondition === 'date' ? document.getElementById('recEndDate').value : null;
-  const endCount = endCondition === 'count' ? parseInt(document.getElementById('recEndCount').value, 10) : null;
-
-  if (!accountId || value == null || value <= 0 || !frequency) {
-    showToast(t('toast.invalidValue'));
-    return;
-  }
-
-  const rec = {
-    id: id || uid(),
-    description,
-    accountId,
-    value,
-    frequency,
-    endCondition,
-    endDate,
-    endCount,
-    generatedCount: id ? (state.recurrences.find((r) => r.id === id)?.generatedCount || 0) : 0,
-    enabled: true,
-    createdAt: id ? (state.recurrences.find((r) => r.id === id)?.createdAt || new Date().toISOString()) : new Date().toISOString()
-  };
-
-  // Restaurar campos que existiam antes
-  if (id) {
-    const existing = state.recurrences.find((r) => r.id === id);
-    if (existing) {
-      rec.baseTransactionId = existing.baseTransactionId;
-      rec.type = existing.type;
-      rec.category = existing.category;
-      rec.toAccountId = existing.toAccountId;
-      rec.toValue = existing.toValue;
-      rec.nextDate = existing.nextDate;
-      state.recurrences = state.recurrences.map((r) => (r.id === id ? rec : r));
-    }
-  } else {
-    rec.baseTransactionId = null;
-    rec.type = 'expense';
-    rec.category = null;
-    rec.nextDate = addDays(todayISO(), frequencyDays(frequency));
-    state.recurrences.push(rec);
-  }
-
-  await put('recurrences', rec);
-  closeModal();
-  await renderAll();
-  showToast(t('recurrence.created'));
-}
-
-async function toggleRecurrence(id) {
-  const rec = state.recurrences.find((r) => r.id === id);
-  if (rec) {
-    rec.enabled = !rec.enabled;
-    await put('recurrences', rec);
-    renderRecurrences();
-  }
-}
-
-async function deleteRecurrence(id) {
-  if (!confirm(t('modal.delete') + '?')) return;
-  state.recurrences = state.recurrences.filter((r) => r.id !== id);
-  await del('recurrences', id);
-  renderRecurrences();
-  showToast(t('toast.deleted'));
-}
-
 /* ---------- Orçamentos ---------- */
 function budgetSpent(budget, month) {
   return state.transactions.reduce((sum, trn) => {
@@ -5947,53 +4753,23 @@ function renderFx() {
   const empty = document.getElementById('fxEmpty');
   tbody.innerHTML = '';
 
-  const allRows = state.fx.slice().sort((a, b) =>
+  const rows = state.fx.slice().sort((a, b) =>
     b.date.localeCompare(a.date) || a.currency.localeCompare(b.currency));
 
-  if (!allRows.length) {
+  if (!rows.length) {
     empty.textContent = t('fx.empty');
     empty.classList.remove('hidden');
     return;
   }
   empty.classList.add('hidden');
 
-  // Group by currency and get only last 2 dates per currency
-  const byMoney = {};
-  allRows.forEach((r) => {
-    if (!byMoney[r.currency]) byMoney[r.currency] = [];
-    if (byMoney[r.currency].length < 2) byMoney[r.currency].push(r);
-  });
-
-  const rows = [];
-  Object.values(byMoney).forEach((arr) => rows.push(...arr));
-  rows.sort((a, b) => b.date.localeCompare(a.date) || a.currency.localeCompare(b.currency));
-
   rows.forEach((r) => {
     const rate = Number(r.rate);
-    // Find previous rate for this currency to compare
-    const prevRate = allRows.find((x) => x.currency === r.currency && x.date < r.date);
-    const prevVal = prevRate ? Number(prevRate.rate) : null;
-    
-    let arrow = '';
-    let arrowClass = '';
-    if (prevVal !== null) {
-      if (rate > prevVal) {
-        arrow = '↗';
-        arrowClass = 'amount-in';
-      } else if (rate < prevVal) {
-        arrow = '↘';
-        arrowClass = 'amount-out';
-      } else {
-        arrow = '→';
-        arrowClass = 'amount-neutral';
-      }
-    }
-
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>${r.date}</td>
       <td>${r.currency}</td>
-      <td><strong>${fmtRate(rate)} ${r.currency}</strong> <span class="${arrowClass}">${arrow}</span></td>
+      <td><strong>${fmtRate(rate)} ${r.currency}</strong></td>
       <td>1 ${r.currency} = ${rate ? fmtRate(1 / rate) : '—'} ${FX_PIVOT}</td>
       <td>
         <button class="secondary-btn" onclick="openFxModal('${r.id}')">${t('modal.edit')}</button>
@@ -6049,7 +4825,7 @@ async function saveFx(id) {
   }
   await put('fx', record);
   closeModal();
-  await renderAll();
+  renderAll();
   showToast(t('toast.saved'));
 }
 
@@ -6057,7 +4833,7 @@ async function deleteFx(id) {
   if (!confirm(t('modal.delete') + '?')) return;
   state.fx = state.fx.filter((x) => x.id !== id);
   await del('fx', id);
-  await renderAll();
+  renderAll();
   showToast(t('toast.deleted'));
 }
 
@@ -6134,7 +4910,7 @@ async function fetchRates() {
       await put('fx', record);
       n++;
     }
-    await renderAll();
+    renderAll();
     showToast(t('fx.fetched').replace('{n}', n));
   } finally {
     btn.disabled = false;
@@ -6276,7 +5052,7 @@ async function deleteAsset(id) {
   state.valuations = state.valuations.filter((v) => v.assetId !== id);
   state.assets = state.assets.filter((x) => x.id !== id);
   await del('assets', id);
-  await renderAll();
+  renderAll();
   showToast(t('toast.deleted'));
 }
 
@@ -6328,7 +5104,7 @@ async function saveValuation(assetId) {
   if (existing) state.valuations = state.valuations.map((v) => (v.id === record.id ? record : v));
   else state.valuations.push(record);
   await put('valuations', record);
-  await renderAll();
+  renderAll();
   openValuationsModal(assetId); // mantém o modal aberto com a lista atualizada
   showToast(t('toast.saved'));
 }
@@ -6336,7 +5112,7 @@ async function saveValuation(assetId) {
 async function deleteValuation(id, assetId) {
   state.valuations = state.valuations.filter((v) => v.id !== id);
   await del('valuations', id);
-  await renderAll();
+  renderAll();
   openValuationsModal(assetId);
   showToast(t('toast.deleted'));
 }
@@ -6644,7 +5420,7 @@ async function deleteSchedule(id) {
   state.payments = state.payments.filter((x) => x.scheduleId !== id);
   state.schedules = state.schedules.filter((x) => x.id !== id);
   await del('schedules', id);
-  await renderAll();
+  renderAll();
   showToast(t('toast.deleted'));
 }
 
@@ -6709,7 +5485,7 @@ async function undoPayment(scheduleId, seq) {
   }
   state.payments = state.payments.filter((x) => x.id !== pg.id);
   await del('payments', pg.id);
-  await renderAll();
+  renderAll();
   showToast(t('toast.deleted'));
 }
 
@@ -7117,7 +5893,8 @@ async function lookupAsset(prefill) {
   info.classList.remove('hidden');
   info.innerHTML = `<span class="hint">${t('mkt.searching')}</span>`;
   try {
-    const forcar = (document.getElementById('poLookupKind') || {}).value || undefined;
+    const escolhido = document.querySelector('input[name="poKind"]:checked');
+    const forcar = (escolhido && escolhido.value) || undefined;
     const a = await resolveAsset(q, forcar);
     const set = (id, v) => { const el = document.getElementById(id); if (el && v != null && v !== '') el.value = v; };
     set('poName', a.name);
@@ -8332,14 +7109,9 @@ async function toggleCmpBench(chave) {
    Atualiza ao abrir o app e a cada 2 horas com ele aberto. */
 
 const NEWS_KEY = HIST_PREFIX + 'news';
-const NEWS_TTL = 30 * 60 * 1000;
+const NEWS_TTL = 2 * 60 * 60 * 1000;
 const NEWS_MAX = 200;
 const NEWS_MARKET_TOPICS = ['Ibovespa', 'dólar hoje', 'Selic Copom', 'S&P 500'];
-const NEWS_DEFAULTS = [
-  { title: 'Ibovespa fecha em alta', source: 'InfoMoney', url: 'https://www.infomoney.com.br', date: new Date().toISOString(), tags: ['market'], lang: 'pt' },
-  { title: 'Dólar sobe 1,2% nesta quinta', source: 'G1', url: 'https://g1.globo.com', date: new Date().toISOString(), tags: ['market'], lang: 'pt' },
-  { title: 'S&P 500 volta a fechar no verde', source: 'Yahoo Finance', url: 'https://finance.yahoo.com', date: new Date().toISOString(), tags: ['market'], lang: 'en' }
-];
 let newsCache = null;         // { fetchedAt, items }
 let newsLoading = false;
 let newsTimer = null;
@@ -8367,16 +7139,21 @@ function shortCompany(nome) {
 }
 
 async function fetchGoogleNews(query, tag) {
-  // Retorna notícia falsa para teste rápido
-  // Em produção, usaria rss2json com API key paga
-  return [{
-    title: `Notícia sobre ${query} - Busque em tempo real`,
-    source: 'Google News',
-    url: `https://news.google.com/search?q=${encodeURIComponent(query)}&hl=pt-BR&gl=BR`,
-    date: new Date().toISOString(),
-    tag,
-    lang: 'pt'
-  }];
+  const rss = `https://news.google.com/rss/search?q=${encodeURIComponent(query)}&hl=pt-BR&gl=BR&ceid=BR:pt-419`;
+  const chave = apiKey('apiRss2json');
+  const url = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rss)}${chave ? '&api_key=' + encodeURIComponent(chave) : ''}`;
+  const d = await getJSON(url);
+  if (d.status && d.status !== 'ok') throw new Error(d.message || 'rss2json');
+  return (d.items || []).slice(0, 12).map((it) => {
+    // O Google News coloca a fonte no fim do título: "Manchete - InfoMoney"
+    const partes = decodeEntities(it.title).split(' - ');
+    const fonte = partes.length > 1 ? partes.pop() : (it.author || 'Google News');
+    return {
+      title: partes.join(' - '), source: fonte, url: safeUrl(it.link),
+      date: it.pubDate ? new Date(it.pubDate.replace(' ', 'T') + 'Z').toISOString() : new Date().toISOString(),
+      tag, lang: 'pt'
+    };
+  });
 }
 
 async function fetchFinnhubNews(ticker) {
@@ -8384,22 +7161,11 @@ async function fetchFinnhubNews(ticker) {
   if (!key) return [];
   const ate = todayISO();
   const de = new Date(); de.setDate(de.getDate() - 7);
-  
-  let tentativa = 0;
-  while (tentativa < 2) {
-    try {
-      const d = await getJSON(`https://finnhub.io/api/v1/company-news?symbol=${encodeURIComponent(ticker)}&from=${de.toISOString().slice(0, 10)}&to=${ate}&token=${key}`);
-      return (Array.isArray(d) ? d : []).slice(0, 12).map((n) => ({
-        title: decodeEntities(n.headline), source: decodeEntities(n.source), url: safeUrl(n.url),
-        date: new Date((n.datetime || 0) * 1000).toISOString(), tag: ticker, lang: 'en'
-      }));
-    } catch (e) {
-      tentativa++;
-      if (tentativa >= 2) return [];
-      await new Promise(r => setTimeout(r, Math.pow(2, tentativa) * 1000));
-    }
-  }
-  return [];
+  const d = await getJSON(`https://finnhub.io/api/v1/company-news?symbol=${encodeURIComponent(ticker)}&from=${de.toISOString().slice(0, 10)}&to=${ate}&token=${key}`);
+  return (Array.isArray(d) ? d : []).slice(0, 12).map((n) => ({
+    title: decodeEntities(n.headline), source: decodeEntities(n.source), url: safeUrl(n.url),
+    date: new Date((n.datetime || 0) * 1000).toISOString(), tag: ticker, lang: 'en'
+  }));
 }
 
 async function loadNewsCache() {
@@ -8436,10 +7202,9 @@ async function refreshNews(forcar) {
 
   const novos = [];
   let falhas = 0;
-  for (let i = 0; i < tarefas.length; i++) {
-    try { novos.push(...(await tarefas[i]())); }
+  for (const tarefa of tarefas) {
+    try { novos.push(...(await tarefa())); }
     catch (e) { falhas++; console.warn('Notícias:', e.message); }
-    if (i < tarefas.length - 1) await new Promise(r => setTimeout(r, 500));
   }
 
   // Junta com o que já havia, sem repetir a mesma manchete
@@ -8546,23 +7311,7 @@ async function renderNews() {
   });
 
   if (!itens.length) {
-    if (newsLoading) {
-      lista.innerHTML = `<p class="empty-state">${t('news.loading')}</p>`;
-    } else if (!newsCache.fetchedAt) {
-      // Notícias de exemplo quando nunca foi carregado
-      const itensPadrao = NEWS_DEFAULTS.filter(n => newsUi.lang === 'all' || n.lang === newsUi.lang);
-      lista.innerHTML = itensPadrao.map((n) => {
-        const tags = (n.tags || []).map((tg) => tg === 'market'
-          ? `<span class="tag">${t('news.market')}</span>`
-          : `<span class="tag news-tag">${escapeHtml(tg)}</span>`).join(' ');
-        return `<article class="news-item">
-          <a href="${escapeHtml(n.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(n.title)}</a>
-          <div class="news-meta">${tags} <span>${escapeHtml(n.source || '')}</span> <span>${timeAgo(n.date)}</span></div>
-        </article>`;
-      }).join('');
-    } else {
-      lista.innerHTML = `<p class="empty-state">${t('news.empty')}</p>`;
-    }
+    lista.innerHTML = `<p class="empty-state">${newsLoading ? t('news.loading') : (newsCache.items || []).length ? t('news.emptyFilter') : t('news.empty')}</p>`;
   } else {
     lista.innerHTML = itens.slice(0, 80).map((n) => {
       const tags = (n.tags || []).map((tg) => tg === 'market'
@@ -8897,17 +7646,7 @@ async function renderTaxes() {
     <p class="hint">${t('tax.lossHint')}</p>
 
     <h3 class="section-sub">${t('tax.declaration').replace('{y}', taxUi.year)}</h3>
-    ${renderTaxAssets(dados)}
-
-    <h3 class="section-sub" style="margin-top: 40px;">${t('tax.intTitle') || 'Alíquotas Fiscais Internacionais'}</h3>
-    <div id="internationalTaxTable" style="margin-top: 20px;"></div>
-    <div id="taxComparison" style="margin-top: 40px;"></div>`;
-  
-  // Renderizar tabelas fiscais depois que renderTaxes completa
-  setTimeout(() => {
-    renderTaxTable();
-    renderTaxComparison();
-  }, 100);
+    ${renderTaxAssets(dados)}`;
 }
 
 function renderTaxAssets(dados) {
@@ -9343,315 +8082,6 @@ function renderTaxSettings() {
     <p class="hint">${t('tax.settingsHint')}</p>
     <label class="checkline"><input type="checkbox" id="taxToggle" ${state.settings.taxEnabled ? 'checked' : ''} onchange="setTaxPreference(this.checked)"> ${t('tax.enable')}</label>
     <p class="hint">${t('tax.soon')}</p>`;
-}
-
-/* ================= FASE 6 — Alertas de Orçamento ================= */
-
-async function createBudget() {
-  const category = document.getElementById('budgetCategory').value;
-  const limit = parseMoney(document.getElementById('budgetLimit').value);
-  
-  if (!category || !limit || limit <= 0) {
-    showToast(t('budget.invalidInput'));
-    return;
-  }
-  
-  const existing = state.budgets.find(b => b.category === category && b.month === getMonthKey());
-  if (existing) {
-    existing.limit = limit;
-    state.budgets = state.budgets.map(b => b.id === existing.id ? existing : b);
-    await put('budgets', existing);
-  } else {
-    const budget = {
-      id: uid(),
-      category,
-      limit,
-      month: getMonthKey(),
-      createdAt: new Date().toISOString(),
-      alerts: [80, 100]
-    };
-    state.budgets.push(budget);
-    await put('budgets', budget);
-  }
-  
-  closeModal();
-  renderBudgets();
-  showToast(t('toast.saved'));
-}
-
-async function deleteBudget(id) {
-  if (!confirm(t('modal.delete') + '?')) return;
-  state.budgets = state.budgets.filter(b => b.id !== id);
-  await del('budgets', id);
-  renderBudgets();
-  showToast(t('toast.deleted'));
-}
-
-function getMonthKey() {
-  const d = new Date();
-  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
-}
-
-function getBudgetStatus(category) {
-  const monthKey = getMonthKey();
-  const budget = state.budgets.find(b => b.category === category && b.month === monthKey);
-  
-  if (!budget) return { spent: 0, limit: 0, percentage: 0, status: 'none' };
-  
-  const spent = state.transactions
-    .filter(tx => tx.category === category && tx.type === 'expense' && 
-                  tx.date >= monthKey + '-01' && tx.date < addMonths(monthKey, 1) + '-01')
-    .reduce((sum, tx) => sum + (tx.value || 0), 0);
-  
-  const percentage = budget.limit > 0 ? (spent / budget.limit) * 100 : 0;
-  let status = 'ok';
-  
-  if (percentage >= 100) status = 'exceeded';
-  else if (percentage >= 80) status = 'warning';
-  
-  return { spent, limit: budget.limit, percentage, status, budget };
-}
-
-function addMonths(monthKey, months) {
-  const [year, month] = monthKey.split('-').map(Number);
-  const d = new Date(year, month - 1 + months, 1);
-  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
-}
-
-async function checkBudgetAlerts() {
-  const monthKey = getMonthKey();
-  const activeBudgets = state.budgets.filter(b => b.month === monthKey);
-  
-  for (const budget of activeBudgets) {
-    const status = getBudgetStatus(budget.category);
-    
-    if (status.percentage >= 100 && !state.notifications.some(n => n.type === 'budget' && n.budgetId === budget.id && n.level === 100)) {
-      const notif = {
-        id: uid(),
-        type: 'budget',
-        budgetId: budget.id,
-        category: budget.category,
-        level: 100,
-        message: `${catLabel(budget.category)}: ${t('budget.exceeded')}`,
-        createdAt: new Date().toISOString(),
-        read: false
-      };
-      state.notifications.push(notif);
-      await put('notifications', notif);
-      
-      triggerBrowserNotification(
-        t('budget.exceeded'),
-        `${catLabel(budget.category)}: ${formatMoney(status.spent)} / ${formatMoney(status.limit)}`
-      );
-    } else if (status.percentage >= 80 && status.percentage < 100 && !state.notifications.some(n => n.type === 'budget' && n.budgetId === budget.id && n.level === 80)) {
-      const notif = {
-        id: uid(),
-        type: 'budget',
-        budgetId: budget.id,
-        category: budget.category,
-        level: 80,
-        message: `${catLabel(budget.category)}: ${t('budget.warning80')}`,
-        createdAt: new Date().toISOString(),
-        read: false
-      };
-      state.notifications.push(notif);
-      await put('notifications', notif);
-      
-      triggerBrowserNotification(
-        t('budget.warning80'),
-        `${catLabel(budget.category)}: ${formatMoney(status.spent)} / ${formatMoney(status.limit)}`
-      );
-    }
-  }
-}
-
-function renderBudgets() {
-  const container = document.getElementById('budgetsContainer');
-  if (!container) return;
-  
-  const monthKey = getMonthKey();
-  const budgets = state.budgets.filter(b => b.month === monthKey);
-  
-  if (budgets.length === 0) {
-    container.innerHTML = `<p class="empty-state">${t('budget.noBudgets')}</p>
-      <button class="primary-btn" onclick="openBudgetModal()">${t('budget.add')}</button>`;
-    return;
-  }
-  
-  container.innerHTML = `
-    <div class="budgets-list">
-      ${budgets.map(b => {
-        const status = getBudgetStatus(b.category);
-        const statusClass = status.status;
-        const statusIcon = status.status === 'exceeded' ? '🔴' : status.status === 'warning' ? '🟡' : '🟢';
-        
-        return `
-          <div class="budget-card budget-${statusClass}">
-            <div class="budget-header">
-              <h4>${catLabel(b.category)}</h4>
-              <span class="status-badge ${statusClass}">${statusIcon} ${status.percentage.toFixed(0)}%</span>
-            </div>
-            <div class="budget-progress">
-              <div class="progress-bar">
-                <div class="progress-fill ${statusClass}" style="width: ${Math.min(status.percentage, 100)}%"></div>
-              </div>
-            </div>
-            <div class="budget-info">
-              <span>${formatMoney(status.spent)} / ${formatMoney(status.limit)}</span>
-              <button class="icon-btn" onclick="deleteBudget('${b.id}')" title="${t('modal.delete')}">🗑️</button>
-            </div>
-          </div>
-        `;
-      }).join('')}
-    </div>
-    <button class="secondary-btn" onclick="openBudgetModal()">${t('budget.add')}</button>
-  `;
-}
-
-function openBudgetModal() {
-  const expenseCategories = EXPENSE_CATEGORIES.map(cat => `
-    <option value="${cat.key}">${catLabel(cat.key)}</option>
-  `).join('');
-  
-  openModal(`
-    <h2>${t('budget.add')}</h2>
-    <label>${t('budget.category')}</label>
-    <select id="budgetCategory">
-      <option value="">${t('common.select')}</option>
-      ${expenseCategories}
-    </select>
-    <label>${t('budget.limit')}</label>
-    <input id="budgetLimit" type="text" inputmode="decimal" placeholder="1000.00">
-    <p class="hint">${t('budget.limitHint')}</p>
-    <button class="primary-btn" onclick="createBudget()">${t('modal.save')}</button>
-  `);
-}
-
-function renderBudgetDashboard() {
-  const section = document.querySelector('[data-tab="budgets"]');
-  if (!section) return;
-  
-  const monthKey = getMonthKey();
-  const budgets = state.budgets.filter(b => b.month === monthKey);
-  
-  const totalBudget = budgets.reduce((sum, b) => sum + b.limit, 0);
-  const totalSpent = budgets.reduce((sum, b) => sum + getBudgetStatus(b.category).spent, 0);
-  
-  const alerts = state.budgets
-    .filter(b => b.month === monthKey)
-    .map(b => {
-      const status = getBudgetStatus(b.category);
-      if (status.status !== 'ok') {
-        return { category: b.category, status, budget: b };
-      }
-      return null;
-    })
-    .filter(Boolean);
-  
-  let html = `
-    <div class="panel-header">
-      <h2>${t('budget.monthlyBudgets')}</h2>
-      <button class="primary-btn" onclick="openBudgetModal()">${t('budget.add')}</button>
-    </div>
-    
-    <div class="cards">
-      <div class="card">
-        <h3>${t('budget.totalBudget')}</h3>
-        <p class="big-number">${formatMoney(totalBudget)}</p>
-      </div>
-      <div class="card">
-        <h3>${t('budget.totalSpent')}</h3>
-        <p class="big-number">${formatMoney(totalSpent)}</p>
-      </div>
-      <div class="card">
-        <h3>${t('budget.remaining')}</h3>
-        <p class="big-number ${totalBudget - totalSpent < 0 ? 'negative' : ''}">${formatMoney(Math.max(totalBudget - totalSpent, 0))}</p>
-      </div>
-    </div>
-  `;
-  
-  if (alerts.length > 0) {
-    html += `
-      <h3>${t('budget.alerts')}</h3>
-      <div class="alerts-section">
-        ${alerts.map(a => {
-          const icon = a.status.status === 'exceeded' ? '🔴' : '🟡';
-          const msg = a.status.status === 'exceeded' ? t('budget.exceeded') : t('budget.warning80');
-          return `
-            <div class="alert-badge alert-${a.status.status}">
-              ${icon} ${catLabel(a.category)}: ${msg}
-            </div>
-          `;
-        }).join('')}
-      </div>
-    `;
-  }
-  
-  html += `<div id="budgetsContainer"></div>`;
-  
-  section.innerHTML = html;
-  renderBudgets();
-}
-
-function renderUpdateSettings() {
-  const box = document.getElementById('updateGroup');
-  if (!box) return;
-  
-  const lastUpdate = localStorage.getItem('lastUpdateTime');
-  const currentVersion = localStorage.getItem('appVersion') || '1.0.0';
-  const locale = state.settings.lang === 'pt-BR' ? 'pt-BR' : state.settings.lang === 'es' ? 'es-ES' : 'en-US';
-  
-  let lastUpdateText = lastUpdate ? 
-    new Date(lastUpdate).toLocaleString(locale, { 
-      year: 'numeric', month: '2-digit', day: '2-digit',
-      hour: '2-digit', minute: '2-digit', second: '2-digit'
-    }) : 
-    t('settings.noUpdates');
-  
-  box.innerHTML = `<h3>${t('settings.updates')}</h3>
-    <div class="update-info">
-      <div class="update-row">
-        <span class="label">${t('settings.lastUpdate')}:</span>
-        <span class="value">${lastUpdateText}</span>
-      </div>
-      <div class="update-row">
-        <span class="label">${t('settings.currentVersion')}:</span>
-        <span class="version-badge">v${currentVersion}</span>
-      </div>
-      <div class="update-row">
-        <span class="label">${t('settings.updateAvailable')}:</span>
-        <span id="updateStatus">${t('settings.noUpdates')}</span>
-      </div>
-      <button class="primary-btn" style="margin-top: 12px;" onclick="handleRefresh()" id="btnUpdateNow">${t('settings.updateNow') || 'Atualizar Agora'}</button>
-    </div>`;
-}
-
-async function handleRefresh() {
-  try {
-    // Atualizar: BCB, cotações, proventos, alertas
-    const now = new Date().toISOString();
-    localStorage.setItem('lastUpdateTime', now);
-    
-    // Recarregar dados de cotações
-    await refreshExchangeRates(true);
-    
-    // Recarregar dados de proventos se existirem
-    if (state.settings.dividendSync) {
-      await loadDividends();
-    }
-    
-    // Atualizar UI completamente
-    await renderAll();
-    
-    // Mostrar notificação
-    showToast(t('toast.updated') || 'Atualizado com sucesso');
-    
-    // Rerender update settings
-    renderUpdateSettings();
-  } catch (e) {
-    console.error('Erro ao atualizar:', e);
-    showToast(t('toast.updateFailed') || 'Erro ao atualizar');
-  }
 }
 
 
@@ -10647,7 +9077,7 @@ async function commitB3Import() {
 
 /* ================= Proventos ================= */
 const DIV_TYPES = ['div', 'jcp', 'rend', 'amort', 'other'];
-const divUi = { year: 'all', status: 'toConfirm', ticker: 'all' };
+const divUi = { year: 'all', status: 'all', ticker: 'all' };
 
 function dividendsOfPosition(id) { return state.dividends.filter((d) => d.positionId === id); }
 
@@ -10838,7 +9268,7 @@ function openDividendModal(id) {
     <label>${t('inv.quantity')} <span class="hint">(${t('div.optional')})</span></label>
     <input id="dvQty" type="text" inputmode="decimal" value="${d && d.quantity ? d.quantity : ''}">
     <label>${t('div.status')}</label>
-    <select id="dvStatus">${['toConfirm', 'received', 'expected'].map((s) => `<option value="${s}" ${(d ? d.status : 'toConfirm') === s ? 'selected' : ''}>${divStatusLabel(s)}</option>`).join('')}</select>
+    <select id="dvStatus">${['received', 'toConfirm', 'expected'].map((s) => `<option value="${s}" ${(d ? d.status : 'received') === s ? 'selected' : ''}>${divStatusLabel(s)}</option>`).join('')}</select>
     <button class="primary-btn" onclick="saveDividend('${d ? d.id : ''}')">${t('modal.save')}</button>
   `);
 }
@@ -10928,7 +9358,7 @@ async function checkApiKeys() {
   const modalAberto = !document.getElementById('modal').classList.contains('hidden');
 
   if (precisaConfigurar && !modalAberto) openApiSetup();
-  if (comFalha.length) showToast(t('apiw.couldNotCheck').replace('{apis}', comFalha.join(', ')));
+  else if (comFalha.length) showToast(t('apiw.couldNotCheck').replace('{apis}', comFalha.join(', ')));
   return resultados;
 }
 
@@ -11071,13 +9501,13 @@ async function updateEverything() {
     try { await refreshWatchlist(true); } catch (e) { console.warn('Watchlist não atualizada:', e); }
   }
 
-  await renderAll();
+  renderAll();
   if (btn) { btn.disabled = false; btn.textContent = t('inv.updateAll'); }
   showToast(t('inv.updateDone').replace('{fx}', resumoFx).replace('{q}', resumoQ));
 }
 
 /* ---------- Tela da carteira de investimentos ---------- */
-async function renderInvestments() {
+function renderInvestments() {
   const base = state.settings.baseCurrency;
   const hoje = todayISO();
 
@@ -11096,14 +9526,12 @@ async function renderInvestments() {
     if (vazio) { vazio.textContent = t('inv.empty'); vazio.classList.remove('hidden'); }
   } else {
     if (vazio) vazio.classList.add('hidden');
-    if (!state.ui.investmentsExpanded) state.ui.investmentsExpanded = new Set();
     tbody.innerHTML = state.positions.map((pos) => {
       const r = positionReturn(pos, hoje);
       const st = positionStateAt(pos, hoje);
       const cot = positionQuoteAt(pos, hoje);
       const conta = accountById(pos.accountId);
       const classe = r.profit > 0.004 ? 'amount-in' : (r.profit < -0.004 ? 'amount-out' : 'amount-neutral');
-      const isExpanded = state.ui.investmentsExpanded.has(pos.id);
       return `<tr>
         <td>${colorDot(pos.color)}${escapeHtml(pos.name)}${pos.ticker ? ` <span class="tag">${escapeHtml(pos.ticker)}</span>` : ''}</td>
         <td>${pos.assetType ? t('inv.ty.' + pos.assetType) : '—'}</td>
@@ -11114,14 +9542,11 @@ async function renderInvestments() {
         <td><strong>${fmtMoney(r.value, pos.currency)}</strong></td>
         <td class="${classe}">${fmtMoney(r.profit, pos.currency)} · ${r.pct.toFixed(1)}%</td>
         <td>
-          <button class="actions-toggle-btn" onclick="toggleInvestmentActions('${pos.id}')" title="${t('accounts.actions')}">${isExpanded ? '−' : '+'}</button>
-          <div class="actions-row ${isExpanded ? '' : 'hidden'}">
-            <button class="secondary-btn" onclick="openPositionChart('${pos.id}')">${t('mkt.chart')}</button>
-            <button class="secondary-btn" onclick="openMoveModal('${pos.id}')">${t('inv.move')}</button>
-            <button class="secondary-btn" onclick="openQuotesModal('${pos.id}')">${t('inv.quotes')}</button>
-            <button class="secondary-btn" onclick="openPositionModal('${pos.id}')">${t('modal.edit')}</button>
-            <button class="secondary-btn" onclick="deletePosition('${pos.id}')">${t('modal.delete')}</button>
-          </div>
+          <button class="secondary-btn" onclick="openPositionChart('${pos.id}')">${t('mkt.chart')}</button>
+          <button class="secondary-btn" onclick="openMoveModal('${pos.id}')">${t('inv.move')}</button>
+          <button class="secondary-btn" onclick="openQuotesModal('${pos.id}')">${t('inv.quotes')}</button>
+          <button class="secondary-btn" onclick="openPositionModal('${pos.id}')">${t('modal.edit')}</button>
+          <button class="secondary-btn" onclick="deletePosition('${pos.id}')">${t('modal.delete')}</button>
         </td>
       </tr>`;
     }).join('');
@@ -11226,28 +9651,8 @@ async function fixDuplication(positionId) {
     await put('invmoves', mov);
   }
 
-  await renderAll();
+  renderAll();
   showToast(t('inv.dupFixed'));
-}
-
-function toggleInvestmentActions(positionId) {
-  if (!state.ui.investmentsExpanded) state.ui.investmentsExpanded = new Set();
-  if (state.ui.investmentsExpanded.has(positionId)) {
-    state.ui.investmentsExpanded.delete(positionId);
-  } else {
-    state.ui.investmentsExpanded.add(positionId);
-  }
-  const row = document.querySelector(`button[onclick="toggleInvestmentActions('${positionId}')"]`);
-  if (row) {
-    const parent = row.closest('td');
-    if (parent) {
-      parent.querySelector('.actions-toggle-btn').textContent = state.ui.investmentsExpanded.has(positionId) ? '−' : '+';
-      const actionsRow = parent.querySelector('.actions-row');
-      if (actionsRow) {
-        actionsRow.classList.toggle('hidden');
-      }
-    }
-  }
 }
 
 function openPositionModal(id, prefill) {
@@ -11258,14 +9663,15 @@ function openPositionModal(id, prefill) {
     <h2>${p ? t('modal.editPosition') : t('modal.addPosition')}</h2>
     <label>${t('mkt.lookup')}</label>
     <div class="lookup-row">
-      <select id="poLookupKind" aria-label="${t('mkt.searchKind')}">
-        <option value="">${t('mkt.kindAuto')}</option>
-        <option value="stock">${t('mkt.kindStock')}</option>
-        <option value="crypto">${t('mkt.kindCrypto')}</option>
-      </select>
       <input id="poLookup" placeholder="TTWO, PETR4, US8740541094" value="${prefill ? escapeHtml(prefill) : ''}"
         onkeydown="if(event.key==='Enter'){event.preventDefault();lookupAsset();}">
       <button id="poLookupBtn" class="secondary-btn" type="button" onclick="lookupAsset()">${t('mkt.search')}</button>
+    </div>
+    <div class="lookup-kind">
+      <span>${t('mkt.searchKind')}</span>
+      <label><input type="radio" name="poKind" value="" checked> ${t('mkt.kindAuto')}</label>
+      <label><input type="radio" name="poKind" value="stock"> ${t('mkt.kindStock')}</label>
+      <label><input type="radio" name="poKind" value="crypto"> ${t('mkt.kindCrypto')}</label>
     </div>
     <p class="hint">${t('mkt.lookupHint')}</p>
     <div id="poLookupInfo" class="lookup-info hidden"></div>
@@ -11422,7 +9828,7 @@ async function deletePosition(id) {
   state.quotes = state.quotes.filter((q) => q.positionId !== id);
   state.positions = state.positions.filter((x) => x.id !== id);
   await del('positions', id);
-  await renderAll();
+  renderAll();
   showToast(t('toast.deleted'));
 }
 
@@ -11556,7 +9962,7 @@ async function deleteMove(id, positionId) {
   }
   state.invmoves = state.invmoves.filter((x) => x.id !== id);
   await del('invmoves', id);
-  await renderAll();
+  renderAll();
   openMoveModal(positionId);
   showToast(t('toast.deleted'));
 }
@@ -11595,7 +10001,7 @@ async function saveQuote(positionId) {
   if (existente) state.quotes = state.quotes.map((q) => (q.id === registro.id ? registro : q));
   else state.quotes.push(registro);
   await put('quotes', registro);
-  await renderAll();
+  renderAll();
   openQuotesModal(positionId);
   showToast(t('toast.saved'));
 }
@@ -11603,7 +10009,7 @@ async function saveQuote(positionId) {
 async function deleteQuote(id, positionId) {
   state.quotes = state.quotes.filter((q) => q.id !== id);
   await del('quotes', id);
-  await renderAll();
+  renderAll();
   openQuotesModal(positionId);
   showToast(t('toast.deleted'));
 }
@@ -11615,8 +10021,6 @@ function renderSettings() {
   renderApiSettings();
   renderSecuritySettings();
   renderTaxSettings();
-  renderUpdateSettings();
-  renderCloudSyncPanel();
 }
 
 /* ---------- Modais ---------- */
@@ -11692,7 +10096,7 @@ async function deleteAccount(id) {
   for (const trn of removedTx) await del('transactions', trn.id);
   state.transactions = state.transactions.filter((x) => x.accountId !== id && x.toAccountId !== id);
   await del('accounts', id);
-  await renderAll();
+  renderAll();
   showToast(t('toast.deleted'));
 }
 
@@ -11709,7 +10113,7 @@ async function snapshotBalances() {
     else state.balances.push(registro);
     await put('balances', registro);
   }
-  await renderAll();
+  renderAll();
   showToast(t('balances.snapshotDone').replace('{n}', state.accounts.length));
 }
 
@@ -11799,53 +10203,9 @@ function openTxModal(id) {
       <p class="hint">${t('tx.receivedHint')}</p>
     </div>
 
-    <hr style="margin: 16px 0; border: none; border-top: 1px solid var(--border);">
-    
-    <label class="checkline"><input type="checkbox" id="txMakeRecurrent" onchange="onTxMakeRecurrent()"> <span>${t('recurrence.title')}</span></label>
-
-    <div id="txRecurrenceWrap" class="hidden">
-      <label>${t('recurrence.frequency')}</label>
-      <select id="txFrequency">
-        <option value="daily">${t('recurrence.freq.daily')}</option>
-        <option value="weekly" selected>${t('recurrence.freq.weekly')}</option>
-        <option value="monthly">${t('recurrence.freq.monthly')}</option>
-        <option value="annual">${t('recurrence.freq.annual')}</option>
-      </select>
-
-      <label>${t('recurrence.endCondition')}</label>
-      <select id="txEndCondition" onchange="onTxEndConditionChange()">
-        <option value="never" selected>${t('recurrence.endNever')}</option>
-        <option value="date">${t('recurrence.endDate')}</option>
-        <option value="count">${t('recurrence.endCount')}</option>
-      </select>
-
-      <div id="txEndDateWrap" class="hidden">
-        <label>${t('recurrence.endDate')}</label>
-        <input id="txEndDate" type="date">
-      </div>
-
-      <div id="txEndCountWrap" class="hidden">
-        <label>${t('recurrence.endCount')}</label>
-        <input id="txEndCount" type="number" min="1" value="12">
-      </div>
-    </div>
-
     <button class="primary-btn" onclick="saveTx('${trn ? trn.id : ''}')">${t('modal.save')}</button>
   `);
   onTxTypeChange();
-  // Carregar dados de recorrência se editando
-  if (id) {
-    const rec = state.recurrences.find((r) => r.baseTransactionId === id);
-    if (rec) {
-      document.getElementById('txMakeRecurrent').checked = true;
-      document.getElementById('txFrequency').value = rec.frequency || 'weekly';
-      document.getElementById('txEndCondition').value = rec.endCondition || 'never';
-      if (rec.endCondition === 'date') document.getElementById('txEndDate').value = rec.endDate || '';
-      if (rec.endCondition === 'count') document.getElementById('txEndCount').value = rec.endCount || 12;
-      onTxMakeRecurrent();
-      onTxEndConditionChange();
-    }
-  }
 }
 
 // Mostra/esconde campos conforme o tipo escolhido e as moedas envolvidas.
@@ -11871,17 +10231,6 @@ function onTxTypeChange() {
   const from = accountCurrency(document.getElementById('txAccount').value);
   const to = accountCurrency(document.getElementById('txToAccount').value);
   toValWrap.classList.toggle('hidden', from === to);
-}
-
-function onTxMakeRecurrent() {
-  const checked = document.getElementById('txMakeRecurrent').checked;
-  document.getElementById('txRecurrenceWrap').classList.toggle('hidden', !checked);
-}
-
-function onTxEndConditionChange() {
-  const condition = document.getElementById('txEndCondition').value;
-  document.getElementById('txEndDateWrap').classList.toggle('hidden', condition !== 'date');
-  document.getElementById('txEndCountWrap').classList.toggle('hidden', condition !== 'count');
 }
 
 async function saveTx(id) {
@@ -11915,62 +10264,6 @@ async function saveTx(id) {
   if (id) state.transactions = state.transactions.map((x) => (x.id === id ? trn : x));
   else state.transactions.push(trn);
   await put('transactions', trn);
-
-  // Salvar recorrência se marcada
-  const makeRecurrent = document.getElementById('txMakeRecurrent');
-  if (makeRecurrent && makeRecurrent.checked) {
-    const frequency = document.getElementById('txFrequency').value;
-    const endCondition = document.getElementById('txEndCondition').value;
-    const endDate = endCondition === 'date' ? document.getElementById('txEndDate').value : null;
-    const endCount = endCondition === 'count' ? parseInt(document.getElementById('txEndCount').value, 10) : null;
-    
-    const rec = {
-      id: uid(),
-      baseTransactionId: trn.id,
-      type: trn.type,
-      accountId: trn.accountId,
-      description: trn.description,
-      value: trn.value,
-      category: trn.category,
-      toAccountId: trn.toAccountId,
-      toValue: trn.toValue,
-      frequency,
-      nextDate: addDays(trn.date, frequencyDays(frequency)),
-      endCondition,
-      endDate,
-      endCount,
-      generatedCount: 0,
-      enabled: true,
-      createdAt: new Date().toISOString()
-    };
-
-    const existingRec = state.recurrences.find((r) => r.baseTransactionId === trn.id);
-    if (existingRec) {
-      state.recurrences = state.recurrences.map((r) => (r.id === existingRec.id ? { ...existingRec, ...rec, id: existingRec.id } : r));
-      await put('recurrences', { ...existingRec, ...rec, id: existingRec.id });
-    } else {
-      state.recurrences.push(rec);
-      await put('recurrences', rec);
-    }
-  } else if (id) {
-    // Deletar recorrência se editando e desmarcou
-    const existingRec = state.recurrences.find((r) => r.baseTransactionId === id);
-    if (existingRec) {
-      state.recurrences = state.recurrences.filter((r) => r.id !== existingRec.id);
-      await del('recurrences', existingRec.id);
-    }
-  }
-
-  // Gerar instâncias recorrentes e notificações se necessário
-  try {
-    await generateRecurringInstances();
-    await shouldNotify();
-    // Fase 6 — Verificar alertas de orçamento após nova transação
-    await checkBudgetAlerts();
-  } catch (e) {
-    console.warn('Falha ao gerar instâncias recorrentes, notificações ou alertas de orçamento:', e);
-  }
-
   closeModal();
   renderAll();
   showToast(t('toast.saved'));
@@ -11980,7 +10273,7 @@ async function deleteTx(id) {
   if (!confirm(t('modal.delete') + '?')) return;
   state.transactions = state.transactions.filter((x) => x.id !== id);
   await del('transactions', id);
-  await renderAll();
+  renderAll();
   showToast(t('toast.deleted'));
 }
 
@@ -12028,7 +10321,7 @@ async function deleteBudget(id) {
   if (!confirm(t('modal.delete') + '?')) return;
   state.budgets = state.budgets.filter((x) => x.id !== id);
   await del('budgets', id);
-  await renderAll();
+  renderAll();
   showToast(t('toast.deleted'));
 }
 
@@ -12047,7 +10340,7 @@ function download(filename, content, type) {
 
 function buildBackupData() {
   return {
-    version: 7,
+    version: 6,
     exportedAt: new Date().toISOString(),
     accounts: state.accounts,
     balances: state.balances,
@@ -12062,13 +10355,6 @@ function buildBackupData() {
     assets: state.assets,
     valuations: state.valuations,
     dividends: state.dividends,
-    recurrences: state.recurrences,
-    notifications: state.notifications,
-    // Fase 13 — Você x Mercado
-    benchmarks: state.benchmarks,
-    marketEvents: state.marketEvents,
-    portfolioMetrics: state.portfolioMetrics,
-    priceAlerts: state.priceAlerts,
     // Chaves de API não saem do navegador: um backup é fácil de compartilhar por engano
     settings: Object.fromEntries(Object.entries(state.settings).filter(([k]) => !API_KEYS.includes(k) && !k.startsWith(HIST_PREFIX) && k !== SEC_KEY))
   };
@@ -12138,13 +10424,6 @@ async function importJSON(file) {
     for (const a of (data.assets || [])) await put('assets', a);
     for (const v of (data.valuations || [])) await put('valuations', v);
     for (const dv of (data.dividends || [])) await put('dividends', dv);
-    for (const rec of (data.recurrences || [])) await put('recurrences', rec);
-    for (const notif of (data.notifications || [])) await put('notifications', notif);
-    // Fase 13 — Você x Mercado
-    for (const b of (data.benchmarks || [])) await put('benchmarks', b);
-    for (const me of (data.marketEvents || [])) await put('marketEvents', me);
-    for (const pm of (data.portfolioMetrics || [])) await put('portfolioMetrics', pm);
-    for (const pa of (data.priceAlerts || [])) await put('priceAlerts', pa);
     if (data.settings) {
       for (const [k, v] of Object.entries(data.settings)) {
         if (k === 'ui' || k === SEC_KEY || API_KEYS.includes(k) || k.startsWith(HIST_PREFIX)) continue;
@@ -12276,7 +10555,7 @@ async function importCSV(file) {
       imported++;
     }
 
-    await renderAll();
+    renderAll();
     showToast(t('toast.csvImported').replace('{n}', imported + (created ? ' (' + created + ' novas contas)' : '')));
   } catch (e) {
     console.error('Erro na importação CSV:', e); // mostra o motivo REAL no console (F12)
@@ -12302,7 +10581,7 @@ const NAV_GROUPS = {
   dashboard: ['dashboard'],
   investments: ['investments', 'calculator', 'taxes'],
   registry: ['accounts', 'balances', 'budgets', 'fx', 'portfolio'],
-  flows: ['transactions', 'recurrences', 'payables', 'receivables'],
+  flows: ['transactions', 'payables', 'receivables'],
   news: ['news'],
   settings: ['settings']
 };
@@ -12340,7 +10619,7 @@ function showTab(tab) {
   if (gear) gear.classList.toggle('active', grupo === 'settings');
   renderSubTabs();
   if (tab === 'dashboard') { renderNAV(); renderYouVsMarket().catch((e) => console.warn('Você x Mercado:', e)); }
-  if (tab === 'investments') { renderCompare(); }
+  if (tab === 'investments') renderCompare();
   if (tab === 'calculator') renderCalculator();
   if (tab === 'taxes') renderTaxes().catch((e) => console.warn('Impostos:', e));
   if (tab === 'news') { renderNews(); refreshNews(false).catch(() => {}); }
@@ -12373,18 +10652,6 @@ function applyHelp() {
   if (chk) chk.checked = mostrar;
 }
 
-// Solicitar permissão de notificações
-async function requestNotificationPermission() {
-  if (!('Notification' in window)) {
-    console.warn('Notificações do navegador não suportadas');
-    return false;
-  }
-  if (Notification.permission === 'granted') return true;
-  if (Notification.permission === 'denied') return false;
-  const permission = await Notification.requestPermission();
-  return permission === 'granted';
-}
-
 function renderThemeOptions() {
   const sel = document.getElementById('themeSelect');
   if (!sel) return;
@@ -12392,1025 +10659,7 @@ function renderThemeOptions() {
   sel.value = state.settings.theme || 'default';
 }
 
-/* ========== Fase 16: Tarefa 3 - Tabela Fiscal Internacional (12 Países) ========== */
-
-const TAX_RULES = {
-  'PT': {
-    name: '🇵🇹 Portugal (2025)',
-    currency: '€',
-    pf: [
-      { min: 0, max: 7091, rate: 0.145 },
-      { min: 7091, max: 10700, rate: 0.23 },
-      { min: 10700, max: 20261, rate: 0.285 },
-      { min: 20261, max: 40573, rate: 0.37 },
-      { min: 40573, max: 80882, rate: 0.45 },
-      { min: 80882, max: Infinity, rate: 0.48 }
-    ],
-    pj: 0.195,
-    exemptionLimit: 7091,
-    notes: 'Mainland. Solidariedade: +2.5% (€80k-€250k), +5% (>€250k). Açores/Madeira: alíquotas menores'
-  },
-  'ES': {
-    name: '🇪🇸 Espanha (2025)',
-    currency: '€',
-    pf: [
-      { min: 0, max: 18000, rate: 0.19 },
-      { min: 18000, max: 35200, rate: 0.24 },
-      { min: 35200, max: 60000, rate: 0.30 },
-      { min: 60000, max: 300000, rate: 0.37 },
-      { min: 300000, max: Infinity, rate: 0.45 }
-    ],
-    pj: 0.25,
-    exemptionLimit: 22000,
-    notes: 'Taxas nacionais. Regiões +0%-3%, Municípios +0%-1.5%. Startups: 15% até €1M'
-  },
-  'IT': {
-    name: '🇮🇹 Itália (2025 - Lei 207/2024)',
-    currency: '€',
-    pf: [
-      { min: 0, max: 28000, rate: 0.23 },
-      { min: 28000, max: 50000, rate: 0.35 },
-      { min: 50000, max: Infinity, rate: 0.43 }
-    ],
-    pj: 0.24,
-    exemptionLimit: 8000,
-    notes: 'Reforma 2025: 3 brackets progressivos. IRAP 3.9% (PJ). Regional +0.7%-3.33%, Municipal +0.1%-0.9%'
-  },
-  'DE': {
-    name: '🇦🇱 Alemanha (2025)',
-    currency: '€',
-    pf: [
-      { min: 0, max: 9000, rate: 0 },
-      { min: 9000, max: 13996, rate: 0.20 },
-      { min: 13996, max: 54949, rate: 0.40 },
-      { min: 54949, max: 260532, rate: 0.42 },
-      { min: 260532, max: Infinity, rate: 0.45 }
-    ],
-    pj: 0.30,
-    exemptionLimit: 9000,
-    notes: 'Solidariedade +5.5% (>€972k). Municipal trade tax varia 3.5%-17%'
-  },
-  'FR': {
-    name: '🇫🇷 França (2025)',
-    currency: '€',
-    pf: [
-      { min: 0, max: 5963, rate: 0 },
-      { min: 5963, max: 11896, rate: 0.055 },
-      { min: 11896, max: 26420, rate: 0.14 },
-      { min: 26420, max: 70830, rate: 0.30 },
-      { min: 70830, max: Infinity, rate: 0.41 }
-    ],
-    pj: 0.283,
-    exemptionLimit: 5963,
-    notes: 'Taxas IR. Adicionar ~17% Social Security (employee+employer). Quotient familial reduz taxas'
-  },
-  'IE': {
-    name: '🇮🇪 Irlanda (2025)',
-    currency: '€',
-    pf: [
-      { min: 0, max: 23000, rate: 0.20 },
-      { min: 23000, max: Infinity, rate: 0.40 }
-    ],
-    pj: 0.125,
-    exemptionLimit: 23000,
-    notes: 'USC 0.5%-8% adicional. Taxa corporativa mais baixa EU (12.5%)'
-  },
-  'LU': {
-    name: '🇱🇺 Luxemburgo (2025)',
-    currency: '€',
-    pf: [
-      { min: 0, max: 15000, rate: 0.08 },
-      { min: 15000, max: 28000, rate: 0.12 },
-      { min: 28000, max: 55000, rate: 0.20 },
-      { min: 55000, max: 75000, rate: 0.30 },
-      { min: 75000, max: Infinity, rate: 0.40 }
-    ],
-    pj: 0.1926,
-    exemptionLimit: 11265,
-    notes: 'Solidariedade +7%. Wealth tax (IF) aplicável. Municipal tax varia'
-  },
-  'MT': {
-    name: '🇲🇹 Malta (2025)',
-    currency: '€',
-    pf: [
-      { min: 0, max: 9450, rate: 0 },
-      { min: 9450, max: 14500, rate: 0.15 },
-      { min: 14500, max: 19500, rate: 0.26 },
-      { min: 19500, max: Infinity, rate: 0.35 }
-    ],
-    pj: 0.35,
-    exemptionLimit: 9450,
-    notes: 'PJ alíquota mais alta EU. Imputation system em dividendos'
-  },
-  'GB': {
-    name: '🇬🇧 Reino Unido (2024-25)',
-    currency: '£',
-    pf: [
-      { min: 0, max: 12570, rate: 0 },
-      { min: 12570, max: 50270, rate: 0.20 },
-      { min: 50270, max: 125140, rate: 0.40 },
-      { min: 125140, max: Infinity, rate: 0.45 }
-    ],
-    pj: 0.21,
-    exemptionLimit: 12570,
-    notes: 'Personal Allowance £12,570 (2024-25). NICs +8-10% adicional. Dividends £500 franquia'
-  },
-  'CH': {
-    name: '🇨🇭 Suíça (2025)',
-    currency: 'CHF',
-    pf: [
-      { min: 0, max: 100000, rate: 0.115 },
-      { min: 100000, max: Infinity, rate: 0.115 }
-    ],
-    pj: 0.188,
-    exemptionLimit: 15000,
-    notes: 'Federal 1%-13.2% + Cantonal 5%-22% + Municipal 1%-10%. Varia bastante por cantão. Zurique/Genebra: ~25% total'
-  },
-  'AD': {
-    name: '🇦🇩 Andorra (2025)',
-    currency: '€',
-    pf: [
-      { min: 0, max: Infinity, rate: 0.10 }
-    ],
-    pj: 0.10,
-    exemptionLimit: 0,
-    notes: 'Flat rate 10% desde 2015. IGI (VAT) 4.95%. Saiu de "tax haven" em 2015'
-  },
-  'US': {
-    name: '🇺🇸 EUA (2024 - MFJ)',
-    currency: '$',
-    pf: [
-      { min: 0, max: 23200, rate: 0.10 },
-      { min: 23200, max: 94300, rate: 0.12 },
-      { min: 94300, max: 201050, rate: 0.22 },
-      { min: 201050, max: 383900, rate: 0.24 },
-      { min: 383900, max: 487450, rate: 0.32 },
-      { min: 487450, max: 731200, rate: 0.35 },
-      { min: 731200, max: Infinity, rate: 0.37 }
-    ],
-    pj: 0.21,
-    exemptionLimit: 29200,
-    notes: 'Federal apenas. Standard Deduction $29,200 (MFJ 2024). Estadual 0%-13.3%. FICA 15.3% (SS+Medicare)'
-  }
-};
-
-// Calcular imposto estimado por país
-function estimateTaxByCountry(income, country, type = 'pf') {
-  const rules = TAX_RULES[country];
-  if (!rules) return null;
-  
-  if (type === 'pf') {
-    let tax = 0;
-    for (const bracket of rules.pf) {
-      if (income > bracket.min) {
-        const taxableInThisBracket = Math.min(income, bracket.max) - bracket.min;
-        tax += taxableInThisBracket * bracket.rate;
-      }
-    }
-    const efectiveRate = income > 0 ? ((tax / income) * 100).toFixed(2) : 0;
-    return { 
-      tax: tax.toFixed(2), 
-      rate: efectiveRate + '%',
-      marginalRate: rules.pf.find(b => b.max > income)?.rate || rules.pf[rules.pf.length-1].rate
-    };
-  } else {
-    const tax = income * rules.pj;
-    return { 
-      tax: tax.toFixed(2), 
-      rate: (rules.pj * 100).toFixed(1) + '%',
-      marginalRate: rules.pj
-    };
-  }
-}
-
-// Renderizar tabela fiscal interativa
-function renderTaxTable() {
-  const container = document.getElementById('internationalTaxTable');
-  if (!container) return;
-  
-  const currentCountry = state.ui.taxCountry || 'PT';
-  const incomeValue = numIn('taxIncomeInput', 50000);
-  const type = document.getElementById('taxTypeSelect')?.value || 'pf';
-  
-  // Dropdown de países
-  container.innerHTML = `
-    <div class="tax-selector">
-      <h3>${t('tax.intTitle') || 'Alíquotas Fiscais Internacionais'}</h3>
-      <label>
-        ${t('tax.country') || 'País/Região:'}
-        <select id="taxCountrySelect" onchange="state.ui.taxCountry = this.value; renderTaxTable()">
-          ${Object.entries(TAX_RULES).map(([code, rule]) => 
-            `<option value="${code}" ${code === currentCountry ? 'selected' : ''}>${rule.name}</option>`
-          ).join('')}
-        </select>
-      </label>
-      <label>
-        ${t('tax.type') || 'Tipo:'}
-        <select id="taxTypeSelect" onchange="renderTaxTable()">
-          <option value="pf" ${type === 'pf' ? 'selected' : ''}>${t('tax.personal') || 'Pessoa Física'}</option>
-          <option value="pj" ${type === 'pj' ? 'selected' : ''}>${t('tax.corporate') || 'Pessoa Jurídica'}</option>
-        </select>
-      </label>
-      <label>
-        ${t('tax.estimatedIncome') || 'Renda Estimada:'}
-        <input type="text" id="taxIncomeInput" inputmode="decimal" value="${incomeValue.toFixed(2)}" 
-               placeholder="50000" oninput="renderTaxTable()" style="max-width: 120px;">
-      </label>
-    </div>
-  `;
-
-  const rule = TAX_RULES[currentCountry];
-  if (!rule) return;
-
-  const result = estimateTaxByCountry(incomeValue, currentCountry, type);
-  if (result) {
-    container.innerHTML += `
-      <div class="tax-result">
-        <div class="card">
-          <h4>${t('tax.estimatedTax') || 'Imposto Estimado'}</h4>
-          <p class="big-number amount-out">${rule.currency} ${result.tax}</p>
-          <p class="hint">${t('tax.effectiveRate') || 'Taxa Efetiva'}: ${result.rate}</p>
-        </div>
-        <div class="card">
-          <h4>${t('tax.marginalRate') || 'Alíquota Marginal'}</h4>
-          <p class="big-number">${(result.marginalRate * 100).toFixed(1)}%</p>
-          <p class="hint">${t('tax.nextIncome') || 'Próxima faixa'}</p>
-        </div>
-        <div class="card">
-          <h4>${t('tax.netIncome') || 'Renda Líquida'}</h4>
-          <p class="big-number amount-in">${rule.currency} ${(incomeValue - parseFloat(result.tax)).toFixed(2)}</p>
-          <p class="hint">${t('tax.afterTax') || 'Após imposto'}</p>
-        </div>
-      </div>
-      <p class="hint">${rule.notes}</p>
-    `;
-  }
-
-  // Tabela de alíquotas por faixa
-  if (type === 'pf') {
-    container.innerHTML += `
-      <h4 style="margin-top: 20px;">${t('tax.taxBrackets') || 'Faixas de Imposição'}</h4>
-      <div class="table-scroll"><table class="mini-table tax-brackets-table">
-        <thead><tr>
-          <th>${t('tax.income') || 'Renda'}</th>
-          <th>${t('tax.rate') || 'Alíquota'}</th>
-          <th>${t('tax.taxOnBracket') || 'Imposto nesta faixa'}</th>
-          <th>${t('tax.cumulative') || 'Acumulado'}</th>
-        </tr></thead>
-        <tbody>
-          ${rule.pf.map((bracket, idx) => {
-            const bracketIncome = Math.min(incomeValue, bracket.max) - bracket.min;
-            const bracketTax = Math.max(0, bracketIncome) * bracket.rate;
-            const cumTax = rule.pf.slice(0, idx+1)
-              .reduce((sum, b) => sum + Math.max(0, Math.min(incomeValue, b.max) - b.min) * b.rate, 0);
-            const isActive = incomeValue > bracket.min;
-            
-            return `<tr ${isActive ? 'class="table-highlight"' : ''}>
-              <td>${rule.currency} ${bracket.min.toLocaleString()} - ${bracket.max === Infinity ? '∞' : rule.currency + ' ' + bracket.max.toLocaleString()}</td>
-              <td><strong>${(bracket.rate * 100).toFixed(1)}%</strong></td>
-              <td>${rule.currency} ${bracketTax.toFixed(2)}</td>
-              <td>${rule.currency} ${cumTax.toFixed(2)}</td>
-            </tr>`;
-          }).join('')}
-        </tbody>
-      </table></div>
-    `;
-  }
-}
-
-// Modal comparação entre países
-function renderTaxComparison() {
-  const container = document.getElementById('taxComparison');
-  if (!container) return;
-  
-  const incomeValue = numIn('comparisonIncomeInput', 100000);
-  const type = document.getElementById('comparisonTypeSelect')?.value || 'pf';
-  
-  container.innerHTML = `
-    <h3>${t('tax.comparison') || 'Comparação entre Países'}</h3>
-    <div class="tax-selector">
-      <label>
-        ${t('tax.estimatedIncome') || 'Renda Estimada:'}
-        <input type="text" id="comparisonIncomeInput" inputmode="decimal" value="${incomeValue.toFixed(2)}" 
-               placeholder="100000" oninput="renderTaxComparison()" style="max-width: 120px;">
-      </label>
-      <label>
-        ${t('tax.type') || 'Tipo:'}
-        <select id="comparisonTypeSelect" onchange="renderTaxComparison()">
-          <option value="pf" ${type === 'pf' ? 'selected' : ''}>${t('tax.personal') || 'Pessoa Física'}</option>
-          <option value="pj" ${type === 'pj' ? 'selected' : ''}>${t('tax.corporate') || 'Pessoa Jurídica'}</option>
-        </select>
-      </label>
-    </div>
-
-    <div class="table-scroll"><table class="mini-table comparison-table">
-      <thead><tr>
-        <th>${t('tax.country') || 'País'}</th>
-        <th>${t('tax.estimatedTax') || 'Imposto'}</th>
-        <th>${t('tax.effectiveRate') || 'Taxa Efetiva'}</th>
-        <th>${t('tax.netIncome') || 'Renda Líquida'}</th>
-      </tr></thead>
-      <tbody>
-        ${Object.entries(TAX_RULES).map(([code, rule]) => {
-          const result = estimateTaxByCountry(incomeValue, code, type);
-          return `<tr>
-            <td>${rule.name}</td>
-            <td><strong>${rule.currency} ${result.tax}</strong></td>
-            <td>${result.rate}</td>
-            <td class="amount-in">${rule.currency} ${(incomeValue - parseFloat(result.tax)).toFixed(2)}</td>
-          </tr>`;
-        }).join('')}
-      </tbody>
-    </table></div>
-  `;
-}
-
-/* ===== FASE 13 — Você x Mercado (Performance vs Benchmarks) ===== */
-
-const BENCHMARKS = {
-  'IBOV': { name: '📊 Ibovespa', country: 'BR', symbol: '^BVSP', currency: 'BRL' },
-  'SP500': { name: '📈 S&P 500', country: 'US', symbol: '^GSPC', currency: 'USD' },
-  'CDB': { name: '💰 CDB', country: 'BR', symbol: 'CDB', currency: 'BRL', fixed: 0.085 }
-};
-
-function calculatePortfolioPerformance(fromDate, toDate) {
-  const balances = state.balances || [];
-  const positions = state.positions || [];
-  const transactions = state.transactions || [];
-  
-  const start = new Date(fromDate);
-  const end = new Date(toDate);
-  
-  // Valores: saldo inicial, saldo final, investido, resgatado, ganho/perda
-  let initialValue = 0, finalValue = 0, invested = 0, withdrawn = 0;
-  
-  // Saldo inicial (em BRL)
-  const initialBalance = balances.find(b => {
-    const d = new Date(b.date);
-    return d <= start;
-  });
-  if (initialBalance) {
-    initialValue = initialBalance.amount || 0;
-  }
-  
-  // Transações no período
-  transactions.forEach(tx => {
-    const txDate = new Date(tx.date);
-    if (txDate >= start && txDate <= end) {
-      if (tx.type === 'income') invested += tx.value;
-      else if (tx.type === 'expense') withdrawn += tx.value;
-    }
-  });
-  
-  // Saldo final (em BRL)
-  const finalBalance = balances.length > 0 ? balances[balances.length - 1] : null;
-  if (finalBalance) {
-    finalValue = finalBalance.amount || 0;
-  }
-  
-  // Ganho/Perda = Saldo Final - Saldo Inicial - Investido + Resgatado
-  const gainLoss = finalValue - initialValue - invested + withdrawn;
-  
-  // Retorno % = (Ganho / Saldo Inicial) * 100
-  const returnPercent = initialValue > 0 ? ((gainLoss / initialValue) * 100).toFixed(2) : 0;
-  
-  return {
-    initialValue,
-    finalValue,
-    invested,
-    withdrawn,
-    gainLoss,
-    returnPercent,
-    days: Math.floor((end - start) / (1000 * 60 * 60 * 24))
-  };
-}
-
-function getBenchmarkPerformance(benchmark, returnPercent = 0.085) {
-  if (benchmark === 'CDB') {
-    return {
-      name: BENCHMARKS[benchmark].name,
-      returnPercent: (returnPercent * 100).toFixed(2),
-      currency: 'BRL',
-      type: 'fixed'
-    };
-  }
-  
-  // Para IBOV e SP500, seria necessário API histórica
-  // Por enquanto, retornamos estimativa anual
-  const estimates = {
-    'IBOV': 9.5,
-    'SP500': 10.2
-  };
-  
-  return {
-    name: BENCHMARKS[benchmark].name,
-    returnPercent: estimates[benchmark] || 0,
-    currency: BENCHMARKS[benchmark].currency,
-    type: 'historical'
-  };
-}
-
-function renderPerformanceComparison() {
-  const container = document.getElementById('performanceComparison');
-  if (!container) return;
-  
-  const today = new Date().toISOString().split('T')[0];
-  const oneYearAgo = new Date(Date.now() - 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
-  
-  const yourPerf = calculatePortfolioPerformance(oneYearAgo, today);
-  const ibov = getBenchmarkPerformance('IBOV');
-  const sp500 = getBenchmarkPerformance('SP500');
-  const cdb = getBenchmarkPerformance('CDB');
-  
-  const yourReturnNum = parseFloat(yourPerf.returnPercent);
-  const ibovReturnNum = parseFloat(ibov.returnPercent);
-  const sp500ReturnNum = parseFloat(sp500.returnPercent);
-  const cdbReturnNum = parseFloat(cdb.returnPercent);
-  
-  let html = `
-    <div class="performance-section">
-      <h3>${t('phase13.yourPerformance')}</h3>
-      <div class="performance-cards">
-        <div class="perf-card">
-          <div class="perf-header">
-            <span class="perf-label">${t('phase13.returnRate')}</span>
-            <span class="perf-value ${yourReturnNum >= 0 ? 'positive' : 'negative'}">
-              ${yourReturnNum >= 0 ? '+' : ''}${yourReturnNum.toFixed(2)}%
-            </span>
-          </div>
-          <div class="perf-details">
-            <div class="detail-row">
-              <span>${t('dashboard.initial')}</span>
-              <strong>${fmtMoney(yourPerf.initialValue, 'BRL')}</strong>
-            </div>
-            <div class="detail-row">
-              <span>${t('dashboard.final')}</span>
-              <strong>${fmtMoney(yourPerf.finalValue, 'BRL')}</strong>
-            </div>
-            <div class="detail-row">
-              <span>${t('phase13.gainLoss')}</span>
-              <strong class="${yourPerf.gainLoss >= 0 ? 'positive' : 'negative'}">
-                ${yourPerf.gainLoss >= 0 ? '+' : ''}${fmtMoney(yourPerf.gainLoss, 'BRL')}
-              </strong>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <div class="performance-section">
-      <h3>${t('phase13.benchmarks')}</h3>
-      <div class="benchmark-comparison">
-        <div class="benchmark-row">
-          <div class="benchmark-name">
-            <span class="benchmark-icon">📊</span>
-            ${ibov.name}
-          </div>
-          <div class="benchmark-return">
-            <span class="return-value positive">${ibovReturnNum.toFixed(2)}%</span>
-            ${yourReturnNum >= ibovReturnNum ? 
-              `<span class="badge badge-win">${t('phase13.outperformed')}</span>` :
-              `<span class="badge badge-loss">${t('phase13.underperformed')}</span>`}
-          </div>
-        </div>
-        
-        <div class="benchmark-row">
-          <div class="benchmark-name">
-            <span class="benchmark-icon">📈</span>
-            ${sp500.name}
-          </div>
-          <div class="benchmark-return">
-            <span class="return-value positive">${sp500ReturnNum.toFixed(2)}%</span>
-            ${yourReturnNum >= sp500ReturnNum ? 
-              `<span class="badge badge-win">${t('phase13.outperformed')}</span>` :
-              `<span class="badge badge-loss">${t('phase13.underperformed')}</span>`}
-          </div>
-        </div>
-        
-        <div class="benchmark-row">
-          <div class="benchmark-name">
-            <span class="benchmark-icon">💰</span>
-            ${cdb.name}
-          </div>
-          <div class="benchmark-return">
-            <span class="return-value positive">${cdbReturnNum.toFixed(2)}%</span>
-            ${yourReturnNum >= cdbReturnNum ? 
-              `<span class="badge badge-win">${t('phase13.outperformed')}</span>` :
-              `<span class="badge badge-loss">${t('phase13.underperformed')}</span>`}
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <div class="performance-section">
-      <h3>${t('phase13.ranking')}</h3>
-      <div class="ranking-chart">
-        <div class="ranking-item">
-          <div class="ranking-position">1º</div>
-          <div class="ranking-name">${yourReturnNum >= sp500ReturnNum && yourReturnNum >= ibovReturnNum && yourReturnNum >= cdbReturnNum ? '🏆 Você' : getBestBenchmark([yourReturnNum, sp500ReturnNum, ibovReturnNum, cdbReturnNum])}</div>
-          <div class="ranking-return">${Math.max(yourReturnNum, sp500ReturnNum, ibovReturnNum, cdbReturnNum).toFixed(2)}%</div>
-        </div>
-      </div>
-    </div>
-  `;
-  
-  container.innerHTML = html;
-}
-
-function getBestBenchmark(returns) {
-  const max = Math.max(...returns);
-  if (returns[3] === max) return '💰 CDB';
-  if (returns[2] === max) return '📊 Ibovespa';
-  if (returns[1] === max) return '📈 S&P 500';
-  return '🏆 Você';
-}
-
-/* ========================================
-   FASE 14: HUB DE NOTÍCIAS (Market News)
-   ======================================== */
-
-// Notícias simuladas com dados reais de fontes financeiras
-const NEWS_FEEDS = [
-  { id: 'ibov', name: 'Ibovespa', url: 'https://www.b3.com.br/', emoji: '📊' },
-  { id: 'bcb', name: 'Banco Central', url: 'https://www.bcb.gov.br/', emoji: '🏦' },
-  { id: 'reuters', name: 'Reuters Brasil', url: 'https://www.reuters.com/pt/', emoji: '📰' },
-  { id: 'investing', name: 'Investing.com', url: 'https://www.investing.com/news/', emoji: '📈' },
-];
-
-const NEWS_CATEGORIES = {
-  market: 'categoryMarket',
-  assets: 'categoryAssets',
-  economy: 'categoryEconomy'
-};
-
-function initializeNews() {
-  if (!state.news) {
-    state.news = {
-      articles: [],
-      lastUpdate: null,
-      favorites: [],
-      archived: []
-    };
-  }
-}
-
-function generateMockNews() {
-  const now = Date.now();
-  const mockArticles = [
-    {
-      id: 'news-1',
-      title: 'Ibovespa fecha em alta impulsionado por mineradoras',
-      source: 'Ibovespa',
-      category: 'market',
-      date: now - (1 * 60 * 60 * 1000),
-      summary: 'O Ibovespa subiu 2,5% com destaque para ações de mineradoras e energia.',
-      url: '#'
-    },
-    {
-      id: 'news-2',
-      title: 'Banco Central mantém taxa Selic em 10,5%',
-      source: 'Banco Central',
-      category: 'economy',
-      date: now - (3 * 60 * 60 * 1000),
-      summary: 'Copom mantém taxa de juros inalterada pela segunda reunião consecutiva.',
-      url: '#'
-    },
-    {
-      id: 'news-3',
-      title: 'Dólar fecha estável ante real',
-      source: 'Reuters Brasil',
-      category: 'economy',
-      date: now - (5 * 60 * 60 * 1000),
-      summary: 'Dólar comercial fecha estável perto de R$ 5,05 em dia de baixa volatilidade.',
-      url: '#'
-    },
-    {
-      id: 'news-4',
-      title: 'Tech: Ações de big techs puxam S&P 500 para novo recorde',
-      source: 'Investing.com',
-      category: 'assets',
-      date: now - (6 * 60 * 60 * 1000),
-      summary: 'Apple, Microsoft e Nvidia lideram rally dos índices americanos.',
-      url: '#'
-    },
-    {
-      id: 'news-5',
-      title: 'Petrobras anuncia distribuição de dividendos',
-      source: 'B3',
-      category: 'assets',
-      date: now - (12 * 60 * 60 * 1000),
-      summary: 'Petrobras anuncia payout adicional de R$ 0,50 por ação para este trimestre.',
-      url: '#'
-    },
-    {
-      id: 'news-6',
-      title: 'Inflação americana sobe para 3,2% em agosto',
-      source: 'Reuters Brasil',
-      category: 'economy',
-      date: now - (24 * 60 * 60 * 1000),
-      summary: 'IPC americano mostra alta acima das expectativas dos analistas.',
-      url: '#'
-    }
-  ];
-  
-  return mockArticles;
-}
-
-async function fetchNewsArticles() {
-  initializeNews();
-  
-  // Em um app real, buscaríamos de uma API de notícias
-  // Por enquanto, usamos dados simulados (podem ser substituídos por RSS real)
-  const articles = generateMockNews();
-  
-  state.news.articles = articles;
-  state.news.lastUpdate = Date.now();
-  
-  // Salvar em IndexedDB
-  await put('news', { key: 'articles', value: articles });
-  await put('news', { key: 'lastUpdate', value: state.news.lastUpdate });
-  
-  // Notificação de notícia importante
-  const newArticles = articles.slice(0, 2);
-  if (newArticles.length > 0 && Notification.permission === 'granted') {
-    const title = '📰 Novas notícias financeiras';
-    const options = {
-      body: newArticles[0].title,
-      icon: 'icon-192.png',
-      tag: 'news-notification'
-    };
-    new Notification(title, options);
-  }
-}
-
-function formatNewsDate(timestamp) {
-  const now = Date.now();
-  const diff = now - timestamp;
-  
-  const mins = Math.floor(diff / 60000);
-  const hours = Math.floor(diff / 3600000);
-  const days = Math.floor(diff / 86400000);
-  
-  if (mins < 1) return 'Agora';
-  if (mins < 60) return `${mins}m`;
-  if (hours < 24) return `${hours}h`;
-  if (days < 7) return `${days}d`;
-  
-  return new Date(timestamp).toLocaleDateString('pt-BR');
-}
-
-function renderNewsHub() {
-  initializeNews();
-  
-  const container = id('newsHubContainer');
-  if (!container) return;
-  
-  const selectedCategory = state.ui.newsCategory || 'all';
-  const showArchived = state.ui.newsShowArchived || false;
-  
-  let articles = state.news.articles || [];
-  
-  // Filtrar por categoria
-  if (selectedCategory !== 'all') {
-    articles = articles.filter(a => a.category === selectedCategory);
-  }
-  
-  // Filtrar arquivadas
-  articles = articles.filter(a => {
-    const isArchived = state.news.archived.includes(a.id);
-    return showArchived ? isArchived : !isArchived;
-  });
-  
-  const isFavorite = (id) => state.news.favorites.includes(id);
-  const isArchived = (id) => state.news.archived.includes(id);
-  
-  let html = `
-    <div class="news-hub-header">
-      <h2>${t('phase14.newsHub')}</h2>
-      <div class="news-controls">
-        <select id="newsCategory" class="news-filter-select">
-          <option value="all">Todas as categorias</option>
-          <option value="market">📊 ${t('phase14.categoryMarket')}</option>
-          <option value="assets">💼 ${t('phase14.categoryAssets')}</option>
-          <option value="economy">💹 ${t('phase14.categoryEconomy')}</option>
-        </select>
-        <label class="news-checkbox">
-          <input type="checkbox" id="showArchivedNews" ${showArchived ? 'checked' : ''}>
-          ${t('phase14.showArchived')}
-        </label>
-        <button id="btnRefreshNews" class="btn-secondary">${t('phase14.refresh')}</button>
-      </div>
-    </div>
-  `;
-  
-  if (!articles || articles.length === 0) {
-    html += `<div class="news-empty">${t('phase14.noNews')}</div>`;
-  } else {
-    html += '<div class="news-list">';
-    articles.forEach(article => {
-      const categoryIcon = {
-        market: '📊',
-        assets: '💼',
-        economy: '💹'
-      }[article.category] || '📰';
-      
-      html += `
-        <div class="news-card" data-id="${article.id}">
-          <div class="news-header">
-            <span class="news-category-badge">${categoryIcon} ${t('phase14.category')}</span>
-            <span class="news-date">${formatNewsDate(article.date)}</span>
-          </div>
-          <h3 class="news-title">${article.title}</h3>
-          <p class="news-summary">${article.summary}</p>
-          <div class="news-footer">
-            <span class="news-source">${article.source}</span>
-            <div class="news-actions">
-              <button class="btn-favorite ${isFavorite(article.id) ? 'active' : ''}" 
-                      data-id="${article.id}" title="${t('phase14.favorite')}">
-                ${isFavorite(article.id) ? '⭐' : '☆'} ${t('phase14.favorite')}
-              </button>
-              <button class="btn-archive ${isArchived(article.id) ? 'active' : ''}" 
-                      data-id="${article.id}" title="${isArchived(article.id) ? t('phase14.unarchive') : t('phase14.archive')}">
-                ${isArchived(article.id) ? '↩️' : '📦'} ${isArchived(article.id) ? t('phase14.unarchive') : t('phase14.archive')}
-              </button>
-            </div>
-          </div>
-        </div>
-      `;
-    });
-    html += '</div>';
-  }
-  
-  container.innerHTML = html;
-  bindNewsEvents();
-}
-
-function bindNewsEvents() {
-  on('newsCategory', 'change', (e) => {
-    state.ui.newsCategory = e.target.value;
-    renderNewsHub();
-  });
-  
-  on('showArchivedNews', 'change', (e) => {
-    state.ui.newsShowArchived = e.target.checked;
-    renderNewsHub();
-  });
-  
-  on('btnRefreshNews', 'click', async () => {
-    await fetchNewsArticles();
-    renderNewsHub();
-  });
-  
-  // Favoritar/Desfavoritar
-  document.querySelectorAll('.btn-favorite').forEach(btn => {
-    btn.addEventListener('click', async (e) => {
-      const id = e.currentTarget.dataset.id;
-      const idx = state.news.favorites.indexOf(id);
-      if (idx > -1) {
-        state.news.favorites.splice(idx, 1);
-      } else {
-        state.news.favorites.push(id);
-      }
-      await put('news', { key: 'favorites', value: state.news.favorites });
-      renderNewsHub();
-    });
-  });
-  
-  // Arquivar/Recuperar
-  document.querySelectorAll('.btn-archive').forEach(btn => {
-    btn.addEventListener('click', async (e) => {
-      const id = e.currentTarget.dataset.id;
-      const idx = state.news.archived.indexOf(id);
-      if (idx > -1) {
-        state.news.archived.splice(idx, 1);
-      } else {
-        state.news.archived.push(id);
-      }
-      await put('news', { key: 'archived', value: state.news.archived });
-      renderNewsHub();
-    });
-  });
-}
-
-async function scheduleNewsCheck() {
-  // Atualizar notícias a cada 30 minutos
-  setInterval(async () => {
-    try {
-      await fetchNewsArticles();
-      renderNewsHub();
-    } catch (e) {
-      console.warn('Erro ao atualizar notícias:', e);
-    }
-  }, 30 * 60 * 1000);
-}
-
-/* ========================================
-   FASE 15: CLOUD SYNC + GOOGLE LOGIN
-   ======================================== */
-
-function initializeCloudSync() {
-  if (!state.cloudSync) {
-    state.cloudSync = {
-      enabled: false,
-      googleUser: null,
-      lastSync: null,
-      autoSyncEnabled: true,
-      syncInterval: 60 * 60 * 1000 // 1 hora
-    };
-  }
-}
-
-async function handleGoogleLogin() {
-  // Simulação de Google OAuth (em produção usaria Google Sign-In API)
-  const mockUser = {
-    id: 'google_user_' + Date.now(),
-    email: 'user@gmail.com',
-    name: 'ProF User',
-    accessToken: 'mock_token_' + Math.random().toString(36)
-  };
-  
-  state.cloudSync.googleUser = mockUser;
-  state.cloudSync.enabled = true;
-  
-  await put('settings', { key: 'cloudSync', value: state.cloudSync });
-  
-  showNotification('🔐 Google conectado', `Bem-vindo, ${mockUser.name}!`);
-  renderCloudSyncPanel();
-  await syncToCloud();
-}
-
-async function handleGoogleLogout() {
-  state.cloudSync.enabled = false;
-  state.cloudSync.googleUser = null;
-  
-  await put('settings', { key: 'cloudSync', value: state.cloudSync });
-  
-  showNotification('👋 Desconectado', 'Sua sessão com Google foi encerrada.');
-  renderCloudSyncPanel();
-}
-
-async function syncToCloud() {
-  if (!state.cloudSync.enabled || !state.cloudSync.googleUser) {
-    console.warn('Cloud sync não está habilitado');
-    return;
-  }
-  
-  showNotification('⏳ Sincronizando...', t('phase15.syncing'));
-  
-  try {
-    // Preparar dados para sincronização
-    const backupData = {
-      timestamp: Date.now(),
-      version: '1.0',
-      accounts: state.accounts,
-      balances: state.balances,
-      transactions: state.transactions,
-      budgets: state.budgets,
-      watchlist: state.watchlist,
-      positions: state.positions,
-      dividends: state.dividends,
-      bills: state.bills,
-      assets: state.assets,
-      recurrences: state.recurrences,
-      priceAlerts: state.priceAlerts,
-      news: state.news
-    };
-    
-    // Simular envio para Google Drive (em produção usaria Google Drive API)
-    const backupContent = JSON.stringify(backupData, null, 2);
-    
-    // Salvar localmente referência da sincronização
-    state.cloudSync.lastSync = Date.now();
-    state.cloudSync.lastBackupSize = backupContent.length;
-    
-    await put('settings', { key: 'cloudSync', value: state.cloudSync });
-    
-    showNotification('✅ Sincronizado', t('phase15.syncSuccess'));
-    renderCloudSyncPanel();
-    
-  } catch (e) {
-    console.error('Erro ao sincronizar para nuvem:', e);
-    showNotification('❌ Erro', t('phase15.syncError'));
-  }
-}
-
-async function restoreFromCloud() {
-  if (!state.cloudSync.enabled || !state.cloudSync.googleUser) {
-    console.warn('Cloud sync não está habilitado');
-    return;
-  }
-  
-  const confirmRestore = confirm('⚠️ Isto sobrescreverá todos os dados locais com o backup da nuvem. Tem certeza?');
-  if (!confirmRestore) return;
-  
-  try {
-    showNotification('⏳ Restaurando...', 'Aguarde...');
-    
-    // Simular restauração do Google Drive (em produção usaria Google Drive API)
-    // Por enquanto, apenas confirmamos que seria possível
-    
-    showNotification('✅ Restaurado', 'Dados restaurados da nuvem com sucesso!');
-    
-    // Em produção, recarregar os dados da nuvem
-    // window.location.reload();
-    
-  } catch (e) {
-    console.error('Erro ao restaurar da nuvem:', e);
-    showNotification('❌ Erro', 'Não foi possível restaurar os dados.');
-  }
-}
-
-function renderCloudSyncPanel() {
-  const container = document.querySelector('.api-group');
-  if (!container) return;
-  
-  initializeCloudSync();
-  const isEnabled = state.cloudSync.enabled;
-  const user = state.cloudSync.googleUser;
-  
-  let syncHtml = `
-    <div class="cloud-sync-section">
-      <h3 data-i18n="phase15.cloudSync">${t('phase15.cloudSync')}</h3>
-      <div class="sync-status">
-        <div class="status-indicator ${isEnabled ? 'active' : 'inactive'}"></div>
-        <span class="status-text">
-          ${isEnabled ? 
-            `✅ ${user ? user.name + ' (' + user.email + ')' : t('phase15.syncEnabled')}` : 
-            `⚪ ${t('phase15.syncDisabled')}`}
-        </span>
-      </div>
-      ${isEnabled && state.cloudSync.lastSync ? `
-        <p class="sync-info">
-          <strong>${t('phase15.lastSync')}:</strong> ${new Date(state.cloudSync.lastSync).toLocaleString(state.settings.lang === 'pt-BR' ? 'pt-BR' : state.settings.lang)}
-        </p>
-      ` : ''}
-      <div class="sync-actions">
-        ${!isEnabled ? `
-          <button id="btnGoogleLogin" class="primary-btn" data-i18n="phase15.googleLogin">
-            🔐 ${t('phase15.googleLogin')}
-          </button>
-        ` : `
-          <button id="btnSyncNow" class="primary-btn" data-i18n="phase15.syncNow">
-            📤 ${t('phase15.syncNow')}
-          </button>
-          <button id="btnRestoreCloud" class="secondary-btn" data-i18n="phase15.restoreCloud">
-            📥 ${t('phase15.restoreCloud')}
-          </button>
-          <button id="btnGoogleLogout" class="secondary-btn" data-i18n="phase15.googleLogout">
-            👋 ${t('phase15.googleLogout')}
-          </button>
-        `}
-      </div>
-      <label class="checkline ${!isEnabled ? 'disabled' : ''}">
-        <input type="checkbox" id="autoSyncToggle" ${state.cloudSync.autoSyncEnabled && isEnabled ? 'checked' : ''} ${!isEnabled ? 'disabled' : ''}>
-        <span data-i18n="phase15.autoSync">${t('phase15.autoSync')}</span>
-      </label>
-    </div>
-  `;
-  
-  // Inserir após o grupo de API
-  const apiSection = container.parentElement;
-  let syncSection = apiSection.querySelector('.cloud-sync-section');
-  if (!syncSection) {
-    const div = document.createElement('div');
-    div.className = 'settings-group';
-    div.innerHTML = syncHtml;
-    apiSection.insertBefore(div, apiSection.lastChild);
-  } else {
-    syncSection.parentElement.innerHTML = syncHtml;
-  }
-  
-  bindCloudSyncEvents();
-}
-
-function bindCloudSyncEvents() {
-  on('btnGoogleLogin', 'click', handleGoogleLogin);
-  on('btnGoogleLogout', 'click', handleGoogleLogout);
-  on('btnSyncNow', 'click', syncToCloud);
-  on('btnRestoreCloud', 'click', restoreFromCloud);
-  on('autoSyncToggle', 'change', (e) => {
-    state.cloudSync.autoSyncEnabled = e.target.checked;
-    put('settings', { key: 'cloudSync', value: state.cloudSync });
-  });
-}
-
-async function scheduleAutoSync() {
-  if (state.cloudSync.autoSyncEnabled && state.cloudSync.enabled) {
-    setInterval(async () => {
-      try {
-        await syncToCloud();
-      } catch (e) {
-        console.warn('Erro ao sincronizar automaticamente:', e);
-      }
-    }, state.cloudSync.syncInterval);
-  }
-}
-
 function bindEvents() {
-  // Notificações
-  on('btnNotifications', 'click', toggleNotificationsPanel);
-  on('gearMenu', 'click', closeNotificationsPanel);
-
   // Os botões de idioma são recriados a cada render, então o clique é capturado
   // no contêiner, que é fixo.
   // Fase 6 — títulos a pagar e receber
@@ -13425,8 +10674,6 @@ function bindEvents() {
   on('btnSaveApi', 'click', saveApiKeys);
   on('btnTestApi', 'click', testApis);
   on('btnApiWizard', 'click', openApiSetup);
-  on('btnUpdateBCB', 'click', handleUpdateBCB);
-  on('btnOpenIR', 'click', openIRAssistant);
   on('btnB3Import', 'click', openB3Import);
   on('btnDivFetch', 'click', () => fetchAutoDividends(false));
   on('btnDivAdd', 'click', () => openDividendModal());
@@ -13441,7 +10688,7 @@ function bindEvents() {
   on('dashBaseCurrency', 'change', async (e) => {
     state.settings.baseCurrency = e.target.value;
     await put('settings', { key: 'baseCurrency', value: e.target.value });
-    await renderAll();
+    renderAll();
   });
 
   on('navControls', 'click', (e) => {
@@ -13461,7 +10708,7 @@ function bindEvents() {
     if (!btn) return;
     state.settings.lang = btn.dataset.lang;
     await put('settings', { key: 'lang', value: btn.dataset.lang });
-    await applyLang();
+    applyLang();
   });
   on('themeSelect', 'change', async (e) => {
     state.settings.theme = e.target.value;
@@ -13471,7 +10718,7 @@ function bindEvents() {
   on('baseCurrencySelect', 'change', async (e) => {
     state.settings.baseCurrency = e.target.value;
     await put('settings', { key: 'baseCurrency', value: e.target.value });
-    await renderAll();
+    renderAll();
   });
   on('btnAddAccount', 'click', () => openAccountModal());
   on('btnAddBalance', 'click', openBalanceModal);
@@ -13487,9 +10734,6 @@ function bindEvents() {
     state.ui.txType = 'all'; state.ui.txAccount = 'all'; state.ui.txMonth = '';
     renderTransactions();
   });
-
-  // Fase 4 — recorrências
-  on('btnAddRecurrence', 'click', () => openRecurrenceModal());
 
   // Fase 2 — orçamentos
   on('btnAddBudget', 'click', () => openBudgetModal());
@@ -13532,17 +10776,6 @@ function bindEvents() {
   on('gearMenu', 'click', (e) => e.stopPropagation());
   document.addEventListener('click', () => toggleGear(false));
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') toggleGear(false); });
-  
-  // Botão de atualização (refresh)
-  on('btnRefresh', 'click', async (e) => { 
-    e.stopPropagation(); 
-    const btn = document.getElementById('btnRefresh');
-    btn.disabled = true;
-    btn.style.opacity = '0.5';
-    await handleRefresh();
-    btn.disabled = false;
-    btn.style.opacity = '1';
-  });
   on('btnAdvanced', 'click', () => { toggleGear(false); showTab('settings'); });
   on('helpToggle', 'change', async (e) => {
     state.settings.showHelp = e.target.checked;
@@ -14067,9 +11300,6 @@ async function init() {
   applyTheme();
   try {
     bindEvents();
-    // Fase 6 — Verificar alertas de orçamento
-    await checkBudgetAlerts();
-    requestNotificationPermission().catch(() => {});
   } catch (e) {
     console.error('Falha ao ligar os eventos da interface:', e);
     showFatal('Parte da interface não pôde ser inicializada. Se você acabou de publicar, confirme que o index.html também foi atualizado. Detalhe: ' + (e && e.message ? e.message : e));
@@ -14105,22 +11335,7 @@ async function init() {
   applyLang();
   applyTheme();
   applyHelp();
-  
-  // Gerar instâncias de recorrências vencidas
-  try {
-    await generateRecurringInstances();
-  } catch (e) {
-    console.warn('Falha ao gerar instâncias recorrentes:', e);
-  }
-
-  // Gerar notificações
-  try {
-    await shouldNotify();
-  } catch (e) {
-    console.warn('Falha ao gerar notificações:', e);
-  }
-  
-  await renderAll();
+  renderAll();
   showTab('dashboard');
   renderSecuritySettings();
 
@@ -14138,22 +11353,9 @@ async function init() {
   renderYouVsMarket().catch((e) => console.warn('Você x Mercado:', e));
   askTaxPreference().catch(() => {});
 
-  // Service Worker e notificações nativas
-  registerServiceWorker().catch((e) => console.warn('Erro ao registrar SW:', e));
-  requestNotificationPermission().catch((e) => console.warn('Erro ao pedir permissão de notificação:', e));
-  
-  // Fase 13: Inicializar monitor de eventos do mercado
-  scheduleEventCheck().catch((e) => console.warn('Erro ao agendar verificação de eventos:', e));
-  
-  // Fase 14: Buscar notícias iniciais e agendar atualização
-  initializeNews();
-  fetchNewsArticles().catch((e) => console.warn('Erro ao buscar notícias iniciais:', e));
-  scheduleNewsCheck().catch((e) => console.warn('Erro ao agendar verificação de notícias:', e));
-  
-  // Fase 15: Cloud Sync e Google Login
-  initializeCloudSync();
-  scheduleAutoSync().catch((e) => console.warn('Erro ao agendar sincronização automática:', e));
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./service-worker.js').catch(() => {});
+  }
 }
 
 init();
-

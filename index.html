@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#1a1a2e">
   <title>ProF Controller</title>
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="styles.css?v=45">
+  <link rel="stylesheet" href="styles.css?v=37">
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 </head>
 <body>
@@ -17,24 +17,9 @@
       <span class="brand-name">ProF Controller</span>
     </h1>
     <div class="topbar-actions">
-      <button id="btnNotifications" class="notification-btn" type="button" aria-label="Notificações" title="Notificações">
-        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-        <span id="notifBadge" class="notification-badge hidden">0</span>
-      </button>
-      <button id="btnRefresh" class="refresh-btn" type="button" aria-label="Atualizar tudo" title="Atualizar tudo (BCB, cotações, proventos...)">
-        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><polyline points="23 20 23 14 17 14"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64M3.51 15A9 9 0 0 0 18.36 18.36"/></svg>
-      </button>
       <button id="btnGear" class="gear-btn" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="gearMenu" aria-label="Preferências" title="Preferências">
         <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
       </button>
-      <div id="notificationsPanel" class="gear-menu hidden" role="dialog" aria-labelledby="notifTitle">
-        <h3 id="notifTitle" data-i18n="notification.title">Notificações</h3>
-        <div id="notificationsList" style="max-height: 400px; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px; padding: 0;">
-          <!-- Renderizado dinamicamente -->
-        </div>
-        <p id="notifEmpty" class="hint" data-i18n="notification.noNew" style="margin-top: 12px;">Sem notificações novas.</p>
-      </div>
-
       <div id="gearMenu" class="gear-menu hidden" role="dialog" aria-labelledby="gearTitle">
         <h3 id="gearTitle" data-i18n="gear.title">Preferências</h3>
         <label for="themeSelect" data-i18n="gear.theme">Tema</label>
@@ -106,13 +91,7 @@
         </div>
       </div>
       <div class="cards cards-spaced">
-        <div class="card nav-card" id="youVsMarket"></div>
-      </div>
-      <div class="cards cards-spaced">
-        <button id="btnOpenIR" class="card nav-card" type="button" style="text-align: left; padding: 20px; cursor: pointer; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none;">
-          <h3 style="margin: 0 0 8px 0; color: white;">📋 Assistente de IR</h3>
-          <p style="margin: 0; font-size: 12px; color: rgba(255,255,255,0.9);">Calcule seu imposto de renda estimado</p>
-        </button>
+        <div class="card nav-card hidden" id="ymCard"></div>
       </div>
       <div class="cards cards-spaced">
         <div class="card nav-card">
@@ -237,16 +216,6 @@
         </table>
       </div>
     </section>
-    <!-- RECORRÊNCIAS -->
-    <section id="tab-recurrences" class="tab-panel">
-      <p class="tab-intro" data-i18n="help.recurrences"></p>
-      <div class="panel-header">
-        <h2 data-i18n="recurrence.title">Recorrências</h2>
-        <button id="btnAddRecurrence" class="primary-btn" data-i18n="recurrence.add">+ Nova recorrência</button>
-      </div>
-      <p id="recurrencesEmpty" class="empty-state hidden" data-i18n="recurrence.empty">Nenhuma recorrência cadastrada.</p>
-      <div id="recurrencesList" class="recurrences-list"></div>
-    </section>
     <!-- ORÇAMENTOS -->
     <section id="tab-budgets" class="tab-panel">
       <p class="tab-intro" data-i18n="help.budgets"></p>
@@ -365,9 +334,6 @@
         </div>
       </div>
 
-      <!-- FASE 13 — Você x Mercado -->
-      <div id="performanceComparison" class="performance-comparison-section"></div>
-
       <div id="invDup" class="dup-warning hidden"></div>
       <p id="invEmpty" class="empty-state hidden"></p>
       <div class="table-scroll">
@@ -389,13 +355,6 @@
       <div class="table-scroll">
         <table id="divTable"><thead><tr></tr></thead><tbody></tbody></table>
       </div>
-
-      <div class="panel-header panel-header-spaced">
-        <h2 data-i18n="alerts.title">Alertas de Preço</h2>
-        <button id="btnPriceAlertAdd" class="primary-btn" data-i18n="alerts.add">+ Novo Alerta</button>
-      </div>
-      <p id="priceAlertsEmpty" class="empty-state hidden"></p>
-      <div id="priceAlertsContainer" class="alerts-list"></div>
 
       <div class="panel-header panel-header-spaced">
         <h2 data-i18n="alloc.title">Metas e aporte inteligente</h2>
@@ -451,18 +410,21 @@
       <div id="taxBody"></div>
     </section>
 
-    <!-- NOTÍCIAS (FASE 14) -->
+    <!-- NOTÍCIAS -->
     <section id="tab-news" class="tab-panel">
       <p class="tab-intro" data-i18n="help.news"></p>
-      <div style="padding: 16px 0;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-          <div id="newsFilters" class="news-filters"></div>
-          <div id="newsStatus" class="hint"></div>
-          <button id="btnNewsRefresh" class="secondary-btn" type="button" onclick="refreshNews(true)">Atualizar</button>
+      <div class="panel-header">
+        <h2 data-i18n="news.title">Notícias</h2>
+        <div class="news-actions">
+          <span id="newsStatus" class="hint" aria-live="polite"></span>
+          <button id="btnNewsRefresh" class="secondary-btn" type="button" data-i18n="news.refresh">Atualizar</button>
         </div>
-        <div id="newsList" class="news-list-container"></div>
-        <div id="newsShortcuts" class="news-shortcuts"></div>
       </div>
+      <div id="newsFilters" class="news-filters"></div>
+      <div id="newsList" class="news-list"></div>
+      <h3 class="section-sub" data-i18n="news.shortcuts">Atalhos por ativo</h3>
+      <div id="newsShortcuts" class="news-shortcuts"></div>
+      <p class="hint news-disclaimer" data-i18n="news.disclaimer"></p>
     </section>
 
     <!-- CONFIGURAÇÕES -->
@@ -476,7 +438,6 @@
       </div>
       <div class="settings-group sec-group" id="securityGroup"></div>
       <div class="settings-group" id="taxGroup"></div>
-      <div class="settings-group" id="updateGroup"></div>
       <div class="settings-group api-group">
         <h3 data-i18n="api.title">Cotações de mercado</h3>
         <p class="hint" data-i18n="api.hint">Chaves gratuitas da Finnhub, Twelve Data e brapi.dev.</p>
@@ -494,14 +455,6 @@
           <button id="btnApiWizard" class="secondary-btn" type="button" data-i18n="apiw.open">Assistente de chaves</button>
         </div>
         <div id="apiTestResult"></div>
-      </div>
-      <div class="settings-group">
-        <h3>Fase 13 — Você x Mercado</h3>
-        <p class="hint">Atualizar taxas de referência (SELIC, CDI, USD/BRL) do Banco Central</p>
-        <div class="api-actions">
-          <button id="btnUpdateBCB" class="primary-btn" type="button">Atualizar taxas BCB</button>
-        </div>
-        <div id="bcbUpdateResult"></div>
       </div>
       <div class="settings-group">
         <h3 data-i18n="settings.backup">Backup dos dados</h3>
@@ -525,10 +478,8 @@
       <div id="modalBody"></div>
     </div>
   </div>
-
-
   <div id="toast" class="toast hidden"></div>
   <div id="secOverlay" class="sec-overlay hidden" role="dialog" aria-modal="true"></div>
-  <script src="app.js?v=45"></script>
+  <script src="app.js?v=37"></script>
 </body>
 </html>
