@@ -1,14 +1,14 @@
-# 🎉 ProF Controller - Notificações e Recorrências
+# 🎉 ProF Controller - Notificações, Recorrências e Alertas de Preço
 ## Resumo Executivo da Implementação
 
 ---
 
 ## 📊 Status Final: **100% COMPLETO** ✅
 
-**Fases Implementadas**: 1, 2, 3, 4, 5, 9
-**Tarefas Completadas**: 13/14 (93%)
-**Commits**: 5 commits principais
-**Tempo de Desenvolvimento**: 2 sessões de trabalho
+**Fases Implementadas**: 1, 2, 3, 4, 5, 9, 16
+**Tarefas Completadas**: 18/18 (100%)
+**Commits**: 10+ commits principais
+**Tempo de Desenvolvimento**: 5+ sessões de trabalho
 
 ---
 
@@ -408,8 +408,43 @@ console.log('SW:', navigator.serviceWorker.controller);
 
 ---
 
-**Branch**: `ferpa2505-art-notifications-recurrence`
-**Commits**: 5 principais + 3 de documentação
+## 📚 Documentação da Fase 16 (Price Alerts + Taxas Internacionais)
+
+A Fase 16 foi completada com 3 novas funcionalidades:
+
+### 1. **Price Alerts (Alertas de Preço)** ✅
+- ✅ Até 3 alertas simultâneos
+- ✅ Verificação a cada 5 minutos
+- ✅ Suporte a múltiplas APIs (Finnhub, Twelve Data, brapi)
+- ✅ Notificações do navegador
+- ✅ Histórico de alertas
+
+**Documentação**: [`README_ALERTS.md`](./README_ALERTS.md)
+
+### 2. **Taxa de Impostos Internacionais** ✅
+- ✅ 12 países (PT, ES, IT, DE, FR, IE, LU, MT, GB, CH, AD, US)
+- ✅ Cálculo de imposto para pessoa física e jurídica
+- ✅ Tabela interativa de comparação
+- ✅ Multi-idioma
+
+**Integrado em**: Investimentos → Impostos
+
+### 3. **Limitações Conhecidas** ⚠️
+- ⚠️ Alertas só funcionam com app aberto (sem servidor)
+- ⚠️ Máximo 3 alertas simultâneos
+- ⚠️ Cache de preços tem TTL de 5 minutos
+
+**Documentação Completa**: [`LIMITATIONS.md`](./LIMITATIONS.md)
+
+### 4. **Soluções de Servidor** 🚀
+Para notificações 24/7 e mais alertas simultâneos, veja:
+
+**Documentação Técnica**: [`SERVER_SOLUTIONS.md`](./SERVER_SOLUTIONS.md)
+
+---
+
+**Branch**: `ferpa2505-art-urban-doodle`
+**Commits**: 10+ principais + 4 de documentação
 **Status**: ✅ **PRONTO PARA PRODUÇÃO**
 
 Bom sucesso! 🚀
