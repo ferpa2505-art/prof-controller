@@ -1069,7 +1069,16 @@ const I18N = {
     'cmp.max': 'Máximo',
     'cmp.min': 'Mínimo',
     'cmp.benchFlows': 'Aportes usados nos índices',
-    'cmp.flowsSum': 'Soma dos selecionados'
+    'cmp.flowsSum': 'Soma dos selecionados',
+    'phase13.yourPerformance': 'Sua Performance',
+    'phase13.returnRate': 'Retorno anual',
+    'phase13.gainLoss': 'Ganho/Perda',
+    'phase13.benchmarks': 'Comparação com Benchmarks',
+    'phase13.ranking': 'Ranking de Performance',
+    'phase13.outperformed': 'Superou',
+    'phase13.underperformed': 'Abaixo',
+    'dashboard.initial': 'Saldo Inicial',
+    'dashboard.final': 'Saldo Final'
 
   },
   'en': {
@@ -2108,7 +2117,16 @@ const I18N = {
     'cmp.max': 'High',
     'cmp.min': 'Low',
     'cmp.benchFlows': 'Contributions used for indices',
-    'cmp.flowsSum': 'Sum of selected'
+    'cmp.flowsSum': 'Sum of selected',
+    'phase13.yourPerformance': 'Your Performance',
+    'phase13.returnRate': 'Annual return',
+    'phase13.gainLoss': 'Gain/Loss',
+    'phase13.benchmarks': 'Benchmark Comparison',
+    'phase13.ranking': 'Performance Ranking',
+    'phase13.outperformed': 'Outperformed',
+    'phase13.underperformed': 'Underperformed',
+    'dashboard.initial': 'Initial Balance',
+    'dashboard.final': 'Final Balance'
   },
   'es': {
     'tabs.dashboard': 'Panel',
@@ -3146,7 +3164,16 @@ const I18N = {
     'cmp.max': 'Máximo',
     'cmp.min': 'Mínimo',
     'cmp.benchFlows': 'Aportes usados en los índices',
-    'cmp.flowsSum': 'Suma de los seleccionados'
+    'cmp.flowsSum': 'Suma de los seleccionados',
+    'phase13.yourPerformance': 'Tu Desempeño',
+    'phase13.returnRate': 'Retorno anual',
+    'phase13.gainLoss': 'Ganancia/Pérdida',
+    'phase13.benchmarks': 'Comparación con Benchmarks',
+    'phase13.ranking': 'Ranking de Desempeño',
+    'phase13.outperformed': 'Superó',
+    'phase13.underperformed': 'Por debajo',
+    'dashboard.initial': 'Saldo Inicial',
+    'dashboard.final': 'Saldo Final'
   }
 };
 
@@ -5371,7 +5398,7 @@ async function renderAll() {
     ['dashboard', renderDashboard], ['contas', renderAccounts], ['saldos', renderBalances],
     ['transações', renderTransactions], ['recorrências', renderRecurrences], ['orçamentos', renderBudgetDashboard], ['câmbio', renderFx],
     ['portfólio', renderPortfolio], ['gráfico', renderNAV], ['fluxo', renderCashflow], ['títulos', renderBills], ['investimentos', renderInvestments], ['notícias', () => { if (state.ui.tab === 'news') renderNews(); }], ['calculadora', renderCalculator], ['configurações', renderSettings],
-    ['notificações', renderNotificationsBadge], ['fase13', renderPortfolioComparison]
+    ['notificações', renderNotificationsBadge], ['fase13', renderPerformanceComparison]
   ];
   for (const [nome, fn] of etapas) {
     try { 
@@ -12791,6 +12818,206 @@ function renderTaxComparison() {
       </tbody>
     </table></div>
   `;
+}
+
+/* ===== FASE 13 — Você x Mercado (Performance vs Benchmarks) ===== */
+
+const BENCHMARKS = {
+  'IBOV': { name: '📊 Ibovespa', country: 'BR', symbol: '^BVSP', currency: 'BRL' },
+  'SP500': { name: '📈 S&P 500', country: 'US', symbol: '^GSPC', currency: 'USD' },
+  'CDB': { name: '💰 CDB', country: 'BR', symbol: 'CDB', currency: 'BRL', fixed: 0.085 }
+};
+
+function calculatePortfolioPerformance(fromDate, toDate) {
+  const balances = state.balances || [];
+  const positions = state.positions || [];
+  const transactions = state.transactions || [];
+  
+  const start = new Date(fromDate);
+  const end = new Date(toDate);
+  
+  // Valores: saldo inicial, saldo final, investido, resgatado, ganho/perda
+  let initialValue = 0, finalValue = 0, invested = 0, withdrawn = 0;
+  
+  // Saldo inicial (em BRL)
+  const initialBalance = balances.find(b => {
+    const d = new Date(b.date);
+    return d <= start;
+  });
+  if (initialBalance) {
+    initialValue = initialBalance.amount || 0;
+  }
+  
+  // Transações no período
+  transactions.forEach(tx => {
+    const txDate = new Date(tx.date);
+    if (txDate >= start && txDate <= end) {
+      if (tx.type === 'income') invested += tx.value;
+      else if (tx.type === 'expense') withdrawn += tx.value;
+    }
+  });
+  
+  // Saldo final (em BRL)
+  const finalBalance = balances.length > 0 ? balances[balances.length - 1] : null;
+  if (finalBalance) {
+    finalValue = finalBalance.amount || 0;
+  }
+  
+  // Ganho/Perda = Saldo Final - Saldo Inicial - Investido + Resgatado
+  const gainLoss = finalValue - initialValue - invested + withdrawn;
+  
+  // Retorno % = (Ganho / Saldo Inicial) * 100
+  const returnPercent = initialValue > 0 ? ((gainLoss / initialValue) * 100).toFixed(2) : 0;
+  
+  return {
+    initialValue,
+    finalValue,
+    invested,
+    withdrawn,
+    gainLoss,
+    returnPercent,
+    days: Math.floor((end - start) / (1000 * 60 * 60 * 24))
+  };
+}
+
+function getBenchmarkPerformance(benchmark, returnPercent = 0.085) {
+  if (benchmark === 'CDB') {
+    return {
+      name: BENCHMARKS[benchmark].name,
+      returnPercent: (returnPercent * 100).toFixed(2),
+      currency: 'BRL',
+      type: 'fixed'
+    };
+  }
+  
+  // Para IBOV e SP500, seria necessário API histórica
+  // Por enquanto, retornamos estimativa anual
+  const estimates = {
+    'IBOV': 9.5,
+    'SP500': 10.2
+  };
+  
+  return {
+    name: BENCHMARKS[benchmark].name,
+    returnPercent: estimates[benchmark] || 0,
+    currency: BENCHMARKS[benchmark].currency,
+    type: 'historical'
+  };
+}
+
+function renderPerformanceComparison() {
+  const container = document.getElementById('performanceComparison');
+  if (!container) return;
+  
+  const today = new Date().toISOString().split('T')[0];
+  const oneYearAgo = new Date(Date.now() - 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+  
+  const yourPerf = calculatePortfolioPerformance(oneYearAgo, today);
+  const ibov = getBenchmarkPerformance('IBOV');
+  const sp500 = getBenchmarkPerformance('SP500');
+  const cdb = getBenchmarkPerformance('CDB');
+  
+  const yourReturnNum = parseFloat(yourPerf.returnPercent);
+  const ibovReturnNum = parseFloat(ibov.returnPercent);
+  const sp500ReturnNum = parseFloat(sp500.returnPercent);
+  const cdbReturnNum = parseFloat(cdb.returnPercent);
+  
+  let html = `
+    <div class="performance-section">
+      <h3>${t('phase13.yourPerformance')}</h3>
+      <div class="performance-cards">
+        <div class="perf-card">
+          <div class="perf-header">
+            <span class="perf-label">${t('phase13.returnRate')}</span>
+            <span class="perf-value ${yourReturnNum >= 0 ? 'positive' : 'negative'}">
+              ${yourReturnNum >= 0 ? '+' : ''}${yourReturnNum.toFixed(2)}%
+            </span>
+          </div>
+          <div class="perf-details">
+            <div class="detail-row">
+              <span>${t('dashboard.initial')}</span>
+              <strong>${fmtMoney(yourPerf.initialValue, 'BRL')}</strong>
+            </div>
+            <div class="detail-row">
+              <span>${t('dashboard.final')}</span>
+              <strong>${fmtMoney(yourPerf.finalValue, 'BRL')}</strong>
+            </div>
+            <div class="detail-row">
+              <span>${t('phase13.gainLoss')}</span>
+              <strong class="${yourPerf.gainLoss >= 0 ? 'positive' : 'negative'}">
+                ${yourPerf.gainLoss >= 0 ? '+' : ''}${fmtMoney(yourPerf.gainLoss, 'BRL')}
+              </strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="performance-section">
+      <h3>${t('phase13.benchmarks')}</h3>
+      <div class="benchmark-comparison">
+        <div class="benchmark-row">
+          <div class="benchmark-name">
+            <span class="benchmark-icon">📊</span>
+            ${ibov.name}
+          </div>
+          <div class="benchmark-return">
+            <span class="return-value positive">${ibovReturnNum.toFixed(2)}%</span>
+            ${yourReturnNum >= ibovReturnNum ? 
+              `<span class="badge badge-win">${t('phase13.outperformed')}</span>` :
+              `<span class="badge badge-loss">${t('phase13.underperformed')}</span>`}
+          </div>
+        </div>
+        
+        <div class="benchmark-row">
+          <div class="benchmark-name">
+            <span class="benchmark-icon">📈</span>
+            ${sp500.name}
+          </div>
+          <div class="benchmark-return">
+            <span class="return-value positive">${sp500ReturnNum.toFixed(2)}%</span>
+            ${yourReturnNum >= sp500ReturnNum ? 
+              `<span class="badge badge-win">${t('phase13.outperformed')}</span>` :
+              `<span class="badge badge-loss">${t('phase13.underperformed')}</span>`}
+          </div>
+        </div>
+        
+        <div class="benchmark-row">
+          <div class="benchmark-name">
+            <span class="benchmark-icon">💰</span>
+            ${cdb.name}
+          </div>
+          <div class="benchmark-return">
+            <span class="return-value positive">${cdbReturnNum.toFixed(2)}%</span>
+            ${yourReturnNum >= cdbReturnNum ? 
+              `<span class="badge badge-win">${t('phase13.outperformed')}</span>` :
+              `<span class="badge badge-loss">${t('phase13.underperformed')}</span>`}
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="performance-section">
+      <h3>${t('phase13.ranking')}</h3>
+      <div class="ranking-chart">
+        <div class="ranking-item">
+          <div class="ranking-position">1º</div>
+          <div class="ranking-name">${yourReturnNum >= sp500ReturnNum && yourReturnNum >= ibovReturnNum && yourReturnNum >= cdbReturnNum ? '🏆 Você' : getBestBenchmark([yourReturnNum, sp500ReturnNum, ibovReturnNum, cdbReturnNum])}</div>
+          <div class="ranking-return">${Math.max(yourReturnNum, sp500ReturnNum, ibovReturnNum, cdbReturnNum).toFixed(2)}%</div>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  container.innerHTML = html;
+}
+
+function getBestBenchmark(returns) {
+  const max = Math.max(...returns);
+  if (returns[3] === max) return '💰 CDB';
+  if (returns[2] === max) return '📊 Ibovespa';
+  if (returns[1] === max) return '📈 S&P 500';
+  return '🏆 Você';
 }
 
 function bindEvents() {
