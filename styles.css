@@ -1304,3 +1304,40 @@ body.sec-open { overflow: hidden; }
 .news-empty {
   grid-column: 1 / -1; padding: 40px 20px; text-align: center; color: var(--muted); font-size: 14px;
 }
+
+/* ===== FASE 15 — Cloud Sync ===== */
+.cloud-sync-section {
+  padding: 16px 14px; border: 1px solid var(--border); border-radius: 12px;
+  background: color-mix(in srgb, var(--primary) 3%, var(--surface));
+}
+.cloud-sync-section h3 { margin: 0 0 12px; font-size: 15px; color: var(--text); }
+.sync-status {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 12px; padding: 10px 12px;
+  background: var(--surface); border-radius: 8px; border: 1px solid var(--border);
+}
+.status-indicator {
+  width: 12px; height: 12px; border-radius: 50%; background: var(--negative); animation: pulse 2s infinite;
+}
+.status-indicator.active {
+  background: var(--positive); animation: none;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+.status-text {
+  font-size: 13px; font-weight: 500; color: var(--text);
+}
+.sync-info {
+  font-size: 12px; color: var(--muted); margin: 0 0 12px; padding: 8px 10px;
+  background: color-mix(in srgb, var(--accent) 10%, transparent); border-radius: 6px;
+}
+.sync-actions {
+  display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;
+}
+.sync-actions button {
+  padding: 8px 12px; font-size: 13px; flex: 1; min-width: 120px;
+}
+[data-theme="dark"] .cloud-sync-section {
+  background: color-mix(in srgb, var(--primary) 8%, var(--surface));
+}
