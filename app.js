@@ -10903,8 +10903,9 @@ async function checkApiKeys() {
   const comFalha = API_SERVICES.filter((s, i) => resultados[i].status === 'error').map((s) => s.name);
   const modalAberto = !document.getElementById('modal').classList.contains('hidden');
 
-  if (precisaConfigurar && !modalAberto) openApiSetup();
-  else if (comFalha.length) showToast(t('apiw.couldNotCheck').replace('{apis}', comFalha.join(', ')));
+  // Disabled auto-opening of API setup modal (was causing freeze on load)
+  // if (precisaConfigurar && !modalAberto) openApiSetup();
+  if (comFalha.length) showToast(t('apiw.couldNotCheck').replace('{apis}', comFalha.join(', ')));
   return resultados;
 }
 
