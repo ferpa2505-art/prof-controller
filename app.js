@@ -206,6 +206,14 @@ const I18N = {
     'settings.importJSON': 'Importar backup',
     'settings.importCSV': 'Importar planilha (CSV)',
     'settings.importCSVHint': 'Formato: Data;Conta;Moeda;Saldo (AAAA-MM-DD).',
+    'settings.updates': 'Atualizações',
+    'settings.lastUpdate': 'Última atualização',
+    'settings.currentVersion': 'Versão atual',
+    'settings.updateAvailable': 'Atualização disponível',
+    'settings.noUpdates': 'Seu app está atualizado',
+    'settings.checkingUpdates': 'Verificando atualizações...',
+    'toast.updated': 'Atualizado com sucesso',
+    'toast.updateFailed': 'Erro ao atualizar',
     'toast.saved': 'Salvo com sucesso.',
     'toast.deleted': 'Excluído.',
     'toast.invalidValue': 'Informe um valor válido (ex.: 620.000,00).',
@@ -1224,6 +1232,14 @@ const I18N = {
     'settings.importJSON': 'Import backup',
     'settings.importCSV': 'Import spreadsheet (CSV)',
     'settings.importCSVHint': 'Format: Date;Account;Currency;Balance (YYYY-MM-DD).',
+    'settings.updates': 'Updates',
+    'settings.lastUpdate': 'Last update',
+    'settings.currentVersion': 'Current version',
+    'settings.updateAvailable': 'Update available',
+    'settings.noUpdates': 'Your app is up to date',
+    'settings.checkingUpdates': 'Checking for updates...',
+    'toast.updated': 'Updated successfully',
+    'toast.updateFailed': 'Update failed',
     'toast.saved': 'Saved successfully.',
     'toast.deleted': 'Deleted.',
     'toast.invalidValue': 'Enter a valid amount (e.g. 620,000.00).',
@@ -2241,6 +2257,14 @@ const I18N = {
     'settings.importJSON': 'Importar respaldo',
     'settings.importCSV': 'Importar hoja de cálculo (CSV)',
     'settings.importCSVHint': 'Formato: Fecha;Cuenta;Moneda;Saldo (AAAA-MM-DD).',
+    'settings.updates': 'Actualizaciones',
+    'settings.lastUpdate': 'Última actualización',
+    'settings.currentVersion': 'Versión actual',
+    'settings.updateAvailable': 'Actualización disponible',
+    'settings.noUpdates': 'Tu app está actualizada',
+    'settings.checkingUpdates': 'Buscando actualizaciones...',
+    'toast.updated': 'Actualizado correctamente',
+    'toast.updateFailed': 'Error al actualizar',
     'toast.saved': 'Guardado correctamente.',
     'toast.deleted': 'Eliminado.',
     'toast.invalidValue': 'Introduzca un importe válido (ej.: 620.000,00).',
@@ -9111,6 +9135,56 @@ function renderTaxSettings() {
     <p class="hint">${t('tax.soon')}</p>`;
 }
 
+function renderUpdateSettings() {
+  const box = document.getElementById('updateGroup');
+  if (!box) return;
+  
+  const lastUpdate = localStorage.getItem('lastUpdateTime');
+  const currentVersion = localStorage.getItem('appVersion') || '1.0.0';
+  
+  let lastUpdateText = lastUpdate ? 
+    new Date(lastUpdate).toLocaleString(state.settings.lang === 'pt-BR' ? 'pt-BR' : state.settings.lang === 'es' ? 'es-ES' : 'en-US') : 
+    t('settings.noUpdates');
+  
+  box.innerHTML = `<h3>${t('settings.updates')}</h3>
+    <div class="update-info">
+      <p><strong>${t('settings.lastUpdate')}:</strong> ${lastUpdateText}</p>
+      <p><strong>${t('settings.currentVersion')}:</strong> ${currentVersion}</p>
+      <p id="updateStatus"><strong>${t('settings.updateAvailable')}:</strong> ${t('settings.noUpdates')}</p>
+    </div>`;
+}
+
+async function handleRefresh() {
+  try {
+    // Atualizar: BCB, cotações, proventos, alertas
+    const now = new Date().toISOString();
+    localStorage.setItem('lastUpdateTime', now);
+    
+    // Recarregar dados de cotações
+    await refreshExchangeRates(true);
+    
+    // Recarregar dados de proventos se existirem
+    if (state.settings.dividendSync) {
+      await loadDividends();
+    }
+    
+    // Verificar preços das alertas
+    await checkPriceAlerts();
+    
+    // Atualizar UI completamente
+    await renderAll();
+    
+    // Mostrar notificação
+    showToast(t('toast.updated') || 'Atualizado com sucesso');
+    
+    // Rerender update settings
+    renderUpdateSettings();
+  } catch (e) {
+    console.error('Erro ao atualizar:', e);
+    showToast(t('toast.updateFailed') || 'Erro ao atualizar');
+  }
+}
+
 
 /* ================= FASE 13 — Calculadora financeira =================
    Quatro módulos:
@@ -11048,6 +11122,7 @@ function renderSettings() {
   renderApiSettings();
   renderSecuritySettings();
   renderTaxSettings();
+  renderUpdateSettings();
 }
 
 /* ---------- Modais ---------- */
@@ -12565,6 +12640,17 @@ function bindEvents() {
   on('gearMenu', 'click', (e) => e.stopPropagation());
   document.addEventListener('click', () => toggleGear(false));
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') toggleGear(false); });
+  
+  // Botão de atualização (refresh)
+  on('btnRefresh', 'click', async (e) => { 
+    e.stopPropagation(); 
+    const btn = document.getElementById('btnRefresh');
+    btn.disabled = true;
+    btn.style.opacity = '0.5';
+    await handleRefresh();
+    btn.disabled = false;
+    btn.style.opacity = '1';
+  });
   on('btnAdvanced', 'click', () => { toggleGear(false); showTab('settings'); });
   on('helpToggle', 'change', async (e) => {
     state.settings.showHelp = e.target.checked;
