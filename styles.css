@@ -694,3 +694,7 @@ body.sec-open { overflow: hidden; }
 .tax-preset { margin: 12px 0; padding: 12px 14px; border-radius: 10px; background: var(--bg); border: 1px solid var(--border); font-size: 13px; line-height: 1.5; }
 .tax-preset .secondary-btn { margin: 10px 0 0; }
 .lookup-row select { padding: 8px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 13px; }
+.lookup-kind { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 10px; font-size: 13px; color: var(--muted); }
+.lookup-kind label { display: inline-flex; align-items: center; gap: 5px; margin: 0; cursor: pointer; white-space: nowrap; }
+.lookup-kind > span { white-space: nowrap; }
+.lookup-kind input[type="radio"] { margin: 0; }
