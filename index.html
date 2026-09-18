@@ -454,7 +454,15 @@
     <!-- NOTÍCIAS (FASE 14) -->
     <section id="tab-news" class="tab-panel">
       <p class="tab-intro" data-i18n="help.news"></p>
-      <div id="newsHubContainer"></div>
+      <div style="padding: 16px 0;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <div id="newsFilters" class="news-filters"></div>
+          <div id="newsStatus" class="hint"></div>
+          <button id="btnNewsRefresh" class="secondary-btn" type="button" onclick="refreshNews(true)">Atualizar</button>
+        </div>
+        <div id="newsList" class="news-list-container"></div>
+        <div id="newsShortcuts" class="news-shortcuts"></div>
+      </div>
     </section>
 
     <!-- CONFIGURAÇÕES -->
