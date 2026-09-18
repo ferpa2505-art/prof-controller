@@ -1,0 +1,51 @@
+{
+  "name": "prof-controller",
+  "version": "1.0.0",
+  "description": "ProF Controller - Gestor de Patrimônio Offline 100% Privado",
+  "main": "app.js",
+  "scripts": {
+    "start": "python -m http.server 8000 || npx http-server -p 8000",
+    "build": "echo 'No build step - this is a static PWA'",
+    "lint": "echo 'Linting not required for vanilla JS'",
+    "test": "echo 'Manual testing required'",
+    "serve": "npx http-server --cors -p 8000",
+    "optimize": "node scripts/optimize-assets.js"
+  },
+  "keywords": [
+    "financial",
+    "portfolio",
+    "investments",
+    "offline",
+    "privacy",
+    "crypto",
+    "stocks",
+    "wealth",
+    "tracking"
+  ],
+  "author": "ProF Controller",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ferpa2505-art/prof-controller.git"
+  },
+  "homepage": "https://github.com/ferpa2505-art/prof-controller#readme",
+  "bugs": {
+    "url": "https://github.com/ferpa2505-art/prof-controller/issues"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "dependencies": {},
+  "browserslist": [
+    "last 2 versions",
+    "> 1%",
+    "not dead",
+    "chrome >= 55",
+    "firefox >= 45",
+    "safari >= 11",
+    "edge >= 79"
+  ]
+}

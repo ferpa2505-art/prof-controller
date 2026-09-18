@@ -57,3 +57,49 @@ self.addEventListener('fetch', (e) => {
     })
   );
 });
+
+// Notificações push do navegador
+self.addEventListener('push', (e) => {
+  console.log('[Service Worker] Push recebido:', e.data);
+  
+  if (e.data) {
+    try {
+      const data = e.data.json();
+      const title = data.title || 'ProF Controller';
+      const options = {
+        body: data.body || 'Nova notificação',
+        icon: data.icon || '/icon-192.png',
+        badge: data.badge || '/icon-192.png',
+        tag: data.tag || 'prof-notification',
+        requireInteraction: data.requireInteraction || false,
+        data: data.data || {}
+      };
+
+      e.waitUntil(self.registration.showNotification(title, options));
+    } catch (err) {
+      console.error('[Service Worker] Erro ao processar push:', err);
+    }
+  }
+});
+
+self.addEventListener('notificationclick', (e) => {
+  console.log('[Service Worker] Notificação clicada:', e.notification.tag);
+  e.notification.close();
+  
+  if (e.notification.data && e.notification.data.url) {
+    e.waitUntil(
+      clients.matchAll({ type: 'window' }).then((clientList) => {
+        for (const client of clientList) {
+          if (client.url === e.notification.data.url) {
+            return client.focus();
+          }
+        }
+        return clients.openWindow(e.notification.data.url);
+      })
+    );
+  }
+});
+
+self.addEventListener('notificationclose', (e) => {
+  console.log('[Service Worker] Notificação fechada:', e.notification.tag);
+});
