@@ -5620,7 +5620,7 @@ async function saveRecurrence(id) {
 
   await put('recurrences', rec);
   closeModal();
-  renderAll();
+  await renderAll();
   showToast(t('recurrence.created'));
 }
 
@@ -5789,7 +5789,7 @@ async function saveFx(id) {
   }
   await put('fx', record);
   closeModal();
-  renderAll();
+  await renderAll();
   showToast(t('toast.saved'));
 }
 
@@ -5797,7 +5797,7 @@ async function deleteFx(id) {
   if (!confirm(t('modal.delete') + '?')) return;
   state.fx = state.fx.filter((x) => x.id !== id);
   await del('fx', id);
-  renderAll();
+  await renderAll();
   showToast(t('toast.deleted'));
 }
 
@@ -5874,7 +5874,7 @@ async function fetchRates() {
       await put('fx', record);
       n++;
     }
-    renderAll();
+    await renderAll();
     showToast(t('fx.fetched').replace('{n}', n));
   } finally {
     btn.disabled = false;
@@ -6016,7 +6016,7 @@ async function deleteAsset(id) {
   state.valuations = state.valuations.filter((v) => v.assetId !== id);
   state.assets = state.assets.filter((x) => x.id !== id);
   await del('assets', id);
-  renderAll();
+  await renderAll();
   showToast(t('toast.deleted'));
 }
 
@@ -6068,7 +6068,7 @@ async function saveValuation(assetId) {
   if (existing) state.valuations = state.valuations.map((v) => (v.id === record.id ? record : v));
   else state.valuations.push(record);
   await put('valuations', record);
-  renderAll();
+  await renderAll();
   openValuationsModal(assetId); // mantém o modal aberto com a lista atualizada
   showToast(t('toast.saved'));
 }
@@ -6076,7 +6076,7 @@ async function saveValuation(assetId) {
 async function deleteValuation(id, assetId) {
   state.valuations = state.valuations.filter((v) => v.id !== id);
   await del('valuations', id);
-  renderAll();
+  await renderAll();
   openValuationsModal(assetId);
   showToast(t('toast.deleted'));
 }
@@ -6384,7 +6384,7 @@ async function deleteSchedule(id) {
   state.payments = state.payments.filter((x) => x.scheduleId !== id);
   state.schedules = state.schedules.filter((x) => x.id !== id);
   await del('schedules', id);
-  renderAll();
+  await renderAll();
   showToast(t('toast.deleted'));
 }
 
@@ -6449,7 +6449,7 @@ async function undoPayment(scheduleId, seq) {
   }
   state.payments = state.payments.filter((x) => x.id !== pg.id);
   await del('payments', pg.id);
-  renderAll();
+  await renderAll();
   showToast(t('toast.deleted'));
 }
 
@@ -10464,7 +10464,7 @@ async function updateEverything() {
     try { await refreshWatchlist(true); } catch (e) { console.warn('Watchlist não atualizada:', e); }
   }
 
-  renderAll();
+  await renderAll();
   if (btn) { btn.disabled = false; btn.textContent = t('inv.updateAll'); }
   showToast(t('inv.updateDone').replace('{fx}', resumoFx).replace('{q}', resumoQ));
 }
@@ -10615,7 +10615,7 @@ async function fixDuplication(positionId) {
     await put('invmoves', mov);
   }
 
-  renderAll();
+  await renderAll();
   showToast(t('inv.dupFixed'));
 }
 
@@ -10791,7 +10791,7 @@ async function deletePosition(id) {
   state.quotes = state.quotes.filter((q) => q.positionId !== id);
   state.positions = state.positions.filter((x) => x.id !== id);
   await del('positions', id);
-  renderAll();
+  await renderAll();
   showToast(t('toast.deleted'));
 }
 
@@ -10925,7 +10925,7 @@ async function deleteMove(id, positionId) {
   }
   state.invmoves = state.invmoves.filter((x) => x.id !== id);
   await del('invmoves', id);
-  renderAll();
+  await renderAll();
   openMoveModal(positionId);
   showToast(t('toast.deleted'));
 }
@@ -10964,7 +10964,7 @@ async function saveQuote(positionId) {
   if (existente) state.quotes = state.quotes.map((q) => (q.id === registro.id ? registro : q));
   else state.quotes.push(registro);
   await put('quotes', registro);
-  renderAll();
+  await renderAll();
   openQuotesModal(positionId);
   showToast(t('toast.saved'));
 }
@@ -10972,7 +10972,7 @@ async function saveQuote(positionId) {
 async function deleteQuote(id, positionId) {
   state.quotes = state.quotes.filter((q) => q.id !== id);
   await del('quotes', id);
-  renderAll();
+  await renderAll();
   openQuotesModal(positionId);
   showToast(t('toast.deleted'));
 }
@@ -11059,7 +11059,7 @@ async function deleteAccount(id) {
   for (const trn of removedTx) await del('transactions', trn.id);
   state.transactions = state.transactions.filter((x) => x.accountId !== id && x.toAccountId !== id);
   await del('accounts', id);
-  renderAll();
+  await renderAll();
   showToast(t('toast.deleted'));
 }
 
@@ -11076,7 +11076,7 @@ async function snapshotBalances() {
     else state.balances.push(registro);
     await put('balances', registro);
   }
-  renderAll();
+  await renderAll();
   showToast(t('balances.snapshotDone').replace('{n}', state.accounts.length));
 }
 
@@ -11345,7 +11345,7 @@ async function deleteTx(id) {
   if (!confirm(t('modal.delete') + '?')) return;
   state.transactions = state.transactions.filter((x) => x.id !== id);
   await del('transactions', id);
-  renderAll();
+  await renderAll();
   showToast(t('toast.deleted'));
 }
 
@@ -11393,7 +11393,7 @@ async function deleteBudget(id) {
   if (!confirm(t('modal.delete') + '?')) return;
   state.budgets = state.budgets.filter((x) => x.id !== id);
   await del('budgets', id);
-  renderAll();
+  await renderAll();
   showToast(t('toast.deleted'));
 }
 
@@ -11641,7 +11641,7 @@ async function importCSV(file) {
       imported++;
     }
 
-    renderAll();
+    await renderAll();
     showToast(t('toast.csvImported').replace('{n}', imported + (created ? ' (' + created + ' novas contas)' : '')));
   } catch (e) {
     console.error('Erro na importação CSV:', e); // mostra o motivo REAL no console (F12)
@@ -12071,7 +12071,7 @@ function bindEvents() {
   on('dashBaseCurrency', 'change', async (e) => {
     state.settings.baseCurrency = e.target.value;
     await put('settings', { key: 'baseCurrency', value: e.target.value });
-    renderAll();
+    await renderAll();
   });
 
   on('navControls', 'click', (e) => {
@@ -12101,7 +12101,7 @@ function bindEvents() {
   on('baseCurrencySelect', 'change', async (e) => {
     state.settings.baseCurrency = e.target.value;
     await put('settings', { key: 'baseCurrency', value: e.target.value });
-    renderAll();
+    await renderAll();
   });
   on('btnAddAccount', 'click', () => openAccountModal());
   on('btnAddBalance', 'click', openBalanceModal);
@@ -12739,7 +12739,7 @@ async function init() {
     console.warn('Falha ao gerar notificações:', e);
   }
   
-  renderAll();
+  await renderAll();
   showTab('dashboard');
   renderSecuritySettings();
 
@@ -12766,3 +12766,4 @@ async function init() {
 }
 
 init();
+
