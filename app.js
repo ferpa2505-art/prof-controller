@@ -454,6 +454,24 @@ const I18N = {
     'tax.lossCarry': 'Saldo a compensar',
     'tax.lossSeed': 'Prejuízo anterior ao app',
     'tax.lossHint': 'Preencha "prejuízo anterior ao app" se você já tinha prejuízos a compensar antes de começar a usar o ProF Controller.',
+    'tax.intTitle': 'Alíquotas Fiscais Internacionais',
+    'tax.country': 'País/Região:',
+    'tax.type': 'Tipo:',
+    'tax.personal': 'Pessoa Física',
+    'tax.corporate': 'Pessoa Jurídica',
+    'tax.estimatedIncome': 'Renda Estimada:',
+    'tax.estimatedTax': 'Imposto Estimado',
+    'tax.effectiveRate': 'Taxa Efetiva',
+    'tax.marginalRate': 'Alíquota Marginal',
+    'tax.nextIncome': 'Próxima faixa',
+    'tax.netIncome': 'Renda Líquida',
+    'tax.afterTax': 'Após imposto',
+    'tax.taxBrackets': 'Faixas de Imposição',
+    'tax.income': 'Renda',
+    'tax.rate': 'Alíquota',
+    'tax.taxOnBracket': 'Imposto nesta faixa',
+    'tax.cumulative': 'Acumulado',
+    'tax.comparison': 'Comparação entre Países',
     'tax.declaration': 'Resumo para a declaração de {y}',
     'tax.declarationHint': 'Posição e custo em 31/12, para a ficha de bens e direitos. Os proventos aparecem separados por tipo.',
     'tax.costBefore': 'Custo em 31/12/{y}',
@@ -1454,6 +1472,24 @@ const I18N = {
     'tax.lossCarry': 'Balance to offset',
     'tax.lossSeed': 'Loss from before the app',
     'tax.lossHint': 'Fill in "loss from before the app" if you already had losses to offset before using ProF Controller.',
+    'tax.intTitle': 'International Tax Rates',
+    'tax.country': 'Country/Region:',
+    'tax.type': 'Type:',
+    'tax.personal': 'Individual',
+    'tax.corporate': 'Corporate',
+    'tax.estimatedIncome': 'Estimated Income:',
+    'tax.estimatedTax': 'Estimated Tax',
+    'tax.effectiveRate': 'Effective Rate',
+    'tax.marginalRate': 'Marginal Rate',
+    'tax.nextIncome': 'Next bracket',
+    'tax.netIncome': 'Net Income',
+    'tax.afterTax': 'After tax',
+    'tax.taxBrackets': 'Tax Brackets',
+    'tax.income': 'Income',
+    'tax.rate': 'Rate',
+    'tax.taxOnBracket': 'Tax on this bracket',
+    'tax.cumulative': 'Cumulative',
+    'tax.comparison': 'Country Comparison',
     'tax.declaration': 'Summary for the {y} tax return',
     'tax.declarationHint': 'Holdings and cost on 31 Dec, for the assets section. Income appears split by type.',
     'tax.costBefore': 'Cost on 31/12/{y}',
@@ -2453,6 +2489,24 @@ const I18N = {
     'tax.lossCarry': 'Saldo por compensar',
     'tax.lossSeed': 'Pérdida anterior a la app',
     'tax.lossHint': 'Completa "pérdida anterior a la app" si ya tenías pérdidas por compensar antes de usar ProF Controller.',
+    'tax.intTitle': 'Tasas Fiscales Internacionales',
+    'tax.country': 'País/Región:',
+    'tax.type': 'Tipo:',
+    'tax.personal': 'Persona Física',
+    'tax.corporate': 'Persona Jurídica',
+    'tax.estimatedIncome': 'Ingresos Estimados:',
+    'tax.estimatedTax': 'Impuesto Estimado',
+    'tax.effectiveRate': 'Tasa Efectiva',
+    'tax.marginalRate': 'Tasa Marginal',
+    'tax.nextIncome': 'Próximo tramo',
+    'tax.netIncome': 'Ingresos Netos',
+    'tax.afterTax': 'Después del impuesto',
+    'tax.taxBrackets': 'Tramos Fiscales',
+    'tax.income': 'Ingresos',
+    'tax.rate': 'Tasa',
+    'tax.taxOnBracket': 'Impuesto en este tramo',
+    'tax.cumulative': 'Acumulado',
+    'tax.comparison': 'Comparación entre Países',
     'tax.declaration': 'Resumen para la declaración de {y}',
     'tax.declarationHint': 'Posición y costo al 31/12, para el apartado de bienes. Los rendimientos aparecen separados por tipo.',
     'tax.costBefore': 'Costo al 31/12/{y}',
@@ -8609,7 +8663,17 @@ async function renderTaxes() {
     <p class="hint">${t('tax.lossHint')}</p>
 
     <h3 class="section-sub">${t('tax.declaration').replace('{y}', taxUi.year)}</h3>
-    ${renderTaxAssets(dados)}`;
+    ${renderTaxAssets(dados)}
+
+    <h3 class="section-sub" style="margin-top: 40px;">${t('tax.intTitle') || 'Alíquotas Fiscais Internacionais'}</h3>
+    <div id="internationalTaxTable" style="margin-top: 20px;"></div>
+    <div id="taxComparison" style="margin-top: 40px;"></div>`;
+  
+  // Renderizar tabelas fiscais depois que renderTaxes completa
+  setTimeout(() => {
+    renderTaxTable();
+    renderTaxComparison();
+  }, 100);
 }
 
 function renderTaxAssets(dados) {
@@ -12030,6 +12094,345 @@ async function resetPriceAlerts() {
     }
   }
   console.log('✓ Alertas resetados');
+}
+
+/* ========== Fase 16: Tarefa 3 - Tabela Fiscal Internacional (12 Países) ========== */
+
+const TAX_RULES = {
+  'PT': {
+    name: '🇵🇹 Portugal',
+    currency: '€',
+    pf: [
+      { min: 0, max: 7091, rate: 0.145 },
+      { min: 7091, max: 10700, rate: 0.23 },
+      { min: 10700, max: 20261, rate: 0.285 },
+      { min: 20261, max: 25000, rate: 0.35 },
+      { min: 25000, max: 36856, rate: 0.37 },
+      { min: 36856, max: 80640, rate: 0.45 },
+      { min: 80640, max: Infinity, rate: 0.48 }
+    ],
+    pj: 0.195,
+    exemptionLimit: 7091,
+    notes: 'Imposto de solidariedade: +2,5% (€80k-€250k) +5% (>€250k)'
+  },
+  'ES': {
+    name: '🇪🇸 Espanha',
+    currency: '€',
+    pf: [
+      { min: 0, max: 5150, rate: 0 },
+      { min: 5150, max: 17707, rate: 0.24 },
+      { min: 17707, max: 33007, rate: 0.28 },
+      { min: 33007, max: 53407, rate: 0.37 },
+      { min: 53407, max: 120000, rate: 0.43 },
+      { min: 120000, max: 175000, rate: 0.44 },
+      { min: 175000, max: 300000, rate: 0.45 },
+      { min: 300000, max: Infinity, rate: 0.47 }
+    ],
+    pj: 0.25,
+    exemptionLimit: 5150,
+    notes: 'Surcharge temporário 0,75%-6%'
+  },
+  'IT': {
+    name: '🇮🇹 Itália',
+    currency: '€',
+    pf: [
+      { min: 0, max: 28000, rate: 0.23 },
+      { min: 28000, max: 50000, rate: 0.35 },
+      { min: 50000, max: Infinity, rate: 0.43 }
+    ],
+    pj: 0.24,
+    exemptionLimit: 8000,
+    notes: 'IRAP 3,9% (PJ) + regional/municipal 0,7%-3,33%'
+  },
+  'DE': {
+    name: '🇦🇱 Alemanha',
+    currency: '€',
+    pf: [
+      { min: 0, max: 9000, rate: 0 },
+      { min: 9000, max: 13996, rate: 0.14 },
+      { min: 13996, max: 54949, rate: 0.42 },
+      { min: 54949, max: 260532, rate: 0.42 },
+      { min: 260532, max: Infinity, rate: 0.45 }
+    ],
+    pj: 0.305,
+    exemptionLimit: 9000,
+    notes: 'Imposto de solidariedade: +5,5% (>€972.000)'
+  },
+  'FR': {
+    name: '🇫🇷 França',
+    currency: '€',
+    pf: [
+      { min: 0, max: 5963, rate: 0 },
+      { min: 5963, max: 11896, rate: 0.055 },
+      { min: 11896, max: 26420, rate: 0.14 },
+      { min: 26420, max: 70830, rate: 0.30 },
+      { min: 70830, max: Infinity, rate: 0.41 }
+    ],
+    pj: 0.25,
+    exemptionLimit: 5963,
+    notes: 'CSG ~8% adicional'
+  },
+  'IE': {
+    name: '🇮🇪 Irlanda',
+    currency: '€',
+    pf: [
+      { min: 0, max: 23000, rate: 0.20 },
+      { min: 23000, max: Infinity, rate: 0.40 }
+    ],
+    pj: 0.125,
+    exemptionLimit: 23000,
+    notes: 'USC: 0,5%-8%, taxas corporativas muito competitivas'
+  },
+  'LU': {
+    name: '🇱🇺 Luxemburgo',
+    currency: '€',
+    pf: [
+      { min: 0, max: 15000, rate: 0.23 },
+      { min: 15000, max: 28000, rate: 0.27 },
+      { min: 28000, max: 55000, rate: 0.38 },
+      { min: 55000, max: 75000, rate: 0.41 },
+      { min: 75000, max: Infinity, rate: 0.43 }
+    ],
+    pj: 0.17,
+    exemptionLimit: 800,
+    notes: 'Sistema progressivo moderado'
+  },
+  'MT': {
+    name: '🇲🇹 Malta',
+    currency: '€',
+    pf: [
+      { min: 0, max: 19000, rate: 0.15 },
+      { min: 19000, max: 60000, rate: 0.25 },
+      { min: 60000, max: Infinity, rate: 0.35 }
+    ],
+    pj: 0.35,
+    exemptionLimit: 19000,
+    notes: 'Alíquota PJ mais alta da UE, PF competitiva'
+  },
+  'GB': {
+    name: '🇬🇧 Reino Unido',
+    currency: '£',
+    pf: [
+      { min: 0, max: 12570, rate: 0 },
+      { min: 12570, max: 50270, rate: 0.20 },
+      { min: 50270, max: 125140, rate: 0.40 },
+      { min: 125140, max: Infinity, rate: 0.45 }
+    ],
+    pj: 0.25,
+    exemptionLimit: 12570,
+    notes: 'Efeito 60% entre £100k-£125k (taper relief)'
+  },
+  'CH': {
+    name: '🇨🇭 Suíça',
+    currency: 'CHF',
+    pf: [
+      { min: 0, max: 38600, rate: 0.115 },
+      { min: 38600, max: Infinity, rate: 0.115 }
+    ],
+    pj: 0.15,
+    exemptionLimit: 0,
+    notes: 'Federal ~11,5%, Cantonal 10%-24%. Withholding 35% (dividendos)'
+  },
+  'AD': {
+    name: '🇦🇩 Andorra',
+    currency: '€',
+    pf: [
+      { min: 0, max: 24000, rate: 0.10 },
+      { min: 24000, max: 48000, rate: 0.20 },
+      { min: 48000, max: 100000, rate: 0.30 },
+      { min: 100000, max: Infinity, rate: 0.40 }
+    ],
+    pj: 0.10,
+    exemptionLimit: 24000,
+    notes: 'Regime fiscal preferencial europeu, alíquotas baixas'
+  },
+  'US': {
+    name: '🇺🇸 Estados Unidos (Federal)',
+    currency: '$',
+    pf: [
+      { min: 0, max: 11600, rate: 0.10 },
+      { min: 11600, max: 47150, rate: 0.12 },
+      { min: 47150, max: 100525, rate: 0.22 },
+      { min: 100525, max: 191950, rate: 0.24 },
+      { min: 191950, max: 243725, rate: 0.32 },
+      { min: 243725, max: 609350, rate: 0.35 },
+      { min: 609350, max: Infinity, rate: 0.37 }
+    ],
+    pj: 0.21,
+    exemptionLimit: 14600,
+    notes: 'Federal apenas. Estadual varia 0%-13,3% (CA). Capital gains: 0%/15%/20%'
+  }
+};
+
+// Calcular imposto estimado por país
+function estimateTaxByCountry(income, country, type = 'pf') {
+  const rules = TAX_RULES[country];
+  if (!rules) return null;
+  
+  if (type === 'pf') {
+    let tax = 0;
+    for (const bracket of rules.pf) {
+      if (income > bracket.min) {
+        const taxableInThisBracket = Math.min(income, bracket.max) - bracket.min;
+        tax += taxableInThisBracket * bracket.rate;
+      }
+    }
+    const efectiveRate = income > 0 ? ((tax / income) * 100).toFixed(2) : 0;
+    return { 
+      tax: tax.toFixed(2), 
+      rate: efectiveRate + '%',
+      marginalRate: rules.pf.find(b => b.max > income)?.rate || rules.pf[rules.pf.length-1].rate
+    };
+  } else {
+    const tax = income * rules.pj;
+    return { 
+      tax: tax.toFixed(2), 
+      rate: (rules.pj * 100).toFixed(1) + '%',
+      marginalRate: rules.pj
+    };
+  }
+}
+
+// Renderizar tabela fiscal interativa
+function renderTaxTable() {
+  const container = document.getElementById('internationalTaxTable');
+  if (!container) return;
+  
+  const currentCountry = state.ui.taxCountry || 'PT';
+  const incomeValue = numIn('taxIncomeInput', 50000);
+  const type = document.getElementById('taxTypeSelect')?.value || 'pf';
+  
+  // Dropdown de países
+  container.innerHTML = `
+    <div class="tax-selector">
+      <h3>${t('tax.intTitle') || 'Alíquotas Fiscais Internacionais'}</h3>
+      <label>
+        ${t('tax.country') || 'País/Região:'}
+        <select id="taxCountrySelect" onchange="state.ui.taxCountry = this.value; renderTaxTable()">
+          ${Object.entries(TAX_RULES).map(([code, rule]) => 
+            `<option value="${code}" ${code === currentCountry ? 'selected' : ''}>${rule.name}</option>`
+          ).join('')}
+        </select>
+      </label>
+      <label>
+        ${t('tax.type') || 'Tipo:'}
+        <select id="taxTypeSelect" onchange="renderTaxTable()">
+          <option value="pf" ${type === 'pf' ? 'selected' : ''}>${t('tax.personal') || 'Pessoa Física'}</option>
+          <option value="pj" ${type === 'pj' ? 'selected' : ''}>${t('tax.corporate') || 'Pessoa Jurídica'}</option>
+        </select>
+      </label>
+      <label>
+        ${t('tax.estimatedIncome') || 'Renda Estimada:'}
+        <input type="text" id="taxIncomeInput" inputmode="decimal" value="${incomeValue.toFixed(2)}" 
+               placeholder="50000" oninput="renderTaxTable()" style="max-width: 120px;">
+      </label>
+    </div>
+  `;
+
+  const rule = TAX_RULES[currentCountry];
+  if (!rule) return;
+
+  const result = estimateTaxByCountry(incomeValue, currentCountry, type);
+  if (result) {
+    container.innerHTML += `
+      <div class="tax-result">
+        <div class="card">
+          <h4>${t('tax.estimatedTax') || 'Imposto Estimado'}</h4>
+          <p class="big-number amount-out">${rule.currency} ${result.tax}</p>
+          <p class="hint">${t('tax.effectiveRate') || 'Taxa Efetiva'}: ${result.rate}</p>
+        </div>
+        <div class="card">
+          <h4>${t('tax.marginalRate') || 'Alíquota Marginal'}</h4>
+          <p class="big-number">${(result.marginalRate * 100).toFixed(1)}%</p>
+          <p class="hint">${t('tax.nextIncome') || 'Próxima faixa'}</p>
+        </div>
+        <div class="card">
+          <h4>${t('tax.netIncome') || 'Renda Líquida'}</h4>
+          <p class="big-number amount-in">${rule.currency} ${(incomeValue - parseFloat(result.tax)).toFixed(2)}</p>
+          <p class="hint">${t('tax.afterTax') || 'Após imposto'}</p>
+        </div>
+      </div>
+      <p class="hint">${rule.notes}</p>
+    `;
+  }
+
+  // Tabela de alíquotas por faixa
+  if (type === 'pf') {
+    container.innerHTML += `
+      <h4 style="margin-top: 20px;">${t('tax.taxBrackets') || 'Faixas de Imposição'}</h4>
+      <div class="table-scroll"><table class="mini-table tax-brackets-table">
+        <thead><tr>
+          <th>${t('tax.income') || 'Renda'}</th>
+          <th>${t('tax.rate') || 'Alíquota'}</th>
+          <th>${t('tax.taxOnBracket') || 'Imposto nesta faixa'}</th>
+          <th>${t('tax.cumulative') || 'Acumulado'}</th>
+        </tr></thead>
+        <tbody>
+          ${rule.pf.map((bracket, idx) => {
+            const bracketIncome = Math.min(incomeValue, bracket.max) - bracket.min;
+            const bracketTax = Math.max(0, bracketIncome) * bracket.rate;
+            const cumTax = rule.pf.slice(0, idx+1)
+              .reduce((sum, b) => sum + Math.max(0, Math.min(incomeValue, b.max) - b.min) * b.rate, 0);
+            const isActive = incomeValue > bracket.min;
+            
+            return `<tr ${isActive ? 'class="table-highlight"' : ''}>
+              <td>${rule.currency} ${bracket.min.toLocaleString()} - ${bracket.max === Infinity ? '∞' : rule.currency + ' ' + bracket.max.toLocaleString()}</td>
+              <td><strong>${(bracket.rate * 100).toFixed(1)}%</strong></td>
+              <td>${rule.currency} ${bracketTax.toFixed(2)}</td>
+              <td>${rule.currency} ${cumTax.toFixed(2)}</td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table></div>
+    `;
+  }
+}
+
+// Modal comparação entre países
+function renderTaxComparison() {
+  const container = document.getElementById('taxComparison');
+  if (!container) return;
+  
+  const incomeValue = numIn('comparisonIncomeInput', 100000);
+  const type = document.getElementById('comparisonTypeSelect')?.value || 'pf';
+  
+  container.innerHTML = `
+    <h3>${t('tax.comparison') || 'Comparação entre Países'}</h3>
+    <div class="tax-selector">
+      <label>
+        ${t('tax.estimatedIncome') || 'Renda Estimada:'}
+        <input type="text" id="comparisonIncomeInput" inputmode="decimal" value="${incomeValue.toFixed(2)}" 
+               placeholder="100000" oninput="renderTaxComparison()" style="max-width: 120px;">
+      </label>
+      <label>
+        ${t('tax.type') || 'Tipo:'}
+        <select id="comparisonTypeSelect" onchange="renderTaxComparison()">
+          <option value="pf" ${type === 'pf' ? 'selected' : ''}>${t('tax.personal') || 'Pessoa Física'}</option>
+          <option value="pj" ${type === 'pj' ? 'selected' : ''}>${t('tax.corporate') || 'Pessoa Jurídica'}</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="table-scroll"><table class="mini-table comparison-table">
+      <thead><tr>
+        <th>${t('tax.country') || 'País'}</th>
+        <th>${t('tax.estimatedTax') || 'Imposto'}</th>
+        <th>${t('tax.effectiveRate') || 'Taxa Efetiva'}</th>
+        <th>${t('tax.netIncome') || 'Renda Líquida'}</th>
+      </tr></thead>
+      <tbody>
+        ${Object.entries(TAX_RULES).map(([code, rule]) => {
+          const result = estimateTaxByCountry(incomeValue, code, type);
+          return `<tr>
+            <td>${rule.name}</td>
+            <td><strong>${rule.currency} ${result.tax}</strong></td>
+            <td>${result.rate}</td>
+            <td class="amount-in">${rule.currency} ${(incomeValue - parseFloat(result.tax)).toFixed(2)}</td>
+          </tr>`;
+        }).join('')}
+      </tbody>
+    </table></div>
+  `;
 }
 
 function bindEvents() {
