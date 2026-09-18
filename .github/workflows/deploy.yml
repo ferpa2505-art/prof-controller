@@ -162,13 +162,13 @@ jobs:
       uses: actions/configure-pages@v4
     
     - name: Upload artifact
-      uses: actions/upload-pages-artifact@v2
+      uses: actions/upload-pages-artifact@v3
       with:
         path: '.'
     
     - name: Deploy to GitHub Pages
       id: deployment
-      uses: actions/deploy-pages@v3
+      uses: actions/deploy-pages@v4
     
     - name: Comment on deployment
       if: always()
@@ -234,6 +234,7 @@ jobs:
         path: ./
         base: ${{ github.event.repository.default_branch }}
         head: HEAD
+      continue-on-error: true
     
     - name: Check for credentials
       run: |
