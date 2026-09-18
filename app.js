@@ -1078,7 +1078,21 @@ const I18N = {
     'phase13.outperformed': 'Superou',
     'phase13.underperformed': 'Abaixo',
     'dashboard.initial': 'Saldo Inicial',
-    'dashboard.final': 'Saldo Final'
+    'dashboard.final': 'Saldo Final',
+    'phase14.newsHub': 'Hub de Notícias',
+    'phase14.noNews': 'Nenhuma notícia disponível',
+    'phase14.source': 'Fonte',
+    'phase14.date': 'Data',
+    'phase14.category': 'Categoria',
+    'phase14.categoryMarket': 'Mercado',
+    'phase14.categoryAssets': 'Suas Ações',
+    'phase14.categoryEconomy': 'Economia',
+    'phase14.favorite': 'Favorita',
+    'phase14.archived': 'Arquivada',
+    'phase14.archive': 'Arquivar',
+    'phase14.unarchive': 'Recuperar',
+    'phase14.refresh': 'Atualizar Notícias',
+    'phase14.showArchived': 'Mostrar Arquivadas'
 
   },
   'en': {
@@ -2126,7 +2140,21 @@ const I18N = {
     'phase13.outperformed': 'Outperformed',
     'phase13.underperformed': 'Underperformed',
     'dashboard.initial': 'Initial Balance',
-    'dashboard.final': 'Final Balance'
+    'dashboard.final': 'Final Balance',
+    'phase14.newsHub': 'News Hub',
+    'phase14.noNews': 'No news available',
+    'phase14.source': 'Source',
+    'phase14.date': 'Date',
+    'phase14.category': 'Category',
+    'phase14.categoryMarket': 'Market',
+    'phase14.categoryAssets': 'Your Assets',
+    'phase14.categoryEconomy': 'Economy',
+    'phase14.favorite': 'Favorite',
+    'phase14.archived': 'Archived',
+    'phase14.archive': 'Archive',
+    'phase14.unarchive': 'Recover',
+    'phase14.refresh': 'Refresh News',
+    'phase14.showArchived': 'Show Archived'
   },
   'es': {
     'tabs.dashboard': 'Panel',
@@ -3173,7 +3201,21 @@ const I18N = {
     'phase13.outperformed': 'Superó',
     'phase13.underperformed': 'Por debajo',
     'dashboard.initial': 'Saldo Inicial',
-    'dashboard.final': 'Saldo Final'
+    'dashboard.final': 'Saldo Final',
+    'phase14.newsHub': 'Hub de Notícias',
+    'phase14.noNews': 'Nenhuma notícia disponível',
+    'phase14.source': 'Fonte',
+    'phase14.date': 'Data',
+    'phase14.category': 'Categoría',
+    'phase14.categoryMarket': 'Mercado',
+    'phase14.categoryAssets': 'Suas Ações',
+    'phase14.categoryEconomy': 'Economia',
+    'phase14.favorite': 'Favorita',
+    'phase14.archived': 'Arquivada',
+    'phase14.archive': 'Arquivar',
+    'phase14.unarchive': 'Recuperar',
+    'phase14.refresh': 'Atualizar Notícias',
+    'phase14.showArchived': 'Mostrar Arquivadas'
   }
 };
 
@@ -5397,7 +5439,7 @@ async function renderAll() {
   const etapas = [
     ['dashboard', renderDashboard], ['contas', renderAccounts], ['saldos', renderBalances],
     ['transações', renderTransactions], ['recorrências', renderRecurrences], ['orçamentos', renderBudgetDashboard], ['câmbio', renderFx],
-    ['portfólio', renderPortfolio], ['gráfico', renderNAV], ['fluxo', renderCashflow], ['títulos', renderBills], ['investimentos', renderInvestments], ['notícias', () => { if (state.ui.tab === 'news') renderNews(); }], ['calculadora', renderCalculator], ['configurações', renderSettings],
+    ['portfólio', renderPortfolio], ['gráfico', renderNAV], ['fluxo', renderCashflow], ['títulos', renderBills], ['investimentos', renderInvestments], ['notícias', renderNewsHub], ['calculadora', renderCalculator], ['configurações', renderSettings],
     ['notificações', renderNotificationsBadge], ['fase13', renderPerformanceComparison]
   ];
   for (const [nome, fn] of etapas) {
@@ -13020,6 +13062,285 @@ function getBestBenchmark(returns) {
   return '🏆 Você';
 }
 
+/* ========================================
+   FASE 14: HUB DE NOTÍCIAS (Market News)
+   ======================================== */
+
+// Notícias simuladas com dados reais de fontes financeiras
+const NEWS_FEEDS = [
+  { id: 'ibov', name: 'Ibovespa', url: 'https://www.b3.com.br/', emoji: '📊' },
+  { id: 'bcb', name: 'Banco Central', url: 'https://www.bcb.gov.br/', emoji: '🏦' },
+  { id: 'reuters', name: 'Reuters Brasil', url: 'https://www.reuters.com/pt/', emoji: '📰' },
+  { id: 'investing', name: 'Investing.com', url: 'https://www.investing.com/news/', emoji: '📈' },
+];
+
+const NEWS_CATEGORIES = {
+  market: 'categoryMarket',
+  assets: 'categoryAssets',
+  economy: 'categoryEconomy'
+};
+
+function initializeNews() {
+  if (!state.news) {
+    state.news = {
+      articles: [],
+      lastUpdate: null,
+      favorites: [],
+      archived: []
+    };
+  }
+}
+
+function generateMockNews() {
+  const now = Date.now();
+  const mockArticles = [
+    {
+      id: 'news-1',
+      title: 'Ibovespa fecha em alta impulsionado por mineradoras',
+      source: 'Ibovespa',
+      category: 'market',
+      date: now - (1 * 60 * 60 * 1000),
+      summary: 'O Ibovespa subiu 2,5% com destaque para ações de mineradoras e energia.',
+      url: '#'
+    },
+    {
+      id: 'news-2',
+      title: 'Banco Central mantém taxa Selic em 10,5%',
+      source: 'Banco Central',
+      category: 'economy',
+      date: now - (3 * 60 * 60 * 1000),
+      summary: 'Copom mantém taxa de juros inalterada pela segunda reunião consecutiva.',
+      url: '#'
+    },
+    {
+      id: 'news-3',
+      title: 'Dólar fecha estável ante real',
+      source: 'Reuters Brasil',
+      category: 'economy',
+      date: now - (5 * 60 * 60 * 1000),
+      summary: 'Dólar comercial fecha estável perto de R$ 5,05 em dia de baixa volatilidade.',
+      url: '#'
+    },
+    {
+      id: 'news-4',
+      title: 'Tech: Ações de big techs puxam S&P 500 para novo recorde',
+      source: 'Investing.com',
+      category: 'assets',
+      date: now - (6 * 60 * 60 * 1000),
+      summary: 'Apple, Microsoft e Nvidia lideram rally dos índices americanos.',
+      url: '#'
+    },
+    {
+      id: 'news-5',
+      title: 'Petrobras anuncia distribuição de dividendos',
+      source: 'B3',
+      category: 'assets',
+      date: now - (12 * 60 * 60 * 1000),
+      summary: 'Petrobras anuncia payout adicional de R$ 0,50 por ação para este trimestre.',
+      url: '#'
+    },
+    {
+      id: 'news-6',
+      title: 'Inflação americana sobe para 3,2% em agosto',
+      source: 'Reuters Brasil',
+      category: 'economy',
+      date: now - (24 * 60 * 60 * 1000),
+      summary: 'IPC americano mostra alta acima das expectativas dos analistas.',
+      url: '#'
+    }
+  ];
+  
+  return mockArticles;
+}
+
+async function fetchNewsArticles() {
+  initializeNews();
+  
+  // Em um app real, buscaríamos de uma API de notícias
+  // Por enquanto, usamos dados simulados (podem ser substituídos por RSS real)
+  const articles = generateMockNews();
+  
+  state.news.articles = articles;
+  state.news.lastUpdate = Date.now();
+  
+  // Salvar em IndexedDB
+  await put('news', { key: 'articles', value: articles });
+  await put('news', { key: 'lastUpdate', value: state.news.lastUpdate });
+  
+  // Notificação de notícia importante
+  const newArticles = articles.slice(0, 2);
+  if (newArticles.length > 0 && Notification.permission === 'granted') {
+    const title = '📰 Novas notícias financeiras';
+    const options = {
+      body: newArticles[0].title,
+      icon: 'icon-192.png',
+      tag: 'news-notification'
+    };
+    new Notification(title, options);
+  }
+}
+
+function formatNewsDate(timestamp) {
+  const now = Date.now();
+  const diff = now - timestamp;
+  
+  const mins = Math.floor(diff / 60000);
+  const hours = Math.floor(diff / 3600000);
+  const days = Math.floor(diff / 86400000);
+  
+  if (mins < 1) return 'Agora';
+  if (mins < 60) return `${mins}m`;
+  if (hours < 24) return `${hours}h`;
+  if (days < 7) return `${days}d`;
+  
+  return new Date(timestamp).toLocaleDateString('pt-BR');
+}
+
+function renderNewsHub() {
+  initializeNews();
+  
+  const container = id('newsHubContainer');
+  if (!container) return;
+  
+  const selectedCategory = state.ui.newsCategory || 'all';
+  const showArchived = state.ui.newsShowArchived || false;
+  
+  let articles = state.news.articles || [];
+  
+  // Filtrar por categoria
+  if (selectedCategory !== 'all') {
+    articles = articles.filter(a => a.category === selectedCategory);
+  }
+  
+  // Filtrar arquivadas
+  articles = articles.filter(a => {
+    const isArchived = state.news.archived.includes(a.id);
+    return showArchived ? isArchived : !isArchived;
+  });
+  
+  const isFavorite = (id) => state.news.favorites.includes(id);
+  const isArchived = (id) => state.news.archived.includes(id);
+  
+  let html = `
+    <div class="news-hub-header">
+      <h2>${t('phase14.newsHub')}</h2>
+      <div class="news-controls">
+        <select id="newsCategory" class="news-filter-select">
+          <option value="all">Todas as categorias</option>
+          <option value="market">📊 ${t('phase14.categoryMarket')}</option>
+          <option value="assets">💼 ${t('phase14.categoryAssets')}</option>
+          <option value="economy">💹 ${t('phase14.categoryEconomy')}</option>
+        </select>
+        <label class="news-checkbox">
+          <input type="checkbox" id="showArchivedNews" ${showArchived ? 'checked' : ''}>
+          ${t('phase14.showArchived')}
+        </label>
+        <button id="btnRefreshNews" class="btn-secondary">${t('phase14.refresh')}</button>
+      </div>
+    </div>
+  `;
+  
+  if (!articles || articles.length === 0) {
+    html += `<div class="news-empty">${t('phase14.noNews')}</div>`;
+  } else {
+    html += '<div class="news-list">';
+    articles.forEach(article => {
+      const categoryIcon = {
+        market: '📊',
+        assets: '💼',
+        economy: '💹'
+      }[article.category] || '📰';
+      
+      html += `
+        <div class="news-card" data-id="${article.id}">
+          <div class="news-header">
+            <span class="news-category-badge">${categoryIcon} ${t('phase14.category')}</span>
+            <span class="news-date">${formatNewsDate(article.date)}</span>
+          </div>
+          <h3 class="news-title">${article.title}</h3>
+          <p class="news-summary">${article.summary}</p>
+          <div class="news-footer">
+            <span class="news-source">${article.source}</span>
+            <div class="news-actions">
+              <button class="btn-favorite ${isFavorite(article.id) ? 'active' : ''}" 
+                      data-id="${article.id}" title="${t('phase14.favorite')}">
+                ${isFavorite(article.id) ? '⭐' : '☆'} ${t('phase14.favorite')}
+              </button>
+              <button class="btn-archive ${isArchived(article.id) ? 'active' : ''}" 
+                      data-id="${article.id}" title="${isArchived(article.id) ? t('phase14.unarchive') : t('phase14.archive')}">
+                ${isArchived(article.id) ? '↩️' : '📦'} ${isArchived(article.id) ? t('phase14.unarchive') : t('phase14.archive')}
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+    html += '</div>';
+  }
+  
+  container.innerHTML = html;
+  bindNewsEvents();
+}
+
+function bindNewsEvents() {
+  on('newsCategory', 'change', (e) => {
+    state.ui.newsCategory = e.target.value;
+    renderNewsHub();
+  });
+  
+  on('showArchivedNews', 'change', (e) => {
+    state.ui.newsShowArchived = e.target.checked;
+    renderNewsHub();
+  });
+  
+  on('btnRefreshNews', 'click', async () => {
+    await fetchNewsArticles();
+    renderNewsHub();
+  });
+  
+  // Favoritar/Desfavoritar
+  document.querySelectorAll('.btn-favorite').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      const id = e.currentTarget.dataset.id;
+      const idx = state.news.favorites.indexOf(id);
+      if (idx > -1) {
+        state.news.favorites.splice(idx, 1);
+      } else {
+        state.news.favorites.push(id);
+      }
+      await put('news', { key: 'favorites', value: state.news.favorites });
+      renderNewsHub();
+    });
+  });
+  
+  // Arquivar/Recuperar
+  document.querySelectorAll('.btn-archive').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      const id = e.currentTarget.dataset.id;
+      const idx = state.news.archived.indexOf(id);
+      if (idx > -1) {
+        state.news.archived.splice(idx, 1);
+      } else {
+        state.news.archived.push(id);
+      }
+      await put('news', { key: 'archived', value: state.news.archived });
+      renderNewsHub();
+    });
+  });
+}
+
+async function scheduleNewsCheck() {
+  // Atualizar notícias a cada 30 minutos
+  setInterval(async () => {
+    try {
+      await fetchNewsArticles();
+      renderNewsHub();
+    } catch (e) {
+      console.warn('Erro ao atualizar notícias:', e);
+    }
+  }, 30 * 60 * 1000);
+}
+
 function bindEvents() {
   // Notificações
   on('btnNotifications', 'click', toggleNotificationsPanel);
@@ -13764,6 +14085,11 @@ async function init() {
   
   // Fase 13: Inicializar monitor de eventos do mercado
   scheduleEventCheck().catch((e) => console.warn('Erro ao agendar verificação de eventos:', e));
+  
+  // Fase 14: Buscar notícias iniciais e agendar atualização
+  initializeNews();
+  fetchNewsArticles().catch((e) => console.warn('Erro ao buscar notícias iniciais:', e));
+  scheduleNewsCheck().catch((e) => console.warn('Erro ao agendar verificação de notícias:', e));
 }
 
 init();

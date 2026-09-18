@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#1a1a2e">
   <title>ProF Controller</title>
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="styles.css?v=40">
+  <link rel="stylesheet" href="styles.css?v=44">
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 </head>
 <body>
@@ -451,21 +451,10 @@
       <div id="taxBody"></div>
     </section>
 
-    <!-- NOTÍCIAS -->
+    <!-- NOTÍCIAS (FASE 14) -->
     <section id="tab-news" class="tab-panel">
       <p class="tab-intro" data-i18n="help.news"></p>
-      <div class="panel-header">
-        <h2 data-i18n="news.title">Notícias</h2>
-        <div class="news-actions">
-          <span id="newsStatus" class="hint" aria-live="polite"></span>
-          <button id="btnNewsRefresh" class="secondary-btn" type="button" data-i18n="news.refresh">Atualizar</button>
-        </div>
-      </div>
-      <div id="newsFilters" class="news-filters"></div>
-      <div id="newsList" class="news-list"></div>
-      <h3 class="section-sub" data-i18n="news.shortcuts">Atalhos por ativo</h3>
-      <div id="newsShortcuts" class="news-shortcuts"></div>
-      <p class="hint news-disclaimer" data-i18n="news.disclaimer"></p>
+      <div id="newsHubContainer"></div>
     </section>
 
     <!-- CONFIGURAÇÕES -->
@@ -556,6 +545,6 @@
 
   <div id="toast" class="toast hidden"></div>
   <div id="secOverlay" class="sec-overlay hidden" role="dialog" aria-modal="true"></div>
-  <script src="app.js?v=43"></script>
+  <script src="app.js?v=44"></script>
 </body>
 </html>
