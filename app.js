@@ -212,6 +212,7 @@ const I18N = {
     'settings.updateAvailable': 'Atualização disponível',
     'settings.noUpdates': 'Seu app está atualizado',
     'settings.checkingUpdates': 'Verificando atualizações...',
+    'settings.updateNow': 'Atualizar Agora',
     'toast.updated': 'Atualizado com sucesso',
     'toast.updateFailed': 'Erro ao atualizar',
     'toast.saved': 'Salvo com sucesso.',
@@ -1288,6 +1289,7 @@ const I18N = {
     'settings.updateAvailable': 'Update available',
     'settings.noUpdates': 'Your app is up to date',
     'settings.checkingUpdates': 'Checking for updates...',
+    'settings.updateNow': 'Update Now',
     'toast.updated': 'Updated successfully',
     'toast.updateFailed': 'Update failed',
     'toast.saved': 'Saved successfully.',
@@ -2363,6 +2365,7 @@ const I18N = {
     'settings.updateAvailable': 'Actualización disponible',
     'settings.noUpdates': 'Tu app está actualizada',
     'settings.checkingUpdates': 'Buscando actualizaciones...',
+    'settings.updateNow': 'Actualizar Ahora',
     'toast.updated': 'Actualizado correctamente',
     'toast.updateFailed': 'Error al actualizar',
     'toast.saved': 'Guardado correctamente.',
@@ -3426,7 +3429,7 @@ let state = {
   // Fase 16 — Alertas de Preço
   priceAlerts: [],
   settings: { lang: 'pt-BR', theme: 'default', baseCurrency: 'EUR' },
-  ui: { txType: 'all', txAccount: 'all', txMonth: '', budgetMonth: '', navView: 'pie', navBreak: 'currency', cashGrain: 'monthly',
+  ui: { txType: 'all', txAccount: 'all', txMonth: '', budgetMonth: '', navView: 'pie', navBreak: 'account', cashGrain: 'monthly',
         billKind: 'all', billStatus: 'open', billFrom: '', billTo: '', tab: 'dashboard', lastSub: {} }
 };
 
@@ -5945,23 +5948,53 @@ function renderFx() {
   const empty = document.getElementById('fxEmpty');
   tbody.innerHTML = '';
 
-  const rows = state.fx.slice().sort((a, b) =>
+  const allRows = state.fx.slice().sort((a, b) =>
     b.date.localeCompare(a.date) || a.currency.localeCompare(b.currency));
 
-  if (!rows.length) {
+  if (!allRows.length) {
     empty.textContent = t('fx.empty');
     empty.classList.remove('hidden');
     return;
   }
   empty.classList.add('hidden');
 
+  // Group by currency and get only last 2 dates per currency
+  const byMoney = {};
+  allRows.forEach((r) => {
+    if (!byMoney[r.currency]) byMoney[r.currency] = [];
+    if (byMoney[r.currency].length < 2) byMoney[r.currency].push(r);
+  });
+
+  const rows = [];
+  Object.values(byMoney).forEach((arr) => rows.push(...arr));
+  rows.sort((a, b) => b.date.localeCompare(a.date) || a.currency.localeCompare(b.currency));
+
   rows.forEach((r) => {
     const rate = Number(r.rate);
+    // Find previous rate for this currency to compare
+    const prevRate = allRows.find((x) => x.currency === r.currency && x.date < r.date);
+    const prevVal = prevRate ? Number(prevRate.rate) : null;
+    
+    let arrow = '';
+    let arrowClass = '';
+    if (prevVal !== null) {
+      if (rate > prevVal) {
+        arrow = '📈';
+        arrowClass = 'amount-in';
+      } else if (rate < prevVal) {
+        arrow = '📉';
+        arrowClass = 'amount-out';
+      } else {
+        arrow = '→';
+        arrowClass = 'amount-neutral';
+      }
+    }
+
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>${r.date}</td>
       <td>${r.currency}</td>
-      <td><strong>${fmtRate(rate)} ${r.currency}</strong></td>
+      <td><strong>${fmtRate(rate)} ${r.currency}</strong> <span class="${arrowClass}">${arrow}</span></td>
       <td>1 ${r.currency} = ${rate ? fmtRate(1 / rate) : '—'} ${FX_PIVOT}</td>
       <td>
         <button class="secondary-btn" onclick="openFxModal('${r.id}')">${t('modal.edit')}</button>
@@ -9539,16 +9572,30 @@ function renderUpdateSettings() {
   
   const lastUpdate = localStorage.getItem('lastUpdateTime');
   const currentVersion = localStorage.getItem('appVersion') || '1.0.0';
+  const locale = state.settings.lang === 'pt-BR' ? 'pt-BR' : state.settings.lang === 'es' ? 'es-ES' : 'en-US';
   
   let lastUpdateText = lastUpdate ? 
-    new Date(lastUpdate).toLocaleString(state.settings.lang === 'pt-BR' ? 'pt-BR' : state.settings.lang === 'es' ? 'es-ES' : 'en-US') : 
+    new Date(lastUpdate).toLocaleString(locale, { 
+      year: 'numeric', month: '2-digit', day: '2-digit',
+      hour: '2-digit', minute: '2-digit', second: '2-digit'
+    }) : 
     t('settings.noUpdates');
   
   box.innerHTML = `<h3>${t('settings.updates')}</h3>
     <div class="update-info">
-      <p><strong>${t('settings.lastUpdate')}:</strong> ${lastUpdateText}</p>
-      <p><strong>${t('settings.currentVersion')}:</strong> ${currentVersion}</p>
-      <p id="updateStatus"><strong>${t('settings.updateAvailable')}:</strong> ${t('settings.noUpdates')}</p>
+      <div class="update-row">
+        <span class="label">${t('settings.lastUpdate')}:</span>
+        <span class="value">${lastUpdateText}</span>
+      </div>
+      <div class="update-row">
+        <span class="label">${t('settings.currentVersion')}:</span>
+        <span class="version-badge">v${currentVersion}</span>
+      </div>
+      <div class="update-row">
+        <span class="label">${t('settings.updateAvailable')}:</span>
+        <span id="updateStatus">${t('settings.noUpdates')}</span>
+      </div>
+      <button class="primary-btn" style="margin-top: 12px;" onclick="handleRefresh()" id="btnUpdateNow">${t('settings.updateNow') || 'Atualizar Agora'}</button>
     </div>`;
 }
 
@@ -10767,7 +10814,7 @@ function openDividendModal(id) {
     <label>${t('inv.quantity')} <span class="hint">(${t('div.optional')})</span></label>
     <input id="dvQty" type="text" inputmode="decimal" value="${d && d.quantity ? d.quantity : ''}">
     <label>${t('div.status')}</label>
-    <select id="dvStatus">${['received', 'toConfirm', 'expected'].map((s) => `<option value="${s}" ${(d ? d.status : 'received') === s ? 'selected' : ''}>${divStatusLabel(s)}</option>`).join('')}</select>
+    <select id="dvStatus">${['received', 'toConfirm', 'expected'].map((s) => `<option value="${s}" ${(d ? d.status : 'toConfirm') === s ? 'selected' : ''}>${divStatusLabel(s)}</option>`).join('')}</select>
     <button class="primary-btn" onclick="saveDividend('${d ? d.id : ''}')">${t('modal.save')}</button>
   `);
 }
