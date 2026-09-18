@@ -111,6 +111,9 @@ const I18N = {
     'alerts.invalidPrice': 'Preço deve ser maior que 0.',
     'alerts.fillAllFields': 'Preencha todos os campos corretamente.',
     'alerts.created': 'Alerta de preço criado.',
+    'alerts.reached': 'Alerta de preço atingido!',
+    'alerts.checker.running': 'Verificador de alertas iniciado',
+    'notification.priceAlert': 'Alerta de preço',
     'recurrence.empty': 'Nenhuma recorrência cadastrada.',
     'notification.title': 'Notificações',
     'notification.upcoming': 'Lançamento recorrente próximo',
@@ -1108,6 +1111,9 @@ const I18N = {
     'alerts.invalidPrice': 'Price must be greater than 0.',
     'alerts.fillAllFields': 'Fill all fields correctly.',
     'alerts.created': 'Price alert created.',
+    'alerts.reached': 'Price alert triggered!',
+    'alerts.checker.running': 'Alert checker started',
+    'notification.priceAlert': 'Price alert',
     'recurrence.empty': 'No recurrences yet.',
     'notification.title': 'Notifications',
     'notification.upcoming': 'Upcoming recurring entry',
@@ -2104,6 +2110,9 @@ const I18N = {
     'alerts.invalidPrice': 'El precio debe ser mayor que 0.',
     'alerts.fillAllFields': 'Rellene todos los campos correctamente.',
     'alerts.created': 'Alerta de precio creada.',
+    'alerts.reached': '¡Alerta de precio alcanzado!',
+    'alerts.checker.running': 'Verificador de alertas iniciado',
+    'notification.priceAlert': 'Alerta de precio',
     'recurrence.empty': 'Sin recurrencias registradas.',
     'notification.title': 'Notificaciones',
     'notification.upcoming': 'Lanzamiento recurrente próximo',
@@ -11723,6 +11732,18 @@ function applyHelp() {
   if (chk) chk.checked = mostrar;
 }
 
+// Solicitar permissão de notificações
+async function requestNotificationPermission() {
+  if (!('Notification' in window)) {
+    console.warn('Notificações do navegador não suportadas');
+    return false;
+  }
+  if (Notification.permission === 'granted') return true;
+  if (Notification.permission === 'denied') return false;
+  const permission = await Notification.requestPermission();
+  return permission === 'granted';
+}
+
 function renderThemeOptions() {
   const sel = document.getElementById('themeSelect');
   if (!sel) return;
@@ -11858,6 +11879,151 @@ async function savePriceAlert() {
     closePriceAlertModal();
     await renderPriceAlerts();
   }
+}
+
+// Verificar preços e disparar alertas
+async function checkPriceAlerts() {
+  if (state.priceAlerts.length === 0) return;
+  
+  const enabledAlerts = state.priceAlerts.filter(a => a.enabled && !a.triggered);
+  if (enabledAlerts.length === 0) return;
+  
+  for (const alert of enabledAlerts) {
+    try {
+      const currentPrice = await fetchAssetPrice(alert.symbol);
+      if (currentPrice === null) continue;
+      
+      const targetReached = alert.type === 'above' 
+        ? currentPrice >= alert.targetPrice 
+        : currentPrice <= alert.targetPrice;
+      
+      if (targetReached) {
+        await triggerPriceAlert(alert, currentPrice);
+      }
+    } catch (err) {
+      console.warn(`Erro ao verificar alerta ${alert.symbol}:`, err);
+    }
+  }
+}
+
+// Disparar notificação quando alerta é atingido
+async function triggerPriceAlert(alert, currentPrice) {
+  const typeLabel = alert.type === 'above' 
+    ? t('alerts.typeAbove') || 'Acima de' 
+    : t('alerts.typeBelow') || 'Abaixo de';
+  
+  const title = `🎯 ${alert.symbol}`;
+  const message = `${typeLabel} ${alert.targetPrice} | Atual: ${currentPrice.toFixed(2)}`;
+  
+  // In-app notification
+  notify(message, 'success');
+  
+  // Browser notification
+  if ('Notification' in window && Notification.permission === 'granted') {
+    new Notification(title, {
+      body: message,
+      icon: 'icon-192.png',
+      badge: 'icon-192.png',
+      tag: `alert-${alert.id}`,
+      requireInteraction: false
+    });
+  }
+  
+  // Marcar como disparado (evita múltiplas notificações)
+  alert.triggered = true;
+  await put('priceAlerts', alert);
+  
+  // Adicionar notificação ao histórico
+  await addNotification({
+    type: 'price_alert',
+    title: title,
+    message: message,
+    data: { alertId: alert.id, symbol: alert.symbol, price: currentPrice }
+  });
+}
+
+// Buscar preço atual de um ativo
+async function fetchAssetPrice(symbol) {
+  try {
+    // Verificar se existe em quotes (dados já carregados)
+    const quote = state.quotes.find(q => q.symbol === symbol);
+    if (quote) return quote.price;
+    
+    // Tentar Finnhub API
+    const apiKey = state.settings.apiKeys?.finnhub;
+    if (apiKey) {
+      const url = `https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${apiKey}`;
+      const response = await fetch(url);
+      if (response.ok) {
+        const data = await response.json();
+        return data.c || null; // c = current price
+      }
+    }
+    
+    // Tentar Twelve Data API
+    const apiTwelve = state.settings.apiKeys?.twelve;
+    if (apiTwelve) {
+      const url = `https://api.twelvedata.com/quote?symbol=${symbol}&apikey=${apiTwelve}`;
+      const response = await fetch(url);
+      if (response.ok) {
+        const data = await response.json();
+        return data.price ? parseFloat(data.price) : null;
+      }
+    }
+    
+    // Tentar brapi.dev (ações brasileiras)
+    const apiBrapi = state.settings.apiKeys?.brapi;
+    if (apiBrapi && (symbol.includes('3') || symbol.includes('4') || symbol.includes('11'))) {
+      const url = `https://brapi.dev/api/quote/${symbol}?token=${apiBrapi}`;
+      const response = await fetch(url);
+      if (response.ok) {
+        const data = await response.json();
+        if (data.results && data.results[0]) {
+          return data.results[0].regularMarketPrice || null;
+        }
+      }
+    }
+    
+    return null;
+  } catch (err) {
+    console.error(`Erro ao buscar preço de ${symbol}:`, err);
+    return null;
+  }
+}
+
+// Iniciar verificação automática
+function startPriceAlertChecker() {
+  if (window.priceAlertCheckInterval) return; // Já está rodando
+  
+  // Primeira verificação imediatamente
+  checkPriceAlerts().catch(e => console.warn('Erro na verificação de alertas:', e));
+  
+  // Verificação a cada 5 minutos (300000 ms)
+  window.priceAlertCheckInterval = setInterval(() => {
+    checkPriceAlerts().catch(e => console.warn('Erro na verificação de alertas:', e));
+  }, 300000);
+  
+  console.log('✓ Verificador de alertas iniciado (5 min)');
+}
+
+// Parar verificação automática
+function stopPriceAlertChecker() {
+  if (window.priceAlertCheckInterval) {
+    clearInterval(window.priceAlertCheckInterval);
+    window.priceAlertCheckInterval = null;
+    console.log('✗ Verificador de alertas parado');
+  }
+}
+
+// Resetar alertas disparados para revalidação
+async function resetPriceAlerts() {
+  for (const alert of state.priceAlerts) {
+    if (alert.triggered) {
+      alert.triggered = false;
+      await put('priceAlerts', alert);
+    }
+  }
+  console.log('✓ Alertas resetados');
 }
 
 function bindEvents() {
@@ -12514,6 +12680,9 @@ async function init() {
   applyTheme();
   try {
     bindEvents();
+    // Fase 16 — Iniciar verificador de alertas
+    startPriceAlertChecker();
+    requestNotificationPermission().catch(() => {});
   } catch (e) {
     console.error('Falha ao ligar os eventos da interface:', e);
     showFatal('Parte da interface não pôde ser inicializada. Se você acabou de publicar, confirme que o index.html também foi atualizado. Detalhe: ' + (e && e.message ? e.message : e));
