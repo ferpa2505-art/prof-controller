@@ -472,3 +472,168 @@ Se ❌ Falhas críticas:
 ---
 
 **Fase 16 - Tarefa 1 Pronta!** 🚀
+
+---
+
+---
+
+## 📊 FASE 16 - TAREFA 2: Verificação Automática + Notificações
+
+**Tempo Estimado:** 15-20 minutos  
+**Requer:** Fase 16 Tarefa 1 completa, Chaves de API
+
+### ✅ Configuração de API (2 min)
+- [ ] Abrir Configurações ⚙️
+- [ ] Expandir "Cotações de mercado"
+- [ ] Preencherfinnhub (ou Twelve Data ou brapi.dev)
+- [ ] Clicar "Salvar chaves"
+- [ ] Toast: "Chaves salvas"
+- [ ] Clicar "Testar conexões"
+- [ ] Esperar 2-3 seg → Conexões verificadas
+
+### 🔔 Permissão de Notificações (2 min)
+- [ ] Ao abrir app → navegador pede permissão
+- [ ] Clicar "Permitir" (ou "Bloquear" se não quiser)
+- [ ] Console: `Notification.permission` = `"granted"` (ou "denied")
+
+### ⏱️ Verificador Iniciado (2 min)
+- [ ] Console (F12): `state.priceAlerts.length` = algum número
+- [ ] Console: `window.priceAlertCheckInterval` → número (ID do intervalo)
+- [ ] Mensagem: "✓ Verificador de alertas iniciado (5 min)"
+
+### 📍 Teste Imediato - Alerta Já Atingido (5 min)
+**Cenário:** Criar alerta com target ABAIXO do preço atual → dispara imediatamente
+
+1. [ ] Ir para Investimentos > Alertas de Preço
+2. [ ] Criar novo alerta:
+   - Ativo: `PETR4` (ou qualquer ação B3)
+   - Tipo: `Abaixo de`
+   - Preço-alvo: `1.00` (abaixo de qualquer preço real)
+3. [ ] Salvar → Alerta criado
+4. [ ] Esperar 2-3 segundos
+5. [ ] **Resultado esperado:**
+   - Toast: "Abaixo de 1.00 | Atual: [preço real]" (verde)
+   - Browser notification aparece: "🎯 PETR4"
+   - Alerta na lista muda: card fica com borda verde à esquerda
+   - Console: `state.priceAlerts[0].triggered` = `true`
+6. [ ] Fechar notificação
+
+### 🔄 Resetar Alertas (2 min)
+- [ ] Console: `resetPriceAlerts()`
+- [ ] Mensagem: "✓ Alertas resetados"
+- [ ] Alerta volta ao estado normal (sem borda verde)
+- [ ] Console: `state.priceAlerts[0].triggered` = `false`
+
+### ⏲️ Teste 5 Minutos (Opcional - demorado)
+- [ ] Criar alerta com preço-alvo realista (ex: PETR4 ↑ preço-atual + 50%)
+- [ ] Esperar até 5 minutos (horário do check)
+- [ ] Verificador deve chamar `checkPriceAlerts()` automaticamente
+- [ ] Se preço mudou e atingiu target → notificação dispara
+
+### 🛑 Parar Verificador (2 min)
+- [ ] Console: `stopPriceAlertChecker()`
+- [ ] Mensagem: "✗ Verificador de alertas parado"
+- [ ] Console: `window.priceAlertCheckInterval` = `null`
+- [ ] Recarregar página
+- [ ] Verificador reinicia (como esperado)
+
+### 🌐 Multilíngue - Notificações (3 min)
+**Português:**
+- [ ] Toast: "Acima de 100 | Atual: 105.50" ✅
+- [ ] Notification title: "🎯 PETR4" ✅
+- [ ] Notification body: Mensagem em português ✅
+
+**English:**
+- [ ] Trocar idioma
+- [ ] Resetar alertas
+- [ ] Disparar novamente
+- [ ] Toast: "Above 100 | Current: 105.50" ✅
+- [ ] Notification: "Above 100 | Current: 105.50" ✅
+
+**Español:**
+- [ ] Trocar idioma
+- [ ] Resetar alertas
+- [ ] Disparar novamente
+- [ ] Toast: "Por encima de 100 | Actual: 105.50" ✅
+- [ ] Notification: "Por encima de 100 | Actual: 105.50" ✅
+
+### 🐛 Fallback de APIs (3 min)
+**Se Finnhub não funciona:**
+- [ ] Deletar chave Finnhub
+- [ ] Resetar alertas: `resetPriceAlerts()`
+- [ ] Disparar alerta novamente
+- [ ] Deve tentar Twelve Data automaticamente
+- [ ] Notificação aparece (sem erro)
+
+**Se nenhuma API funciona:**
+- [ ] Deletar todas as chaves
+- [ ] Disparar alerta
+- [ ] Console: aviso "Erro ao buscar preço"
+- [ ] Notificação NÃO dispara (correto)
+- [ ] Alerta NÃO marca como triggered
+
+### 💾 Backup/Restore com Status Disparado (3 min)
+- [ ] Criar alerta e disparar (triggered=true)
+- [ ] Exportar backup
+- [ ] JSON contém: `"triggered": true` ✅
+- [ ] Deletar DB
+- [ ] Importar JSON
+- [ ] Alerta restaurado com `triggered: true`
+- [ ] Resetar: `resetPriceAlerts()`
+- [ ] Alerta volta a `triggered: false`
+
+### 🐛 Sem Erros Console (2 min)
+- [ ] F12 > Console
+- [ ] Nenhuma mensagem vermelha 🔴
+- [ ] Warnings ⚠️ aceitáveis:
+  - "Mixed Content warning" (se HTTP + HTTPS)
+  - CORS warnings (se API bloqueada)
+- [ ] Nenhum erro de sintaxe
+
+### 📊 Telemetria (Info apenas - não é teste)
+Console:
+- `setInterval ID`: número (ex: 123456)
+- `notification.permission`: "granted" ou "denied"
+- `state.priceAlerts.length`: qtd de alertas
+- `lastCheck`: timestamp do último check (opcional implementar)
+
+---
+
+## ✅ Fase 16 - Tarefa 2 Completa?
+
+- [ ] Sim, todos os testes passaram ✅
+- [ ] Sim, com avisos (listar):
+    - 
+- [ ] Não, há falhas (listar):
+  -
+
+---
+
+## 🎯 Próximo Passo
+
+```
+Se ✅ Todos passaram:
+  → Pronto para Tarefa 3 (Tabela fiscal 12 países)
+  → Ou Tarefa 4 (Documentação + servidor)
+
+Se ⚠️ Com avisos:
+  → Documentar aviso
+  → Proceder com cautela
+
+Se ❌ Falhas críticas:
+  → Verificar console por erros
+  → Confirmar chaves de API válidas
+  → Testar cada API separadamente
+```
+
+---
+
+**Data do Teste:** ___________  
+**Testador:** ________________  
+**Navegador:** _______________  
+**SO:** ______________________  
+**Resultado:** ✅ / ⚠️ / ❌
+
+---
+
+**Fase 16 - Tarefa 2 Pronta!** 🔔
