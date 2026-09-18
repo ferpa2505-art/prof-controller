@@ -637,3 +637,158 @@ Se ❌ Falhas críticas:
 ---
 
 **Fase 16 - Tarefa 2 Pronta!** 🔔
+
+---
+
+---
+
+## 💼 FASE 16 - TAREFA 3: Tabela Fiscal Internacional (12 Países)
+
+**Tempo Estimado:** 10-15 minutos  
+**Requer:** Nenhuma dependência externa
+
+### ✅ Estrutura de Dados (2 min)
+- [ ] Abrir DevTools (F12) > Console
+- [ ] Digitar: `Object.keys(TAX_RULES)` → Deve retornar 12 códigos
+  - [ ] PT, ES, IT, DE, FR, IE, LU, MT, GB, CH, AD, US
+- [ ] Digitar: `TAX_RULES['PT']` → Deve mostrar object com name, pf[], pj, notes
+- [ ] Verificar: `TAX_RULES['PT'].pf.length` → Deve ser 7 (sete faixas)
+
+### 📋 Interface de Seleção (3 min)
+1. [ ] Ir para aba **Impostos**
+2. [ ] Scroll até final → "Alíquotas Fiscais Internacionais"
+3. [ ] **Dropdown de países:**
+   - [ ] Clicar → Lista todos os 12 (com flags: 🇵🇹 Portugal, etc)
+   - [ ] Selecionar 🇪🇸 Espanha
+   - [ ] Tabela muda para dados espanhóis ✅
+4. [ ] **Toggle PF/PJ:**
+   - [ ] Selecionado: PF (Pessoa Física)
+   - [ ] Alternar para: PJ (Pessoa Jurídica)
+   - [ ] Cards e tabela atualizam ✅
+
+### 🔢 Cálculo de Imposto (4 min)
+**Teste com Portugal, PF, Renda: €50.000**
+1. [ ] Campo "Renda Estimada" mostra: 50000
+2. [ ] **Cards aparecem:**
+   - [ ] Imposto Estimado: ~€12.425
+   - [ ] Taxa Efetiva: ~24,85%
+   - [ ] Alíquota Marginal: 37%
+   - [ ] Renda Líquida: ~€37.575
+3. [ ] **Tabela mostra 7 faixas:**
+   - [ ] Faixa 1 (€0-€7.091): €0 | 14,5% | Completa (~€1.028)
+   - [ ] Faixa 2 (€7.091-€10.700): ~€829 | 23%
+   - [ ] Faixa 3 (€10.700-€20.261): ~€2.699 | 28,5% | DESTACADA (azul)
+   - [ ] Faixa 4 (€20.261-€25.000): ~€1.664 | 35% | DESTACADA
+   - [ ] Faixa 5+ seguem...
+   - [ ] Coluna "Acumulado" mostra soma até cada faixa ✅
+
+### 🌍 Comparação entre Países (4 min)
+1. [ ] Abaixo da tabela fiscal: "Comparação entre Países"
+2. [ ] Campo "Renda Estimada": já prefenchido com €50.000
+3. [ ] Tabela aparece com 12 linhas (uma por país):
+   - [ ] 🇮🇪 Irlanda | €10.000 | 20,00% | €40.000
+   - [ ] 🇦🇩 Andorra | €5.000 | 10,00% | €45.000 ← **Menor imposto**
+   - [ ] 🇴🇸 Portugal | €12.425 | 24,85% | €37.575
+   - [ ] 🇬🇧 UK | €9.742 | 19,48% | €40.258
+   - [ ] 🇺🇸 USA | €6.060 | 12,12% | €43.940 ← **Muito baixo**
+   - [ ] 🇲🇹 Malta | €12.500 | 25,00% | €37.500
+   - [ ] ...continua com os 12
+4. [ ] Mudar renda para €200.000:
+   - [ ] Todos os valores atualizam ✅
+   - [ ] Ranking muda (países progressivos aumentam mais) ✅
+5. [ ] Mudar para PJ:
+   - [ ] Tabela mostra alíquotas flat por país
+   - [ ] Exemplo PT: €39.000 (19,5%) vs €160.000 (80%) USA ✅
+
+### 🎨 Multilíngue - Tarefa 3 (3 min)
+**Português (padrão):**
+- [ ] "Alíquotas Fiscais Internacionais" ✅
+- [ ] "País/Região:" ✅
+- [ ] "Imposto Estimado" ✅
+- [ ] "Renda Líquida" ✅
+- [ ] "Faixas de Imposição" ✅
+
+**English:**
+- [ ] Trocar idioma
+- [ ] "International Tax Rates" ✅
+- [ ] "Country/Region:" ✅
+- [ ] "Estimated Tax" ✅
+- [ ] "Net Income" ✅
+
+**Español:**
+- [ ] Trocar idioma
+- [ ] "Tasas Fiscales Internacionales" ✅
+- [ ] "País/Región:" ✅
+- [ ] "Impuesto Estimado" ✅
+- [ ] "Ingresos Netos" ✅
+
+### 🐛 Casos Extremos (3 min)
+**Renda muito baixa (€1.000):**
+- [ ] Todos os impostos recalculam
+- [ ] Muitos países mostram 0% ou taxa mínima
+- [ ] Renda líquida ~= Renda bruta ✅
+
+**Renda muito alta (€500.000):**
+- [ ] Alíquotas progressivas "explodem"
+- [ ] Portugal: ~€240k imposto (48% aprox)
+- [ ] Andorra: ~€200k (40%)
+- [ ] Comparação clara das diferenças ✅
+
+**Renda fracionada (€12.345,67):**
+- [ ] Cálculo funciona com decimais
+- [ ] Resultado mostra decimais corretos ✅
+
+### 💾 Sem Erros Console (2 min)
+- [ ] F12 > Console
+- [ ] Nenhuma mensagem vermelha 🔴
+- [ ] Warnings: aceitáveis (CORS, etc)
+- [ ] Switching países: sem erros
+- [ ] Changing renda: sem erros ✅
+
+### 📊 Dados Validados (Info - não é teste)
+**Fonte:** TAX_RATES_RESEARCH_2026.md
+- Portugal: 48% + 5% solidariedade = 53% max
+- Andorra: 40% max
+- USA: 37% federal + estadual até 13,3% = até 50,3%
+- Irlanda: 12,5% corporativa (mais baixa)
+
+---
+
+## ✅ Fase 16 - Tarefa 3 Completa?
+
+- [ ] Sim, todos os testes passaram ✅
+- [ ] Sim, com avisos (listar):
+    - 
+- [ ] Não, há falhas (listar):
+  -
+
+---
+
+## 🎯 Próximo Passo
+
+```
+Se ✅ Todos passaram:
+  → Pronto para Tarefa 4 (Documentação + Servidor)
+  → Ou encerrar Fase 16
+
+Se ⚠️ Com avisos:
+  → Documentar aviso
+  → Proceder com cautela
+
+Se ❌ Falhas críticas:
+  → Verificar i18n strings
+  → Testar estimateTaxByCountry() manualmente
+  → Verificar renderTaxTable() vs renderTaxComparison()
+```
+
+---
+
+**Data do Teste:** ___________  
+**Testador:** ________________  
+**Navegador:** _______________  
+**SO:** ______________________  
+**Resultado:** ✅ / ⚠️ / ❌
+
+---
+
+**Fase 16 - Tarefa 3 Pronta!** 💼
