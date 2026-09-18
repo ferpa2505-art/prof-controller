@@ -306,3 +306,169 @@ Se ❌ Falhas críticas:
 ---
 
 **Próximo:** Compartilhe os resultados! 📊
+
+---
+
+---
+
+## 📊 FASE 16 - TAREFA 1: Alertas de Preço (IndexedDB + UI)
+
+**Tempo Estimado:** 10-15 minutos  
+**Requer:** App rodando, Fase 13 completa
+
+### 🏗️ Infraestrutura (2 min)
+- [ ] DevTools > IndexedDB > `priceAlerts` store existe
+- [ ] Store está vazio inicialmente
+- [ ] Console: `state.priceAlerts` = `[]` (array vazio)
+- [ ] DB_VERSION = 8 (Console: `DB_VERSION`)
+
+### 🎯 UI - Botão Alertas (2 min)
+- [ ] Aba "Investimentos" visível
+- [ ] Novo painel: "Alertas de Preço" aparece após "Proventos"
+- [ ] Botão "+ Novo Alerta" clicável
+- [ ] Mensagem vazia: "Nenhum alerta de preço."
+
+### 📋 Modal - Novo Alerta (3 min)
+- [ ] Clicar "+ Novo Alerta" → modal abre
+- [ ] Campo 1: "Ativo (ex: PETR4, BTC)" → input text
+- [ ] Campo 2: "Tipo" → dropdown (Acima de / Abaixo de)
+- [ ] Campo 3: "Preço-alvo" → input number (min=0)
+- [ ] Botões: Cancelar / Salvar
+- [ ] Fechar modal → desaparece
+
+### ✅ Criar Alerta - Caso Válido (3 min)
+- [ ] Preencher:
+  - Ativo: `PETR4`
+  - Tipo: `Acima de`
+  - Preço-alvo: `30.50`
+- [ ] Clicar Salvar
+- [ ] Toast: "Alerta de preço criado."
+- [ ] Modal fecha
+- [ ] Alerta aparece na lista
+
+### 🎨 Alerta na Lista (3 min)
+- [ ] Card visível com:
+  - Símbolo: `PETR4`
+  - Badge: `↑ 30.50` (verde para "acima")
+  - Preço atual: `N/A` (sem cotação ainda)
+  - Checkbox "Ativa" marcado
+  - Botão "Deletar"
+
+### ❌ Validações (4 min)
+**Máximo 3 alertas ativos:**
+- [ ] Criar 3 alertas diferentes (PETR4, VALE3, ITUB4)
+- [ ] Tentar criar 4º alerta → Toast: "Máximo de 3 alertas ativos atingido."
+- [ ] 4º alerta NÃO aparece na lista
+
+**Sem duplicatas:**
+- [ ] Tentar criar alerta idêntico (PETR4 + Acima)
+- [ ] Toast: "Alerta para este ativo + tipo já existe."
+
+**Preço inválido:**
+- [ ] Deixar preço vazio ou zero
+- [ ] Tentar salvar → Toast: "Preencha todos os campos corretamente."
+
+**Símbolos vazios:**
+- [ ] Deixar campo de ativo vazio
+- [ ] Tentar salvar → Toast: "Preencha todos os campos corretamente."
+
+### 🗑️ Deletar Alerta (2 min)
+- [ ] Clicar botão "Deletar" → alerta desaparece
+- [ ] Lista atualiza
+- [ ] Agora pode criar novo alerta (slot liberado)
+
+### 🔘 Ativar/Desativar Alerta (2 min)
+- [ ] Criar alerta e deixar marcado ("Ativa")
+- [ ] Clicar checkbox → desmarcar
+- [ ] Card fica com opacidade reduzida (disabled)
+- [ ] Console: `state.priceAlerts[0].enabled` = `false`
+- [ ] Clicar novamente → volta a ativar
+
+### 💾 Backup v8 com Alertas (3 min)
+- [ ] Criar 2 alertas (PETR4 ↑ 31, VALE3 ↓ 22)
+- [ ] Configurações ⚙️ > Exportar
+- [ ] JSON baixado
+- [ ] Abrir em editor > `"version": 8` ✅
+- [ ] JSON contém `"priceAlerts": [...]` com 2 alertas ✅
+- [ ] Cada alerta tem: id, symbol, type, targetPrice, enabled, createdAt
+
+### 📥 Import v8 Restaura Alertas (3 min)
+- [ ] Deletar: `indexedDB.deleteDatabase('ProfController')`
+- [ ] Recarregar app
+- [ ] Lista vazia novamente
+- [ ] Importar JSON anterior
+- [ ] App recarrega
+- [ ] 2 alertas restaurados na lista
+- [ ] Dados mantidos: PETR4 ↑ 31, VALE3 ↓ 22
+
+### 🌐 Multilíngue (3 min)
+**Português:**
+- [ ] "Alertas de Preço" ✅
+- [ ] "+ Novo Alerta" ✅
+- [ ] "Acima de / Abaixo de" ✅
+- [ ] "Preço-alvo" ✅
+- [ ] "Nenhum alerta de preço." ✅
+
+**English:**
+- [ ] Trocar idioma → "Price Alerts" ✅
+- [ ] "+ New Alert" ✅
+- [ ] "Above / Below" ✅
+- [ ] "Target price" ✅
+- [ ] "No price alerts." ✅
+
+**Español:**
+- [ ] Trocar idioma → "Alertas de Precio" ✅
+- [ ] "+ Nueva Alerta" ✅
+- [ ] "Por encima de / Por debajo de" ✅
+- [ ] "Precio objetivo" ✅
+- [ ] "Sin alertas de precio." ✅
+
+### 🐛 Sem Erros (2 min)
+- [ ] Console (F12) sem mensagens vermelhas 🔴
+- [ ] Warnings ⚠️ são aceitáveis
+- [ ] Não há erros ao criar/deletar alertas
+- [ ] IndexedDB operations funcionam (DevTools confirma)
+
+---
+
+## ✅ Fase 16 - Tarefa 1 Completa?
+
+- [ ] Sim, todos os testes passaram ✅
+- [ ] Sim, com avisos (listar):
+    - 
+- [ ] Não, há falhas (listar):
+  -
+
+---
+
+## 🎯 Próximo Passo
+
+```
+Se ✅ Todos passaram:
+  → Pronto para Tarefa 2 (checkPriceAlerts + notificações)
+  → Implementar verificação automática de preços
+  → Adicionar notificações quando atingir target
+
+Se ⚠️ Com avisos:
+  → Documentar aviso
+  → Proceder com cautela
+  → Monitorar na Tarefa 2
+
+Se ❌ Falhas críticas:
+  → Revisar funções CRUD em app.js
+  → Verificar IDs dos elementos no HTML
+  → Confirmar CSS carregou (v40)
+  → Executar: location.reload(true)  // hard refresh
+```
+
+---
+
+**Data do Teste:** ___________  
+**Testador:** ________________  
+**Navegador:** _______________  
+**SO:** ______________________  
+**Resultado:** ✅ / ⚠️ / ❌
+
+---
+
+**Fase 16 - Tarefa 1 Pronta!** 🚀
