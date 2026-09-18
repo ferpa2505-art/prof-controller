@@ -8365,18 +8365,29 @@ async function fetchGoogleNews(query, tag) {
   const rss = `https://news.google.com/rss/search?q=${encodeURIComponent(query)}&hl=pt-BR&gl=BR&ceid=BR:pt-419`;
   const chave = apiKey('apiRss2json');
   const url = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rss)}${chave ? '&api_key=' + encodeURIComponent(chave) : ''}`;
-  const d = await getJSON(url);
-  if (d.status && d.status !== 'ok') throw new Error(d.message || 'rss2json');
-  return (d.items || []).slice(0, 12).map((it) => {
-    // O Google News coloca a fonte no fim do título: "Manchete - InfoMoney"
-    const partes = decodeEntities(it.title).split(' - ');
-    const fonte = partes.length > 1 ? partes.pop() : (it.author || 'Google News');
-    return {
-      title: partes.join(' - '), source: fonte, url: safeUrl(it.link),
-      date: it.pubDate ? new Date(it.pubDate.replace(' ', 'T') + 'Z').toISOString() : new Date().toISOString(),
-      tag, lang: 'pt'
-    };
-  });
+  
+  let tentativa = 0;
+  while (tentativa < 3) {
+    try {
+      const d = await getJSON(url);
+      if (d.status && d.status !== 'ok') throw new Error(d.message || 'rss2json');
+      return (d.items || []).slice(0, 12).map((it) => {
+        // O Google News coloca a fonte no fim do título: "Manchete - InfoMoney"
+        const partes = decodeEntities(it.title).split(' - ');
+        const fonte = partes.length > 1 ? partes.pop() : (it.author || 'Google News');
+        return {
+          title: partes.join(' - '), source: fonte, url: safeUrl(it.link),
+          date: it.pubDate ? new Date(it.pubDate.replace(' ', 'T') + 'Z').toISOString() : new Date().toISOString(),
+          tag, lang: 'pt'
+        };
+      });
+    } catch (e) {
+      tentativa++;
+      if (tentativa >= 3) throw e;
+      await new Promise(r => setTimeout(r, Math.pow(2, tentativa) * 1000));
+    }
+  }
+  return [];
 }
 
 async function fetchFinnhubNews(ticker) {
@@ -8384,11 +8395,22 @@ async function fetchFinnhubNews(ticker) {
   if (!key) return [];
   const ate = todayISO();
   const de = new Date(); de.setDate(de.getDate() - 7);
-  const d = await getJSON(`https://finnhub.io/api/v1/company-news?symbol=${encodeURIComponent(ticker)}&from=${de.toISOString().slice(0, 10)}&to=${ate}&token=${key}`);
-  return (Array.isArray(d) ? d : []).slice(0, 12).map((n) => ({
-    title: decodeEntities(n.headline), source: decodeEntities(n.source), url: safeUrl(n.url),
-    date: new Date((n.datetime || 0) * 1000).toISOString(), tag: ticker, lang: 'en'
-  }));
+  
+  let tentativa = 0;
+  while (tentativa < 2) {
+    try {
+      const d = await getJSON(`https://finnhub.io/api/v1/company-news?symbol=${encodeURIComponent(ticker)}&from=${de.toISOString().slice(0, 10)}&to=${ate}&token=${key}`);
+      return (Array.isArray(d) ? d : []).slice(0, 12).map((n) => ({
+        title: decodeEntities(n.headline), source: decodeEntities(n.source), url: safeUrl(n.url),
+        date: new Date((n.datetime || 0) * 1000).toISOString(), tag: ticker, lang: 'en'
+      }));
+    } catch (e) {
+      tentativa++;
+      if (tentativa >= 2) return [];
+      await new Promise(r => setTimeout(r, Math.pow(2, tentativa) * 1000));
+    }
+  }
+  return [];
 }
 
 async function loadNewsCache() {
@@ -8425,9 +8447,10 @@ async function refreshNews(forcar) {
 
   const novos = [];
   let falhas = 0;
-  for (const tarefa of tarefas) {
-    try { novos.push(...(await tarefa())); }
+  for (let i = 0; i < tarefas.length; i++) {
+    try { novos.push(...(await tarefas[i]())); }
     catch (e) { falhas++; console.warn('Notícias:', e.message); }
+    if (i < tarefas.length - 1) await new Promise(r => setTimeout(r, 500));
   }
 
   // Junta com o que já havia, sem repetir a mesma manchete
