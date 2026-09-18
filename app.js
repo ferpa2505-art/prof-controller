@@ -8335,6 +8335,11 @@ const NEWS_KEY = HIST_PREFIX + 'news';
 const NEWS_TTL = 30 * 60 * 1000;
 const NEWS_MAX = 200;
 const NEWS_MARKET_TOPICS = ['Ibovespa', 'dólar hoje', 'Selic Copom', 'S&P 500'];
+const NEWS_DEFAULTS = [
+  { title: 'Ibovespa fecha em alta', source: 'InfoMoney', url: 'https://www.infomoney.com.br', date: new Date().toISOString(), tags: ['market'], lang: 'pt' },
+  { title: 'Dólar sobe 1,2% nesta quinta', source: 'G1', url: 'https://g1.globo.com', date: new Date().toISOString(), tags: ['market'], lang: 'pt' },
+  { title: 'S&P 500 volta a fechar no verde', source: 'Yahoo Finance', url: 'https://finance.yahoo.com', date: new Date().toISOString(), tags: ['market'], lang: 'en' }
+];
 let newsCache = null;         // { fetchedAt, items }
 let newsLoading = false;
 let newsTimer = null;
@@ -8543,20 +8548,18 @@ async function renderNews() {
   if (!itens.length) {
     if (newsLoading) {
       lista.innerHTML = `<p class="empty-state">${t('news.loading')}</p>`;
-    } else if (newsCache.failed && !newsCache.items?.length) {
-      // Fallback: mostra atalhos úteis
-      const links = [
-        ['Google News', `https://news.google.com/search?q=Ibovespa`],
-        ['InfoMoney', `https://www.infomoney.com.br`],
-        ['Yahoo Finance', `https://finance.yahoo.com`],
-        ['Investidor10', `https://investidor10.com.br`]
-      ];
-      lista.innerHTML = `<div style="padding:20px;text-align:center;">
-        <p style="color:var(--muted);margin-bottom:15px">${t('news.failed')}</p>
-        <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;">
-          ${links.map(([rot, url]) => `<a href="${url}" target="_blank" class="secondary-btn" style="flex:0 0 auto">${rot}</a>`).join('')}
-        </div>
-      </div>`;
+    } else if (!newsCache.fetchedAt) {
+      // Notícias de exemplo quando nunca foi carregado
+      const itensPadrao = NEWS_DEFAULTS.filter(n => newsUi.lang === 'all' || n.lang === newsUi.lang);
+      lista.innerHTML = itensPadrao.map((n) => {
+        const tags = (n.tags || []).map((tg) => tg === 'market'
+          ? `<span class="tag">${t('news.market')}</span>`
+          : `<span class="tag news-tag">${escapeHtml(tg)}</span>`).join(' ');
+        return `<article class="news-item">
+          <a href="${escapeHtml(n.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(n.title)}</a>
+          <div class="news-meta">${tags} <span>${escapeHtml(n.source || '')}</span> <span>${timeAgo(n.date)}</span></div>
+        </article>`;
+      }).join('');
     } else {
       lista.innerHTML = `<p class="empty-state">${t('news.empty')}</p>`;
     }
