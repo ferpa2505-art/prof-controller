@@ -3503,7 +3503,8 @@ function showLockScreen() {
       <button id="lockForgot" class="link-btn" type="button">${t('sec.forgot')}</button>
     `);
     const campo = document.getElementById('lockPin');
-    let contagem = null;
+    const tamanho = Number(VAULT.meta.pinLen) || 0;
+    let contagem = null, tentandoAuto = false;
     const atualizarEspera = () => {
       const ms = lockWaitMs();
       const go = document.getElementById('lockGo');
@@ -3520,8 +3521,10 @@ function showLockScreen() {
     const iniciarEspera = () => { if (!contagem && lockWaitMs() > 0) { atualizarEspera(); contagem = setInterval(atualizarEspera, 1000); } };
     iniciarEspera();
 
-    const abrir = async (dek) => {
+    const abrir = async (dek, pin) => {
       await openVault(dek);
+      // Senha criada antes desta versão: guarda o tamanho para o desbloqueio automático
+      if (pin && !VAULT.meta.pinLen) await saveSecurityMeta({ ...VAULT.meta, pinLen: pin.length, fails: 0, lockUntil: 0 });
       await clearFailures();
       closeOverlay();
       resolve();
@@ -3533,7 +3536,7 @@ function showLockScreen() {
       const btn = document.getElementById('lockGo');
       busy(btn, true);
       try {
-        await abrir(await unlockWithPin(pin));
+        await abrir(await unlockWithPin(pin), pin);
       } catch (e) {
         busy(btn, false);
         await registerFailure();
@@ -3545,6 +3548,14 @@ function showLockScreen() {
     };
     document.getElementById('lockGo').addEventListener('click', tentarPin);
     campo.addEventListener('keydown', (e) => { if (e.key === 'Enter') tentarPin(); });
+    // Com o tamanho da senha conhecido, o app abre sozinho ao completar os dígitos
+    campo.addEventListener('input', () => {
+      if (!tamanho || tentandoAuto || lockWaitMs() > 0) return;
+      if (campo.value.length === tamanho) {
+        tentandoAuto = true;
+        Promise.resolve(tentarPin()).finally(() => { tentandoAuto = false; });
+      }
+    });
     if (temBio) {
       document.getElementById('lockBio').addEventListener('click', async () => {
         const btn = document.getElementById('lockBio');
@@ -3627,8 +3638,9 @@ function runPinAndRecoverySetup({ dek, modo }) {
         const btn = document.getElementById('pinGo');
         busy(btn, true, t('sec.protecting'));
         const pinWrap = await wrapForPin(dek, p1.value);
+        pinWrap.len = p1.value.length;
         if (modo === 'change') {
-          await saveSecurityMeta({ ...VAULT.meta, pin: pinWrap, fails: 0, lockUntil: 0 });
+          await saveSecurityMeta({ ...VAULT.meta, pin: pinWrap, pinLen: p1.value.length, fails: 0, lockUntil: 0 });
           closeOverlay(); resolve(); return;
         }
         passoCodigo(pinWrap);
@@ -3671,9 +3683,10 @@ function runPinAndRecoverySetup({ dek, modo }) {
           if (modo === 'setup') {
             if (document.getElementById('codeBackup').checked) await exportJSONPlain(true);
             await activateEncryption(dek, pinWrap, recWrap, (f) => setMsg('codeMsg', t('sec.encrypting').replace('{p}', Math.round(f * 100)), ''));
+            await saveSecurityMeta({ ...VAULT.meta, pinLen: pinWrap.len });
           } else {
             // reset: senha e código novos; a biometria antiga deixa de valer por segurança
-            await saveSecurityMeta({ ...VAULT.meta, pin: pinWrap, rec: recWrap, bio: null, fails: 0, lockUntil: 0 });
+            await saveSecurityMeta({ ...VAULT.meta, pin: pinWrap, pinLen: pinWrap.len, rec: recWrap, bio: null, fails: 0, lockUntil: 0 });
           }
           closeOverlay();
           resolve();
@@ -5880,7 +5893,8 @@ async function lookupAsset(prefill) {
   info.classList.remove('hidden');
   info.innerHTML = `<span class="hint">${t('mkt.searching')}</span>`;
   try {
-    const forcar = (document.getElementById('poLookupKind') || {}).value || undefined;
+    const escolhido = document.querySelector('input[name="poKind"]:checked');
+    const forcar = (escolhido && escolhido.value) || undefined;
     const a = await resolveAsset(q, forcar);
     const set = (id, v) => { const el = document.getElementById(id); if (el && v != null && v !== '') el.value = v; };
     set('poName', a.name);
@@ -9651,12 +9665,13 @@ function openPositionModal(id, prefill) {
     <div class="lookup-row">
       <input id="poLookup" placeholder="TTWO, PETR4, US8740541094" value="${prefill ? escapeHtml(prefill) : ''}"
         onkeydown="if(event.key==='Enter'){event.preventDefault();lookupAsset();}">
-      <select id="poLookupKind" aria-label="${t('mkt.searchKind')}">
-        <option value="">${t('mkt.kindAuto')}</option>
-        <option value="stock">${t('mkt.kindStock')}</option>
-        <option value="crypto">${t('mkt.kindCrypto')}</option>
-      </select>
       <button id="poLookupBtn" class="secondary-btn" type="button" onclick="lookupAsset()">${t('mkt.search')}</button>
+    </div>
+    <div class="lookup-kind">
+      <span>${t('mkt.searchKind')}</span>
+      <label><input type="radio" name="poKind" value="" checked> ${t('mkt.kindAuto')}</label>
+      <label><input type="radio" name="poKind" value="stock"> ${t('mkt.kindStock')}</label>
+      <label><input type="radio" name="poKind" value="crypto"> ${t('mkt.kindCrypto')}</label>
     </div>
     <p class="hint">${t('mkt.lookupHint')}</p>
     <div id="poLookupInfo" class="lookup-info hidden"></div>
