@@ -10619,7 +10619,7 @@ async function commitB3Import() {
 
 /* ================= Proventos ================= */
 const DIV_TYPES = ['div', 'jcp', 'rend', 'amort', 'other'];
-const divUi = { year: 'all', status: 'all', ticker: 'all' };
+const divUi = { year: 'all', status: 'toConfirm', ticker: 'all' };
 
 function dividendsOfPosition(id) { return state.dividends.filter((d) => d.positionId === id); }
 
