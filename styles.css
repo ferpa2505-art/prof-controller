@@ -775,6 +775,88 @@ body.sec-open { overflow: hidden; }
 .calc-mode { display: flex; flex-direction: column; gap: 5px; font-size: 13px; color: var(--muted); max-width: 320px; margin-bottom: 14px; }
 .calc-mode select { padding: 9px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 15px; }
 
+/* ===== Fase 16: Tarefa 3 - Tabela Fiscal Internacional ===== */
+.tax-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin: 16px 0;
+  padding: 12px;
+  background: var(--surface);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+.tax-selector label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+.tax-selector select,
+.tax-selector input {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+}
+.tax-selector h3 {
+  width: 100%;
+  margin: 0;
+}
+
+.tax-result {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin: 16px 0;
+}
+.tax-result .card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+}
+.tax-result h4 {
+  margin: 0 0 8px 0;
+  font-size: 12px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.tax-result .big-number {
+  margin: 8px 0;
+  font-size: 20px;
+  font-weight: bold;
+}
+.tax-result .hint {
+  margin: 4px 0 0 0;
+  font-size: 12px;
+}
+
+.tax-brackets-table tbody tr.table-highlight {
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  border-left: 4px solid var(--accent);
+}
+.tax-brackets-table td {
+  padding: 8px 12px;
+}
+.tax-brackets-table thead th {
+  background: var(--surface-2);
+  padding: 10px 12px;
+}
+
+.comparison-table tbody tr:hover {
+  background: color-mix(in srgb, var(--bg) 50%, var(--surface));
+}
+.comparison-table .amount-in {
+  color: var(--positive-color);
+  font-weight: 500;
+}
+
 /* ===== Cabeçalho fixo ao rolar a página ===== */
 .app-head { position: sticky; top: 0; z-index: 90; }
 .app-head .topbar, .app-head .tabs, .app-head .subtabs { margin: 0; }
