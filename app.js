@@ -4436,12 +4436,20 @@ function assetTotals(type, date) {
 }
 
 function applyLang() {
+  console.log('DEBUG applyLang: iniciado. Idioma:', state.settings.lang);
   document.documentElement.lang = state.settings.lang;
-  document.querySelectorAll('[data-i18n]').forEach((el) => { el.textContent = t(el.dataset.i18n); });
+  const elements = document.querySelectorAll('[data-i18n]');
+  console.log('DEBUG applyLang: ' + elements.length + ' elementos [data-i18n] encontrados');
+  elements.forEach((el) => { el.textContent = t(el.dataset.i18n); });
+  console.log('DEBUG applyLang: textos atualizados');
   renderLangButtons();
+  console.log('DEBUG applyLang: renderLangButtons() concluído');
   renderSubTabs();
+  console.log('DEBUG applyLang: renderSubTabs() concluído');
   renderThemeOptions();
+  console.log('DEBUG applyLang: renderThemeOptions() concluído');
   renderAll();
+  console.log('DEBUG applyLang: renderAll() concluído');
 }
 function renderLangButtons() {
   const wrap = document.getElementById('langButtons');
@@ -10756,10 +10764,22 @@ function bindEvents() {
 
   on('langButtons', 'click', async (e) => {
     const btn = e.target.closest('[data-lang]');
-    if (!btn) return;
+    if (!btn) {
+      console.log('DEBUG langButtons: nenhum botão [data-lang] encontrado. e.target:', e.target);
+      return;
+    }
+    console.log('DEBUG langButtons: clique detectado. Novo idioma:', btn.dataset.lang);
     state.settings.lang = btn.dataset.lang;
-    await put('settings', { key: 'lang', value: btn.dataset.lang });
+    console.log('DEBUG: state.settings.lang atualizado para', state.settings.lang);
+    try {
+      await put('settings', { key: 'lang', value: btn.dataset.lang });
+      console.log('DEBUG: put() completado com sucesso');
+    } catch (err) {
+      console.error('DEBUG: erro no put():', err);
+    }
+    console.log('DEBUG: chamando applyLang()');
     applyLang();
+    console.log('DEBUG: applyLang() completada');
   });
   on('themeSelect', 'change', async (e) => {
     state.settings.theme = e.target.value;
