@@ -2,14 +2,29 @@
   "name": "prof-controller",
   "version": "1.0.0",
   "description": "ProF Controller - Gestor de Patrimônio Offline 100% Privado",
-  "main": "app.js",
+  "main": "electron/main.js",
+  "homepage": "./",
   "scripts": {
     "start": "python -m http.server 8000 || npx http-server -p 8000",
     "build": "echo 'No build step - this is a static PWA'",
+    "serve": "npx http-server --cors -p 8000",
     "lint": "echo 'Linting not required for vanilla JS'",
     "test": "echo 'Manual testing required'",
-    "serve": "npx http-server --cors -p 8000",
-    "optimize": "node scripts/optimize-assets.js"
+    "optimize": "node scripts/optimize-assets.js",
+    "capacitor:init": "npx cap init --web-dir . prof-controller com.profcontroller.app",
+    "capacitor:add-android": "npx cap add android",
+    "capacitor:add-ios": "npx cap add ios",
+    "capacitor:build-android": "npx cap build android",
+    "capacitor:build-ios": "npx cap build ios",
+    "capacitor:sync": "npx cap sync",
+    "capacitor:open-android": "npx cap open android",
+    "capacitor:open-ios": "npx cap open ios",
+    "electron-start": "cross-env REACT_APP_ENV=production electron .",
+    "electron-dev": "concurrently \"npm start\" \"wait-on http://localhost:8000 && electron .\"",
+    "electron-build": "npm run build && electron-builder",
+    "electron-build-win": "npm run electron-build -- --win",
+    "electron-build-mac": "npm run electron-build -- --mac",
+    "electron-build-linux": "npm run electron-build -- --linux"
   },
   "keywords": [
     "financial",
@@ -36,9 +51,76 @@
     "node": ">=12.0.0"
   },
   "devDependencies": {
-    "http-server": "^14.1.1"
+    "http-server": "^14.1.1",
+    "electron": "^latest",
+    "electron-builder": "^latest",
+    "@capacitor/cli": "^latest",
+    "@capacitor/core": "^latest",
+    "@capacitor/android": "^latest",
+    "@capacitor/ios": "^latest",
+    "concurrently": "^latest",
+    "wait-on": "^latest",
+    "cross-env": "^latest"
   },
   "dependencies": {},
+  "build": {
+    "appId": "com.profcontroller.app",
+    "productName": "ProF Controller",
+    "files": [
+      "index.html",
+      "app.js",
+      "styles.css",
+      "service-worker.js",
+      "manifest.json",
+      "icon-192.png",
+      "icon-512.png",
+      "electron/main.js"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "certificateFile": null,
+      "certificatePassword": null
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "ProF Controller"
+    },
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "category": "public.app-category.finance"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "category": "Office"
+    },
+    "directories": {
+      "buildResources": "assets",
+      "output": "release"
+    }
+  },
   "browserslist": [
     "last 2 versions",
     "> 1%",
