@@ -37,7 +37,10 @@
     "wealth",
     "tracking"
   ],
-  "author": "ProF Controller",
+  "author": {
+    "name": "ProF Controller",
+    "email": "contact@profcontroller.app"
+  },
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -52,15 +55,15 @@
   },
   "devDependencies": {
     "http-server": "^14.1.1",
-    "electron": "^latest",
-    "electron-builder": "^latest",
-    "@capacitor/cli": "^latest",
-    "@capacitor/core": "^latest",
-    "@capacitor/android": "^latest",
-    "@capacitor/ios": "^latest",
-    "concurrently": "^latest",
-    "wait-on": "^latest",
-    "cross-env": "^latest"
+    "electron": "^29.0.0",
+    "electron-builder": "^24.9.1",
+    "@capacitor/cli": "^5.0.0",
+    "@capacitor/core": "^5.0.0",
+    "@capacitor/android": "^5.0.0",
+    "@capacitor/ios": "^5.0.0",
+    "concurrently": "^8.0.0",
+    "wait-on": "^7.0.0",
+    "cross-env": "^7.0.0"
   },
   "dependencies": {},
   "build": {
@@ -111,8 +114,7 @@
     },
     "linux": {
       "target": [
-        "AppImage",
-        "deb"
+        "zip"
       ],
       "category": "Office"
     },
