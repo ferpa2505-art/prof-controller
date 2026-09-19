@@ -1,0 +1,544 @@
+/* ============================================================
+   🎨 MODERN UI DESIGN - ProF Controller v1.0.0
+   Glassmorphism + Gradientes + Animações modernas
+   ============================================================ */
+
+:root {
+  /* Cores Modernas */
+  --primary: #0099FF;
+  --primary-dark: #0066CC;
+  --primary-light: #33B0FF;
+  --accent: #FF6B35;
+  --accent-light: #FF8C5A;
+  --success: #00D97E;
+  --warning: #FFB800;
+  --danger: #FF4757;
+  --info: #00D4FF;
+  
+  /* Backgrounds com Gradientes */
+  --bg-dark: #0A0E27;
+  --bg-darker: #050810;
+  --bg-card: rgba(20, 30, 60, 0.4);
+  --bg-card-hover: rgba(20, 30, 60, 0.6);
+  
+  /* Textos */
+  --text-primary: #E8EAED;
+  --text-secondary: #A8B0B8;
+  --text-muted: #6B7280;
+  
+  /* Borders */
+  --border-color: rgba(255, 255, 255, 0.1);
+  --border-color-light: rgba(255, 255, 255, 0.15);
+  
+  /* Efeitos */
+  --glass-blur: blur(10px);
+  --glass-backdrop: rgba(10, 14, 39, 0.4);
+}
+
+/* ============================================================
+   RESET E BASE
+   ============================================================ */
+
+* {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body {
+  background: linear-gradient(135deg, #0A0E27 0%, #1a1a3e 50%, #0D1B3C 100%);
+  color: var(--text-primary);
+  font-family: 'Segoe UI', 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+  letter-spacing: 0.3px;
+  overflow-x: hidden;
+}
+
+/* ============================================================
+   HEADER MODERNO
+   ============================================================ */
+
+header.topbar {
+  background: linear-gradient(180deg, rgba(20, 30, 60, 0.5) 0%, rgba(15, 25, 50, 0.3) 100%);
+  backdrop-filter: var(--glass-blur);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  padding: 16px 24px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.brand-logo {
+  width: 36px;
+  height: 36px;
+  filter: drop-shadow(0 4px 12px rgba(0, 153, 255, 0.3));
+  animation: logoFloat 3s ease-in-out infinite;
+}
+
+@keyframes logoFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-4px); }
+}
+
+.brand-name {
+  background: linear-gradient(135deg, #00D4FF, #0099FF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ============================================================
+   CARDS MODERNOS (GLASSMORPHISM)
+   ============================================================ */
+
+.card {
+  background: var(--bg-card);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-color-light);
+  box-shadow: 0 16px 48px rgba(0, 153, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.card h3 {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+
+/* ============================================================
+   NÚMEROS GRANDES (BIG NUMBERS)
+   ============================================================ */
+
+.big-number {
+  font-size: 32px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #00D4FF, #0099FF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 8px 0;
+  font-family: 'Courier New', monospace;
+  letter-spacing: -1px;
+}
+
+.card-highlight {
+  background: linear-gradient(135deg, rgba(0, 153, 255, 0.15), rgba(255, 107, 53, 0.1));
+  border: 1px solid rgba(0, 153, 255, 0.3);
+}
+
+.card-highlight .big-number {
+  background: linear-gradient(135deg, #FF6B35, #FFB800);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ============================================================
+   BOTÕES MODERNOS
+   ============================================================ */
+
+button {
+  font-family: inherit;
+  font-weight: 600;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Primary Button */
+.primary-btn {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+  padding: 10px 20px;
+  font-size: 14px;
+  box-shadow: 0 4px 16px rgba(0, 153, 255, 0.3);
+}
+
+.primary-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 153, 255, 0.4);
+}
+
+.primary-btn:active {
+  transform: translateY(0);
+}
+
+/* Secondary Button */
+.secondary-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  padding: 10px 20px;
+  font-size: 14px;
+  backdrop-filter: var(--glass-blur);
+}
+
+.secondary-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: var(--border-color-light);
+  transform: translateY(-1px);
+}
+
+/* Icon Button */
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(0, 153, 255, 0.1);
+  border: 1px solid rgba(0, 153, 255, 0.2);
+  color: var(--primary);
+  font-size: 18px;
+}
+
+.icon-btn:hover {
+  background: rgba(0, 153, 255, 0.2);
+  border-color: var(--primary);
+  transform: scale(1.05);
+}
+
+/* ============================================================
+   ABAS MODERNAS
+   ============================================================ */
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: rgba(20, 30, 60, 0.2);
+  border-radius: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.tab {
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 13px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.tab::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--primary);
+  transform: translateX(-50%);
+  transition: width 0.3s ease;
+}
+
+.tab:hover {
+  color: var(--primary);
+}
+
+.tab.active {
+  color: var(--primary);
+  background: rgba(0, 153, 255, 0.1);
+}
+
+.tab.active::after {
+  width: 60%;
+}
+
+/* ============================================================
+   INPUTS MODERNOS
+   ============================================================ */
+
+input, select, textarea {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  color: var(--text-primary);
+  padding: 10px 14px;
+  font-family: inherit;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  backdrop-filter: var(--glass-blur);
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--text-muted);
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: rgba(0, 153, 255, 0.1);
+  box-shadow: 0 0 20px rgba(0, 153, 255, 0.2);
+}
+
+/* ============================================================
+   MODAIS MODERNOS
+   ============================================================ */
+
+.modal {
+  background: rgba(5, 8, 16, 0.95);
+  backdrop-filter: var(--glass-blur);
+}
+
+.modal-content {
+  background: linear-gradient(135deg, rgba(20, 30, 60, 0.6), rgba(15, 25, 50, 0.4));
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+}
+
+/* ============================================================
+   ÍCONES MODERNOS (SVG)
+   ============================================================ */
+
+.icon {
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 6px;
+}
+
+.icon-large {
+  width: 32px;
+  height: 32px;
+}
+
+/* ============================================================
+   ANIMAÇÕES MODERNAS
+   ============================================================ */
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-slide-in-down {
+  animation: slideInDown 0.4s ease;
+}
+
+.animate-slide-in-up {
+  animation: slideInUp 0.4s ease;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.3s ease;
+}
+
+/* ============================================================
+   TABELA MODERNA
+   ============================================================ */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: rgba(0, 153, 255, 0.05);
+  border-bottom: 2px solid var(--border-color);
+}
+
+th {
+  padding: 14px;
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+tbody tr {
+  transition: all 0.2s ease;
+}
+
+tbody tr:hover {
+  background: rgba(0, 153, 255, 0.05);
+}
+
+/* ============================================================
+   STATUS INDICATORS
+   ============================================================ */
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.status-up {
+  background: rgba(0, 215, 126, 0.15);
+  color: var(--success);
+}
+
+.status-down {
+  background: rgba(255, 71, 87, 0.15);
+  color: var(--danger);
+}
+
+.status-neutral {
+  background: rgba(255, 184, 0, 0.15);
+  color: var(--warning);
+}
+
+/* ============================================================
+   RESPONSIVIDADE
+   ============================================================ */
+
+@media (max-width: 768px) {
+  :root {
+    --text-size: 14px;
+  }
+  
+  .card {
+    padding: 16px;
+  }
+  
+  .big-number {
+    font-size: 24px;
+  }
+  
+  .tabs {
+    gap: 4px;
+  }
+  
+  .tab {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}
+
+/* ============================================================
+   DARK MODE (default) - Compatível com light mode
+   ============================================================ */
+
+:root[data-theme="light"] {
+  --bg-dark: #F5F7FB;
+  --bg-darker: #FFFFFF;
+  --bg-card: rgba(255, 255, 255, 0.7);
+  --bg-card-hover: rgba(255, 255, 255, 0.9);
+  --text-primary: #1A1A1A;
+  --text-secondary: #666666;
+  --text-muted: #999999;
+  --border-color: rgba(0, 0, 0, 0.1);
+  --border-color-light: rgba(0, 0, 0, 0.15);
+}
+
+/* ============================================================
+   UTILITY CLASSES
+   ============================================================ */
+
+.flex {
+  display: flex;
+  gap: 12px;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.shadow-sm {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.shadow-md {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.shadow-lg {
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.2);
+}
+
+/* ============================================================
+   FIM - MODERN UI STYLES
+   ============================================================ */
