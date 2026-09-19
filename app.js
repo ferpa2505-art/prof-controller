@@ -1,6 +1,8 @@
 /* ============================================================
    ProF Controller — Fases 1 a 15 (15: impostos; cripto na busca; tabelas por país)
 
+   Versão: 1.0.0 (Notificações + Recorrência + Notícias)
+
    Fase 1: contas, moedas, saldos diários, moeda base, importação CSV,
            i18n (pt-BR/en/es), temas, offline.
    Fase 2: transações (receita / despesa / transferência), orçamentos
@@ -12,6 +14,8 @@
    Assim o saldo se move a cada lançamento e uma nova importação de CSV
    apenas cria uma âncora mais recente, sem duplicar valores.
    ============================================================ */
+
+const APP_VERSION = '1.0.0';
 
 /* ---------- Bandeiras (SVG) ----------
    Emoji de bandeira (🇧🇷) não é renderizado no Windows: o Chrome mostra as
@@ -11355,6 +11359,12 @@ async function init() {
 
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./service-worker.js').catch(() => {});
+  }
+
+  // Atualizar versão no footer
+  const versionEl = document.getElementById('appVersion');
+  if (versionEl) {
+    versionEl.textContent = `ProF Controller v${APP_VERSION}`;
   }
 }
 
