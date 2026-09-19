@@ -1,0 +1,14 @@
+{
+  "name": "ProF Controller",
+  "short_name": "ProF",
+  "description": "Sistema de gestão patrimonial: contas, saldos diários multi-moeda, imóveis, veículos e NAV.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#1a1a2e",
+  "theme_color": "#1a1a2e",
+  "lang": "pt-BR",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}

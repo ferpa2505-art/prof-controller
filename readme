@@ -1,0 +1,119 @@
+# ProF Controller
+
+Controlador financeiro pessoal, leve e multilíngue, que roda direto no navegador.
+
+Aplicação online: https://ferpa2505-art.github.io/prof-controller/
+
+## Sobre
+
+O ProF Controller centraliza o acompanhamento das suas finanças em um só lugar:
+contas, saldos diários, lançamentos, orçamentos e patrimônio consolidado, com
+suporte a múltiplas moedas, temas visuais e backup dos dados.
+
+## Funcionalidades
+
+- **Dashboard** — visão consolidada do patrimônio total
+- **Contas** — cadastro de contas (nome, tipo, moeda, saldo inicial e saldo atual)
+- **Saldos Diários** — registro do saldo por data
+- **Transações** — lançamentos de receita, despesa e transferência, com filtros
+  por tipo, conta e mês, além de exportação para CSV
+- **Orçamentos** — limite mensal por moeda (o gasto considera apenas despesas na
+  mesma moeda)
+- **Configurações** — moeda base, backup e importação de dados
+
+## Idiomas e temas
+
+- Idiomas: Português (pt-BR), Inglês (en), Espanhol (es)
+- Temas: default, dark, green e blue
+- Moeda base: EUR (€), CHF (CHF), USD (US$), JPY (¥), GBP (£), BRL (R$)
+
+## Como usar
+
+1. Acesse o link da aplicação
+2. Em **Configurações**, escolha a moeda base
+3. Cadastre suas contas na seção **Contas**
+4. Registre seus lançamentos em **Transações**
+5. Acompanhe o resultado no **Dashboard**
+
+## Importar planilha (CSV)
+
+As colunas são separadas por ponto e vírgula, no formato:
+
+    Data;Conta;Moeda;Saldo
+    2026-09-15;Conta Corrente;EUR;1250.00
+
+A data deve seguir o padrão AAAA-MM-DD.
+
+## Backup dos dados
+
+- **Exportar backup (JSON)** — gera um arquivo completo para restauração
+- **Importar backup** — restaura um backup em JSON
+- **Exportar planilha (CSV)** — exporta os lançamentos
+
+## Publicação
+
+Aplicação publicada via GitHub Pages.
+
+## Licença
+
+# ProF Controller
+
+A lightweight, multilingual personal finance controller that runs directly in
+the browser.
+
+Live app: https://ferpa2505-art.github.io/prof-controller/
+
+## About
+
+ProF Controller brings your finances together in one place: accounts, daily
+balances, transactions, budgets and a consolidated net worth, with multi-currency
+support, visual themes and data backup.
+
+## Features
+
+- **Dashboard** — consolidated view of total net worth
+- **Accounts** — manage accounts (name, type, currency, opening and current balance)
+- **Daily Balances** — record the balance for each date
+- **Transactions** — income, expense and transfer entries, with filters by type,
+  account and month, plus CSV export
+- **Budgets** — monthly limit per currency (spending only counts expenses in the
+  same currency)
+- **Settings** — base currency, backup and data import
+
+## Languages and themes
+
+- Languages: Portuguese (pt-BR), English (en), Spanish (es)
+- Themes: default, dark, green and blue
+- Base currency: EUR (€), CHF (CHF), USD (US$), JPY (¥), GBP (£), BRL (R$)
+
+## How to use
+
+1. Open the app link
+2. In **Settings**, choose your base currency
+3. Add your accounts under **Accounts**
+4. Record your entries under **Transactions**
+5. Track the results on the **Dashboard**
+
+## Import spreadsheet (CSV)
+
+Columns are separated by semicolons, in this format:
+
+    Date;Account;Currency;Balance
+    2026-09-15;Checking Account;EUR;1250.00
+
+The date must follow the YYYY-MM-DD pattern.
+
+## Data backup
+
+- **Export backup (JSON)** — generates a complete file for restoring
+- **Import backup** — restores a JSON backup
+- **Export spreadsheet (CSV)** — exports the transactions
+
+## Deployment
+
+App published via GitHub Pages.
+
+## License
+
+To be defined.
+A definir.
