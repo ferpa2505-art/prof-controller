@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <meta name="theme-color" content="#1a1a2e">
   <title>ProF Controller</title>
   <link rel="manifest" href="manifest.json">
@@ -487,8 +490,12 @@
   <footer class="app-footer">
     <small id="appVersion">ProF Controller v2.0.0 • 19/09/2026</small>
   </footer>
-  <script src="app.js?v=41"></script>
+  <script>
+    // Force cache busting with timestamp
+    const t = Math.floor(Date.now() / 60000); // New cache key every minute
+    document.write('<script src="app.js?v=41&t=' + t + '"><\/script>');
+    document.write('<script src="ui-cleanup.js?v=5&t=' + t + '"><\/script>');
+  </script>
   <!-- <script src="modern-dashboard.js?v=1"></script> -->
-  <script src="ui-cleanup.js?v=5"></script>
 </body>
 </html>

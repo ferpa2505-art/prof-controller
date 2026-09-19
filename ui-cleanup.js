@@ -6,21 +6,30 @@
  * 2. Câmbio: mostrar apenas 2 últimos dias com setas de comparação coloridas
  */
 
+console.log('🔵 UI-CLEANUP.JS CARREGADO - Versão 5');
+
 // Aguarda um pouco para renderAll() completar
 setTimeout(() => {
+  console.log('⏱️  Timer de 500ms completado - Iniciando menus...');
   initActionMenus();
   initCurrencyComparison();
+  console.log('✅ UI Cleanup inicializado com sucesso!');
 }, 500);
 
 // ============ 1. ACTION MENUS (+ botão) ============
 function initActionMenus() {
+  console.log('🔘 initActionMenus: INICIANDO...');
   // Encontrar todas as linhas de tabelas com botões
   const tables = document.querySelectorAll('table tbody');
+  console.log('📊 Encontradas ' + tables.length + ' tabelas');
   
-  tables.forEach(tbody => {
+  let converted = 0;
+  
+  tables.forEach((tbody, tbodyIdx) => {
     const rows = tbody.querySelectorAll('tr');
+    console.log('   Tabela ' + tbodyIdx + ': ' + rows.length + ' linhas');
     
-    rows.forEach(row => {
+    rows.forEach((row, rowIdx) => {
       // Procurar por célula com múltiplos botões de ação
       const cells = row.querySelectorAll('td');
       const lastCell = cells[cells.length - 1];
@@ -31,10 +40,14 @@ function initActionMenus() {
       
       // Se houver 3+ botões, converter para menu
       if (buttons.length >= 3) {
+        console.log('   ✅ Linha ' + rowIdx + ' tem ' + buttons.length + ' botões - convertendo');
         convertToActionMenu(row, lastCell, buttons);
+        converted++;
       }
     });
   });
+  
+  console.log('🎉 ' + converted + ' menus de ação criados!');
 }
 
 function convertToActionMenu(row, cell, buttons) {
