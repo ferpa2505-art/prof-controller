@@ -10198,24 +10198,32 @@ function clickDashboardCard(type) {
 }
 
 /* Inicializar listeners dos cards do dashboard */
-let dashboardListenersSetup = false;
 function setupDashboardCardListeners() {
-  if (dashboardListenersSetup) return;
+  const main = document.querySelector('main');
+  if (!main) return;
   
-  const cards = document.querySelectorAll('.dashboard-interactive');
-  if (cards.length === 0) return;
+  // Remove event listener prévio para evitar duplicatas
+  main.removeEventListener('click', handleDashboardCardClick);
   
-  cards.forEach(card => {
-    card.addEventListener('click', (e) => {
-      if (e.target.tagName === 'BUTTON') return;
-      const type = card.getAttribute('data-card-type');
-      console.log('Dashboard card clicked:', type);
-      if (type) clickDashboardCard(type);
-    });
-  });
+  // Adicionar listener delegado no elemento main
+  main.addEventListener('click', handleDashboardCardClick, false);
   
-  dashboardListenersSetup = true;
-  console.log('setupDashboardCardListeners: ' + cards.length + ' cards, listeners added');
+  console.log('setupDashboardCardListeners: Event delegation setup on main element');
+}
+
+function handleDashboardCardClick(e) {
+  // Encontrar o card clicado
+  let card = e.target.closest('.dashboard-interactive');
+  if (!card) return;
+  
+  // Ignorar cliques em botões
+  if (e.target.closest('button')) return;
+  
+  const type = card.getAttribute('data-card-type');
+  if (type) {
+    console.log('Dashboard card clicked:', type);
+    clickDashboardCard(type);
+  }
 }
 
 function toggleActionMenu(event) {
