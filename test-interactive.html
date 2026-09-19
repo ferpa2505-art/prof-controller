@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ProF Controller - Test</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; background: #1a1a2e; color: #fff; padding: 20px; }
+    button { padding: 10px 20px; margin: 10px; background: #00ffff; color: #000; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+    button:hover { background: #ff1493; }
+    .container { max-width: 600px; margin: 0 auto; }
+    .result { margin-top: 20px; padding: 15px; background: #2a2a3e; border-left: 4px solid #00ff41; }
+    h1 { margin-bottom: 30px; color: #00ff41; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🧪 ProF Controller - Teste de Interatividade</h1>
+    
+    <button onclick="testClick(1)">Teste 1: Click Simples</button>
+    <button onclick="testClick(2)">Teste 2: Mudar Cor</button>
+    <button onclick="testClick(3)">Teste 3: Timestamp</button>
+    <button onclick="testClick(4)">Teste 4: Versão</button>
+    
+    <div class="result">
+      <p>Status: <span id="status">Aguardando cliques...</span></p>
+      <p>Última ação: <span id="action">Nenhuma</span></p>
+      <p>Timestamp: <span id="timestamp">-</span></p>
+    </div>
+  </div>
+
+  <script>
+    console.log('✅ Script carregado!');
+    
+    function testClick(num) {
+      console.log('✅ Click detectado:', num);
+      document.getElementById('status').textContent = '✅ FUNCIONANDO!';
+      document.getElementById('action').textContent = `Botão ${num} clicado`;
+      document.getElementById('timestamp').textContent = new Date().toLocaleTimeString('pt-BR');
+      
+      if (num === 2) {
+        document.body.style.background = '#ff1493';
+      } else if (num === 4) {
+        document.getElementById('action').textContent = 'v1.1.0 - Cliques funcionando!';
+      }
+    }
+    
+    // Teste automático
+    window.addEventListener('load', function() {
+      console.log('✅ Página carregada completamente');
+      document.getElementById('status').textContent = '✅ Página pronta para testes';
+    });
+  </script>
+</body>
+</html>
