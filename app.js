@@ -10177,6 +10177,8 @@ function closeModal() { document.getElementById('modal').classList.add('hidden')
 
 /* Dashboard interativo - clique nos cards */
 function clickDashboardCard(type) {
+  console.log('clickDashboardCard called with type:', type);
+  
   const tabMap = {
     'equity': 'dashboard',
     'accounts': 'flows',
@@ -10187,11 +10189,15 @@ function clickDashboardCard(type) {
   };
   
   const targetTab = tabMap[type];
+  console.log('targetTab:', targetTab);
   if (!targetTab) return;
   
   // Find and click the tab button
   const tabBtn = document.querySelector(`#mainTabs .tab[data-group="${targetTab}"]`);
+  console.log('tabBtn found:', !!tabBtn, tabBtn);
+  
   if (tabBtn) {
+    console.log('Clicking tab...');
     tabBtn.click();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
