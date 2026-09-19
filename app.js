@@ -10175,26 +10175,24 @@ function closeModal() { document.getElementById('modal').classList.add('hidden')
 
 /* Dashboard interativo - clique nos cards */
 function clickDashboardCard(type) {
-  const tabIndex = {
-    'equity': 3,      // Investimentos
-    'accounts': 0,    // Começar em Contas
-    'investments': 3,
-    'properties': 4,
-    'vehicles': 4,
-    'debt': 4
+  const tabMap = {
+    'equity': 'dashboard',
+    'accounts': 'flows',
+    'investments': 'investments',
+    'properties': 'registry',
+    'vehicles': 'registry',
+    'debt': 'registry'
   };
   
-  // Switch to the appropriate tab
-  const tabs = document.querySelectorAll('.tab');
-  if (tabIndex[type] !== undefined) {
-    const mainTabs = document.querySelectorAll('#mainTabs .tab');
-    mainTabs[tabIndex[type]].click();
+  const targetTab = tabMap[type];
+  if (!targetTab) return;
+  
+  // Find and click the tab button
+  const tabBtn = document.querySelector(`#mainTabs .tab[data-group="${targetTab}"]`);
+  if (tabBtn) {
+    tabBtn.click();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
-  
-  // Scroll to top
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-  
-  showToast(t(`toast.showing${type.charAt(0).toUpperCase() + type.slice(1)}`));
 }
 
 function toggleActionMenu(event) {
