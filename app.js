@@ -4494,7 +4494,8 @@ function renderAll() {
   etapas.forEach(([nome, fn]) => {
     try { fn(); } catch (e) { console.error('Falha ao renderizar ' + nome + ':', e); }
   });
-  setupDashboardCardListeners();
+  // Agendar os listeners para depois de todos os renders terminarem
+  setTimeout(setupDashboardCardListeners, 0);
 }
 
 function renderDashboard() {
