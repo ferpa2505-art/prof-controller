@@ -10180,7 +10180,7 @@ function clickDashboardCard(type) {
   console.log('clickDashboardCard called with type:', type);
   
   const tabMap = {
-    'equity': 'dashboard',
+    'equity': 'flows',
     'accounts': 'flows',
     'investments': 'investments',
     'properties': 'registry',

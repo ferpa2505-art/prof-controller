@@ -63,6 +63,18 @@ body {
   color: var(--text);
   min-height: 100vh;
 }
+
+/* Estilos para opções de select em todos os temas */
+select option {
+  background: var(--surface);
+  color: var(--text);
+  padding: 8px;
+}
+select option:checked {
+  background: var(--accent);
+  color: #ffffff;
+}
+
 .hidden { display: none; }
 .topbar {
   display: flex; justify-content: space-between; align-items: center;
@@ -70,7 +82,9 @@ body {
 }
 .topbar h1 { font-size: 20px; }
 .topbar-actions select {
-  padding: 6px 10px; border-radius: 6px; border: none; margin-left: 8px;
+  padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border);
+  margin-left: 8px; background: var(--surface); color: var(--text);
+  font-size: 14px; cursor: pointer;
 }
 .tabs {
   display: flex; gap: 4px; padding: 12px 24px 0; background: var(--surface);
