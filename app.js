@@ -10202,9 +10202,11 @@ function setupDashboardCardListeners() {
     card.addEventListener('click', (e) => {
       if (e.target.tagName === 'BUTTON') return; // ignore button clicks
       const type = card.getAttribute('data-card-type');
+      console.log('Dashboard card clicked:', type, 'element:', card);
       if (type) clickDashboardCard(type);
     });
   });
+  console.log('setupDashboardCardListeners: ' + document.querySelectorAll('.dashboard-interactive').length + ' cards listeners added');
 }
 
 function toggleActionMenu(event) {
