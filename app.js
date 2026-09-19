@@ -10198,16 +10198,24 @@ function clickDashboardCard(type) {
 }
 
 /* Inicializar listeners dos cards do dashboard */
+let dashboardListenersSetup = false;
 function setupDashboardCardListeners() {
-  document.querySelectorAll('.dashboard-interactive').forEach(card => {
+  if (dashboardListenersSetup) return;
+  
+  const cards = document.querySelectorAll('.dashboard-interactive');
+  if (cards.length === 0) return;
+  
+  cards.forEach(card => {
     card.addEventListener('click', (e) => {
-      if (e.target.tagName === 'BUTTON') return; // ignore button clicks
+      if (e.target.tagName === 'BUTTON') return;
       const type = card.getAttribute('data-card-type');
-      console.log('Dashboard card clicked:', type, 'element:', card);
+      console.log('Dashboard card clicked:', type);
       if (type) clickDashboardCard(type);
     });
   });
-  console.log('setupDashboardCardListeners: ' + document.querySelectorAll('.dashboard-interactive').length + ' cards listeners added');
+  
+  dashboardListenersSetup = true;
+  console.log('setupDashboardCardListeners: ' + cards.length + ' cards, listeners added');
 }
 
 function toggleActionMenu(event) {
