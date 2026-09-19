@@ -1776,11 +1776,9 @@ const I18N = {
     'gear.lang': 'Language',
     'gear.help': 'Show tab explanations',
     'gear.advanced': 'Advanced settings',
-    'theme.default': 'Light',
-    'theme.dark': 'Dark',
     'theme.gray': 'Gray',
-    'theme.green': 'Green',
-    'theme.blue': 'Blue',
+    'theme.dark': 'Dark',
+    'theme.gta-vi': 'GTA-VI (Neon)',
     'help.dashboard': 'Overview of your net worth: account balances, investments, property and vehicles, all added up in the base currency, with growth and cash flow charts.',
     'help.investments': 'Your stocks, funds, fixed income and crypto. Find an asset by ticker or ISIN, record buys and sells and see whether you are gaining or losing. Further down: watchlist and comparison with CDB, Ibovespa and S&P 500.',
     'help.accounts': 'Add each bank account, wallet or brokerage here, with its currency and opening balance. Other screens use these accounts.',
@@ -3015,7 +3013,7 @@ let state = {
   dividends: [],
   assets: [],
   valuations: [],
-  settings: { lang: 'pt-BR', theme: 'default', baseCurrency: 'EUR' },
+  settings: { lang: 'pt-BR', theme: 'gray', baseCurrency: 'EUR' },
   ui: { txType: 'all', txAccount: 'all', txMonth: '', budgetMonth: '', navView: 'pie', navBreak: 'currency', cashGrain: 'monthly',
         billKind: 'all', billStatus: 'open', billFrom: '', billTo: '', tab: 'dashboard', lastSub: {} }
 };
@@ -10706,8 +10704,8 @@ function applyHelp() {
 function renderThemeOptions() {
   const sel = document.getElementById('themeSelect');
   if (!sel) return;
-  sel.innerHTML = ['default', 'dark', 'gray', 'green', 'blue'].map((th) => `<option value="${th}">${t('theme.' + th)}</option>`).join('');
-  sel.value = state.settings.theme || 'default';
+  sel.innerHTML = ['gray', 'dark', 'gta-vi'].map((th) => `<option value="${th}">${t('theme.' + th)}</option>`).join('');
+  sel.value = state.settings.theme || 'gray';
 }
 
 function bindEvents() {
