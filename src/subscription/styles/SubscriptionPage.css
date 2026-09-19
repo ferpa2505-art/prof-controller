@@ -1,0 +1,173 @@
+/* SubscriptionPage.css */
+
+.subscription-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #333;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.subscription-page.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.subscription-header {
+  text-align: center;
+  padding: 60px 20px 40px;
+  color: white;
+}
+
+.subscription-header h1 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.subscription-header p {
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+.subscription-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px 60px;
+}
+
+.login-section,
+.plans-section,
+.checkout-section {
+  background: white;
+  border-radius: 12px;
+  padding: 40px;
+  margin-bottom: 30px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.benefits-section {
+  padding: 40px;
+  margin: 60px 0;
+  text-align: center;
+}
+
+.benefits-section h2 {
+  color: white;
+  font-size: 2rem;
+  margin-bottom: 40px;
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.benefit-card {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.benefit-card:hover {
+  transform: translateY(-5px);
+}
+
+.benefit-card h3 {
+  color: #667eea;
+  margin-bottom: 10px;
+  font-size: 1.3rem;
+}
+
+.benefit-card p {
+  color: #666;
+  line-height: 1.6;
+}
+
+.faq-section {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.faq-section h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 1.8rem;
+}
+
+.faq-items {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.faq-items details {
+  margin-bottom: 20px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 20px;
+  cursor: pointer;
+}
+
+.faq-items details summary {
+  font-weight: 600;
+  color: #333;
+  cursor: pointer;
+}
+
+.faq-items details[open] summary {
+  color: #667eea;
+  margin-bottom: 15px;
+}
+
+.faq-items p {
+  color: #666;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.subscription-footer {
+  text-align: center;
+  padding: 40px 20px;
+  color: white;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.subscription-footer a {
+  color: white;
+  text-decoration: none;
+  margin: 0 10px;
+  opacity: 0.9;
+}
+
+.subscription-footer a:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .subscription-header h1 {
+    font-size: 2rem;
+  }
+
+  .subscription-header p {
+    font-size: 1rem;
+  }
+
+  .login-section,
+  .plans-section,
+  .checkout-section,
+  .faq-section {
+    padding: 20px;
+  }
+
+  .benefits-grid {
+    grid-template-columns: 1fr;
+  }
+}

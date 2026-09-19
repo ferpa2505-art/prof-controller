@@ -1,0 +1,117 @@
+/* LoginButtons.css */
+
+.login-buttons {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.login-buttons h2 {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.error-message {
+  background: #ffe0e0;
+  border: 1px solid #ff6b6b;
+  color: #c92a2a;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+#google-signin-button {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 30px 0;
+  color: #999;
+  font-size: 0.9rem;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #ddd;
+}
+
+.divider::before {
+  margin-right: 15px;
+}
+
+.divider::after {
+  margin-left: 15px;
+}
+
+.apple-button {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #000;
+  background: #000;
+  color: white;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+}
+
+.apple-button:hover {
+  background: #1a1a1a;
+  border-color: #1a1a1a;
+}
+
+.apple-button:active {
+  transform: scale(0.98);
+}
+
+.apple-button svg {
+  width: 20px;
+  height: 20px;
+}
+
+.terms {
+  text-align: center;
+  color: #666;
+  font-size: 0.85rem;
+  margin-top: 25px;
+  line-height: 1.5;
+}
+
+.terms a {
+  color: #667eea;
+  text-decoration: none;
+}
+
+.terms a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .login-buttons h2 {
+    font-size: 1.2rem;
+  }
+
+  .apple-button {
+    padding: 10px;
+    font-size: 0.95rem;
+  }
+
+  #google-signin-button {
+    transform: scale(0.9);
+    margin-bottom: 10px;
+  }
+}
