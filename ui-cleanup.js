@@ -2,21 +2,15 @@
  * 🎨 UI CLEANUP - ProF Controller
  * 
  * Melhoria visual:
- * 1. Botões de ação em menu (+ clicável)
- * 2. Câmbio: mostrar apenas 2 últimos dias com setas de comparação
+ * 1. Botões de ação em menu circular com "+"
+ * 2. Câmbio: mostrar apenas 2 últimos dias com setas de comparação coloridas
  */
 
-// Inicializa quando DOM está pronto
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => {
-    initActionMenus();
-    initCurrencyComparison();
-  });
-} else {
-  // Se já passou do DOMContentLoaded, executa direto
+// Aguarda um pouco para renderAll() completar
+setTimeout(() => {
   initActionMenus();
   initCurrencyComparison();
-}
+}, 500);
 
 // ============ 1. ACTION MENUS (+ botão) ============
 function initActionMenus() {
@@ -52,103 +46,48 @@ function convertToActionMenu(row, cell, buttons) {
   // Criar container para menu
   const menuContainer = document.createElement('div');
   menuContainer.className = 'action-menu-container';
-  menuContainer.style.cssText = `
-    position: relative;
-    display: inline-block;
-  `;
   
-  // Criar botão "+"
+  // Criar botão "+" em círculo
   const plusBtn = document.createElement('button');
   plusBtn.className = 'action-plus-btn';
-  plusBtn.innerHTML = '⊕';
-  plusBtn.style.cssText = `
-    background: none;
-    border: 1px solid #666;
-    color: #0099FF;
-    font-size: 18px;
-    width: 32px;
-    height: 32px;
-    border-radius: 4px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-  `;
-  
-  plusBtn.onmouseover = () => {
-    plusBtn.style.background = '#0099FF';
-    plusBtn.style.color = '#fff';
-  };
-  plusBtn.onmouseout = () => {
-    plusBtn.style.background = 'none';
-    plusBtn.style.color = '#0099FF';
-  };
+  plusBtn.type = 'button';
+  plusBtn.innerHTML = '+';
+  plusBtn.title = 'Ações';
   
   // Criar menu dropdown
   const menu = document.createElement('div');
   menu.className = 'action-dropdown-menu';
-  menu.style.cssText = `
-    display: none;
-    position: absolute;
-    top: 100%;
-    right: 0;
-    background: #1a1a2e;
-    border: 1px solid #333;
-    border-radius: 4px;
-    min-width: 140px;
-    z-index: 1000;
-    margin-top: 4px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-  `;
   
   // Copiar botões para o menu
-  buttons.forEach((btn, idx) => {
+  buttons.forEach((btn) => {
     const menuItem = document.createElement('button');
+    menuItem.type = 'button';
     menuItem.className = 'action-menu-item';
     menuItem.textContent = btn.textContent || btn.title;
-    menuItem.style.cssText = `
-      display: block;
-      width: 100%;
-      padding: 8px 12px;
-      border: none;
-      background: transparent;
-      color: #ccc;
-      text-align: left;
-      cursor: pointer;
-      font-size: 12px;
-      transition: background 0.2s;
-      border-bottom: ${idx < buttons.length - 1 ? '1px solid #333' : 'none'};
-    `;
-    
-    menuItem.onmouseover = () => {
-      menuItem.style.background = '#0099FF';
-      menuItem.style.color = '#fff';
-    };
-    menuItem.onmouseout = () => {
-      menuItem.style.background = 'transparent';
-      menuItem.style.color = '#ccc';
-    };
+    menuItem.title = btn.title;
     
     // Clica no botão original ao clicar no menu
-    menuItem.onclick = (e) => {
+    menuItem.addEventListener('click', (e) => {
       e.preventDefault();
+      e.stopPropagation();
       btn.click();
-      menu.style.display = 'none';
-    };
+      menu.classList.remove('active');
+    });
     
     menu.appendChild(menuItem);
   });
   
   // Toggle menu ao clicar no "+"
-  plusBtn.onclick = (e) => {
+  plusBtn.addEventListener('click', (e) => {
     e.stopPropagation();
-    menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
-  };
+    menu.classList.toggle('active');
+  });
   
   // Fechar menu ao clicar fora
-  document.addEventListener('click', () => {
-    menu.style.display = 'none';
+  document.addEventListener('click', (e) => {
+    if (!menuContainer.contains(e.target)) {
+      menu.classList.remove('active');
+    }
   });
   
   // Montar container
@@ -162,74 +101,126 @@ function convertToActionMenu(row, cell, buttons) {
 
 // ============ 2. CURRENCY COMPARISON ============
 function initCurrencyComparison() {
-  const exchangeTable = document.querySelector('table');
-  if (!exchangeTable || !exchangeTable.textContent.includes('EUR')) return;
+  console.log('DEBUG: Iniciando Currency Comparison');
   
-  // Encontrar tabela de câmbio
-  const tbody = exchangeTable.querySelector('tbody');
-  if (!tbody) return;
+  // Encontrar todas as tabelas da página
+  const tables = document.querySelectorAll('table');
+  console.log('DEBUG: ' + tables.length + ' tabelas encontradas');
   
-  // Agrupar por moeda
-  const rows = Array.from(tbody.querySelectorAll('tr'));
-  const currencyGroups = {};
-  
-  rows.forEach(row => {
-    const dateCell = row.cells[0];
-    const currencyCell = row.cells[1];
+  tables.forEach((table, tableIdx) => {
+    const tbody = table.querySelector('tbody');
+    if (!tbody) return;
     
-    if (!dateCell || !currencyCell) return;
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+    console.log('DEBUG: Tabela ' + tableIdx + ' tem ' + rows.length + ' linhas');
     
-    const date = dateCell.textContent.trim();
-    const currency = currencyCell.textContent.trim();
+    if (rows.length === 0) return;
     
-    if (!currencyGroups[currency]) {
-      currencyGroups[currency] = [];
+    // Detectar se é tabela de câmbio (DATA, MOEDA, TAXA)
+    const firstRow = rows[0];
+    const cellCount = firstRow.cells.length;
+    const isExchangeTable = cellCount >= 3 && 
+                           rows.some(r => r.cells[1] && ['USD', 'EUR', 'BRL', 'GBP', 'JPY', 'CHF'].includes(r.cells[1].textContent.trim()));
+    
+    if (!isExchangeTable) {
+      console.log('DEBUG: Tabela ' + tableIdx + ' não é tabela de câmbio');
+      return;
     }
     
-    currencyGroups[currency].push({
-      date: date,
-      row: row,
-      rateCell: row.cells[2]
-    });
-  });
-  
-  // Para cada moeda, manter apenas 2 últimos dias
-  Object.keys(currencyGroups).forEach(currency => {
-    const entries = currencyGroups[currency]
-      .sort((a, b) => new Date(b.date) - new Date(a.date))
-      .slice(0, 2); // Últimos 2 dias
+    console.log('DEBUG: Tabela ' + tableIdx + ' é tabela de câmbio!');
     
-    // Esconder outros
-    currencyGroups[currency].forEach(entry => {
-      if (!entries.includes(entry)) {
+    // Agrupar por moeda
+    const currencyGroups = {};
+    
+    rows.forEach((row, rowIdx) => {
+      if (!row.cells[0] || !row.cells[1] || !row.cells[2]) return;
+      
+      const dateStr = row.cells[0].textContent.trim();
+      const currency = row.cells[1].textContent.trim();
+      const rateStr = row.cells[2].textContent.trim();
+      
+      // Tentar fazer parse da data
+      let dateVal;
+      try {
+        dateVal = new Date(dateStr);
+        if (isNaN(dateVal.getTime())) throw new Error('Invalid date');
+      } catch (e) {
+        console.log('DEBUG: Data inválida:', dateStr);
+        return;
+      }
+      
+      if (!currencyGroups[currency]) {
+        currencyGroups[currency] = [];
+      }
+      
+      currencyGroups[currency].push({
+        date: dateVal,
+        dateStr: dateStr,
+        currency: currency,
+        row: row,
+        rateCell: row.cells[2],
+        rateStr: rateStr
+      });
+    });
+    
+    console.log('DEBUG: Moedas encontradas:', Object.keys(currencyGroups));
+    
+    // Para cada moeda, manter apenas 2 últimos dias
+    Object.entries(currencyGroups).forEach(([currency, entries]) => {
+      // Ordenar por data (mais recente primeiro)
+      entries.sort((a, b) => b.date - a.date);
+      
+      console.log('DEBUG: Moeda ' + currency + ' tem ' + entries.length + ' entradas');
+      
+      // Manter apenas últimos 2
+      const toShow = entries.slice(0, 2);
+      const toHide = entries.slice(2);
+      
+      // Esconder linhas antigas
+      toHide.forEach(entry => {
+        entry.row.classList.add('currency-hidden-row');
         entry.row.style.display = 'none';
+      });
+      
+      // Adicionar seta no registro mais recente
+      if (toShow.length === 2) {
+        const newest = toShow[0];
+        const oldest = toShow[1];
+        
+        // Parse rates
+        const newRate = parseFloat(newest.rateStr.replace(/[^\d.,-]/g, '').replace(',', '.'));
+        const oldRate = parseFloat(oldest.rateStr.replace(/[^\d.,-]/g, '').replace(',', '.'));
+        
+        if (!isNaN(newRate) && !isNaN(oldRate)) {
+          let arrow, arrowClass;
+          
+          if (newRate > oldRate) {
+            arrow = '↑';
+            arrowClass = 'up';
+          } else if (newRate < oldRate) {
+            arrow = '↓';
+            arrowClass = 'down';
+          } else {
+            arrow = '→';
+            arrowClass = 'equal';
+          }
+          
+          // Limpar conteúdo da célula e readicionar taxa + seta
+          newest.rateCell.textContent = newest.rateStr;
+          
+          const arrowSpan = document.createElement('span');
+          arrowSpan.className = 'currency-arrow ' + arrowClass;
+          arrowSpan.textContent = ' ' + arrow;
+          
+          newest.rateCell.appendChild(arrowSpan);
+          
+          console.log('DEBUG: ' + currency + ' - Nova taxa: ' + newRate + ', Taxa antiga: ' + oldRate + ', Seta: ' + arrow);
+        }
       }
     });
-    
-    // Adicionar seta de comparação
-    if (entries.length === 2) {
-      const oldRate = parseFloat(
-        entries[1].rateCell.textContent.replace(/[^\d.,-]/g, '').replace(',', '.')
-      );
-      const newRate = parseFloat(
-        entries[0].rateCell.textContent.replace(/[^\d.,-]/g, '').replace(',', '.')
-      );
-      
-      const comparison = newRate > oldRate ? '↑' : newRate < oldRate ? '↓' : '→';
-      const color = newRate > oldRate ? '#00AA00' : newRate < oldRate ? '#FF0000' : '#FFAA00';
-      
-      // Inserir seta na célula de rate
-      const arrow = document.createElement('span');
-      arrow.style.cssText = `
-        color: ${color};
-        font-weight: bold;
-        margin-left: 6px;
-      `;
-      arrow.textContent = comparison;
-      
-      entries[0].rateCell.appendChild(arrow);
-    }
   });
+  
+  console.log('DEBUG: Currency Comparison concluído');
 }
 
 console.log('✅ UI Cleanup loaded - Action menus and currency comparison ready!');
