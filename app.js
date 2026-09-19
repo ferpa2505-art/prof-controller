@@ -10218,8 +10218,8 @@ function setupDashboardCardListeners() {
 }
 
 function handleDashboardCardClick(e) {
-  // Encontrar o card clicado
-  let card = e.target.closest('.dashboard-interactive');
+  // Encontrar o card clicado - procurar por data-card-type
+  let card = e.target.closest('[data-card-type]');
   if (!card) return;
   
   // Ignorar cliques em botões
