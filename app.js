@@ -15,7 +15,7 @@
    apenas cria uma âncora mais recente, sem duplicar valores.
    ============================================================ */
 
-const APP_VERSION = '1.0.0';
+const APP_VERSION = '1.1.0';
 
 /* ---------- Bandeiras (SVG) ----------
    Emoji de bandeira (🇧🇷) não é renderizado no Windows: o Chrome mostra as

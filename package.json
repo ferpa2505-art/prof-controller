@@ -1,6 +1,6 @@
 {
   "name": "prof-controller",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "ProF Controller - Gestor de Patrimônio Offline 100% Privado",
   "main": "electron/main.js",
   "homepage": "./",
