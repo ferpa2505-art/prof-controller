@@ -55,13 +55,13 @@
       <div id="fxWarning" class="fx-warning hidden"></div>
       
       <div class="cards">
-        <div class="card card-primary dashboard-interactive" onclick="clickDashboardCard('equity')">
+        <div class="card card-primary dashboard-interactive" data-card-type="equity">
           <h3 data-i18n="dashboard.totalEquity">Financeiro Total</h3>
           <p id="totalEquity" class="number-large">—</p>
           <p id="totalEquityBase" class="sub-number"></p>
           <small class="dashboard-hint" style="margin-top: 8px; color: var(--muted);">Clique para detalhes →</small>
         </div>
-        <div class="card card-info dashboard-interactive" onclick="clickDashboardCard('accounts')">
+        <div class="card card-info dashboard-interactive" data-card-type="accounts">
           <h3 data-i18n="dashboard.accounts">Contas</h3>
           <p id="accountCount" class="number-large">0</p>
           <button class="secondary-btn" style="width: 100%; margin-top: 12px;" data-i18n="accounts.add">+ Nova conta</button>
@@ -75,25 +75,25 @@
       
       <h2 class="section-title" data-i18n="dashboard.analysis">Análise de Patrimônio</h2>
       <div class="cards">
-        <div class="card card-success dashboard-interactive" onclick="clickDashboardCard('investments')">
+        <div class="card card-success dashboard-interactive" data-card-type="investments">
           <h3 data-i18n="dashboard.investments">Investimentos</h3>
           <p id="invTotal" class="number-large">—</p>
           <p id="invTotalSub" class="sub-number"></p>
           <small class="dashboard-hint" style="margin-top: 8px; color: var(--muted);">Clique para ver mais →</small>
         </div>
-        <div class="card card-success dashboard-interactive" onclick="clickDashboardCard('properties')">
+        <div class="card card-success dashboard-interactive" data-card-type="properties">
           <h3 data-i18n="dashboard.properties">Imóveis</h3>
           <p id="propTotal" class="number-large">—</p>
           <p id="propTotalSub" class="sub-number"></p>
           <small class="dashboard-hint" style="margin-top: 8px; color: var(--muted);">Clique para ver mais →</small>
         </div>
-        <div class="card card-success dashboard-interactive" onclick="clickDashboardCard('vehicles')">
+        <div class="card card-success dashboard-interactive" data-card-type="vehicles">
           <h3 data-i18n="dashboard.vehicles">Veículos</h3>
           <p id="vehTotal" class="number-large">—</p>
           <p id="vehTotalSub" class="sub-number"></p>
           <small class="dashboard-hint" style="margin-top: 8px; color: var(--muted);">Clique para ver mais →</small>
         </div>
-        <div class="card card-warning dashboard-interactive" onclick="clickDashboardCard('debt')">
+        <div class="card card-warning dashboard-interactive" data-card-type="debt">
           <h3 data-i18n="dashboard.debt">Dívidas</h3>
           <p id="debtTotal" class="number-large amount-out">—</p>
           <p id="debtTotalSub" class="sub-number"></p>

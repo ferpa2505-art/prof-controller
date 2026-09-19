@@ -4494,6 +4494,7 @@ function renderAll() {
   etapas.forEach(([nome, fn]) => {
     try { fn(); } catch (e) { console.error('Falha ao renderizar ' + nome + ':', e); }
   });
+  setupDashboardCardListeners();
 }
 
 function renderDashboard() {
@@ -10193,6 +10194,17 @@ function clickDashboardCard(type) {
     tabBtn.click();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
+}
+
+/* Inicializar listeners dos cards do dashboard */
+function setupDashboardCardListeners() {
+  document.querySelectorAll('.dashboard-interactive').forEach(card => {
+    card.addEventListener('click', (e) => {
+      if (e.target.tagName === 'BUTTON') return; // ignore button clicks
+      const type = card.getAttribute('data-card-type');
+      if (type) clickDashboardCard(type);
+    });
+  });
 }
 
 function toggleActionMenu(event) {
