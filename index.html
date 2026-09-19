@@ -55,46 +55,49 @@
       <div id="fxWarning" class="fx-warning hidden"></div>
       
       <div class="cards">
-        <div class="card card-primary">
+        <div class="card card-primary dashboard-interactive" onclick="clickDashboardCard('equity')">
           <h3 data-i18n="dashboard.totalEquity">Financeiro Total</h3>
           <p id="totalEquity" class="number-large">—</p>
           <p id="totalEquityBase" class="sub-number"></p>
+          <small class="dashboard-hint" style="margin-top: 8px; color: var(--muted);">Clique para detalhes →</small>
         </div>
-        <div class="card card-info">
+        <div class="card card-info dashboard-interactive" onclick="clickDashboardCard('accounts')">
           <h3 data-i18n="dashboard.accounts">Contas</h3>
           <p id="accountCount" class="number-large">0</p>
-        </div>
-        <div class="card card-info">
-          <h3 data-i18n="dashboard.currencies">Moedas</h3>
-          <p id="currencyCount" class="number-large">0</p>
+          <button class="secondary-btn" style="width: 100%; margin-top: 12px;" data-i18n="accounts.add">+ Nova conta</button>
         </div>
         <div class="card card-info">
           <h3 data-i18n="dashboard.baseCurrency">Moeda base</h3>
           <select id="dashBaseCurrency" class="base-select"></select>
+          <p class="sub-number" id="currencyCount" style="margin-top: 8px;"></p>
         </div>
       </div>
       
       <h2 class="section-title" data-i18n="dashboard.analysis">Análise de Patrimônio</h2>
       <div class="cards">
-        <div class="card card-success">
+        <div class="card card-success dashboard-interactive" onclick="clickDashboardCard('investments')">
           <h3 data-i18n="dashboard.investments">Investimentos</h3>
           <p id="invTotal" class="number-large">—</p>
           <p id="invTotalSub" class="sub-number"></p>
+          <small class="dashboard-hint" style="margin-top: 8px; color: var(--muted);">Clique para ver mais →</small>
         </div>
-        <div class="card card-success">
+        <div class="card card-success dashboard-interactive" onclick="clickDashboardCard('properties')">
           <h3 data-i18n="dashboard.properties">Imóveis</h3>
           <p id="propTotal" class="number-large">—</p>
           <p id="propTotalSub" class="sub-number"></p>
+          <small class="dashboard-hint" style="margin-top: 8px; color: var(--muted);">Clique para ver mais →</small>
         </div>
-        <div class="card card-success">
+        <div class="card card-success dashboard-interactive" onclick="clickDashboardCard('vehicles')">
           <h3 data-i18n="dashboard.vehicles">Veículos</h3>
           <p id="vehTotal" class="number-large">—</p>
           <p id="vehTotalSub" class="sub-number"></p>
+          <small class="dashboard-hint" style="margin-top: 8px; color: var(--muted);">Clique para ver mais →</small>
         </div>
-        <div class="card card-warning">
+        <div class="card card-warning dashboard-interactive" onclick="clickDashboardCard('debt')">
           <h3 data-i18n="dashboard.debt">Dívidas</h3>
           <p id="debtTotal" class="number-large amount-out">—</p>
           <p id="debtTotalSub" class="sub-number"></p>
+          <small class="dashboard-hint" style="margin-top: 8px; color: var(--muted);">Clique para ver mais →</small>
         </div>
       </div>
       
@@ -102,6 +105,28 @@
         <div class="card card-primary card-highlight">
           <h3 data-i18n="dashboard.nav">Patrimônio Líquido</h3>
           <p id="navTotal" class="number-large">—</p>
+          <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 12px; color: var(--muted);">
+            <div style="display: flex; justify-content: space-between; margin: 4px 0;">
+              <span>Financeiro:</span>
+              <span id="navBreakdownFinancial">—</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin: 4px 0;">
+              <span>Investimentos:</span>
+              <span id="navBreakdownInv">—</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin: 4px 0;">
+              <span>Imóveis:</span>
+              <span id="navBreakdownProp">—</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin: 4px 0;">
+              <span>Veículos:</span>
+              <span id="navBreakdownVeh">—</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin: 4px 0; padding-top: 4px; border-top: 1px solid rgba(255,255,255,0.1);">
+              <span>Dívidas:</span>
+              <span id="navBreakdownDebt" style="color: #ff6b6b;">—</span>
+            </div>
+          </div>
         </div>
       </div>
       <div class="cards cards-spaced">

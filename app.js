@@ -4569,6 +4569,19 @@ function renderDashboard() {
     + consolidate(veiculos.gross, base, hoje).total
     - consolidate(dividas, base, hoje).total;
   document.getElementById('navTotal').textContent = fmtMoney(nav, base);
+  
+  // Breakdown do patrimônio líquido
+  const financeiroCons = consolidate(byCurrency, base, hoje);
+  const invCons = consolidate(carteira.value, base, hoje);
+  const propCons = consolidate(imoveis.gross, base, hoje);
+  const vehCons = consolidate(veiculos.gross, base, hoje);
+  const debtCons = consolidate(dividas, base, hoje);
+  
+  document.getElementById('navBreakdownFinancial').textContent = fmtMoney(financeiroCons.total, base);
+  document.getElementById('navBreakdownInv').textContent = fmtMoney(invCons.total, base);
+  document.getElementById('navBreakdownProp').textContent = fmtMoney(propCons.total, base);
+  document.getElementById('navBreakdownVeh').textContent = fmtMoney(vehCons.total, base);
+  document.getElementById('navBreakdownDebt').textContent = fmtMoney(debtCons.total, base);
 }
 
 function fillSummaryCard(mainId, subId, map, base) {
@@ -4789,14 +4802,24 @@ function renderFx() {
   }
   empty.classList.add('hidden');
 
-  // Group by currency to compare rates
+  // Group by currency to show ONLY latest 2 dates per currency
   const currencyGroups = {};
   rows.forEach(r => {
     if (!currencyGroups[r.currency]) currencyGroups[r.currency] = [];
     currencyGroups[r.currency].push(r);
   });
 
-  rows.forEach((r) => {
+  // Build final rows: max 2 per currency
+  const displayRows = [];
+  Object.keys(currencyGroups).forEach(currency => {
+    const sorted = currencyGroups[currency].sort((a, b) => b.date.localeCompare(a.date));
+    displayRows.push(...sorted.slice(0, 2));
+  });
+  
+  // Sort by date descending for display
+  displayRows.sort((a, b) => b.date.localeCompare(a.date));
+
+  displayRows.forEach((r) => {
     const rate = Number(r.rate);
     
     // Calculate arrow and percentage change
@@ -10149,6 +10172,30 @@ function openModal(html, wide) {
   document.getElementById('modal').classList.remove('hidden');
 }
 function closeModal() { document.getElementById('modal').classList.add('hidden'); }
+
+/* Dashboard interativo - clique nos cards */
+function clickDashboardCard(type) {
+  const tabIndex = {
+    'equity': 3,      // Investimentos
+    'accounts': 0,    // Começar em Contas
+    'investments': 3,
+    'properties': 4,
+    'vehicles': 4,
+    'debt': 4
+  };
+  
+  // Switch to the appropriate tab
+  const tabs = document.querySelectorAll('.tab');
+  if (tabIndex[type] !== undefined) {
+    const mainTabs = document.querySelectorAll('#mainTabs .tab');
+    mainTabs[tabIndex[type]].click();
+  }
+  
+  // Scroll to top
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  
+  showToast(t(`toast.showing${type.charAt(0).toUpperCase() + type.slice(1)}`));
+}
 
 function toggleActionMenu(event) {
   event.stopPropagation();
