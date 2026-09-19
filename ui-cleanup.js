@@ -6,10 +6,17 @@
  * 2. Câmbio: mostrar apenas 2 últimos dias com setas de comparação
  */
 
-document.addEventListener('DOMContentLoaded', () => {
+// Inicializa quando DOM está pronto
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    initActionMenus();
+    initCurrencyComparison();
+  });
+} else {
+  // Se já passou do DOMContentLoaded, executa direto
   initActionMenus();
   initCurrencyComparison();
-});
+}
 
 // ============ 1. ACTION MENUS (+ botão) ============
 function initActionMenus() {
