@@ -4774,8 +4774,13 @@ function renderFx() {
       <td><strong>${fmtRate(rate)} ${r.currency}</strong></td>
       <td>1 ${r.currency} = ${rate ? fmtRate(1 / rate) : '—'} ${FX_PIVOT}</td>
       <td>
-        <button class="secondary-btn" onclick="openFxModal('${r.id}')">${t('modal.edit')}</button>
-        <button class="secondary-btn" onclick="deleteFx('${r.id}')">${t('modal.delete')}</button>
+        <div class="action-menu-container">
+          <button class="action-circle-btn" onclick="toggleActionMenu(event)">${String.fromCharCode(10133)}</button>
+          <div class="action-dropdown-menu">
+            <button class="action-menu-item" onclick="openFxModal('${r.id}')">${t('modal.edit')}</button>
+            <button class="action-menu-item" onclick="deleteFx('${r.id}')">${t('modal.delete')}</button>
+          </div>
+        </div>
       </td>`;
     tbody.appendChild(tr);
   });
@@ -9591,11 +9596,16 @@ function renderInvestments() {
         <td><strong>${fmtMoney(r.value, pos.currency)}</strong></td>
         <td class="${classe}">${fmtMoney(r.profit, pos.currency)} · ${r.pct.toFixed(1)}%</td>
         <td>
-          <button class="secondary-btn" onclick="openPositionChart('${pos.id}')">${t('mkt.chart')}</button>
-          <button class="secondary-btn" onclick="openMoveModal('${pos.id}')">${t('inv.move')}</button>
-          <button class="secondary-btn" onclick="openQuotesModal('${pos.id}')">${t('inv.quotes')}</button>
-          <button class="secondary-btn" onclick="openPositionModal('${pos.id}')">${t('modal.edit')}</button>
-          <button class="secondary-btn" onclick="deletePosition('${pos.id}')">${t('modal.delete')}</button>
+          <div class="action-menu-container">
+            <button class="action-circle-btn" onclick="toggleActionMenu(event)">${String.fromCharCode(10133)}</button>
+            <div class="action-dropdown-menu">
+              <button class="action-menu-item" onclick="openPositionChart('${pos.id}')">${t('mkt.chart')}</button>
+              <button class="action-menu-item" onclick="openMoveModal('${pos.id}')">${t('inv.move')}</button>
+              <button class="action-menu-item" onclick="openQuotesModal('${pos.id}')">${t('inv.quotes')}</button>
+              <button class="action-menu-item" onclick="openPositionModal('${pos.id}')">${t('modal.edit')}</button>
+              <button class="action-menu-item" onclick="deletePosition('${pos.id}')">${t('modal.delete')}</button>
+            </div>
+          </div>
         </td>
       </tr>`;
     }).join('');
@@ -10079,6 +10089,22 @@ function openModal(html, wide) {
   document.getElementById('modal').classList.remove('hidden');
 }
 function closeModal() { document.getElementById('modal').classList.add('hidden'); }
+
+function toggleActionMenu(event) {
+  event.stopPropagation();
+  const menu = event.target.parentElement.querySelector('.action-dropdown-menu');
+  const allMenus = document.querySelectorAll('.action-dropdown-menu');
+  allMenus.forEach(m => {
+    if (m !== menu) m.classList.remove('show');
+  });
+  menu.classList.toggle('show');
+}
+
+document.addEventListener('click', () => {
+  document.querySelectorAll('.action-dropdown-menu').forEach(menu => {
+    menu.classList.remove('show');
+  });
+});
 
 function openAccountModal(id) {
   const a = id ? accountById(id) : null;
