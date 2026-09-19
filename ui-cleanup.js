@@ -6,45 +6,21 @@
  * 2. Câmbio: mostrar apenas 2 últimos dias com setas de comparação coloridas
  */
 
-console.log('✅ ui-cleanup.js iniciado');
-
-// Aguarda renderAll() completar - aumentar timeout para garantir
-function initUI() {
-  console.log('🔄 Inicializando UI cleanup...');
+// Aguarda um pouco para renderAll() completar
+setTimeout(() => {
   initActionMenus();
   initCurrencyComparison();
-  console.log('✅ UI cleanup completo');
-}
-
-// Tentar rodar logo quando DOM estiver pronto
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(initUI, 800);
-  });
-} else {
-  // DOM já está pronto
-  setTimeout(initUI, 800);
-}
-
-// Re-inicializar quando tab muda (se renderAll for chamado)
-window.addEventListener('profileLoaded', initUI);
-window.addEventListener('dataChanged', initUI);
+}, 500);
 
 // ============ 1. ACTION MENUS (+ botão) ============
 function initActionMenus() {
-  console.log('🎯 initActionMenus: começando...');
-  
   // Encontrar todas as linhas de tabelas com botões
   const tables = document.querySelectorAll('table tbody');
-  console.log('📊 Encontradas ' + tables.length + ' tabelas');
   
-  let menuCount = 0;
-  
-  tables.forEach((tbody, tbodyIdx) => {
+  tables.forEach(tbody => {
     const rows = tbody.querySelectorAll('tr');
-    console.log('📈 Tabela ' + tbodyIdx + ' tem ' + rows.length + ' linhas');
     
-    rows.forEach((row, rowIdx) => {
+    rows.forEach(row => {
       // Procurar por célula com múltiplos botões de ação
       const cells = row.querySelectorAll('td');
       const lastCell = cells[cells.length - 1];
@@ -55,14 +31,10 @@ function initActionMenus() {
       
       // Se houver 3+ botões, converter para menu
       if (buttons.length >= 3) {
-        console.log('🔘 Linha ' + rowIdx + ' tem ' + buttons.length + ' botões - convertendo para menu');
         convertToActionMenu(row, lastCell, buttons);
-        menuCount++;
       }
     });
   });
-  
-  console.log('✅ ' + menuCount + ' menus de ação criados');
 }
 
 function convertToActionMenu(row, cell, buttons) {

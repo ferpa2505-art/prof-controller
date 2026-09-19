@@ -1,5 +1,5 @@
 /* ============================================================
-   🎨 UI CLEANUP STYLES - ProF Controller v2.0.0
+   🎨 UI CLEANUP STYLES - ProF Controller v1.0.0
    ============================================================ */
 
 /* Linhas de tabela - Mais compactas */
@@ -15,22 +15,18 @@ table tbody tr td {
 /* Action Menu Container */
 .action-menu-container {
   position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 30px;
+  display: inline-block;
 }
 
-/* Plus Button - Círculo moderno com tema-aware colors */
+/* Plus Button - Círculo moderno */
 .action-plus-btn {
   background: transparent;
-  border: 2px solid currentColor;
-  color: var(--primary, #0099FF);
-  font-size: 18px;
+  border: 2px solid #0099FF;
+  color: #0099FF;
+  font-size: 16px;
   font-weight: bold;
   width: 30px;
   height: 30px;
-  min-width: 30px;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
@@ -39,11 +35,10 @@ table tbody tr td {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   padding: 0;
   line-height: 1;
-  flex-shrink: 0;
 }
 
 .action-plus-btn:hover {
-  background: var(--primary, #0099FF);
+  background: #0099FF;
   color: #fff;
   box-shadow: 0 4px 12px rgba(0, 153, 255, 0.4);
   transform: scale(1.1);
@@ -51,17 +46,6 @@ table tbody tr td {
 
 .action-plus-btn:active {
   transform: scale(0.95);
-}
-
-/* GTA-VI theme override */
-body.theme-gta-vi .action-plus-btn {
-  color: #FF006E;
-  border-color: #FF006E;
-}
-
-body.theme-gta-vi .action-plus-btn:hover {
-  background: #FF006E;
-  box-shadow: 0 4px 12px rgba(255, 0, 110, 0.4);
 }
 
 /* Dropdown Menu */
