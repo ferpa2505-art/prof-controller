@@ -8157,9 +8157,7 @@ function calcEval(expr) {
 function calcKey(k) {
   const campo = document.getElementById('calcDisplay');
   if (!campo) return;
-  if (k === 'C') { calcUi.expr = ''; }
-  else if (k === '←') calcUi.expr = calcUi.expr.slice(0, -1);
-  else if (k === '=') return calcRun();
+  if (k === '=') return calcRun();
   else if (k === '±') {
     const m = calcUi.expr.match(/(\d+[.,]?\d*)$/);
     if (m) calcUi.expr = calcUi.expr.slice(0, -m[1].length) + '(0-' + m[1] + ')';
@@ -8170,6 +8168,43 @@ function calcKey(k) {
   } else calcUi.expr += k;
   campo.value = calcUi.expr;
   campo.focus();
+}
+
+// Limpar display: C = tudo, CE = entrada
+function calcClear(tipo) {
+  const campo = document.getElementById('calcDisplay');
+  if (!campo) return;
+  if (tipo === 'all') {
+    // C: Limpa tudo (expr, memória, histórico)
+    calcUi.expr = '';
+    calcUi.memory = 0;
+    calcUi.history = [];
+  } else if (tipo === 'entry') {
+    // CE: Limpa só a entrada atual
+    calcUi.expr = '';
+  }
+  campo.value = calcUi.expr;
+  document.getElementById('calcResult').textContent = '0';
+  document.getElementById('calcMem').textContent = calcUi.memory ? 'M' : '';
+  renderCalcHistory();
+  campo.focus();
+}
+
+// Backspace: remove último caractere
+function calcBackspace() {
+  const campo = document.getElementById('calcDisplay');
+  if (!campo) return;
+  calcUi.expr = calcUi.expr.slice(0, -1);
+  campo.value = calcUi.expr;
+  campo.focus();
+}
+
+// Limpar histórico
+function calcClearHistory() {
+  if (confirm('Deseja limpar todo o histórico de cálculos?')) {
+    calcUi.history = [];
+    renderCalcHistory();
+  }
 }
 function calcRun() {
   const campo = document.getElementById('calcDisplay');
@@ -8538,7 +8573,7 @@ function renderCalculator() {
   const unidadePrazo = (id) => `<select id="${id}" onchange="${id.startsWith('ju') ? 'runInterest' : 'runSolve'}()"><option value="year">${t('calc.years')}</option><option value="month">${t('calc.months')}</option></select>`;
 
   if (calcUi.module === 'basic') {
-    const teclas = ['C', '←', '(', ')', '7', '8', '9', '÷', '4', '5', '6', '×', '1', '2', '3', '−', '0', '.', '%', '+'];
+    const teclas = ['C', 'CE', '←', '(', ')', '7', '8', '9', '÷', '4', '5', '6', '×', '1', '2', '3', '−', '0', '.', '%', '+'];
     box.innerHTML = `
       <div class="calc-basic">
         <div class="calc-screen">
@@ -8554,8 +8589,20 @@ function renderCalculator() {
           <button type="button" class="secondary-btn" onclick="calcKey('x²')">x²</button>
         </div>
         <div class="calc-pad">
-          ${teclas.map((k) => `<button type="button" class="calc-key ${'÷×−+'.includes(k) ? 'op' : k === 'C' || k === '←' ? 'fn' : ''}" onclick="calcKey('${k === '−' ? '-' : k === '×' ? '*' : k === '÷' ? '/' : k}')">${k}</button>`).join('')}
+          ${teclas.map((k) => {
+            let clickAction = k;
+            if (k === 'C') clickAction = "calcClear('all')";
+            else if (k === 'CE') clickAction = "calcClear('entry')";
+            else if (k === '←') clickAction = "calcBackspace()";
+            else clickAction = "calcKey('" + (k === '−' ? '-' : k === '×' ? '*' : k === '÷' ? '/' : k) + "')";
+            
+            return `<button type="button" class="calc-key ${'÷×−+'.includes(k) ? 'op' : ['C', 'CE', '←'].includes(k) ? 'fn' : ''}" onclick="${clickAction}">${k}</button>`;
+          }).join('')}
           <button type="button" class="calc-key eq" onclick="calcRun()">=</button>
+        </div>
+        <div class="calc-history-header">
+          <h4>${t('calc.history') || 'Histórico'}</h4>
+          ${calcUi.history.length > 0 ? '<button type="button" class="secondary-btn" onclick="calcClearHistory()" style="font-size:0.8em">Limpar</button>' : ''}
         </div>
         <ul id="calcHistory" class="calc-history"></ul>
       </div>`;

@@ -699,6 +699,26 @@ body.sec-open { overflow: hidden; }
 .lookup-kind > span { white-space: nowrap; }
 .lookup-kind input[type="radio"] { margin: 0; }
 
+/* Calculadora - Histórico */
+.calc-history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+.calc-history-header h4 {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  margin: 0;
+}
+.calc-history-header button {
+  padding: 4px 8px;
+  font-size: 11px;
+}
+
 /* Footer com versão */
 .app-footer {
   position: fixed;
