@@ -44,10 +44,18 @@ const I18N = {
     'tabs.transactions': 'Entradas e saídas',
     'tabs.budgets': 'Orçamentos',
     'tabs.settings': 'Configurações avançadas',
-    'dashboard.totalEquity': 'Financeiro',
+    'dashboard.title': 'Seu Patrimônio',
+    'dashboard.subtitle': 'Visão geral financeira do seu portfólio',
+    'dashboard.analysis': 'Análise de Patrimônio',
+    'dashboard.totalEquity': 'Financeiro Total',
     'dashboard.accounts': 'Contas',
     'dashboard.currencies': 'Moedas',
     'dashboard.baseCurrency': 'Moeda base',
+    'dashboard.investments': 'Investimentos',
+    'dashboard.properties': 'Imóveis',
+    'dashboard.vehicles': 'Veículos',
+    'dashboard.debt': 'Dívidas',
+    'dashboard.nav': 'Patrimônio Líquido',
     'dashboard.income': 'Receitas do mês',
     'dashboard.expense': 'Despesas do mês',
     'dashboard.result': 'Resultado do mês',
@@ -1007,10 +1015,18 @@ const I18N = {
     'tabs.transactions': 'Money in & out',
     'tabs.budgets': 'Budgets',
     'tabs.settings': 'Advanced settings',
-    'dashboard.totalEquity': 'Financial',
+    'dashboard.title': 'Your Equity',
+    'dashboard.subtitle': 'Financial overview of your portfolio',
+    'dashboard.analysis': 'Equity Analysis',
+    'dashboard.totalEquity': 'Total Financial',
     'dashboard.accounts': 'Accounts',
     'dashboard.currencies': 'Currencies',
     'dashboard.baseCurrency': 'Base currency',
+    'dashboard.investments': 'Investments',
+    'dashboard.properties': 'Properties',
+    'dashboard.vehicles': 'Vehicles',
+    'dashboard.debt': 'Debts',
+    'dashboard.nav': 'Net Worth',
     'dashboard.income': 'Income this month',
     'dashboard.expense': 'Expenses this month',
     'dashboard.result': 'Net this month',
@@ -1967,10 +1983,18 @@ const I18N = {
     'tabs.transactions': 'Entradas y salidas',
     'tabs.budgets': 'Presupuestos',
     'tabs.settings': 'Configuración avanzada',
-    'dashboard.totalEquity': 'Financiero',
+    'dashboard.title': 'Su Patrimonio',
+    'dashboard.subtitle': 'Resumen financiero de su portafolio',
+    'dashboard.analysis': 'Análisis de Patrimonio',
+    'dashboard.totalEquity': 'Financiero Total',
     'dashboard.accounts': 'Cuentas',
     'dashboard.currencies': 'Monedas',
     'dashboard.baseCurrency': 'Moneda base',
+    'dashboard.investments': 'Inversiones',
+    'dashboard.properties': 'Propiedades',
+    'dashboard.vehicles': 'Vehículos',
+    'dashboard.debt': 'Deudas',
+    'dashboard.nav': 'Patrimonio Neto',
     'dashboard.income': 'Ingresos del mes',
     'dashboard.expense': 'Gastos del mes',
     'dashboard.result': 'Resultado del mes',
@@ -4765,8 +4789,42 @@ function renderFx() {
   }
   empty.classList.add('hidden');
 
+  // Group by currency to compare rates
+  const currencyGroups = {};
+  rows.forEach(r => {
+    if (!currencyGroups[r.currency]) currencyGroups[r.currency] = [];
+    currencyGroups[r.currency].push(r);
+  });
+
   rows.forEach((r) => {
     const rate = Number(r.rate);
+    
+    // Calculate arrow and percentage change
+    let arrow = '→';
+    let arrowClass = 'equal';
+    let percentage = '';
+    
+    const currencyRows = currencyGroups[r.currency];
+    if (currencyRows && currencyRows.length >= 2) {
+      const sortedByDate = currencyRows.sort((a, b) => b.date.localeCompare(a.date));
+      const latestRate = Number(sortedByDate[0].rate);
+      const previousRate = Number(sortedByDate[1].rate);
+      
+      if (latestRate > previousRate) {
+        arrow = '↑';
+        arrowClass = 'up';
+        percentage = `+${((latestRate / previousRate - 1) * 100).toFixed(2)}%`;
+      } else if (latestRate < previousRate) {
+        arrow = '↓';
+        arrowClass = 'down';
+        percentage = `${((latestRate / previousRate - 1) * 100).toFixed(2)}%`;
+      } else {
+        arrow = '→';
+        arrowClass = 'equal';
+        percentage = '0.00%';
+      }
+    }
+    
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>${r.date}</td>
@@ -4774,7 +4832,9 @@ function renderFx() {
       <td><strong>${fmtRate(rate)} ${r.currency}</strong></td>
       <td>1 ${r.currency} = ${rate ? fmtRate(1 / rate) : '—'} ${FX_PIVOT}</td>
       <td>
-        <div class="action-menu-container">
+        <span class="currency-arrow ${arrowClass}">${arrow}</span>
+        ${percentage ? `<small style="color: var(--muted); font-size: 11px;">${percentage}</small>` : ''}
+        <div class="action-menu-container" style="display: inline-block; margin-left: 8px;">
           <button class="action-circle-btn" onclick="toggleActionMenu(event)">${String.fromCharCode(10133)}</button>
           <div class="action-dropdown-menu">
             <button class="action-menu-item" onclick="openFxModal('${r.id}')">${t('modal.edit')}</button>

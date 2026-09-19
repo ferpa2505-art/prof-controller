@@ -47,50 +47,61 @@
   <main>
     <!-- DASHBOARD -->
     <section id="tab-dashboard" class="tab-panel active">
-      <p class="tab-intro" data-i18n="help.dashboard"></p>
+      <div class="dashboard-header">
+        <h2 data-i18n="dashboard.title">Seu Patrimônio</h2>
+        <span class="dashboard-subtitle" data-i18n="dashboard.subtitle">Visão geral financeira do seu portfólio</span>
+      </div>
+      
+      <div id="fxWarning" class="fx-warning hidden"></div>
+      
       <div class="cards">
-        <div class="card">
-          <h3 data-i18n="dashboard.totalEquity">Financeiro</h3>
-          <p id="totalEquity" class="big-number">—</p>
+        <div class="card card-primary">
+          <h3 data-i18n="dashboard.totalEquity">Financeiro Total</h3>
+          <p id="totalEquity" class="number-large">—</p>
           <p id="totalEquityBase" class="sub-number"></p>
         </div>
-        <div class="card">
+        <div class="card card-info">
           <h3 data-i18n="dashboard.accounts">Contas</h3>
-          <p id="accountCount" class="big-number">0</p>
+          <p id="accountCount" class="number-large">0</p>
         </div>
-        <div class="card">
+        <div class="card card-info">
           <h3 data-i18n="dashboard.currencies">Moedas</h3>
-          <p id="currencyCount" class="big-number">0</p>
+          <p id="currencyCount" class="number-large">0</p>
         </div>
-        <div class="card">
+        <div class="card card-info">
           <h3 data-i18n="dashboard.baseCurrency">Moeda base</h3>
           <select id="dashBaseCurrency" class="base-select"></select>
         </div>
       </div>
-      <div class="cards cards-spaced">
-        <div class="card">
+      
+      <h2 class="section-title" data-i18n="dashboard.analysis">Análise de Patrimônio</h2>
+      <div class="cards">
+        <div class="card card-success">
           <h3 data-i18n="dashboard.investments">Investimentos</h3>
-          <p id="invTotal" class="big-number">—</p>
+          <p id="invTotal" class="number-large">—</p>
           <p id="invTotalSub" class="sub-number"></p>
         </div>
-        <div class="card">
+        <div class="card card-success">
           <h3 data-i18n="dashboard.properties">Imóveis</h3>
-          <p id="propTotal" class="big-number">—</p>
+          <p id="propTotal" class="number-large">—</p>
           <p id="propTotalSub" class="sub-number"></p>
         </div>
-        <div class="card">
+        <div class="card card-success">
           <h3 data-i18n="dashboard.vehicles">Veículos</h3>
-          <p id="vehTotal" class="big-number">—</p>
+          <p id="vehTotal" class="number-large">—</p>
           <p id="vehTotalSub" class="sub-number"></p>
         </div>
-        <div class="card">
+        <div class="card card-warning">
           <h3 data-i18n="dashboard.debt">Dívidas</h3>
-          <p id="debtTotal" class="big-number amount-out">—</p>
+          <p id="debtTotal" class="number-large amount-out">—</p>
           <p id="debtTotalSub" class="sub-number"></p>
         </div>
-        <div class="card card-highlight">
+      </div>
+      
+      <div class="cards cards-spaced">
+        <div class="card card-primary card-highlight">
           <h3 data-i18n="dashboard.nav">Patrimônio Líquido</h3>
-          <p id="navTotal" class="big-number">—</p>
+          <p id="navTotal" class="number-large">—</p>
         </div>
       </div>
       <div class="cards cards-spaced">
