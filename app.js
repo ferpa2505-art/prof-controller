@@ -813,11 +813,9 @@ const I18N = {
     'gear.lang': 'Idioma',
     'gear.help': 'Mostrar explicações das abas',
     'gear.advanced': 'Configurações avançadas',
-    'theme.default': 'Claro',
-    'theme.dark': 'Escuro',
     'theme.gray': 'Cinza',
-    'theme.green': 'Verde',
-    'theme.blue': 'Azul',
+    'theme.dark': 'Escuro',
+    'theme.gta-vi': 'GTA VI',
     'help.dashboard': 'Visão geral do seu patrimônio: saldo das contas, investimentos, imóveis e veículos, tudo somado na moeda base, com gráficos de evolução e de fluxo de caixa.',
     'help.investments': 'Suas ações, fundos, renda fixa e cripto. Busque o ativo pelo ticker ou ISIN, registre compras e vendas e acompanhe se está ganhando ou perdendo. Mais abaixo: watchlist e comparativo com CDB, Ibovespa e S&P 500.',
     'help.accounts': 'Cadastre aqui cada conta bancária, carteira ou corretora, com a moeda e o saldo inicial. As outras telas usam essas contas.',
@@ -1777,10 +1775,9 @@ const I18N = {
     'gear.help': 'Show tab explanations',
     'gear.advanced': 'Advanced settings',
     'theme.default': 'Light',
-    'theme.dark': 'Dark',
     'theme.gray': 'Gray',
-    'theme.green': 'Green',
-    'theme.blue': 'Blue',
+    'theme.dark': 'Dark',
+    'theme.gta-vi': 'GTA VI',
     'help.dashboard': 'Overview of your net worth: account balances, investments, property and vehicles, all added up in the base currency, with growth and cash flow charts.',
     'help.investments': 'Your stocks, funds, fixed income and crypto. Find an asset by ticker or ISIN, record buys and sells and see whether you are gaining or losing. Further down: watchlist and comparison with CDB, Ibovespa and S&P 500.',
     'help.accounts': 'Add each bank account, wallet or brokerage here, with its currency and opening balance. Other screens use these accounts.',
@@ -2741,8 +2738,8 @@ const I18N = {
     'theme.default': 'Claro',
     'theme.dark': 'Oscuro',
     'theme.gray': 'Gris',
-    'theme.green': 'Verde',
-    'theme.blue': 'Azul',
+    'theme.dark': 'Oscuro',
+    'theme.gta-vi': 'GTA VI',
     'help.dashboard': 'Visión general de tu patrimonio: saldos, inversiones, inmuebles y vehículos, sumados en la moneda base, con gráficos de evolución y flujo de caja.',
     'help.investments': 'Tus acciones, fondos, renta fija y cripto. Busca el activo por ticker o ISIN, registra compras y ventas y ve si ganas o pierdes. Más abajo: watchlist y comparativo con CDB, Ibovespa y S&P 500.',
     'help.accounts': 'Registra aquí cada cuenta bancaria, billetera o bróker, con su moneda y saldo inicial. Las demás pantallas usan estas cuentas.',
@@ -10714,8 +10711,8 @@ function applyHelp() {
 function renderThemeOptions() {
   const sel = document.getElementById('themeSelect');
   if (!sel) return;
-  sel.innerHTML = ['default', 'dark', 'gray', 'green', 'blue'].map((th) => `<option value="${th}">${t('theme.' + th)}</option>`).join('');
-  sel.value = state.settings.theme || 'default';
+  sel.innerHTML = ['gray', 'dark', 'gta-vi'].map((th) => `<option value="${th}">${t('theme.' + th)}</option>`).join('');
+  sel.value = state.settings.theme || 'gray';
 }
 
 function bindEvents() {
