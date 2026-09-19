@@ -2,28 +2,28 @@
 /* Neon street style with vibrant colors and gritty aesthetics */
 
 body.theme-gta-vi {
-  --primary: #FF006E; /* Vibrant pink/magenta - iconic GTA VI color */
-  --success: #00D77E; /* Neon green */
-  --danger: #FF0040; /* Bright red */
-  --warning: #FFD500; /* Neon yellow */
-  --info: #00B4FF; /* Cyan blue */
-  --secondary: #9D4EDD; /* Purple */
+  --primary: #FF1493; /* Hot pink/magenta - iconic GTA VI color */
+  --success: #00FF41; /* Neon lime green */
+  --danger: #FF0000; /* Bright red */
+  --warning: #FFFF00; /* Bright yellow */
+  --info: #00FFFF; /* Cyan neon */
+  --secondary: #BB00FF; /* Purple neon */
   
-  /* Background - Dark gritty urban look */
-  --bg-primary: #0a0e27;
-  --bg-secondary: #1a1f3a;
-  --bg-tertiary: #252d4a;
+  /* Background - Dark gritty urban look with subtle gradients */
+  --bg-primary: #0d0221;
+  --bg-secondary: #1a0033;
+  --bg-tertiary: #2d0052;
   
   /* Text colors */
-  --text-primary: #ffffff;
-  --text-secondary: #b0b8d4;
-  --text-tertiary: #7a8299;
+  --text-primary: #FFFFFF;
+  --text-secondary: #D0D0FF;
+  --text-tertiary: #8080FF;
   
   /* Border and accents */
-  --border-color: #2a3154;
-  --accent-glow: #FF006E;
+  --border-color: #3d00cc;
+  --accent-glow: #FF1493;
   
-  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0f1229 100%);
+  background: linear-gradient(135deg, #0d0221 0%, #1a0033 40%, #2d0052 100%);
   color: var(--text-primary);
 }
 
@@ -33,49 +33,51 @@ body.theme-gta-vi button:not(.btn-danger):not(.btn-warning),
 body.theme-gta-vi .tab.active {
   background: var(--primary);
   color: #000;
-  font-weight: 600;
-  box-shadow: 0 0 20px rgba(255, 0, 110, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.1);
+  font-weight: 700;
+  box-shadow: 0 0 30px rgba(255, 20, 147, 0.8), 0 0 60px rgba(255, 20, 147, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.2);
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
+  border: 1px solid #FF1493;
 }
 
 body.theme-gta-vi .btn-primary:hover,
 body.theme-gta-vi button:not(.btn-danger):not(.btn-warning):hover {
-  background: #ff3385;
-  box-shadow: 0 0 30px rgba(255, 0, 110, 0.8), inset 0 0 15px rgba(255, 255, 255, 0.15);
+  background: #ff3cb7;
+  box-shadow: 0 0 50px rgba(255, 20, 147, 1), 0 0 100px rgba(255, 20, 147, 0.6), inset 0 0 15px rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
 }
 
 /* Card styling with neon border */
 body.theme-gta-vi .card,
 body.theme-gta-vi .investmentRow,
 body.theme-gta-vi .modal-content {
-  background: rgba(26, 31, 58, 0.8);
-  border: 1px solid rgba(255, 0, 110, 0.3);
-  border-radius: 6px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(255, 0, 110, 0.05);
+  background: linear-gradient(135deg, rgba(13, 2, 33, 0.9) 0%, rgba(26, 0, 51, 0.9) 100%);
+  border: 2px solid rgba(255, 20, 147, 0.4);
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(255, 20, 147, 0.3), inset 0 0 20px rgba(255, 20, 147, 0.05);
   backdrop-filter: blur(10px);
 }
 
 body.theme-gta-vi .card:hover {
-  border-color: rgba(255, 0, 110, 0.6);
-  box-shadow: 0 12px 40px rgba(255, 0, 110, 0.2), inset 0 0 20px rgba(255, 0, 110, 0.1);
+  border-color: rgba(255, 20, 147, 0.8);
+  box-shadow: 0 0 40px rgba(255, 20, 147, 0.6), inset 0 0 30px rgba(255, 20, 147, 0.1);
 }
 
 /* Table styling */
 body.theme-gta-vi table {
   border-collapse: collapse;
-  background: rgba(26, 31, 58, 0.7);
+  background: rgba(13, 2, 33, 0.7);
 }
 
 body.theme-gta-vi tbody tr {
-  border-bottom: 1px solid rgba(255, 0, 110, 0.2);
-  transition: all 0.3s ease;
+  border-bottom: 1px solid rgba(255, 20, 147, 0.2);
+  transition: all 0.2s ease;
 }
 
 body.theme-gta-vi tbody tr:hover {
-  background: rgba(255, 0, 110, 0.05);
-  border-color: rgba(255, 0, 110, 0.4);
-  box-shadow: inset 0 0 10px rgba(255, 0, 110, 0.1);
+  background: rgba(255, 20, 147, 0.08);
+  border-color: rgba(255, 20, 147, 0.5);
+  box-shadow: inset 0 0 15px rgba(255, 20, 147, 0.15);
 }
 
 /* Form inputs with neon focus */
@@ -85,11 +87,11 @@ body.theme-gta-vi input[type="date"],
 body.theme-gta-vi input[type="time"],
 body.theme-gta-vi select,
 body.theme-gta-vi textarea {
-  background: rgba(15, 18, 41, 0.9);
-  border: 1px solid rgba(255, 0, 110, 0.2);
+  background: rgba(10, 1, 25, 0.95);
+  border: 1px solid rgba(255, 20, 147, 0.3);
   color: var(--text-primary);
   border-radius: 4px;
-  padding: 8px 12px;
+  padding: 10px 12px;
   font-size: 14px;
   transition: all 0.3s ease;
 }
@@ -99,46 +101,50 @@ body.theme-gta-vi select:focus,
 body.theme-gta-vi textarea:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 15px rgba(255, 0, 110, 0.4), inset 0 0 8px rgba(255, 0, 110, 0.1);
-  background: rgba(20, 25, 50, 0.95);
+  box-shadow: 0 0 20px rgba(255, 20, 147, 0.5), inset 0 0 10px rgba(255, 20, 147, 0.1);
+  background: rgba(13, 2, 33, 0.98);
 }
 
 /* Danger button styling */
 body.theme-gta-vi .btn-danger {
   background: var(--danger);
   color: #fff;
-  font-weight: 600;
-  box-shadow: 0 0 15px rgba(255, 0, 64, 0.5);
+  font-weight: 700;
+  box-shadow: 0 0 25px rgba(255, 0, 0, 0.6), 0 0 50px rgba(255, 0, 0, 0.3);
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
+  border: 1px solid #FF0000;
 }
 
 body.theme-gta-vi .btn-danger:hover {
-  background: #ff3366;
-  box-shadow: 0 0 25px rgba(255, 0, 64, 0.7);
+  background: #ff3333;
+  box-shadow: 0 0 40px rgba(255, 0, 0, 0.8), 0 0 80px rgba(255, 0, 0, 0.5);
+  transform: translateY(-2px);
 }
 
 /* Warning button styling */
 body.theme-gta-vi .btn-warning {
   background: var(--warning);
   color: #000;
-  font-weight: 600;
-  box-shadow: 0 0 15px rgba(255, 213, 0, 0.5);
+  font-weight: 700;
+  box-shadow: 0 0 25px rgba(255, 255, 0, 0.6), 0 0 50px rgba(255, 255, 0, 0.3);
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
+  border: 1px solid #FFFF00;
 }
 
 body.theme-gta-vi .btn-warning:hover {
-  background: #ffdd33;
-  box-shadow: 0 0 25px rgba(255, 213, 0, 0.7);
+  background: #ffff33;
+  box-shadow: 0 0 40px rgba(255, 255, 0, 0.8), 0 0 80px rgba(255, 255, 0, 0.5);
+  transform: translateY(-2px);
 }
 
 /* Header styling */
 body.theme-gta-vi header,
 body.theme-gta-vi .app-header {
-  background: linear-gradient(90deg, #0a0e27 0%, #1a1f3a 50%, #0a0e27 100%);
-  border-bottom: 2px solid rgba(255, 0, 110, 0.4);
-  box-shadow: 0 4px 20px rgba(255, 0, 110, 0.2);
+  background: linear-gradient(90deg, #0d0221 0%, #1a0033 50%, #0d0221 100%);
+  border-bottom: 3px solid rgba(255, 20, 147, 0.6);
+  box-shadow: 0 0 30px rgba(255, 20, 147, 0.4), 0 4px 20px rgba(0, 0, 0, 0.7);
 }
 
 body.theme-gta-vi h1,
@@ -155,37 +161,39 @@ body.theme-gta-vi h4 {
 body.theme-gta-vi .value-positive,
 body.theme-gta-vi .positivo {
   color: var(--success);
-  font-weight: 600;
-  text-shadow: 0 0 8px rgba(0, 215, 126, 0.4);
+  font-weight: 700;
+  text-shadow: 0 0 15px rgba(0, 255, 65, 0.6);
 }
 
 /* Danger indicator (red) */
 body.theme-gta-vi .value-negative,
 body.theme-gta-vi .negativo {
   color: var(--danger);
-  font-weight: 600;
-  text-shadow: 0 0 8px rgba(255, 0, 64, 0.4);
+  font-weight: 700;
+  text-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
 }
 
 /* Tab navigation */
 body.theme-gta-vi .tab {
-  border-bottom: 2px solid transparent;
+  border-bottom: 3px solid transparent;
   color: var(--text-secondary);
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  font-weight: 500;
+  letter-spacing: 1px;
+  font-weight: 600;
 }
 
 body.theme-gta-vi .tab:hover {
   color: var(--primary);
-  border-bottom-color: rgba(255, 0, 110, 0.3);
+  border-bottom-color: rgba(255, 20, 147, 0.5);
+  text-shadow: 0 0 10px rgba(255, 20, 147, 0.3);
 }
 
 body.theme-gta-vi .tab.active {
-  color: #000;
+  color: var(--primary);
   border-bottom-color: var(--primary);
-  box-shadow: 0 2px 10px rgba(255, 0, 110, 0.3);
+  box-shadow: 0 0 20px rgba(255, 20, 147, 0.4);
+  text-shadow: 0 0 15px rgba(255, 20, 147, 0.5);
 }
 
 /* Modal overlay */
@@ -206,33 +214,37 @@ body.theme-gta-vi .loading {
 
 /* Badge styling */
 body.theme-gta-vi .badge {
-  background: rgba(255, 0, 110, 0.2);
+  background: rgba(255, 20, 147, 0.3);
   color: var(--primary);
-  border: 1px solid var(--primary);
+  border: 2px solid var(--primary);
   border-radius: 4px;
-  padding: 2px 6px;
+  padding: 4px 8px;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
+  box-shadow: 0 0 10px rgba(255, 20, 147, 0.3);
 }
 
 /* Alert styling */
 body.theme-gta-vi .alert {
   border-radius: 6px;
   border-left: 4px solid var(--primary);
-  background: rgba(255, 0, 110, 0.05);
+  background: rgba(255, 20, 147, 0.08);
   color: var(--text-primary);
+  box-shadow: 0 0 20px rgba(255, 20, 147, 0.1);
 }
 
 body.theme-gta-vi .alert-success {
   border-left-color: var(--success);
-  background: rgba(0, 215, 126, 0.05);
+  background: rgba(0, 255, 65, 0.08);
+  box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
 }
 
 body.theme-gta-vi .alert-danger {
   border-left-color: var(--danger);
-  background: rgba(255, 0, 64, 0.05);
+  background: rgba(255, 0, 0, 0.08);
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.1);
 }
 
 /* Scrollbar styling */
@@ -259,25 +271,26 @@ body.theme-gta-vi progress {
   appearance: none;
   -webkit-appearance: none;
   width: 100%;
-  height: 6px;
-  background: rgba(26, 31, 58, 0.8);
-  border-radius: 3px;
+  height: 8px;
+  background: rgba(10, 1, 25, 0.9);
+  border-radius: 4px;
   overflow: hidden;
+  border: 1px solid rgba(255, 20, 147, 0.3);
 }
 
 body.theme-gta-vi progress::-webkit-progress-bar {
-  background: rgba(26, 31, 58, 0.8);
-  border-radius: 3px;
+  background: rgba(10, 1, 25, 0.9);
+  border-radius: 4px;
 }
 
 body.theme-gta-vi progress::-webkit-progress-value {
-  background: linear-gradient(90deg, var(--primary) 0%, #ff3385 50%, var(--primary) 100%);
-  border-radius: 3px;
-  box-shadow: 0 0 10px rgba(255, 0, 110, 0.6);
+  background: linear-gradient(90deg, #FF1493 0%, #FF69B4 50%, #FF1493 100%);
+  border-radius: 4px;
+  box-shadow: 0 0 20px rgba(255, 20, 147, 0.8);
 }
 
 body.theme-gta-vi progress::-moz-progress-bar {
-  background: linear-gradient(90deg, var(--primary) 0%, #ff3385 50%, var(--primary) 100%);
-  border-radius: 3px;
-  box-shadow: 0 0 10px rgba(255, 0, 110, 0.6);
+  background: linear-gradient(90deg, #FF1493 0%, #FF69B4 50%, #FF1493 100%);
+  border-radius: 4px;
+  box-shadow: 0 0 20px rgba(255, 20, 147, 0.8);
 }
