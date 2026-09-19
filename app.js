@@ -4509,21 +4509,20 @@ function renderDashboard() {
   const equity = consolidate(byCurrency, base, todayISO());
   const warn = document.getElementById('fxWarning');
   if (!keys.length) {
-    document.getElementById('totalEquity').textContent = '—';
-    document.getElementById('totalEquityBase').textContent = '';
-    warn.classList.add('hidden');
+    const el = document.getElementById('totalEquity'); if (el) el.textContent = '—';
+    const el2 = document.getElementById('totalEquityBase'); if (el2) el2.textContent = '';
+    if (warn) warn.classList.add('hidden');
   } else {
-    document.getElementById('totalEquity').textContent = fmtMoney(equity.total, base);
-    document.getElementById('totalEquityBase').textContent = keys.map((k) => fmtMoney(byCurrency[k], k)).join(' · ');
+    const el = document.getElementById('totalEquity'); if (el) el.textContent = fmtMoney(equity.total, base);
+    const el2 = document.getElementById('totalEquityBase'); if (el2) el2.textContent = keys.map((k) => fmtMoney(byCurrency[k], k)).join(' · ');
     if (equity.missing.length) {
-      warn.textContent = t('fx.missing').replace('{list}', equity.missing.join(', '));
-      warn.classList.remove('hidden');
+      if (warn) { warn.textContent = t('fx.missing').replace('{list}', equity.missing.join(', ')); warn.classList.remove('hidden'); }
     } else {
-      warn.classList.add('hidden');
+      if (warn) warn.classList.add('hidden');
     }
   }
-  document.getElementById('accountCount').textContent = state.accounts.length;
-  document.getElementById('currencyCount').textContent = new Set(state.accounts.map((a) => a.currency)).size;
+  const el3 = document.getElementById('accountCount'); if (el3) el3.textContent = state.accounts.length;
+  const el4 = document.getElementById('currencyCount'); if (el4) el4.textContent = new Set(state.accounts.map((a) => a.currency)).size;
   const seletorBase = document.getElementById('dashBaseCurrency');
   if (seletorBase) {
     seletorBase.innerHTML = CURRENCIES.map((c) => `<option value="${c.code}" ${c.code === base ? 'selected' : ''}>${c.code}</option>`).join('');
@@ -4568,7 +4567,7 @@ function renderDashboard() {
     + consolidate(imoveis.gross, base, hoje).total
     + consolidate(veiculos.gross, base, hoje).total
     - consolidate(dividas, base, hoje).total;
-  document.getElementById('navTotal').textContent = fmtMoney(nav, base);
+  const navEl = document.getElementById('navTotal'); if (navEl) navEl.textContent = fmtMoney(nav, base);
   
   // Breakdown do patrimônio líquido
   const financeiroCons = consolidate(byCurrency, base, hoje);
@@ -4577,17 +4576,18 @@ function renderDashboard() {
   const vehCons = consolidate(veiculos.gross, base, hoje);
   const debtCons = consolidate(dividas, base, hoje);
   
-  document.getElementById('navBreakdownFinancial').textContent = fmtMoney(financeiroCons.total, base);
-  document.getElementById('navBreakdownInv').textContent = fmtMoney(invCons.total, base);
-  document.getElementById('navBreakdownProp').textContent = fmtMoney(propCons.total, base);
-  document.getElementById('navBreakdownVeh').textContent = fmtMoney(vehCons.total, base);
-  document.getElementById('navBreakdownDebt').textContent = fmtMoney(debtCons.total, base);
+  const el5 = document.getElementById('navBreakdownFinancial'); if (el5) el5.textContent = fmtMoney(financeiroCons.total, base);
+  const el6 = document.getElementById('navBreakdownInv'); if (el6) el6.textContent = fmtMoney(invCons.total, base);
+  const el7 = document.getElementById('navBreakdownProp'); if (el7) el7.textContent = fmtMoney(propCons.total, base);
+  const el8 = document.getElementById('navBreakdownVeh'); if (el8) el8.textContent = fmtMoney(vehCons.total, base);
+  const el9 = document.getElementById('navBreakdownDebt'); if (el9) el9.textContent = fmtMoney(debtCons.total, base);
 }
 
 function fillSummaryCard(mainId, subId, map, base) {
   const codes = Object.keys(map).sort();
   const main = document.getElementById(mainId);
   const sub = document.getElementById(subId);
+  if (!main || !sub) return;
   if (!codes.length) { main.textContent = fmtMoney(0, base); sub.textContent = ''; return; }
   const { total } = consolidate(map, base, todayISO());
   main.textContent = fmtMoney(total, base);
