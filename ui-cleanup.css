@@ -235,5 +235,42 @@ body.light-theme {
 }
 
 /* ============================================================
+   🎮 GTA-VI NEON THEME OVERRIDES
+   ============================================================ */
+
+[data-theme="gta-vi"] .action-circle-btn {
+  background: linear-gradient(135deg, #FF1493 0%, #FF69B4 100%);
+  border: 2px solid #FF1493;
+  box-shadow: 0 0 12px rgba(255, 20, 147, 0.6), 0 0 20px rgba(255, 20, 147, 0.3);
+}
+
+[data-theme="gta-vi"] .action-circle-btn:hover {
+  background: linear-gradient(135deg, #FF69B4 0%, #FF1493 100%);
+  border-color: #FF006E;
+  box-shadow: 0 0 16px rgba(255, 20, 147, 0.8), 0 0 28px rgba(0, 255, 255, 0.3);
+}
+
+[data-theme="gta-vi"] .action-dropdown-menu {
+  background: linear-gradient(135deg, rgba(26, 31, 58, 0.95), rgba(15, 22, 41, 0.95));
+  border: 1px solid #FF1493;
+  box-shadow: 0 0 16px rgba(255, 20, 147, 0.4), 0 0 32px rgba(0, 255, 255, 0.2);
+}
+
+[data-theme="gta-vi"] .action-menu-item {
+  color: #ffffff;
+  border-bottom: 1px solid rgba(255, 20, 147, 0.3);
+}
+
+[data-theme="gta-vi"] .action-menu-item:hover {
+  background: linear-gradient(90deg, rgba(255, 20, 147, 0.3), rgba(0, 255, 65, 0.1));
+  color: #00FFFF;
+  text-shadow: 0 0 8px rgba(0, 255, 255, 0.8);
+}
+
+[data-theme="gta-vi"] .action-menu-item:active {
+  background: rgba(255, 20, 147, 0.5);
+}
+
+/* ============================================================
    FIM UI CLEANUP STYLES
    ============================================================ */

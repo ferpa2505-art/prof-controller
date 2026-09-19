@@ -44,6 +44,17 @@
   --primary: #1e3a8a;
   --accent: #2563eb;
 }
+[data-theme="gta-vi"] {
+  --bg: #0a0e27;
+  --surface: #1a1f3a;
+  --text: #ffffff;
+  --muted: #8899aa;
+  --primary: #0a0e27;
+  --accent: #FF1493;
+  --border: #FF1493;
+  --positive: #00FF41;
+  --negative: #FF006E;
+}
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
@@ -266,6 +277,38 @@ th { background: var(--surface); color: var(--muted); font-weight: 600; white-sp
 
 .checkline { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: 13px; color: var(--text); }
 .checkline input { width: auto; }
+
+/* ===== GTA-VI NEON THEME OVERRIDES ===== */
+[data-theme="gta-vi"] table th {
+  background: linear-gradient(90deg, rgba(255, 20, 147, 0.2), rgba(0, 255, 65, 0.1)) !important;
+  border-color: #FF1493 !important;
+  color: #00FFFF !important;
+  text-shadow: 0 0 8px rgba(0, 255, 255, 0.6) !important;
+}
+
+[data-theme="gta-vi"] table td {
+  color: #ffffff !important;
+  border-color: rgba(255, 20, 147, 0.3) !important;
+}
+
+[data-theme="gta-vi"] table tr:hover {
+  background: rgba(255, 20, 147, 0.2) !important;
+}
+
+[data-theme="gta-vi"] .currency-arrow.up {
+  color: #00FF41 !important;
+  text-shadow: 0 0 10px rgba(0, 255, 65, 0.8) !important;
+}
+
+[data-theme="gta-vi"] .currency-arrow.down {
+  color: #FF006E !important;
+  text-shadow: 0 0 10px rgba(255, 0, 110, 0.8) !important;
+}
+
+[data-theme="gta-vi"] .currency-arrow.equal {
+  color: #00FFFF !important;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.8) !important;
+}
 
 .dup-warning {
   margin: 16px 0; padding: 16px; border-radius: 10px; font-size: 14px; line-height: 1.5;
