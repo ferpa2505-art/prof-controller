@@ -1,135 +1,62 @@
-# 💰 ProF Controller - Gestor de Carteira Financeira
+# Pesos App 🏃‍♀️
 
-[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](CHANGELOG.md)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![GitHub Pages](https://img.shields.io/badge/live-GitHub%20Pages-brightgreen.svg)](https://ferpa2505-art.github.io/prof-controller/)
+App de emagrecimento e acompanhamento de saúde para brasileiros com suporte a GLP-1.
 
-Aplicação web moderna para gerenciar sua carteira financeira com suporte a notificações, transações recorrentes e sistema de assinatura integrado.
+## Etapa 1 — Esqueleto
 
-## 🚀 Começar Rápido
+Status: ✅ Pronto para rodar
 
-### Live Demo
-- **Website:** https://ferpa2505-art.github.io/prof-controller/
-- **Versão Atual:** 1.0.0
+### Como testar no seu celular:
 
-### Features Principais
-✅ Gestão de investimentos  
-✅ Notificações em tempo real  
-✅ Transações recorrentes automáticas  
-✅ Sistema de assinatura com Stripe  
-✅ Autenticação (Google OAuth + Apple Sign-In)  
-✅ Histórico completo de operações  
+1. **Instale o Expo Go:**
+   - iOS: App Store, procure "Expo Go"
+   - Android: Google Play, procure "Expo Go"
 
-## 📚 Documentação
+2. **Clone e instale dependências:**
+   ```bash
+   npm install
+   ```
 
-**Toda a documentação está na pasta `Prof Controller TXT/`**
+3. **Inicie o servidor de desenvolvimento:**
+   ```bash
+   npm start
+   ```
+   Vai abrir um menu. Digite `i` para iOS ou `a` para Android.
 
-### 🎯 Onde Começar
+4. **Leia o QR code** com o Expo Go (iOS abre câmera, Android tem botão)
 
-1. **[Prof Controller TXT/INDEX.md](Prof%20Controller%20TXT/INDEX.md)** ← **Comece aqui!**
-   - Guia de navegação de toda documentação
-   - Fluxos recomendados de leitura
-   - Busca rápida por assunto
+5. **Você deve ver:**
+   - Tela inicial com "Olá! 👋"
+   - 3 abas na base: Início, Diário, Perfil
+   - Cores verde e pêssego, modo escuro automático
 
-2. **[Prof Controller TXT/DELIVERY_SUMMARY.md](Prof%20Controller%20TXT/DELIVERY_SUMMARY.md)**
-   - Resumo do que foi entregue
-   - Métricas e checklist
-
-3. **[Prof Controller TXT/FRONTEND_INTEGRATION.md](Prof%20Controller%20TXT/FRONTEND_INTEGRATION.md)**
-   - Como integrar o sistema de assinatura
-   - Passo a passo detalhado
-
-## 📂 Estrutura do Projeto
+### Estrutura de pastas:
 
 ```
-prof-controller/
+pesos-app/
+├── app/                  # Rotas (Expo Router)
+│   ├── (tabs)/          # Abas principais
+│   ├── _layout.tsx      # Layout raiz
 ├── src/
-│   ├── subscription/          # Sistema de assinatura React
-│   ├── app.js                 # Lógica principal
-│   ├── index.html             # Interface web
-│   └── styles.css             # Estilos
-├── server/                    # Backend Node.js + Express
-├── electron/                  # Desktop app (Electron)
-├── .github/workflows/         # CI/CD
-├── Prof Controller TXT/       # 📚 Toda a documentação
-└── README.md                  # Este arquivo
+│   ├── components/      # Componentes reutilizáveis
+│   ├── constants/       # Cores, tipografia, espaçamento
+│   ├── hooks/           # Hooks customizados
+│   ├── types/           # Tipos TypeScript
+│   └── assets/          # Ícones, fontes, imagens
+├── app.json             # Config Expo
+├── tsconfig.json        # Config TypeScript
+└── package.json         # Dependências
 ```
 
-## 🛠️ Tech Stack
+### Próximo passo (Etapa 2):
 
-### Frontend
-- HTML5 / CSS3 / JavaScript (ES6+)
-- React 18+ (para sistema de assinatura)
-- Progressive Web App (PWA)
+Vamos implementar o **onboarding em quiz** — as telas de cadastro que calculam sua meta calórica e mostram o paywall.
 
-### Backend
-- Node.js + Express
-- PostgreSQL
-- Stripe API
-- SendGrid API
+### Stack técnico:
 
-### Platforms
-- Web (GitHub Pages)
-- Desktop (Electron - Windows/macOS/Linux)
-- Mobile (Capacitor - iOS/Android)
-
-## 🔐 Segurança
-
-- JWT tokens com expiração automática
-- HTTPS obrigatório
-- Validação de webhooks Stripe
-- SQL injection prevention
-- CORS configurado
-
-## 📞 Suporte
-
-### Precisa de Ajuda?
-
-1. **Consultando a documentação:**
-   - Abra `Prof Controller TXT/INDEX.md`
-   - Use Ctrl+F para buscar seu problema
-
-2. **Problemas comuns:**
-   - [Prof Controller TXT/TESTING_GUIDE.md](Prof%20Controller%20TXT/TESTING_GUIDE.md) → Seção "Troubleshooting"
-
-3. **Integração:**
-   - [Prof Controller TXT/FRONTEND_INTEGRATION.md](Prof%20Controller%20TXT/FRONTEND_INTEGRATION.md)
-
-## 🚀 Próximas Fases
-
-- **v1.1.0:** Mobile & App Stores (Google Play + App Store)
-- **v1.2.0:** Admin Dashboard com Analytics
-- **v1.3.0:** PIX, Cupons e Programa de Referência
-
-## 📝 Changelog
-
-- **1.0.0** (2026-09-19)
-  - ✅ Sistema de assinatura completo
-  - ✅ Backend Node.js + React frontend
-  - ✅ Integração Stripe
-  - ✅ Autenticação Google + Apple
-  - ✅ Email automático (SendGrid)
-
-## 📄 Licença
-
-MIT - Veja LICENSE para detalhes
-
----
-
-## 🎯 Quick Links
-
-| Tópico | Link |
-|--------|------|
-| **Documentação** | [`Prof Controller TXT/INDEX.md`](Prof%20Controller%20TXT/INDEX.md) |
-| **Como começar** | [`Prof Controller TXT/DELIVERY_SUMMARY.md`](Prof%20Controller%20TXT/DELIVERY_SUMMARY.md) |
-| **Integração React** | [`Prof Controller TXT/FRONTEND_INTEGRATION.md`](Prof%20Controller%20TXT/FRONTEND_INTEGRATION.md) |
-| **Testes e Setup** | [`Prof Controller TXT/TESTING_GUIDE.md`](Prof%20Controller%20TXT/TESTING_GUIDE.md) |
-| **Backend** | [`Prof Controller TXT/README_BACKEND.md`](Prof%20Controller%20TXT/README_BACKEND.md) |
-| **Frontend** | [`Prof Controller TXT/README_FRONTEND.md`](Prof%20Controller%20TXT/README_FRONTEND.md) |
-| **Roadmap** | [`Prof Controller TXT/IMPLEMENTATION_ROADMAP.md`](Prof%20Controller%20TXT/IMPLEMENTATION_ROADMAP.md) |
-
----
-
-**🎉 Bem-vindo ao ProF Controller!**
-
-Comece lendo [`Prof Controller TXT/INDEX.md`](Prof%20Controller%20TXT/INDEX.md) para ter uma visão geral completa.
+- ✅ Expo 51 + React Native 0.74
+- ✅ TypeScript 5.3
+- ✅ Expo Router (navegação)
+- ✅ Sistema de tema (cores, tipografia, espaçamento)
+- ⏳ Supabase (próxima etapa)
+- ⏳ Assinaturas (próxima etapa)

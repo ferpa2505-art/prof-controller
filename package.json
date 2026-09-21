@@ -1,135 +1,32 @@
 {
-  "name": "prof-controller",
-  "version": "1.1.0",
-  "description": "ProF Controller - Gestor de Patrimônio Offline 100% Privado",
-  "main": "electron/main.js",
-  "homepage": "./",
+  "name": "pesos-app",
+  "version": "0.1.0",
+  "description": "App de emagrecimento e acompanhamento de saúde com foco em GLP-1",
+  "main": "expo-router/entry",
   "scripts": {
-    "start": "python -m http.server 8000 || npx http-server -p 8000",
-    "build": "echo 'No build step - this is a static PWA'",
-    "serve": "npx http-server --cors -p 8000",
-    "lint": "echo 'Linting not required for vanilla JS'",
-    "test": "echo 'Manual testing required'",
-    "optimize": "node scripts/optimize-assets.js",
-    "capacitor:init": "npx cap init --web-dir . prof-controller com.profcontroller.app",
-    "capacitor:add-android": "npx cap add android",
-    "capacitor:add-ios": "npx cap add ios",
-    "capacitor:build-android": "npx cap build android",
-    "capacitor:build-ios": "npx cap build ios",
-    "capacitor:sync": "npx cap sync",
-    "capacitor:open-android": "npx cap open android",
-    "capacitor:open-ios": "npx cap open ios",
-    "electron-start": "cross-env REACT_APP_ENV=production electron .",
-    "electron-dev": "concurrently \"npm start\" \"wait-on http://localhost:8000 && electron .\"",
-    "electron-build": "npm run build && electron-builder",
-    "electron-build-win": "npm run electron-build -- --win",
-    "electron-build-mac": "npm run electron-build -- --mac",
-    "electron-build-linux": "npm run electron-build -- --linux"
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "test": "jest --watch",
+    "type-check": "tsc --noEmit"
   },
-  "keywords": [
-    "financial",
-    "portfolio",
-    "investments",
-    "offline",
-    "privacy",
-    "crypto",
-    "stocks",
-    "wealth",
-    "tracking"
-  ],
-  "author": {
-    "name": "ProF Controller",
-    "email": "contact@profcontroller.app"
-  },
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ferpa2505-art/prof-controller.git"
-  },
-  "homepage": "https://github.com/ferpa2505-art/prof-controller#readme",
-  "bugs": {
-    "url": "https://github.com/ferpa2505-art/prof-controller/issues"
-  },
-  "engines": {
-    "node": ">=12.0.0"
+  "dependencies": {
+    "expo": "^51.0.0",
+    "expo-router": "^3.5.0",
+    "expo-splash-screen": "^0.27.5",
+    "expo-status-bar": "^1.12.1",
+    "react": "^18.2.0",
+    "react-native": "^0.74.0",
+    "react-native-safe-area-context": "^4.8.2",
+    "react-native-screens": "^3.29.0",
+    "react-native-gesture-handler": "^2.14.1"
   },
   "devDependencies": {
-    "http-server": "^14.1.1",
-    "electron": "^29.0.0",
-    "electron-builder": "^24.9.1",
-    "@capacitor/cli": "^5.0.0",
-    "@capacitor/core": "^5.0.0",
-    "@capacitor/android": "^5.0.0",
-    "@capacitor/ios": "^5.0.0",
-    "concurrently": "^8.0.0",
-    "wait-on": "^7.0.0",
-    "cross-env": "^7.0.0"
+    "@babel/core": "^7.24.0",
+    "@types/react": "^18.2.0",
+    "@types/react-native": "^0.73.0",
+    "typescript": "^5.3.0"
   },
-  "dependencies": {},
-  "build": {
-    "appId": "com.profcontroller.app",
-    "productName": "ProF Controller",
-    "files": [
-      "index.html",
-      "app.js",
-      "styles.css",
-      "service-worker.js",
-      "manifest.json",
-      "icon-192.png",
-      "icon-512.png",
-      "electron/main.js"
-    ],
-    "win": {
-      "target": [
-        {
-          "target": "nsis",
-          "arch": [
-            "x64",
-            "ia32"
-          ]
-        },
-        {
-          "target": "portable",
-          "arch": [
-            "x64"
-          ]
-        }
-      ],
-      "certificateFile": null,
-      "certificatePassword": null
-    },
-    "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true,
-      "createDesktopShortcut": true,
-      "createStartMenuShortcut": true,
-      "shortcutName": "ProF Controller"
-    },
-    "mac": {
-      "target": [
-        "dmg",
-        "zip"
-      ],
-      "category": "public.app-category.finance"
-    },
-    "linux": {
-      "target": [
-        "zip"
-      ],
-      "category": "Office"
-    },
-    "directories": {
-      "buildResources": "assets",
-      "output": "release"
-    }
-  },
-  "browserslist": [
-    "last 2 versions",
-    "> 1%",
-    "not dead",
-    "chrome >= 55",
-    "firefox >= 45",
-    "safari >= 11",
-    "edge >= 79"
-  ]
+  "private": true
 }
