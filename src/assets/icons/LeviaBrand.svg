@@ -1,0 +1,63 @@
+<svg viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- LEVIA Brand Icon — Versão Original (Colorida) -->
+  <!-- Pena em marfim com ponto em pêssego sobre fundo sálvia -->
+  
+  <!-- Background (opcional, remove se usar como ícone isolado) -->
+  <rect width="256" height="256" fill="#6FA58E" rx="0"/>
+  
+  <!-- Pena (marfim) -->
+  <g>
+    <!-- Forma principal da pena -->
+    <path
+      d="M 128 40 
+         C 128 40, 110 60, 110 95 
+         C 110 130, 120 150, 130 170 
+         C 135 180, 140 185, 145 190 
+         L 148 195 
+         C 148 195, 145 185, 145 170 
+         C 145 155, 150 140, 160 140 
+         C 170 140, 175 155, 175 170 
+         C 175 185, 172 195, 172 195 
+         L 175 190 
+         C 185 170, 195 150, 195 95 
+         C 195 60, 177 40, 128 40 Z"
+      fill="#FBF8F3"
+      stroke="none"
+    />
+    
+    <!-- Detalhe da raque (linha central) -->
+    <path
+      d="M 128 50 Q 130 90, 128 150"
+      stroke="#6FA58E"
+      stroke-width="2.5"
+      fill="none"
+      stroke-linecap="round"
+    />
+    
+    <!-- Pequenas penas secundárias (lado esquerdo) -->
+    <path
+      d="M 115 120 Q 105 125, 100 135"
+      stroke="#6FA58E"
+      stroke-width="2"
+      fill="none"
+      stroke-linecap="round"
+      opacity="0.6"
+    />
+    
+    <!-- Pequenas penas secundárias (lado direito) -->
+    <path
+      d="M 141 125 Q 150 130, 158 140"
+      stroke="#6FA58E"
+      stroke-width="2"
+      fill="none"
+      stroke-linecap="round"
+      opacity="0.6"
+    />
+  </g>
+  
+  <!-- Ponto (pêssego) — símbolo de "ativado" ou "leveza" -->
+  <circle cx="165" cy="185" r="12" fill="#F59E0B" opacity="0.95"/>
+  
+  <!-- Detalhe sutil — brilho no ponto -->
+  <circle cx="163" cy="182" r="3" fill="#FFFFFF" opacity="0.5"/>
+</svg>

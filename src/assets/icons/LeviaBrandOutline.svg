@@ -1,0 +1,47 @@
+<svg viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- LEVIA Brand Icon — Versão Outline (Apenas Stroke) -->
+  <!-- Para ícones pequenos em tab bar ou header -->
+  
+  <!-- Pena (apenas contorno) -->
+  <g>
+    <!-- Forma principal da pena -->
+    <path
+      d="M 128 40 
+         C 128 40, 110 60, 110 95 
+         C 110 130, 120 150, 130 170 
+         C 135 180, 140 185, 145 190 
+         L 148 195 
+         C 148 195, 145 185, 145 170 
+         C 145 155, 150 140, 160 140 
+         C 170 140, 175 155, 175 170 
+         C 175 185, 172 195, 172 195 
+         L 175 190 
+         C 185 170, 195 150, 195 95 
+         C 195 60, 177 40, 128 40 Z"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="3"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    
+    <!-- Detalhe da raque (linha central) -->
+    <path
+      d="M 128 50 Q 130 90, 128 150"
+      stroke="currentColor"
+      stroke-width="2"
+      fill="none"
+      stroke-linecap="round"
+    />
+  </g>
+  
+  <!-- Ponto (apenas contorno) -->
+  <circle 
+    cx="165" 
+    cy="185" 
+    r="12" 
+    fill="none"
+    stroke="currentColor" 
+    stroke-width="2.5"
+  />
+</svg>
