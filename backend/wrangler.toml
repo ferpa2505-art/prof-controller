@@ -1,0 +1,19 @@
+name = "levia-ia-worker"
+type = "javascript"
+account_id = "YOUR_CLOUDFLARE_ACCOUNT_ID"
+workers_dev = true
+route = "https://levia-ia.seu-dominio.workers.dev"
+zone_id = "YOUR_ZONE_ID"
+
+# Vars de ambiente
+[env.production]
+vars = { ENVIRONMENT = "production" }
+
+# Secrets (configure com: wrangler secret put GOOGLE_VISION_API_KEY)
+[env.production.secrets]
+GOOGLE_VISION_API_KEY = "SUA_CHAVE_AQUI"
+
+# Rate limiting com Durable Objects (futuro)
+# [[durable_objects.bindings]]
+# name = "RATE_LIMITER"
+# class_name = "RateLimiter"
