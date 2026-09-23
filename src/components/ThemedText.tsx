@@ -43,7 +43,7 @@ export function ThemedText({
     <Text
       style={[
         styles[variant],
-        { color: colors[color] },
+        { color: typeof color === 'string' ? colors[color as keyof typeof colors] : colors.text },
         style,
       ]}
       {...rest}

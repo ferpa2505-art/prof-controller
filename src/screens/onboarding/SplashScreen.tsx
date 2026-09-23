@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { LeviaLogo } from '@components/LeviaLogo';
 import { ThemedText } from '@components/ThemedText';
-import { lightTheme } from '@theme/colors';
+import { colors } from '@constants/colors';
 import { OnboardingStackParamList } from '../OnboardingStack';
 
 type SplashScreenProps = NativeStackScreenProps<OnboardingStackParamList, 'Splash'>;
@@ -73,7 +73,7 @@ export function SplashScreen({ navigation }: SplashScreenProps) {
         {/* Texto principal */}
         <ThemedText 
           variant="title" 
-          color="textPrimary"
+          color="primary"
           style={styles.mainText}
         >
           Bem-vindo à Levia
@@ -105,13 +105,13 @@ export function SplashScreen({ navigation }: SplashScreenProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: lightTheme.primary, // Sálvia como fundo
+    backgroundColor: colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
   },
   background: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: lightTheme.primary,
+    backgroundColor: colors.primary,
   },
   content: {
     alignItems: 'center',
@@ -124,13 +124,13 @@ const styles = StyleSheet.create({
   mainText: {
     textAlign: 'center',
     marginBottom: 12,
-    color: lightTheme.onPrimary,
+    color: colors.text,
   },
   tagline: {
     textAlign: 'center',
     fontSize: 16,
     fontStyle: 'italic',
-    color: lightTheme.onPrimary,
+    color: colors.text,
     opacity: 0.9,
   },
   footer: {

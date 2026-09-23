@@ -2,7 +2,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SplashScreen } from './onboarding/SplashScreen';
 import { QuizScreen } from './onboarding/QuizScreen';
 import { ResultScreen } from './onboarding/ResultScreen';
-import { lightTheme } from '@theme/colors';
+import { colors } from '@constants/colors';
 
 export type OnboardingStackParamList = {
   Splash: undefined;
@@ -21,18 +21,11 @@ export function OnboardingStack() {
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-        animationEnabled: true,
-        cardStyle: {
-          backgroundColor: lightTheme.background,
-        },
       }}
     >
       <Stack.Screen 
         name="Splash" 
         component={SplashScreen}
-        options={{
-          animationEnabled: false,
-        }}
       />
       <Stack.Screen 
         name="Quiz" 

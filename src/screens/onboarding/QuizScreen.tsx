@@ -4,8 +4,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ThemedView } from '@components/ThemedView';
 import { ThemedText } from '@components/ThemedText';
 import { Button } from '@components/Button';
-import { spacing, radius } from '@constants/colors';
-import { lightTheme } from '@theme/colors';
+import { spacing, radius, colors } from '@constants/colors';
 import { OnboardingStackParamList } from '../OnboardingStack';
 
 type QuizScreenProps = NativeStackScreenProps<OnboardingStackParamList, 'Quiz'>;
@@ -38,7 +37,7 @@ export function QuizScreen({ navigation }: QuizScreenProps) {
 
   return (
     <ScrollView 
-      style={{ backgroundColor: lightTheme.background }}
+      style={{ backgroundColor: colors.background }}
       contentContainerStyle={styles.scrollContent}
     >
       <ThemedView style={styles.container}>
@@ -111,14 +110,14 @@ const styles = StyleSheet.create({
   },
   progressBar: {
     height: 4,
-    backgroundColor: lightTheme.border,
+    backgroundColor: colors.border,
     borderRadius: radius.full,
     marginBottom: spacing['2xl'],
     overflow: 'hidden',
   },
   progressFill: {
     height: '100%',
-    backgroundColor: lightTheme.primary,
+    backgroundColor: colors.primary,
     borderRadius: radius.full,
   },
   content: {

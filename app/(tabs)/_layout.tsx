@@ -37,6 +37,13 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
+        name="glp1"
+        options={{
+          title: 'GLP-1',
+          tabBarLabel: 'GLP-1',
+        }}
+      />
+      <Tabs.Screen
         name="profile"
         options={{
           title: 'Perfil',

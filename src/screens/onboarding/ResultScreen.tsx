@@ -3,8 +3,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ThemedView } from '@components/ThemedView';
 import { ThemedText } from '@components/ThemedText';
 import { Button } from '@components/Button';
-import { spacing, radius } from '@constants/colors';
-import { lightTheme } from '@theme/colors';
+import { spacing, radius, colors } from '@constants/colors';
 import { OnboardingStackParamList } from '../OnboardingStack';
 
 type ResultScreenProps = NativeStackScreenProps<OnboardingStackParamList, 'Result'>;
@@ -14,7 +13,7 @@ export function ResultScreen({ route, navigation }: ResultScreenProps) {
 
   return (
     <ScrollView 
-      style={{ backgroundColor: lightTheme.background }}
+      style={{ backgroundColor: colors.background }}
       contentContainerStyle={styles.scrollContent}
     >
       <ThemedView style={styles.container}>
@@ -52,7 +51,7 @@ export function ResultScreen({ route, navigation }: ResultScreenProps) {
               variant="heading" 
               style={[
                 styles.goalValue,
-                { color: lightTheme.dataColors.protein }
+                { color: colors.accent }
               ]}
             >
               {proteinGoal.toLocaleString('pt-BR')}
@@ -71,7 +70,7 @@ export function ResultScreen({ route, navigation }: ResultScreenProps) {
               variant="heading" 
               style={[
                 styles.goalValue,
-                { color: lightTheme.dataColors.water }
+                { color: colors.primary }
               ]}
             >
               {(waterGoal / 1000).toFixed(1)}
@@ -84,7 +83,7 @@ export function ResultScreen({ route, navigation }: ResultScreenProps) {
 
         {/* Info Box */}
         <ThemedView variant="surface" style={styles.infoBox}>
-          <ThemedText variant="body" color="info" style={{ marginBottom: spacing.sm }}>
+          <ThemedText variant="body" color="primary" style={{ marginBottom: spacing.sm }}>
             ℹ️ Sobre suas metas
           </ThemedText>
           <ThemedText variant="small" color="textSecondary">
