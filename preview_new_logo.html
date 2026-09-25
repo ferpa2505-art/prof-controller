@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Novo Design - Preview</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      color: white;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .preview-section {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 40px;
+      margin-bottom: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+    }
+    
+    h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    
+    h2 {
+      font-size: 20px;
+      margin-bottom: 30px;
+      text-align: center;
+      color: #00D77E;
+    }
+    
+    .logo-display {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
+      padding: 40px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 12px;
+      margin-bottom: 30px;
+    }
+    
+    .icon-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .icon-box {
+      width: 150px;
+      height: 150px;
+      background: #1a1a2e;
+      border: 1px solid rgba(0, 215, 126, 0.3);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .icon-box svg {
+      width: 120px;
+      height: 120px;
+    }
+    
+    .icon-label {
+      font-size: 12px;
+      color: #aaa;
+      text-transform: uppercase;
+    }
+    
+    .brand-text {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    
+    .brand-name {
+      font-size: 32px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #0099FF, #00D77E, #FF6B35);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -1px;
+    }
+    
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    
+    .feature {
+      background: rgba(0, 153, 255, 0.1);
+      border-left: 3px solid #0099FF;
+      padding: 15px;
+      border-radius: 8px;
+    }
+    
+    .feature.green {
+      background: rgba(0, 215, 126, 0.1);
+      border-left-color: #00D77E;
+    }
+    
+    .feature.orange {
+      background: rgba(255, 107, 53, 0.1);
+      border-left-color: #FF6B35;
+    }
+    
+    .feature.gold {
+      background: rgba(255, 184, 0, 0.1);
+      border-left-color: #FFB800;
+    }
+    
+    .feature h3 {
+      font-size: 14px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .feature p {
+      font-size: 13px;
+      color: #ccc;
+      line-height: 1.5;
+    }
+    
+    .action-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
+    button {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .btn-apply {
+      background: #00D77E;
+      color: #1a1a2e;
+    }
+    
+    .btn-apply:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(0, 215, 126, 0.3);
+    }
+    
+    .btn-cancel {
+      background: transparent;
+      color: #aaa;
+      border: 1px solid #aaa;
+    }
+    
+    .btn-cancel:hover {
+      border-color: #fff;
+      color: #fff;
+    }
+    
+    .colors-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      margin-top: 20px;
+    }
+    
+    .color-box {
+      height: 80px;
+      border-radius: 8px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 10px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    
+    .color-blue { background: #0099FF; color: #000; }
+    .color-green { background: #00D77E; color: #000; }
+    .color-orange { background: #FF6B35; color: #fff; }
+    .color-gold { background: #FFB800; color: #000; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>⭐ NOVO DESIGN - PREVIEW</h1>
+    
+    <div class="preview-section">
+      <h2>Circular com Chevrons Dinâmicos</h2>
+      
+      <div class="logo-display">
+        <div class="icon-container">
+          <div class="icon-box">
+            <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="gFlow1" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#0099FF"/>
+                  <stop offset="100%" stop-color="#00D77E"/>
+                </linearGradient>
+              </defs>
+              <!-- Concentric circles -->
+              <circle cx="60" cy="60" r="50" fill="none" stroke="#0099FF" stroke-width="2.5" opacity="0.8"/>
+              <circle cx="60" cy="60" r="38" fill="none" stroke="#00D77E" stroke-width="2.5" opacity="0.8"/>
+              <circle cx="60" cy="60" r="26" fill="none" stroke="#FF6B35" stroke-width="2.5" opacity="0.8"/>
+              <circle cx="60" cy="60" r="14" fill="none" stroke="#FFB800" stroke-width="2.5" opacity="0.8"/>
+              
+              <!-- Chevrons -->
+              <polygon points="42,45 55,60 42,75" fill="#0099FF" opacity="0.9"/>
+              <polygon points="78,45 65,60 78,75" fill="#00D77E" opacity="0.9"/>
+              
+              <!-- Accent dots -->
+              <circle cx="85" cy="50" r="3" fill="#FF6B35"/>
+              <circle cx="35" cy="50" r="3" fill="#FFB800"/>
+            </svg>
+          </div>
+          <span class="icon-label">SVG Logo</span>
+        </div>
+        
+        <div class="brand-text">
+          <div class="brand-name">ProF Controller</div>
+        </div>
+      </div>
+      
+      <div class="features">
+        <div class="feature">
+          <h3>✓ Círculos Concêntricos</h3>
+          <p>4 anéis representando as 4 cores da marca em harmonia</p>
+        </div>
+        
+        <div class="feature green">
+          <h3>✓ Chevrons Dinâmicos</h3>
+          <p>Setas pontuando fluxo de dados e movimento</p>
+        </div>
+        
+        <div class="feature orange">
+          <h3>✓ Accent Dots</h3>
+          <p>Detalhes em laranja e ouro para complexidade</p>
+        </div>
+        
+        <div class="feature gold">
+          <h3>✓ Moderno & Geométrico</h3>
+          <p>Estilo fintech contemporâneo e profissional</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="preview-section">
+      <h2>Paleta de Cores (4/4)</h2>
+      <div class="colors-grid">
+        <div class="color-box color-blue">
+          <div>#0099FF<br><small>Azul</small></div>
+        </div>
+        <div class="color-box color-green">
+          <div>#00D77E<br><small>Verde</small></div>
+        </div>
+        <div class="color-box color-orange">
+          <div>#FF6B35<br><small>Laranja</small></div>
+        </div>
+        <div class="color-box color-gold">
+          <div>#FFB800<br><small>Ouro</small></div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="preview-section">
+      <h2>Aplicar este Design?</h2>
+      <div class="action-buttons">
+        <button class="btn-apply" onclick="applyDesign()">✓ SIM, APLICAR AGORA</button>
+        <button class="btn-cancel" onclick="window.history.back()">✗ Cancelar</button>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    function applyDesign() {
+      // Send message to apply the design
+      window.location.href = "http://localhost:8000/?apply_new_design=true";
+    }
+  </script>
+</body>
+</html>

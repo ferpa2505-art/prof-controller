@@ -10,8 +10,9 @@
   <link rel="stylesheet" href="modern-ui.css?v=1">
   <link rel="stylesheet" href="modern-dashboard.css?v=1">
   <link rel="stylesheet" href="ui-cleanup.css?v=1">
-  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=2">
-  <link rel="apple-touch-icon" href="icon-192.png?v=2">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=final">
+  <link rel="apple-touch-icon" href="icon-192.png?v=final">
+  <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png?v=final">
   <!-- Chart.js Library -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
@@ -21,21 +22,18 @@
   <header class="topbar">
     <h1 class="brand">
       <svg class="brand-logo" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="gBG" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#0099FF"/>
-            <stop offset="100%" stop-color="#00D77E"/>
-          </linearGradient>
-          <linearGradient id="gChart" x1="0%" y1="100%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#FF6B35"/>
-            <stop offset="100%" stop-color="#FFB800"/>
-          </linearGradient>
-        </defs>
-        <!-- Shield background -->
-        <path d="M 30 25 L 90 25 L 90 55 Q 60 85 60 85 Q 30 55 30 55 Z" fill="url(#gBG)" stroke="#00D77E" stroke-width="2"/>
-        <!-- Chart lines inside shield -->
-        <line x1="45" y1="65" x2="60" y2="45" stroke="#FFB800" stroke-width="3" stroke-linecap="round"/>
-        <line x1="60" y1="45" x2="75" y2="55" stroke="#FF6B35" stroke-width="3" stroke-linecap="round"/>
+        <!-- P shape (Blue) -->
+        <rect x="18" y="25" width="18" height="70" fill="#0099FF" rx="2"/>
+        <circle cx="45" cy="42" r="16" fill="#00D77E"/>
+        
+        <!-- F shape (Orange) -->
+        <rect x="64" y="25" width="18" height="70" fill="#FF6B35" rx="2"/>
+        <rect x="64" y="25" width="28" height="13" fill="#FFB800" rx="2"/>
+        <rect x="64" y="51" width="24" height="10" fill="#FF6B35" rx="2"/>
+        
+        <!-- Rising arrow indicator (Green) -->
+        <line x1="58" y1="65" x2="58" y2="35" stroke="#00D77E" stroke-width="2" stroke-linecap="round"/>
+        <polygon points="58,30 53,38 63,38" fill="#00D77E"/>
       </svg>
       <span class="brand-name">ProF Controller</span>
     </h1>
