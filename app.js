@@ -121,6 +121,7 @@ const I18N = {
     'fx.missing': 'Sem taxa de câmbio para: {list}. O total consolidado ignora essas moedas.',
     'fx.fetched': '{n} taxas atualizadas.',
     'fx.fetchError': 'Não foi possível buscar as taxas online. Verifique a conexão ou cadastre manualmente.',
+    'forex.title': 'Cotações em Tempo Real',
     'dashboard.consolidated': 'Consolidado em {code}',
     'modal.addFx': 'Nova taxa de câmbio',
     'modal.editFx': 'Editar taxa de câmbio',
@@ -1092,6 +1093,7 @@ const I18N = {
     'fx.missing': 'No exchange rate for: {list}. The consolidated total ignores these currencies.',
     'fx.fetched': '{n} rates updated.',
     'fx.fetchError': 'Could not fetch rates online. Check your connection or add them manually.',
+    'forex.title': 'Live Exchange Rates',
     'dashboard.consolidated': 'Consolidated in {code}',
     'modal.addFx': 'New exchange rate',
     'modal.editFx': 'Edit exchange rate',
@@ -2063,6 +2065,7 @@ const I18N = {
     'fx.missing': 'Sin tipo de cambio para: {list}. El total consolidado ignora esas monedas.',
     'fx.fetched': '{n} tasas actualizadas.',
     'fx.fetchError': 'No se pudieron buscar las tasas en línea. Verifique la conexión o regístrelas manualmente.',
+    'forex.title': 'Tipos de Cambio en Tiempo Real',
     'dashboard.consolidated': 'Consolidado en {code}',
     'modal.addFx': 'Nueva tasa de cambio',
     'modal.editFx': 'Editar tasa de cambio',
@@ -4587,6 +4590,11 @@ function renderDashboard() {
   const el7 = document.getElementById('navBreakdownProp'); if (el7) el7.textContent = fmtMoney(propCons.total, base);
   const el8 = document.getElementById('navBreakdownVeh'); if (el8) el8.textContent = fmtMoney(vehCons.total, base);
   const el9 = document.getElementById('navBreakdownDebt'); if (el9) el9.textContent = fmtMoney(debtCons.total, base);
+  
+  // Initialize Forex widget
+  if (typeof initForexWidget === 'function') {
+    initForexWidget();
+  }
 }
 
 function fillSummaryCard(mainId, subId, map, base) {

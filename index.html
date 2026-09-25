@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="themes/profit-c.css?v=1">
   <link rel="stylesheet" href="themes/light.css?v=1">
   <link rel="stylesheet" href="themes/dark.css?v=1">
+  <link rel="stylesheet" href="forex-widget.css?v=1">
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=3">
   <link rel="apple-touch-icon" href="icon-192.png?v=3">
   <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png?v=3">
@@ -80,6 +81,9 @@
           <p class="sub-number" id="currencyCount" style="margin-top: 8px;"></p>
         </div>
       </div>
+      
+      <h2 class="section-title" data-i18n="forex.title">Cotações em Tempo Real</h2>
+      <div id="forexContainer" class="forex-container"></div>
       
       <h2 class="section-title" data-i18n="dashboard.analysis">Análise de Patrimônio</h2>
       
@@ -600,6 +604,7 @@
   <script src="app.js?v=40"></script>
   <script src="modern-dashboard.js?v=1"></script>
   <script src="ui-cleanup.js?v=1"></script>
+  <script src="forex-widget.js?v=1"></script>
   <!-- Charts Scripts -->
   <script src="src/charts-data.js?v=1"></script>
   <script src="src/charts.js?v=1"></script>

@@ -1,0 +1,183 @@
+/* ============================================================
+   💱 FOREX WIDGET STYLES
+   ============================================================ */
+
+.forex-widget {
+  background: linear-gradient(135deg, rgba(100, 150, 200, 0.15) 0%, rgba(60, 100, 150, 0.1) 100%);
+  border: 1px solid rgba(100, 150, 200, 0.25);
+  border-radius: 16px;
+  padding: 20px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.forex-widget:hover {
+  border-color: rgba(100, 150, 200, 0.4);
+  box-shadow: 0 12px 48px rgba(0, 150, 200, 0.15);
+}
+
+.forex-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(100, 150, 200, 0.2);
+}
+
+.forex-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary, #E8EAED);
+  letter-spacing: 0.5px;
+}
+
+.forex-refresh-btn {
+  background: rgba(0, 212, 255, 0.2);
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  border-radius: 10px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #00D4FF;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.forex-refresh-btn:hover:not(:disabled) {
+  background: rgba(0, 212, 255, 0.35);
+  border-color: rgba(0, 212, 255, 0.5);
+  box-shadow: 0 0 12px rgba(0, 212, 255, 0.4);
+  transform: scale(1.05);
+}
+
+.forex-refresh-btn:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.forex-refresh-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.forex-refresh-btn.rotating svg {
+  animation: spinIcon 0.6s linear infinite;
+}
+
+@keyframes spinIcon {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.forex-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.forex-pair {
+  background: linear-gradient(135deg, rgba(20, 40, 80, 0.4) 0%, rgba(10, 20, 50, 0.3) 100%);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  border-radius: 12px;
+  padding: 14px;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.forex-pair:hover {
+  background: linear-gradient(135deg, rgba(20, 40, 100, 0.5) 0%, rgba(10, 30, 70, 0.4) 100%);
+  border-color: rgba(0, 212, 255, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 212, 255, 0.15);
+}
+
+.forex-pair.error {
+  opacity: 0.7;
+  border-color: rgba(255, 71, 87, 0.3);
+}
+
+.forex-pair-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(232, 234, 237, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.forex-pair-rate {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 4px;
+}
+
+.rate-value {
+  font-size: 20px;
+  font-weight: 800;
+  color: #00D4FF;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.5px;
+}
+
+.rate-unit {
+  font-size: 10px;
+  font-weight: 600;
+  color: rgba(232, 234, 237, 0.5);
+  text-transform: uppercase;
+}
+
+.forex-timestamp {
+  font-size: 11px;
+  color: rgba(232, 234, 237, 0.4);
+  text-align: center;
+  margin-top: 8px;
+}
+
+.forex-loading,
+.forex-error {
+  text-align: center;
+  padding: 24px 16px;
+  color: rgba(232, 234, 237, 0.6);
+  font-size: 14px;
+}
+
+.forex-error {
+  color: rgba(255, 71, 87, 0.7);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .forex-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .forex-widget {
+    padding: 16px;
+  }
+  
+  .forex-header h3 {
+    font-size: 16px;
+  }
+  
+  .rate-value {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .forex-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .forex-pair {
+    padding: 12px;
+  }
+}
