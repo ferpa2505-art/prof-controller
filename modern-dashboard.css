@@ -665,20 +665,21 @@
 .charts-stack {
   position: relative;
   width: 100%;
-  height: 400px;
+  height: 420px;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: 16px;
   overflow: hidden;
   backdrop-filter: var(--glass-blur);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
 .chart-card {
   position: absolute;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
+  width: 100%;
+  height: 100%;
   padding: 24px;
   background: var(--bg-card);
   border-radius: 16px;
@@ -688,25 +689,29 @@
   transition: opacity 0.4s ease, z-index 0.4s step-end;
   display: flex;
   flex-direction: column;
+  visibility: hidden;
 }
 
 .chart-card.active {
   opacity: 1;
   z-index: 10;
   pointer-events: auto;
+  visibility: visible;
   transition: opacity 0.4s ease, z-index 0.4s step-start;
 }
 
 .chart-card h3 {
   font-size: 16px;
   font-weight: 600;
-  margin: 0 0 16px 0;
+  margin: 0 0 12px 0;
   color: var(--text-primary);
+  flex-shrink: 0;
 }
 
 .chart-card canvas {
   flex: 1;
-  min-height: 300px;
+  height: 320px !important;
+  min-height: 320px;
 }
 
 /* Efeito de "fichário" - sobreposição visual */
@@ -743,7 +748,7 @@
 /* Responsivo - Reduzir altura em mobile */
 @media (max-width: 768px) {
   .charts-stack {
-    height: 320px;
+    height: 360px;
   }
 
   .charts-tabs {
@@ -762,17 +767,18 @@
 
   .chart-card h3 {
     font-size: 14px;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
   }
 
   .chart-card canvas {
-    min-height: 250px;
+    height: 280px !important;
+    min-height: 280px;
   }
 }
 
 @media (max-width: 480px) {
   .charts-stack {
-    height: 280px;
+    height: 320px;
   }
 
   .charts-tabs {
@@ -791,11 +797,12 @@
 
   .chart-card h3 {
     font-size: 13px;
-    margin-bottom: 10px;
+    margin-bottom: 6px;
   }
 
   .chart-card canvas {
-    min-height: 200px;
+    height: 240px !important;
+    min-height: 240px;
   }
 
   .dashboard-title h1 {
