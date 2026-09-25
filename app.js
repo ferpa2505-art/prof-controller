@@ -3044,7 +3044,7 @@ let state = {
   assets: [],
   valuations: [],
   settings: { lang: 'pt-BR', theme: 'profit-c', baseCurrency: 'EUR' },
-  ui: { txType: 'all', txAccount: 'all', txMonth: '', budgetMonth: '', navView: 'pie', navBreak: 'currency', cashGrain: 'monthly',
+  ui: { txType: 'all', txAccount: 'all', txMonth: '', budgetMonth: '', navView: 'pie', navBreak: 'account', cashGrain: 'monthly',
         billKind: 'all', billStatus: 'open', billFrom: '', billTo: '', tab: 'dashboard', lastSub: {} }
 };
 
@@ -11138,7 +11138,7 @@ function buildPieData() {
   const base = state.settings.baseCurrency;
   const hoje = todayISO();
   const saldos = currentBalancesAll();
-  const modo = state.ui.navBreak || 'currency';
+  const modo = state.ui.navBreak || 'account';
   let itens = [];
 
   if (modo === 'class') {
