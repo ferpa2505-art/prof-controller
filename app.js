@@ -3037,7 +3037,7 @@ let state = {
   dividends: [],
   assets: [],
   valuations: [],
-  settings: { lang: 'pt-BR', theme: 'gray', baseCurrency: 'EUR' },
+  settings: { lang: 'pt-BR', theme: 'profit-c', baseCurrency: 'EUR' },
   ui: { txType: 'all', txAccount: 'all', txMonth: '', budgetMonth: '', navView: 'pie', navBreak: 'currency', cashGrain: 'monthly',
         billKind: 'all', billStatus: 'open', billFrom: '', billTo: '', tab: 'dashboard', lastSub: {} }
 };
@@ -4462,7 +4462,7 @@ function applyLang() {
   document.querySelectorAll('[data-i18n]').forEach((el) => { el.textContent = t(el.dataset.i18n); });
   renderLangButtons();
   renderSubTabs();
-  renderThemeOptions();
+  // renderThemeOptions(); // COMENTADO - Opções agora criadas pelo novo sistema em index.html
   renderAll();
 }
 function renderLangButtons() {
@@ -4477,8 +4477,9 @@ function renderLangButtons() {
 }
 
 function applyTheme() {
-  document.documentElement.dataset.theme = state.settings.theme;
-  document.getElementById('themeSelect').value = state.settings.theme;
+  // Tema é gerenciado pelo novo sistema em index.html
+  // Apenas aplicar a variável CSS se necessário para compatibilidade
+  document.documentElement.dataset.theme = state.settings.theme || 'profit-c';
 }
 
 /* ---------- Renderização ---------- */
@@ -6072,7 +6073,7 @@ function mountTradingView(containerId, item) {
   s.async = true;
   s.text = JSON.stringify({
     autosize: true, symbol: tradingViewSymbol(item), interval: 'D', timezone: 'Etc/UTC',
-    theme: state.settings.theme === 'dark' ? 'dark' : 'light', style: '1',
+    theme: (state.settings.theme === 'dark' || state.settings.theme === 'profit-c') ? 'dark' : 'light', style: '1',
     locale: state.settings.lang === 'pt-BR' ? 'br' : state.settings.lang,
     allow_symbol_change: true, calendar: false, support_host: 'https://www.tradingview.com'
   });
@@ -10869,12 +10870,13 @@ function applyHelp() {
   if (chk) chk.checked = mostrar;
 }
 
-function renderThemeOptions() {
-  const sel = document.getElementById('themeSelect');
-  if (!sel) return;
-  sel.innerHTML = ['gray', 'dark', 'gta-vi'].map((th) => `<option value="${th}">${t('theme.' + th)}</option>`).join('');
-  sel.value = state.settings.theme || 'gray';
-}
+// REMOVIDO: Opções de tema agora são criadas pelo novo sistema em index.html
+// function renderThemeOptions() {
+//   const sel = document.getElementById('themeSelect');
+//   if (!sel) return;
+//   sel.innerHTML = ['gray', 'dark', 'gta-vi'].map((th) => `<option value="${th}">${t('theme.' + th)}</option>`).join('');
+//   sel.value = state.settings.theme || 'gray';
+// }
 
 function bindEvents() {
   // Os botões de idioma são recriados a cada render, então o clique é capturado
@@ -11513,7 +11515,7 @@ async function init() {
   // 1) Interface primeiro. Abas, tema e idioma não dependem do banco de dados,
   //    então passam a funcionar mesmo que o IndexedDB falhe em abrir.
   renderLangButtons();
-  renderThemeOptions();
+  // renderThemeOptions(); // COMENTADO - Opções agora criadas pelo novo sistema em index.html
   applyTheme();
   try {
     bindEvents();
