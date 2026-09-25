@@ -134,34 +134,44 @@
 }
 
 /* ============================================================
-   SUBTABS - Título e descrição da seção
+   SUBTABS - Botões de subtítulos
    ============================================================ */
 
 .subtabs {
-  padding: 16px 24px;
+  padding: 12px 24px;
   background: var(--bg-secondary, rgba(0, 153, 255, 0.02));
   border-bottom: 1px solid var(--border-color, rgba(0, 153, 255, 0.1));
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 .subtabs.hidden {
   display: none;
 }
 
-.subtabs h3 {
-  margin: 0;
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.subtabs p {
-  margin: 0;
+.subtabs .subtab {
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color, rgba(0, 153, 255, 0.2));
+  background: transparent;
   color: var(--text-secondary);
   font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.subtabs .subtab:hover {
+  background: rgba(0, 153, 255, 0.08);
+  border-color: rgba(0, 153, 255, 0.4);
+}
+
+.subtabs .subtab.active {
+  background: var(--accent-primary, #00D4FF);
+  border-color: var(--accent-primary, #00D4FF);
+  color: var(--bg-primary);
+  font-weight: 600;
 }
 
 /* ============================================================
@@ -197,6 +207,22 @@
   border-bottom-color: rgba(0, 212, 255, 0.15);
 }
 
+[data-theme="profit-c"] .subtabs .subtab {
+  border-color: rgba(0, 153, 255, 0.2);
+  color: rgba(255, 255, 255, 0.6);
+}
+
+[data-theme="profit-c"] .subtabs .subtab:hover {
+  background: rgba(0, 153, 255, 0.1);
+  border-color: rgba(0, 153, 255, 0.4);
+}
+
+[data-theme="profit-c"] .subtabs .subtab.active {
+  background: #00D4FF;
+  border-color: #00D4FF;
+  color: #1a1a2e;
+}
+
 /* ============================================================
    TEMA: Light (Claro)
    ============================================================ */
@@ -230,12 +256,20 @@
   border-bottom-color: rgba(100, 150, 200, 0.2);
 }
 
-[data-theme="light"] .subtabs h3 {
-  color: #1a2a3a;
+[data-theme="light"] .subtabs .subtab {
+  border-color: rgba(100, 150, 200, 0.2);
+  color: rgba(60, 80, 110, 0.7);
 }
 
-[data-theme="light"] .subtabs p {
-  color: rgba(60, 80, 110, 0.7);
+[data-theme="light"] .subtabs .subtab:hover {
+  background: rgba(100, 180, 255, 0.1);
+  border-color: rgba(100, 150, 200, 0.4);
+}
+
+[data-theme="light"] .subtabs .subtab.active {
+  background: #0066FF;
+  border-color: #0066FF;
+  color: #ffffff;
 }
 
 /* ============================================================
@@ -271,6 +305,22 @@
   border-bottom-color: rgba(0, 180, 255, 0.2);
 }
 
+[data-theme="dark"] .subtabs .subtab {
+  border-color: rgba(0, 180, 255, 0.2);
+  color: rgba(200, 220, 240, 0.6);
+}
+
+[data-theme="dark"] .subtabs .subtab:hover {
+  background: rgba(0, 160, 255, 0.1);
+  border-color: rgba(0, 180, 255, 0.4);
+}
+
+[data-theme="dark"] .subtabs .subtab.active {
+  background: #00FFFF;
+  border-color: #00FFFF;
+  color: #0a0e27;
+}
+
 /* ============================================================
    RESPONSIVO
    ============================================================ */
@@ -292,13 +342,13 @@
   }
 
   .subtabs {
-    padding: 12px 16px;
-    flex-direction: column;
-    align-items: flex-start;
+    padding: 10px 16px;
+    gap: 6px;
   }
 
-  .subtabs h3 {
-    font-size: 18px;
+  .subtabs .subtab {
+    padding: 6px 12px;
+    font-size: 12px;
   }
 }
 
@@ -342,14 +392,12 @@
   }
 
   .subtabs {
-    padding: 10px 12px;
+    padding: 8px 12px;
+    gap: 4px;
   }
 
-  .subtabs h3 {
-    font-size: 16px;
-  }
-
-  .subtabs p {
-    font-size: 12px;
+  .subtabs .subtab {
+    padding: 5px 10px;
+    font-size: 11px;
   }
 }
