@@ -1,0 +1,176 @@
+╔═══════════════════════════════════════════════════════════════╗
+║                                                               ║
+║        📋 LINKS E INFORMAÇÕES - DISTRIBUIÇÃO TESTERS         ║
+║                                                               ║
+╚═══════════════════════════════════════════════════════════════╝
+
+PREENCHA ESTE ARQUIVO COM SEUS DADOS REAIS:
+
+═════════════════════════════════════════════════════════════
+
+🔗 LINK DO APK (BUILD #14):
+───────────────────────────────────────────────────────────
+
+https://expo.dev/accounts/ferpa2505-art/projects/pesos-app/builds/5981b145-41f1-4cad-b478-f892a1c7cdc8
+
+[OU use este link mais curto e copie na mensagem]
+
+
+📋 LINK DO GOOGLE FORM:
+───────────────────────────────────────────────────────────
+
+[ADICIONE AQUI DEPOIS DE CRIAR O FORM]
+
+https://forms.google.com/forms/d/...
+
+
+📱 SEU WHATSAPP:
+───────────────────────────────────────────────────────────
+
+[ADICIONE SEU WHATSAPP AQUI]
+
+Exemplo: (11) 98765-4321
+
+
+📧 SEU EMAIL:
+───────────────────────────────────────────────────────────
+
+[ADICIONE SEU EMAIL AQUI]
+
+Exemplo: seu.email@gmail.com
+
+
+👤 SEUS DADOS:
+───────────────────────────────────────────────────────────
+
+Nome: [SEU_NOME]
+Empresa/Projeto: LEVIA
+Cargo: Founder/CEO
+
+
+═════════════════════════════════════════════════════════════
+
+📊 LISTA DE TESTERS:
+───────────────────────────────────────────────────────────
+
+Tester #1:
+  Nome: ___________________________
+  WhatsApp: ___________________________
+  Email: ___________________________
+  Data Enviado: _____ Status: ⏳
+
+Tester #2:
+  Nome: ___________________________
+  WhatsApp: ___________________________
+  Email: ___________________________
+  Data Enviado: _____ Status: ⏳
+
+Tester #3:
+  Nome: ___________________________
+  WhatsApp: ___________________________
+  Email: ___________________________
+  Data Enviado: _____ Status: ⏳
+
+Tester #4:
+  Nome: ___________________________
+  WhatsApp: ___________________________
+  Email: ___________________________
+  Data Enviado: _____ Status: ⏳
+
+Tester #5:
+  Nome: ___________________________
+  WhatsApp: ___________________________
+  Email: ___________________________
+  Data Enviado: _____ Status: ⏳
+
+Tester #6:
+  Nome: ___________________________
+  WhatsApp: ___________________________
+  Email: ___________________________
+  Data Enviado: _____ Status: ⏳
+
+Tester #7:
+  Nome: ___________________________
+  WhatsApp: ___________________________
+  Email: ___________________________
+  Data Enviado: _____ Status: ⏳
+
+Tester #8:
+  Nome: ___________________________
+  WhatsApp: ___________________________
+  Email: ___________________________
+  Data Enviado: _____ Status: ⏳
+
+Tester #9:
+  Nome: ___________________________
+  WhatsApp: ___________________________
+  Email: ___________________________
+  Data Enviado: _____ Status: ⏳
+
+Tester #10:
+  Nome: ___________________________
+  WhatsApp: ___________________________
+  Email: ___________________________
+  Data Enviado: _____ Status: ⏳
+
+
+═════════════════════════════════════════════════════════════
+
+📅 TIMELINE:
+───────────────────────────────────────────────────────────
+
+25/09 (DIA 1): [ ] Enviar para todos os testers
+26/09 (DIA 2): [ ] Confirmar recebimento
+27/09 (DIA 3): [ ] Follow-up: estão testando?
+28/09 (DIA 4): [ ] Verificar respostas do form
+29/09 (DIA 5): [ ] Reforçar: deadline dia 02/10
+30/09 (DIA 6): [ ] Mais alguns respondendo?
+01/10 (DIA 7): [ ] Penúltimo dia!
+02/10 (DIA 8): [ ] ✅ PRAZO FINAL - Coletar respostas
+
+
+═════════════════════════════════════════════════════════════
+
+📋 MENSAGENS TEMPLATE:
+───────────────────────────────────────────────────────────
+
+[Veja em MENSAGEM_FINAL_WHATSAPP.txt]
+
+
+═════════════════════════════════════════════════════════════
+
+🎯 CHECKLIST DE EXECUÇÃO:
+───────────────────────────────────────────────────────────
+
+PREPARAÇÃO:
+[ ] Arquivo CRIAR_GOOGLE_FORM_PASSO_A_PASSO.md lido
+[ ] Google Form criado
+[ ] Link do form copiado aqui ⬆️
+[ ] Seu WhatsApp adicionado acima ⬆️
+[ ] Seu email adicionado acima ⬆️
+
+ENVIO:
+[ ] Lista de 10 testers preenchida
+[ ] Mensagem personalizada para cada um
+[ ] Todos receberam no WhatsApp
+[ ] Todos confirmaram recebimento
+
+ACOMPANHAMENTO:
+[ ] Dia 1-2: Checagem se instalaram
+[ ] Dia 3-5: Checagem se estão testando
+[ ] Dia 6-7: Reforço de deadline
+[ ] Dia 8: Coleta final de respostas
+
+PÓS-TESTING:
+[ ] Consolidar respostas do Google Form
+[ ] Identificar bugs críticos
+[ ] Preparar hotfixes (se necessário)
+[ ] Feedback summary criado
+[ ] Phase B roadmap atualizado
+
+
+═════════════════════════════════════════════════════════════
+
+✅ Quando tudo estiver preenchido, você estará 100% pronto!
+
+═════════════════════════════════════════════════════════════
