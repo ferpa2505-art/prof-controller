@@ -1,0 +1,304 @@
+╔════════════════════════════════════════════════════════════════════╗
+║                                                                    ║
+║  GOOGLE FORM - COPIAR/COLAR RÁPIDO (15 MINUTOS)                  ║
+║                                                                    ║
+║  Link do form:                                                     ║
+║  https://docs.google.com/forms/d/e/1FAIpQLScEf9Q5pzJP8IjsT...    ║
+║                                                                    ║
+╚════════════════════════════════════════════════════════════════════╝
+
+⏱️ TEMPO TOTAL: ~15 minutos
+
+Para cada pergunta abaixo:
+1. Clica em "+" para adicionar
+2. Copia o TEXTO DA PERGUNTA
+3. Cola no campo "Pergunta"
+4. Escolhe o TIPO
+5. Adiciona OPÇÕES (se tiver)
+6. Marca OBRIGATÓRIA (SIM/NÃO)
+
+═════════════════════════════════════════════════════════════════════
+
+P1 ✅ JÁ PRONTO
+───────────────────────────────────────────────────────────────────
+
+Qual é seu nome?
+Tipo: Resposta curta
+Obrigatória: SIM
+
+═════════════════════════════════════════════════════════════════════
+
+P2 - NOVO
+───────────────────────────────────────────────────────────────────
+
+Clica "+"
+
+COPIAR ISTO:
+Qual seu WhatsApp? (com DDD)
+
+Tipo: Resposta curta
+Obrigatória: SIM
+
+═════════════════════════════════════════════════════════════════════
+
+P3 - NOVO
+───────────────────────────────────────────────────────────────────
+
+Clica "+"
+
+COPIAR ISTO:
+Qual seu tipo de usuário?
+
+Tipo: Múltipla escolha
+Obrigatória: SIM
+
+OPÇÕES (copiar cada uma):
+1. Usuário GLP-1 (Ozempic, Saxenda, etc)
+2. Diabético tipo 1
+3. Diabético tipo 2
+4. Controle de peso
+5. Outro (qual?)
+
+═════════════════════════════════════════════════════════════════════
+
+P4 - NOVO
+───────────────────────────────────────────────────────────────────
+
+Clica "+"
+
+COPIAR ISTO:
+Conseguiu instalar o app sem problemas?
+
+Tipo: Múltipla escolha
+Obrigatória: SIM
+
+OPÇÕES:
+1. ✅ Sim, instalou normalmente
+2. ⚠️ Teve dificuldade mas conseguiu
+3. ❌ Não conseguiu instalar
+4. Não tentou ainda
+
+═════════════════════════════════════════════════════════════════════
+
+P5 - NOVO
+───────────────────────────────────────────────────────────────────
+
+Clica "+"
+
+COPIAR ISTO:
+O app abriu normalmente?
+
+Tipo: Múltipla escolha
+Obrigatória: SIM
+
+OPÇÕES:
+1. ✅ Sim, abriu sem problemas
+2. ⚠️ Demorou para abrir
+3. ❌ Não abre
+4. Não testei ainda
+
+═════════════════════════════════════════════════════════════════════
+
+P6 - NOVO
+───────────────────────────────────────────────────────────────────
+
+Clica "+"
+
+COPIAR ISTO:
+A câmera funciona?
+
+Tipo: Múltipla escolha
+Obrigatória: SIM
+
+OPÇÕES:
+1. ✅ Sim, funciona perfeitamente
+2. ⚠️ Funciona mas com atraso
+3. ❌ Não funciona
+4. Não testei
+
+═════════════════════════════════════════════════════════════════════
+
+P7 - NOVO
+───────────────────────────────────────────────────────────────────
+
+Clica "+"
+
+COPIAR ISTO:
+Interface é intuitiva e fácil de usar?
+
+Tipo: Escala linear
+Obrigatória: SIM
+
+CONFIGURAR:
+- De: 1
+- Até: 5
+- Rótulo da esquerda: Muito ruim
+- Rótulo da direita: Excelente
+
+═════════════════════════════════════════════════════════════════════
+
+P8 - NOVO
+───────────────────────────────────────────────────────────────────
+
+Clica "+"
+
+COPIAR ISTO:
+Velocidade do app?
+
+Tipo: Escala linear
+Obrigatória: SIM
+
+CONFIGURAR:
+- De: 1
+- Até: 5
+- Rótulo da esquerda: Muito lento
+- Rótulo da direita: Muito rápido
+
+═════════════════════════════════════════════════════════════════════
+
+P9 - NOVO
+───────────────────────────────────────────────────────────────────
+
+Clica "+"
+
+COPIAR ISTO:
+Design visual do app?
+
+Tipo: Escala linear
+Obrigatória: SIM
+
+CONFIGURAR:
+- De: 1
+- Até: 5
+- Rótulo da esquerda: Muito ruim
+- Rótulo da direita: Excelente
+
+═════════════════════════════════════════════════════════════════════
+
+P10 - NOVO
+───────────────────────────────────────────────────────────────────
+
+Clica "+"
+
+COPIAR ISTO:
+O que você mais gostou?
+
+Tipo: Caixas de seleção
+Obrigatória: NÃO
+
+OPÇÕES:
+1. Design limpo
+2. Camera rápida
+3. Facilidade de uso
+4. Nenhuma das acima
+5. Outro
+
+═════════════════════════════════════════════════════════════════════
+
+P11 - NOVO
+───────────────────────────────────────────────────────────────────
+
+Clica "+"
+
+COPIAR ISTO:
+O que precisa melhorar?
+
+Tipo: Caixas de seleção
+Obrigatória: NÃO
+
+OPÇÕES:
+1. Interface confusa
+2. Camera lenta
+3. Precisa de mais recursos
+4. Está bom assim
+5. Outro
+
+═════════════════════════════════════════════════════════════════════
+
+P12 - NOVO
+───────────────────────────────────────────────────────────────────
+
+Clica "+"
+
+COPIAR ISTO:
+Algum bug ou erro encontrado?
+
+Tipo: Parágrafo
+Obrigatória: NÃO
+
+DICA: Deixa em branco para resposta aberta
+
+═════════════════════════════════════════════════════════════════════
+
+P13 - NOVO
+───────────────────────────────────────────────────────────────────
+
+Clica "+"
+
+COPIAR ISTO:
+Você recomendaria LEVIA para amigos?
+
+Tipo: Escala linear
+Obrigatória: SIM
+
+CONFIGURAR:
+- De: 1
+- Até: 10
+- Rótulo da esquerda: Não recomendo
+- Rótulo da direita: Recomendo muito!
+
+═════════════════════════════════════════════════════════════════════
+
+✅ DEPOIS DE ADICIONAR TUDO:
+───────────────────────────────────────────────────────────────────
+
+1. Clica em ⚙️ CONFIGURAÇÕES (canto superior direito)
+
+2. Vai na aba "APRESENTAÇÃO"
+
+3. Marca "Mostrar mensagem de confirmação"
+
+4. COPIAR ISTO NA MENSAGEM:
+
+   Obrigado por seu feedback! 🎉
+   Seu input é essencial para LEVIA ficar melhor.
+
+5. Clica "SALVAR"
+
+═════════════════════════════════════════════════════════════════════
+
+📤 FINALIZAR:
+───────────────────────────────────────────────────────────────────
+
+1. Clica "Publicar" (botão azul no topo)
+
+2. Clica "Enviar" (ícone de seta ➜)
+
+3. Clica "Copiar link"
+
+4. MANDA AQUI O LINK FINAL! 🎉
+
+═════════════════════════════════════════════════════════════════════
+
+⏰ CHECKLIST:
+
+[ ] P1 - Nome (pronto)
+[ ] P2 - WhatsApp
+[ ] P3 - Tipo usuário
+[ ] P4 - Instalar ok?
+[ ] P5 - App abriu?
+[ ] P6 - Camera funciona?
+[ ] P7 - Interface intuitiva?
+[ ] P8 - Velocidade?
+[ ] P9 - Design?
+[ ] P10 - Gostou de quê?
+[ ] P11 - Melhorar quê?
+[ ] P12 - Bugs?
+[ ] P13 - Recomendaria?
+[ ] Mensagem confirmação
+[ ] Publicado ✅
+[ ] Link copiado ✅
+
+═════════════════════════════════════════════════════════════════════
+
+PRONTO! Quando terminar, manda aqui! 🚀
