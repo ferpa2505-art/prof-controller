@@ -521,6 +521,60 @@
 }
 
 /* ============================================================
+   GRÁFICOS INTERATIVOS
+   ============================================================ */
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+  padding: 0;
+}
+
+.chart-container {
+  background: var(--bg-card);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 24px;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.chart-container:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-color-light);
+  box-shadow: 0 12px 32px rgba(0, 153, 255, 0.15);
+  transform: translateY(-4px);
+}
+
+.chart-container h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chart-container h3::before {
+  content: '';
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.chart-container canvas {
+  max-height: 300px;
+  display: block;
+}
+
+/* ============================================================
    RESPONSIVIDADE
    ============================================================ */
 

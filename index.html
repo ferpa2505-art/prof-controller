@@ -11,6 +11,9 @@
   <link rel="stylesheet" href="modern-dashboard.css?v=1">
   <link rel="stylesheet" href="ui-cleanup.css?v=1">
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+  <!-- Chart.js Library -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 </head>
 <body>
   <div class="app-head">
@@ -74,6 +77,27 @@
       </div>
       
       <h2 class="section-title" data-i18n="dashboard.analysis">Análise de Patrimônio</h2>
+      
+      <!-- GRÁFICOS INTERATIVOS -->
+      <div class="charts-grid">
+        <div class="chart-container">
+          <h3>Evolução do Patrimônio</h3>
+          <canvas id="patrimonio-chart"></canvas>
+        </div>
+        <div class="chart-container">
+          <h3>Distribuição de Investimentos</h3>
+          <canvas id="investimentos-chart"></canvas>
+        </div>
+        <div class="chart-container">
+          <h3>Receitas vs Despesas</h3>
+          <canvas id="receitas-despesas-chart"></canvas>
+        </div>
+        <div class="chart-container">
+          <h3>Composição de Ativos</h3>
+          <canvas id="ativos-chart"></canvas>
+        </div>
+      </div>
+      
       <div class="cards">
         <div class="card card-success dashboard-interactive" data-card-type="investments">
           <h3 data-i18n="dashboard.investments">Investimentos</h3>
@@ -525,5 +549,17 @@
   <script src="app.js?v=38"></script>
   <script src="modern-dashboard.js?v=1"></script>
   <script src="ui-cleanup.js?v=1"></script>
+  <!-- Charts Scripts -->
+  <script src="src/charts-data.js?v=1"></script>
+  <script src="src/charts.js?v=1"></script>
+  <script>
+    // Inicializar gráficos quando o DOM estiver pronto
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(function() {
+        console.log('Iniciando gráficos...');
+        initAllCharts();
+      }, 100);
+    });
+  </script>
 </body>
 </html>
