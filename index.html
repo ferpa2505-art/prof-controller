@@ -22,22 +22,20 @@
     <h1 class="brand">
       <svg class="brand-logo" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <linearGradient id="gPurple" x1="0%" y1="0%" x2="100%" y2="100%">
+          <linearGradient id="gBG" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stop-color="#0099FF"/>
             <stop offset="100%" stop-color="#00D77E"/>
           </linearGradient>
-          <linearGradient id="gOrange" x1="0%" y1="0%" x2="100%" y2="100%">
+          <linearGradient id="gChart" x1="0%" y1="100%" x2="100%" y2="0%">
             <stop offset="0%" stop-color="#FF6B35"/>
             <stop offset="100%" stop-color="#FFB800"/>
           </linearGradient>
         </defs>
-        <!-- P shape -->
-        <rect x="18" y="18" width="18" height="84" fill="#0099FF" rx="2"/>
-        <circle cx="45" cy="40" r="18" fill="#00D77E"/>
-        <!-- F shape -->
-        <rect x="64" y="18" width="18" height="84" fill="#FF6B35" rx="2"/>
-        <rect x="64" y="18" width="30" height="14" fill="#FFB800" rx="2"/>
-        <rect x="64" y="50" width="28" height="12" fill="#FF6B35" rx="2"/>
+        <!-- Shield background -->
+        <path d="M 30 25 L 90 25 L 90 55 Q 60 85 60 85 Q 30 55 30 55 Z" fill="url(#gBG)" stroke="#00D77E" stroke-width="2"/>
+        <!-- Chart lines inside shield -->
+        <line x1="45" y1="65" x2="60" y2="45" stroke="#FFB800" stroke-width="3" stroke-linecap="round"/>
+        <line x1="60" y1="45" x2="75" y2="55" stroke="#FF6B35" stroke-width="3" stroke-linecap="round"/>
       </svg>
       <span class="brand-name">ProF Controller</span>
     </h1>
