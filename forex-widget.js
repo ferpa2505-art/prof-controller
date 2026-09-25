@@ -16,6 +16,7 @@ const DEFAULT_FOREX_PAIRS = [
 
 const FOREX_CACHE_KEY = 'prof-forex-cache';
 const FOREX_CACHE_EXPIRY = 24 * 60 * 60 * 1000; // 24 horas em ms
+const FOREX_HISTORY_KEY = 'prof-forex-history'; // Histórico para comparação de tendências
 
 /**
  * Obtém taxas do cache se válidas, senão busca da API
@@ -160,8 +161,86 @@ function saveCachedForexRates(rates) {
       rates: rates
     };
     localStorage.setItem(FOREX_CACHE_KEY, JSON.stringify(data));
+    
+    // Também salvar no histórico para comparação de tendências
+    saveForexHistory(rates);
   } catch (e) {
     console.warn('Erro ao salvar cache:', e);
+  }
+}
+
+/**
+ * Salvar histórico de preços para análise de tendências
+ */
+function saveForexHistory(rates) {
+  try {
+    const history = JSON.parse(localStorage.getItem(FOREX_HISTORY_KEY)) || {};
+    const now = Date.now();
+    
+    for (const [pair, data] of Object.entries(rates)) {
+      if (!data.error && data.rate !== '—') {
+        if (!history[pair]) {
+          history[pair] = [];
+        }
+        
+        // Manter apenas últimas 24 horas de dados (mantém a memória baixa)
+        history[pair] = history[pair].filter(h => now - h.timestamp < 24 * 60 * 60 * 1000);
+        
+        // Adicionar novo valor
+        history[pair].push({
+          rate: parseFloat(data.rate),
+          timestamp: now
+        });
+      }
+    }
+    
+    localStorage.setItem(FOREX_HISTORY_KEY, JSON.stringify(history));
+  } catch (e) {
+    console.warn('Erro ao salvar histórico:', e);
+  }
+}
+
+/**
+ * Obter histórico de preços para uma moeda
+ */
+function getForexHistory(pair) {
+  try {
+    const history = JSON.parse(localStorage.getItem(FOREX_HISTORY_KEY)) || {};
+    return history[pair] || [];
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Determinar tendência da moeda (↗ subindo, ↘ caindo, ↔ estável)
+ */
+function getForexTrend(pair, currentRate) {
+  const history = getForexHistory(pair);
+  
+  if (history.length < 2) {
+    return { arrow: '→', label: 'Sem histórico', color: '#FFB81C', direction: 'stable' };
+  }
+  
+  // Comparar com taxa anterior (última do histórico)
+  const previousRate = history[history.length - 2]?.rate || history[0]?.rate;
+  
+  if (!previousRate) {
+    return { arrow: '→', label: 'Sem histórico', color: '#FFB81C', direction: 'stable' };
+  }
+  
+  const diff = currentRate - previousRate;
+  const threshold = previousRate * 0.001; // 0.1% de variação mínima
+  
+  if (Math.abs(diff) < threshold) {
+    // Estável - seta horizontal
+    return { arrow: '↔', label: 'Estável', color: '#FFB81C', direction: 'stable' };
+  } else if (diff > 0) {
+    // Subindo - seta diagonal verde
+    return { arrow: '↗', label: 'Subindo', color: '#00FF00', direction: 'up' };
+  } else {
+    // Caindo - seta diagonal vermelha
+    return { arrow: '↘', label: 'Caindo', color: '#FF4444', direction: 'down' };
   }
 }
 
@@ -212,6 +291,10 @@ function renderForexWidget(forceRefresh = false) {
       const staleClass = rate.stale ? 'stale' : '';
       const errorClass = rate.error ? 'error' : '';
       
+      // Obter tendência da moeda
+      const currentRateNum = parseFloat(rate.rate);
+      const trend = getForexTrend(pair.label, currentRateNum);
+      
       return `
         <div class="forex-pair ${errorClass} ${staleClass}">
           <div class="forex-pair-label">
@@ -220,6 +303,9 @@ function renderForexWidget(forceRefresh = false) {
           <div class="forex-pair-rate">
             <span class="rate-value">${rate.rate}</span>
             <span class="rate-unit">${pair.to}</span>
+            <span class="rate-trend rate-trend-${trend.direction}" style="color: ${trend.color};" title="${trend.label}">
+              ${trend.arrow}
+            </span>
           </div>
         </div>
       `;
