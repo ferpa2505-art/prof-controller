@@ -66,22 +66,23 @@ header.topbar {
 .brand {
   display: flex;
   align-items: center;
-  gap: 14px;
+  justify-content: center;
+  gap: 16px;
   font-size: 22px;
   font-weight: 800;
   letter-spacing: -0.5px;
   cursor: pointer;
   transition: transform 0.3s ease;
+  height: 100%;
 }
 
 .brand:hover {
   transform: scale(1.02);
 }
 
-
 .brand-logo-img {
-  width: 56px;
-  height: 56px;
+  width: 68px;
+  height: 68px;
   object-fit: cover;
   border-radius: 8px;
   filter: drop-shadow(0 0 8px rgba(0, 153, 255, 0.4));
