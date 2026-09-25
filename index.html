@@ -3,13 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#1a1a2e">
+  <meta name="theme-color" content="#00D4FF">
   <title>ProF Controller</title>
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="styles.css?v=37">
   <link rel="stylesheet" href="modern-ui.css?v=1">
   <link rel="stylesheet" href="modern-dashboard.css?v=1">
   <link rel="stylesheet" href="ui-cleanup.css?v=1">
+  <link rel="stylesheet" href="themes/profit-c.css?v=1">
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=3">
   <link rel="apple-touch-icon" href="icon-192.png?v=3">
   <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png?v=3">
@@ -17,11 +18,11 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 </head>
-<body>
+<body data-theme="profit-c">
   <div class="app-head">
   <header class="topbar">
     <h1 class="brand">
-      <img src="logo-prof.png?v=3" alt="ProF Controller" class="brand-logo-img">
+      <img src="logo-profit-c.png?v=1" alt="ProF Controller" class="brand-logo-img">
       <span class="brand-name">ProF Controller</span>
     </h1>
     <div class="topbar-actions">
@@ -555,6 +556,63 @@
   <script src="src/charts-data.js?v=1"></script>
   <script src="src/charts.js?v=1"></script>
   <script>
+    // Theme Management - Profit C Default
+    (function() {
+      const themes = [
+        { id: 'profit-c', name: '⭐ Profit C (Padrão)', default: true },
+        { id: 'light', name: '☀️ Claro', default: false },
+        { id: 'dark', name: '🌙 Escuro', default: false }
+      ];
+
+      function initializeTheme() {
+        // Load saved theme from localStorage, default to 'profit-c'
+        const savedTheme = localStorage.getItem('app-theme') || 'profit-c';
+        const themeSelect = document.getElementById('themeSelect');
+        
+        if (themeSelect) {
+          // Populate theme options
+          themes.forEach(theme => {
+            const option = document.createElement('option');
+            option.value = theme.id;
+            option.textContent = theme.name;
+            option.selected = theme.id === savedTheme;
+            themeSelect.appendChild(option);
+          });
+          
+          // Apply saved theme
+          applyTheme(savedTheme);
+          
+          // Listen for theme changes
+          themeSelect.addEventListener('change', function() {
+            const selectedTheme = this.value;
+            applyTheme(selectedTheme);
+            localStorage.setItem('app-theme', selectedTheme);
+          });
+        }
+      }
+
+      function applyTheme(themeId) {
+        const body = document.body;
+        
+        // Remove all theme classes/attributes
+        body.removeAttribute('data-theme');
+        themes.forEach(t => body.classList.remove(`theme-${t.id}`));
+        
+        // Apply new theme
+        body.setAttribute('data-theme', themeId);
+        body.classList.add(`theme-${themeId}`);
+        
+        console.log(`Tema aplicado: ${themeId}`);
+      }
+
+      // Initialize when DOM is ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initializeTheme);
+      } else {
+        initializeTheme();
+      }
+    })();
+
     // Inicializar gráficos quando o DOM estiver pronto
     document.addEventListener('DOMContentLoaded', function() {
       setTimeout(function() {

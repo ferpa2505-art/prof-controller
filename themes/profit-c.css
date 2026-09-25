@@ -1,0 +1,151 @@
+/* ============================================================
+   🚀 PROFIT C THEME - Futuristic with Circuit Board Design
+   Premium fintech theme with cyberpunk aesthetic
+   ============================================================ */
+
+:root[data-theme="profit-c"],
+:root.theme-profit-c {
+  /* Brand Colors */
+  --primary: #00D4FF;
+  --primary-dark: #0099FF;
+  --primary-light: #33E5FF;
+  --accent: #FF6B35;
+  --accent-light: #FF8C5A;
+  --success: #00D97E;
+  --warning: #FFB800;
+  --danger: #FF4757;
+  --info: #00D4FF;
+  
+  /* Profit C Specific */
+  --profit-c-bg-primary: #0A0E27;
+  --profit-c-bg-secondary: #1a1a3e;
+  --profit-c-bg-tertiary: #16213e;
+  
+  /* Texts */
+  --text-primary: #E8EAED;
+  --text-secondary: #A8B0B8;
+  --text-muted: #6B7280;
+  
+  /* Borders & Glass */
+  --border-color: rgba(0, 212, 255, 0.15);
+  --border-color-light: rgba(0, 212, 255, 0.25);
+  --glass-blur: blur(12px);
+  --glass-backdrop: rgba(10, 14, 39, 0.5);
+}
+
+/* ============================================================
+   BACKGROUND - CIRCUIT BOARD PATTERN
+   ============================================================ */
+
+body[data-theme="profit-c"],
+body.theme-profit-c {
+  background: linear-gradient(135deg, #0A0E27 0%, #1a1a3e 50%, #16213e 100%);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Circuit board overlay effect */
+body[data-theme="profit-c"]::before,
+body.theme-profit-c::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 212, 255, 0.03) 2px,
+      rgba(0, 212, 255, 0.03) 4px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 212, 255, 0.03) 2px,
+      rgba(0, 212, 255, 0.03) 4px
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ============================================================
+   HEADER - PROFIT C STYLE
+   ============================================================ */
+
+header.topbar[data-theme="profit-c"],
+header.topbar.theme-profit-c {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 212, 255, 0.08) 0%,
+    rgba(0, 153, 255, 0.05) 100%
+  );
+  backdrop-filter: var(--glass-blur);
+  border-bottom: 2px solid rgba(0, 212, 255, 0.2);
+  box-shadow: 
+    0 8px 32px rgba(0, 153, 255, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Profit C brand logo styling */
+[data-theme="profit-c"] .brand-logo-img,
+.theme-profit-c .brand-logo-img {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  filter: 
+    drop-shadow(0 0 8px rgba(0, 212, 255, 0.5))
+    drop-shadow(0 0 16px rgba(0, 153, 255, 0.3));
+  transition: all 0.3s ease;
+}
+
+[data-theme="profit-c"] .brand:hover .brand-logo-img,
+.theme-profit-c .brand:hover .brand-logo-img {
+  filter: 
+    drop-shadow(0 0 12px rgba(0, 212, 255, 0.8))
+    drop-shadow(0 0 24px rgba(0, 215, 126, 0.5))
+    drop-shadow(0 0 32px rgba(255, 107, 53, 0.3));
+  transform: scale(1.08);
+}
+
+/* ============================================================
+   CARDS - PROFIT C GLASSMORPHISM
+   ============================================================ */
+
+[data-theme="profit-c"] .card,
+.theme-profit-c .card {
+  background: rgba(20, 30, 60, 0.35);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-color);
+  box-shadow: 
+    0 8px 32px rgba(0, 153, 255, 0.1),
+    inset 0 1px 0 rgba(0, 212, 255, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="profit-c"] .card:hover,
+.theme-profit-c .card:hover {
+  background: rgba(20, 30, 60, 0.5);
+  border-color: var(--border-color-light);
+  box-shadow: 
+    0 16px 48px rgba(0, 153, 255, 0.2),
+    inset 0 1px 0 rgba(0, 212, 255, 0.2);
+  transform: translateY(-4px);
+}
+
+/* ============================================================
+   TEXT EFFECTS - PROFIT C
+   ============================================================ */
+
+[data-theme="profit-c"] .brand-name,
+.theme-profit-c .brand-name {
+  color: #E8EAED;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-shadow: 
+    0 0 20px rgba(0, 212, 255, 0.3),
+    0 0 40px rgba(0, 153, 255, 0.15);
+}
