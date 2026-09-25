@@ -1,73 +1,112 @@
 from PIL import Image, ImageDraw
+import math
 
 def create_icon(size=192):
-    """Create modern ProF Controller icon with gradient"""
-    # Create image with dark blue background
-    img = Image.new('RGBA', (size, size), (10, 14, 39, 255))
+    """Create modern geometric/abstract ProF Controller icon"""
+    # Create transparent background
+    img = Image.new('RGBA', (size, size), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
     
-    # Draw gradient background manually
+    center = size // 2
+    
+    # Draw background with gradient effect
+    # Create a radial gradient manually
     for i in range(size):
-        ratio = i / size
-        r = int(10 + (20 * ratio))
-        g = int(14 + (40 * ratio))
-        b = int(39 + (80 * ratio))
-        draw.line([(0, i), (size, i)], fill=(r, g, b, 255))
+        for j in range(size):
+            # Distance from center
+            dist = math.sqrt((i - center)**2 + (j - center)**2)
+            max_dist = center * 1.4
+            
+            if dist < max_dist:
+                # Gradient from dark to slightly lighter
+                ratio = dist / max_dist
+                r = int(10 + ratio * 20)
+                g = int(14 + ratio * 40)
+                b = int(39 + ratio * 80)
+                img.putpixel((i, j), (r, g, b, 255))
     
-    # Draw outer circle (glow)
-    margin = int(size * 0.1)
+    # Draw geometric shapes - Modern abstract design
+    
+    # Outer glow circle
+    glow_margin = int(size * 0.08)
     draw.ellipse(
-        [(margin, margin), (size-margin, size-margin)],
-        outline=(0, 153, 255, 100),
-        width=3
+        [(glow_margin, glow_margin), (size - glow_margin, size - glow_margin)],
+        outline=(0, 153, 255, 120),
+        width=2
     )
     
-    # Draw P (left) with blue-green colors
-    p_left = int(size * 0.2)
-    p_top = int(size * 0.25)
-    p_height = int(size * 0.5)
-    p_width = int(size * 0.18)
+    # Central hexagon/polygon for modern look
+    hex_size = int(size * 0.35)
+    hex_points = []
+    for i in range(6):
+        angle = (i * 60 - 90) * math.pi / 180
+        x = center + hex_size * math.cos(angle)
+        y = center + hex_size * math.sin(angle)
+        hex_points.append((x, y))
     
-    # P vertical bar (blue)
+    # Draw hexagon with gradient colors
+    draw.polygon(hex_points, fill=(0, 153, 255, 80), outline=(0, 153, 255, 200), width=2)
+    
+    # Draw P shape - geometric style (left side)
+    p_box = int(size * 0.18)
+    p_x = int(center * 0.6)
+    p_y = int(center * 0.5)
+    
+    # P vertical bar (strong blue)
     draw.rectangle(
-        [(p_left, p_top), (p_left + int(p_width*0.4), p_top + p_height)],
-        fill=(0, 153, 255, 255)
+        [(p_x, p_y), (p_x + int(p_box*0.3), p_y + int(p_box*1.3))],
+        fill=(0, 99, 255, 255)
     )
     
-    # P rounded top (green)
-    p_curve_radius = int(p_width * 0.6)
+    # P curved top (vibrant green)
     draw.ellipse(
-        [(p_left + int(p_width*0.25), p_top), 
-         (p_left + p_width + int(p_width*0.15), p_top + int(p_height*0.45))],
+        [(p_x + int(p_box*0.2), p_y), 
+         (p_x + p_box, p_y + int(p_box*0.6))],
         fill=(0, 215, 126, 255)
     )
     
-    # Draw F (right) with orange-yellow colors
-    f_left = int(size * 0.55)
-    f_top = int(size * 0.25)
-    f_height = int(size * 0.5)
-    f_width = int(size * 0.15)
+    # Draw F shape - geometric style (right side)
+    f_box = int(size * 0.16)
+    f_x = int(center * 1.4)
+    f_y = int(center * 0.52)
     
-    # F vertical bar (orange)
+    # F vertical bar (vibrant orange)
     draw.rectangle(
-        [(f_left, f_top), (f_left + int(f_width*0.35), f_top + f_height)],
+        [(f_x, f_y), (f_x + int(f_box*0.3), f_y + int(f_box*1.2))],
         fill=(255, 107, 53, 255)
     )
     
     # F top horizontal (orange)
-    h_bar_height = int(f_width * 0.25)
     draw.rectangle(
-        [(f_left + int(f_width*0.3), f_top), 
-         (f_left + f_width + int(f_width*0.2), f_top + h_bar_height)],
+        [(f_x + int(f_box*0.25), f_y), 
+         (f_x + f_box * 0.95, f_y + int(f_box*0.25))],
         fill=(255, 107, 53, 255)
     )
     
-    # F middle horizontal (yellow)
-    mid_pos = int(f_top + f_height * 0.45)
+    # F middle horizontal (bright yellow)
     draw.rectangle(
-        [(f_left + int(f_width*0.3), mid_pos), 
-         (f_left + f_width, mid_pos + h_bar_height)],
-        fill=(255, 184, 0, 255)
+        [(f_x + int(f_box*0.25), f_y + int(f_box*0.55)), 
+         (f_x + f_box * 0.85, f_y + int(f_box*0.75))],
+        fill=(255, 215, 0, 255)
+    )
+    
+    # Add accent triangles for modern look
+    triangle_size = int(size * 0.08)
+    
+    # Top-right accent (cyan)
+    draw.polygon(
+        [(size - triangle_size*2, triangle_size), 
+         (size - triangle_size, 0), 
+         (size, triangle_size)],
+        fill=(0, 212, 255, 200)
+    )
+    
+    # Bottom-left accent (bright green)
+    draw.polygon(
+        [(triangle_size*0.5, size - triangle_size*1.5), 
+         (0, size - triangle_size*0.5), 
+         (triangle_size, size)],
+        fill=(0, 220, 130, 200)
     )
     
     return img
