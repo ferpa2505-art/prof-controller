@@ -134,6 +134,34 @@
   text-transform: uppercase;
 }
 
+.forex-status {
+  font-size: 12px;
+  text-align: center;
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.forex-status.cache-fresh {
+  background: rgba(0, 212, 255, 0.1);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  color: rgba(0, 212, 255, 0.8);
+}
+
+.forex-status.fresh-api {
+  background: rgba(0, 215, 126, 0.1);
+  border: 1px solid rgba(0, 215, 126, 0.2);
+  color: rgba(0, 215, 126, 0.8);
+}
+
+.forex-status.cache-stale {
+  background: rgba(255, 184, 0, 0.1);
+  border: 1px solid rgba(255, 184, 0, 0.2);
+  color: rgba(255, 184, 0, 0.8);
+}
+
 .forex-timestamp {
   font-size: 11px;
   color: rgba(232, 234, 237, 0.4);
@@ -147,10 +175,28 @@
   padding: 24px 16px;
   color: rgba(232, 234, 237, 0.6);
   font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .forex-error {
   color: rgba(255, 71, 87, 0.7);
+}
+
+.loading-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(0, 212, 255, 0.2);
+  border-top-color: rgba(0, 212, 255, 0.8);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
 /* Responsive */
