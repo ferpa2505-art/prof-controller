@@ -19,7 +19,31 @@
   <div class="app-head">
   <header class="topbar">
     <h1 class="brand">
-      <img src="icon-192.png" alt="ProF Controller" class="brand-logo">
+      <svg class="brand-logo" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="logoGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#0099FF;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#00D77E;stop-opacity:1" />
+          </linearGradient>
+          <linearGradient id="logoGrad2" x1="100%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style="stop-color:#FF6B35;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#FFB800;stop-opacity:1" />
+          </linearGradient>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+            <feMerge>
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+        <!-- Background circle glow -->
+        <circle cx="60" cy="60" r="55" fill="none" stroke="url(#logoGrad1)" stroke-width="2" opacity="0.3"/>
+        <!-- Main shape - P -->
+        <path d="M 35 90 L 35 30 Q 35 20 45 20 L 60 20 Q 75 20 75 35 Q 75 50 60 50 L 45 50 L 45 90" fill="url(#logoGrad1)" stroke="url(#logoGrad1)" stroke-width="2" stroke-linejoin="round" filter="url(#glow)"/>
+        <!-- Secondary shape - F -->
+        <path d="M 85 90 L 85 30 L 105 30 M 85 55 L 100 55" fill="none" stroke="url(#logoGrad2)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)"/>
+      </svg>
       <span class="brand-name">ProF Controller</span>
     </h1>
     <div class="topbar-actions">

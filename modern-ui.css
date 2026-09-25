@@ -66,29 +66,48 @@ header.topbar {
 .brand {
   display: flex;
   align-items: center;
-  gap: 12px;
-  font-size: 20px;
-  font-weight: 700;
+  gap: 14px;
+  font-size: 22px;
+  font-weight: 800;
   letter-spacing: -0.5px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.brand:hover {
+  transform: scale(1.02);
 }
 
 .brand-logo {
-  width: 36px;
-  height: 36px;
-  filter: drop-shadow(0 4px 12px rgba(0, 153, 255, 0.3));
-  animation: logoFloat 3s ease-in-out infinite;
+  width: 42px;
+  height: 42px;
+  filter: drop-shadow(0 0 8px rgba(0, 153, 255, 0.4)) drop-shadow(0 0 16px rgba(0, 215, 126, 0.2));
+  animation: logoFloat 3.5s ease-in-out infinite, logoRotate 8s linear infinite;
+  transition: filter 0.3s ease;
+}
+
+.brand:hover .brand-logo {
+  filter: drop-shadow(0 0 12px rgba(0, 153, 255, 0.6)) drop-shadow(0 0 24px rgba(255, 107, 53, 0.3));
 }
 
 @keyframes logoFloat {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-4px); }
+  0%, 100% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-5px) scale(1.05); }
+}
+
+@keyframes logoRotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 .brand-name {
-  background: linear-gradient(135deg, #00D4FF, #0099FF);
+  background: linear-gradient(135deg, #00D4FF 0%, #0099FF 50%, #00D77E 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  font-weight: 800;
+  letter-spacing: 1px;
+  transition: text-shadow 0.3s ease;
 }
 
 /* ============================================================
