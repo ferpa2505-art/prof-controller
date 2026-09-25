@@ -80,6 +80,7 @@ function initPatrimonioChart() {
 
 /**
  * Inicializa o gráfico de distribuição de investimentos
+ * Barras verticais 3D com linhas de média sugerida e real
  * @returns {Chart} Instância do gráfico
  */
 function initInvestimentosChart() {
@@ -98,22 +99,81 @@ function initInvestimentosChart() {
   const defaults = getChartDefaults();
 
   const config = {
-    type: 'pie',
+    type: 'bar',
     data: data,
     options: {
       ...defaults,
+      indexAxis: undefined, // Manter como vertical
+      responsive: true,
+      maintainAspectRatio: true,
       plugins: {
         ...defaults.plugins,
-        datalabels: {
-          color: '#FFFFFF',
-          font: {
-            size: 12,
-            weight: 'bold'
+        legend: {
+          ...defaults.plugins.legend,
+          position: 'bottom'
+        },
+        tooltip: {
+          ...defaults.plugins.tooltip,
+          callbacks: {
+            label: function(context) {
+              let label = context.dataset.label || '';
+              if (label) {
+                label += ': ';
+              }
+              if (context.parsed.y !== null) {
+                label += context.parsed.y.toFixed(1) + '%';
+              }
+              return label;
+            }
+          }
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          max: 35, // Máximo de 35% para melhor visualização
+          grid: {
+            color: 'rgba(255, 255, 255, 0.05)',
+            drawBorder: false
           },
-          formatter: function(value, context) {
-            const sum = context.dataset.data.reduce((a, b) => a + b, 0);
-            const percentage = ((value * 100) / sum).toFixed(1);
-            return percentage + '%';
+          ticks: {
+            color: 'rgba(255, 255, 255, 0.7)',
+            font: {
+              size: 11
+            },
+            callback: function(value) {
+              return value.toFixed(0) + '%';
+            }
+          },
+          title: {
+            display: true,
+            text: 'Percentual (%)',
+            color: 'rgba(255, 255, 255, 0.8)',
+            font: {
+              size: 12,
+              weight: 'bold'
+            }
+          }
+        },
+        x: {
+          grid: {
+            display: false,
+            drawBorder: false
+          },
+          ticks: {
+            color: 'rgba(255, 255, 255, 0.7)',
+            font: {
+              size: 12
+            }
+          },
+          title: {
+            display: true,
+            text: 'Tipo de Investimento',
+            color: 'rgba(255, 255, 255, 0.8)',
+            font: {
+              size: 12,
+              weight: 'bold'
+            }
           }
         }
       }

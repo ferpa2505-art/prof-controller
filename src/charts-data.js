@@ -45,7 +45,8 @@ function getPatrimonioData() {
 
 /**
  * Puxa dados reais de investimentos do localStorage/app
- * @returns {Object} Dados formatados para Chart.js Pie
+ * Retorna barras verticais 3D com linhas de média sugerida e real
+ * @returns {Object} Dados formatados para Chart.js Mixed Chart (Bar + Line)
  */
 function getInvestimentosData() {
   let labels = ['Ações', 'Fundos', 'Cripto', 'Renda Fixa'];
@@ -64,15 +65,115 @@ function getInvestimentosData() {
     console.log('Usando dados de demonstração para investimentos');
   }
   
+  // Calcular total e percentuais
+  const total = data.reduce((a, b) => a + b, 0);
+  const percentuais = data.map(v => (v / total) * 100);
+  
+  // Média sugerida (distribuição uniforme)
+  const mediasugerida = data.map(() => 25);
+  
+  // Cores com gradiente para efeito 3D (versão escura para sombra)
+  const colores3D = colors.map(color => ({
+    light: color,
+    dark: adjustBrightness(color, -30)
+  }));
+  
   return {
     labels: labels,
-    datasets: [{
-      data: data,
-      backgroundColor: colors,
-      borderColor: 'rgba(255, 255, 255, 0.2)',
-      borderWidth: 2
-    }]
+    datasets: [
+      // Dataset 1: Barras verticais com efeito 3D
+      {
+        type: 'bar',
+        label: 'Percentual Real (%)',
+        data: percentuais,
+        backgroundColor: colors.map(color => {
+          // Criar gradiente para efeito 3D
+          return color;
+        }),
+        borderColor: colors.map(color => adjustBrightness(color, -40)),
+        borderWidth: 2,
+        borderSkipped: false,
+        barPercentage: 0.7,
+        categoryPercentage: 0.8,
+        datalabels: {
+          anchor: 'end',
+          align: 'top',
+          color: '#FFFFFF',
+          font: {
+            weight: 'bold',
+            size: 12
+          },
+          formatter: function(value) {
+            return value.toFixed(1) + '%';
+          }
+        }
+      },
+      // Dataset 2: Linha de média sugerida
+      {
+        type: 'line',
+        label: 'Média Sugerida (25%)',
+        data: mediasugerida,
+        borderColor: '#FFD700',
+        backgroundColor: 'rgba(255, 215, 0, 0.1)',
+        borderWidth: 3,
+        borderDash: [5, 5],
+        fill: false,
+        pointRadius: 5,
+        pointBackgroundColor: '#FFD700',
+        pointBorderColor: '#FFFFFF',
+        pointBorderWidth: 2,
+        pointHoverRadius: 7,
+        tension: 0.4
+      },
+      // Dataset 3: Linha de investimento real (suavizada)
+      {
+        type: 'line',
+        label: 'Tendência Real',
+        data: percentuais,
+        borderColor: '#00FF88',
+        backgroundColor: 'rgba(0, 255, 136, 0.1)',
+        borderWidth: 2,
+        fill: false,
+        pointRadius: 4,
+        pointBackgroundColor: '#00FF88',
+        pointBorderColor: '#FFFFFF',
+        pointBorderWidth: 2,
+        pointHoverRadius: 6,
+        tension: 0.4
+      }
+    ]
   };
+}
+
+/**
+ * Função auxiliar para ajustar brilho de uma cor hex
+ * @param {string} color - Cor em formato #RRGGBB
+ * @param {number} percent - Percentual de ajuste (-100 a 100)
+ * @returns {string} Cor ajustada em formato #RRGGBB
+ */
+function adjustBrightness(color, percent) {
+  const num = parseInt(color.replace("#",""), 16);
+  const amt = Math.round(2.55 * percent);
+  const R = (num >> 16) + amt;
+  const G = (num >> 8 & 0x00FF) + amt;
+  const B = (num & 0x0000FF) + amt;
+  return "#" + (0x1000000 + (R<255?R<1?0:R:255)*0x10000 +
+    (G<255?G<1?0:G:255)*0x100 +
+    (B<255?B<1?0:B:255))
+    .toString(16).slice(1);
+}
+
+/**
+ * Função auxiliar para converter cor hex para rgba
+ * @param {string} hex - Cor em formato #RRGGBB
+ * @param {number} alpha - Transparência (0-1)
+ * @returns {string} Cor em formato rgba
+ */
+function hexToRgba(hex, alpha) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
 /**

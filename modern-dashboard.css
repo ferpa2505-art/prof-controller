@@ -801,6 +801,27 @@
   }
 }
 
+/* ============================================================
+   GRÁFICO DE INVESTIMENTOS 3D
+   ============================================================ */
+
+#investimentos-chart {
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
+  border-radius: 12px;
+}
+
+/* Estilos para canvas do gráfico 3D */
+.chart-card canvas {
+  image-rendering: crisp-edges;
+  /* Aplicar gradiente de fundo sutil ao canvas */
+  background: linear-gradient(180deg, rgba(0, 153, 255, 0.05), rgba(255, 107, 53, 0.02));
+}
+
+/* Labels do gráfico 3D melhorados */
+.chartjs-render-monitor {
+  opacity: 0.95;
+}
+
 /* Responsivo - Mobile */
 @media (max-width: 480px) {
   .charts-stack {
