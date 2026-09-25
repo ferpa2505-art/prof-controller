@@ -1,0 +1,125 @@
+/* ============================================================
+   ☀️ LIGHT THEME - Clean, professional fintech light theme
+   ============================================================ */
+
+:root[data-theme="light"],
+:root.theme-light {
+  /* Brand Colors */
+  --primary: #0099FF;
+  --primary-dark: #0077CC;
+  --primary-light: #33B3FF;
+  --accent: #FF6B35;
+  --accent-light: #FF8C5A;
+  --success: #00C270;
+  --warning: #FFA500;
+  --danger: #EE5A6F;
+  --info: #0099FF;
+  
+  /* Light Theme Specific */
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F5F7FA;
+  --bg-tertiary: #E8ECF1;
+  
+  /* Texts */
+  --text-primary: #1F2937;
+  --text-secondary: #6B7280;
+  --text-muted: #9CA3AF;
+  
+  /* Borders & Glass */
+  --border-color: rgba(0, 99, 255, 0.15);
+  --border-color-light: rgba(0, 99, 255, 0.25);
+  --glass-blur: blur(10px);
+  --glass-backdrop: rgba(255, 255, 255, 0.8);
+}
+
+/* ============================================================
+   BACKGROUND - LIGHT GRADIENT
+   ============================================================ */
+
+body[data-theme="light"],
+body.theme-light {
+  background: linear-gradient(135deg, #FFFFFF 0%, #F5F7FA 100%);
+  color: #1F2937;
+}
+
+body[data-theme="light"]::before,
+body.theme-light::before {
+  background-image: none;
+}
+
+/* ============================================================
+   HEADER - LIGHT STYLE
+   ============================================================ */
+
+header.topbar[data-theme="light"],
+header.topbar.theme-light {
+  background: linear-gradient(
+    180deg,
+    rgba(240, 248, 255, 1) 0%,
+    rgba(225, 240, 255, 0.5) 100%
+  );
+  backdrop-filter: var(--glass-blur);
+  border-bottom: 2px solid rgba(0, 99, 255, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .brand-logo-img,
+.theme-light .brand-logo-img {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.08));
+  transition: all 0.3s ease;
+}
+
+[data-theme="light"] .brand:hover .brand-logo-img,
+.theme-light .brand:hover .brand-logo-img {
+  filter: drop-shadow(0 4px 12px rgba(0, 99, 255, 0.15));
+  transform: scale(1.05);
+}
+
+[data-theme="light"] .brand-name,
+.theme-light .brand-name {
+  color: #1F2937;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-shadow: none;
+}
+
+/* ============================================================
+   CARDS - LIGHT GLASS
+   ============================================================ */
+
+[data-theme="light"] .card,
+.theme-light .card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s ease;
+}
+
+[data-theme="light"] .card:hover,
+.theme-light .card:hover {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: var(--border-color-light);
+  box-shadow: 0 8px 24px rgba(0, 99, 255, 0.08);
+  transform: translateY(-2px);
+}
+
+/* ============================================================
+   BUTTONS - LIGHT THEME
+   ============================================================ */
+
+[data-theme="light"] .btn-primary,
+.theme-light .btn-primary {
+  background: linear-gradient(135deg, #0099FF 0%, #0077CC 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 99, 255, 0.2);
+}
+
+[data-theme="light"] .btn-primary:hover,
+.theme-light .btn-primary:hover {
+  box-shadow: 0 6px 20px rgba(0, 99, 255, 0.3);
+  transform: translateY(-2px);
+}
