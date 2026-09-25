@@ -87,23 +87,42 @@
       
       <h2 class="section-title" data-i18n="dashboard.analysis">Análise de Patrimônio</h2>
       
-      <!-- GRÁFICOS INTERATIVOS -->
-      <div class="charts-grid">
-        <div class="chart-container">
-          <h3>Evolução do Patrimônio</h3>
-          <canvas id="patrimonio-chart"></canvas>
+      <!-- GRÁFICOS INTERATIVOS - SISTEMA DE FICHÁRIO -->
+      <div class="charts-filing-system">
+        <!-- Abas dos gráficos -->
+        <div class="charts-tabs">
+          <button class="chart-tab active" data-chart="patrimonio-chart" title="Evolução do Patrimônio">
+            📈 Evolução
+          </button>
+          <button class="chart-tab" data-chart="investimentos-chart" title="Distribuição de Investimentos">
+            🎯 Distribuição
+          </button>
+          <button class="chart-tab" data-chart="receitas-despesas-chart" title="Receitas vs Despesas">
+            💰 Fluxo
+          </button>
+          <button class="chart-tab" data-chart="ativos-chart" title="Composição de Ativos">
+            🏆 Ativos
+          </button>
         </div>
-        <div class="chart-container">
-          <h3>Distribuição de Investimentos</h3>
-          <canvas id="investimentos-chart"></canvas>
-        </div>
-        <div class="chart-container">
-          <h3>Receitas vs Despesas</h3>
-          <canvas id="receitas-despesas-chart"></canvas>
-        </div>
-        <div class="chart-container">
-          <h3>Composição de Ativos</h3>
-          <canvas id="ativos-chart"></canvas>
+
+        <!-- Stack de gráficos sobrepostos -->
+        <div class="charts-stack">
+          <div class="chart-card active" data-chart="patrimonio-chart">
+            <h3>Evolução do Patrimônio</h3>
+            <canvas id="patrimonio-chart"></canvas>
+          </div>
+          <div class="chart-card" data-chart="investimentos-chart">
+            <h3>Distribuição de Investimentos</h3>
+            <canvas id="investimentos-chart"></canvas>
+          </div>
+          <div class="chart-card" data-chart="receitas-despesas-chart">
+            <h3>Receitas vs Despesas</h3>
+            <canvas id="receitas-despesas-chart"></canvas>
+          </div>
+          <div class="chart-card" data-chart="ativos-chart">
+            <h3>Composição de Ativos</h3>
+            <canvas id="ativos-chart"></canvas>
+          </div>
         </div>
       </div>
       
@@ -604,6 +623,7 @@
   <script src="app.js?v=40"></script>
   <script src="modern-dashboard.js?v=1"></script>
   <script src="ui-cleanup.js?v=1"></script>
+  <script src="charts-filing-system.js?v=1"></script>
   <script src="forex-widget.js?v=1"></script>
   <!-- Charts Scripts -->
   <script src="src/charts-data.js?v=1"></script>

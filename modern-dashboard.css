@@ -613,6 +613,190 @@
   .goals-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* ============================================================
+   SISTEMA DE FICHÁRIO - CHARTS STACKING
+   ============================================================ */
+
+.charts-filing-system {
+  margin-bottom: 32px;
+}
+
+.charts-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  padding: 12px;
+  background: rgba(0, 212, 255, 0.05);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+}
+
+.chart-tab {
+  padding: 10px 16px;
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  background: transparent;
+  color: var(--text-secondary);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.chart-tab:hover {
+  background: rgba(0, 212, 255, 0.15);
+  border-color: rgba(0, 212, 255, 0.6);
+  color: var(--text-primary);
+  transform: translateY(-2px);
+}
+
+.chart-tab.active {
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.3), rgba(0, 153, 255, 0.2));
+  border-color: rgba(0, 212, 255, 0.8);
+  color: #00D4FF;
+  box-shadow: 0 0 16px rgba(0, 212, 255, 0.3);
+}
+
+.charts-stack {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  overflow: hidden;
+  backdrop-filter: var(--glass-blur);
+}
+
+.chart-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 24px;
+  background: var(--bg-card);
+  border-radius: 16px;
+  opacity: 0;
+  z-index: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease, z-index 0.4s step-end;
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-card.active {
+  opacity: 1;
+  z-index: 10;
+  pointer-events: auto;
+  transition: opacity 0.4s ease, z-index 0.4s step-start;
+}
+
+.chart-card h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+  color: var(--text-primary);
+}
+
+.chart-card canvas {
+  flex: 1;
+  min-height: 300px;
+}
+
+/* Efeito de "fichário" - sobreposição visual */
+.chart-card:nth-child(2) {
+  transform: translateX(4px) translateY(4px);
+}
+
+.chart-card:nth-child(3) {
+  transform: translateX(8px) translateY(8px);
+}
+
+.chart-card:nth-child(4) {
+  transform: translateX(12px) translateY(12px);
+}
+
+.chart-card.active {
+  transform: translateX(0) translateY(0);
+}
+
+/* Shadow efeito de profundidade */
+.charts-stack::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), transparent);
+  border-radius: 12px;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Responsivo - Reduzir altura em mobile */
+@media (max-width: 768px) {
+  .charts-stack {
+    height: 320px;
+  }
+
+  .charts-tabs {
+    gap: 6px;
+    padding: 10px;
+  }
+
+  .chart-tab {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .chart-card {
+    padding: 16px;
+  }
+
+  .chart-card h3 {
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+
+  .chart-card canvas {
+    min-height: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .charts-stack {
+    height: 280px;
+  }
+
+  .charts-tabs {
+    gap: 4px;
+    padding: 8px;
+  }
+
+  .chart-tab {
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+
+  .chart-card {
+    padding: 12px;
+  }
+
+  .chart-card h3 {
+    font-size: 13px;
+    margin-bottom: 10px;
+  }
+
+  .chart-card canvas {
+    min-height: 200px;
+  }
 
   .dashboard-title h1 {
     font-size: 24px;
