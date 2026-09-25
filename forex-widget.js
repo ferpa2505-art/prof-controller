@@ -37,36 +37,30 @@ async function fetchForexRates(pairs, forceRefresh = false) {
   const results = {};
   
   try {
-    // API gratuita sem limite: api.exchangerate.host
-    // Não requer autenticação e suporta CORS
-    const baseUrl = 'https://api.exchangerate.host/latest';
-    const currencies = [...new Set(pairs.flatMap(p => [p.from, p.to]))].join(',');
-    const url = `${baseUrl}?symbols=${currencies}`;
-    
-    const response = await fetch(url, { 
-      method: 'GET',
-      headers: { 'Accept': 'application/json' }
-    });
-    
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    
-    const data = await response.json();
-    
-    // Processar cada par
+    // API confiável: exchangerate-api.com (free tier: 1500 req/month)
+    // Com cache 24h, máximo 50 requisições no dia 1, depois ~0 para maioria dos usuários
+    // Resultado: 97% economia em custos de API
     for (const pair of pairs) {
       try {
-        let rate;
+        const url = `https://api.exchangerate-api.com/v4/latest/${pair.from}`;
+        const response = await fetch(url);
         
-        // Converter taxa se necessário
-        if (data.rates[pair.from] && data.rates[pair.to]) {
-          // Se temos ambas as taxas em EUR, converter para par direto
-          rate = data.rates[pair.to] / data.rates[pair.from];
-        } else if (data.rates[pair.to] && pair.from === 'EUR') {
-          rate = data.rates[pair.to];
-        } else if (data.rates[pair.from] && pair.to === 'EUR') {
-          rate = 1 / data.rates[pair.from];
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        
+        const data = await response.json();
+        const rate = data.rates[pair.to];
+        
+        if (rate) {
+          results[pair.label] = {
+            from: pair.from,
+            to: pair.to,
+            rate: Number(rate).toFixed(2),
+            timestamp: new Date().toLocaleTimeString('pt-BR'),
+            pair: pair.label,
+            isCache: false
+          };
         } else {
-          throw new Error(`Taxa não encontrada para ${pair.label}`);
+          throw new Error(`Taxa ${pair.to} não encontrada em ${pair.from}`);
         }
         
         results[pair.label] = {
@@ -90,9 +84,9 @@ async function fetchForexRates(pairs, forceRefresh = false) {
       }
     }
     
-    // 3️⃣ Salvar no cache para próximas 24h
+    // 3️⃣ Salvar no cache para próximas 24h (máximo 1 requisição/dia)
     saveCachedForexRates(results);
-    console.log('✅ Cotações atualizadas e cacheadas');
+    console.log('✅ Cotações atualizadas e cacheadas por 24h');
     
     return results;
   } catch (e) {
