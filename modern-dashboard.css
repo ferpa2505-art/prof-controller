@@ -665,13 +665,18 @@
 .charts-stack {
   position: relative;
   width: 100%;
-  height: 420px;
+  height: 550px;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: 16px;
   overflow: hidden;
   backdrop-filter: var(--glass-blur);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .chart-card {
@@ -680,7 +685,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  padding: 24px;
+  padding: 32px 40px;
   background: var(--bg-card);
   border-radius: 16px;
   opacity: 0;
@@ -689,6 +694,8 @@
   transition: opacity 0.4s ease, z-index 0.4s step-end;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   visibility: hidden;
 }
 
@@ -701,17 +708,20 @@
 }
 
 .chart-card h3 {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 600;
-  margin: 0 0 12px 0;
+  margin: 0 0 20px 0;
   color: var(--text-primary);
   flex-shrink: 0;
+  width: 100%;
+  text-align: left;
 }
 
 .chart-card canvas {
-  flex: 1;
-  height: 320px !important;
-  min-height: 320px;
+  width: 100% !important;
+  height: 400px !important;
+  min-height: 400px;
+  max-width: 600px;
 }
 
 /* Efeito de "fichário" - sobreposição visual */
@@ -745,15 +755,29 @@
   z-index: -1;
 }
 
-/* Responsivo - Reduzir altura em mobile */
+/* Responsivo - Tablet */
+@media (max-width: 1024px) {
+  .charts-stack {
+    height: 520px;
+  }
+
+  .chart-card canvas {
+    height: 380px !important;
+    min-height: 380px;
+    max-width: 550px;
+  }
+}
+
+/* Responsivo - Tablet Pequeno */
 @media (max-width: 768px) {
   .charts-stack {
-    height: 360px;
+    height: 480px;
+    margin: 15px auto;
   }
 
   .charts-tabs {
     gap: 6px;
-    padding: 10px;
+    padding: 12px;
   }
 
   .chart-tab {
@@ -762,47 +786,54 @@
   }
 
   .chart-card {
-    padding: 16px;
+    padding: 24px 28px;
   }
 
   .chart-card h3 {
-    font-size: 14px;
-    margin-bottom: 8px;
+    font-size: 16px;
+    margin-bottom: 16px;
   }
 
   .chart-card canvas {
-    height: 280px !important;
-    min-height: 280px;
+    height: 340px !important;
+    min-height: 340px;
+    max-width: 100%;
   }
 }
 
+/* Responsivo - Mobile */
 @media (max-width: 480px) {
   .charts-stack {
-    height: 320px;
+    height: 440px;
+    margin: 10px auto;
   }
 
   .charts-tabs {
     gap: 4px;
-    padding: 8px;
+    padding: 10px;
+    flex-wrap: wrap;
   }
 
   .chart-tab {
     padding: 6px 10px;
     font-size: 11px;
+    flex: 1;
+    min-width: 70px;
   }
 
   .chart-card {
-    padding: 12px;
+    padding: 16px 20px;
   }
 
   .chart-card h3 {
-    font-size: 13px;
-    margin-bottom: 6px;
+    font-size: 14px;
+    margin-bottom: 12px;
   }
 
   .chart-card canvas {
-    height: 240px !important;
-    min-height: 240px;
+    height: 300px !important;
+    min-height: 300px;
+    max-width: 100%;
   }
 
   .dashboard-title h1 {
