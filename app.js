@@ -11592,6 +11592,14 @@ async function init() {
   if (versionEl) {
     versionEl.textContent = `ProF Controller v${APP_VERSION}`;
   }
+
+  // Inicializar navegação com ícones
+  if (window.initializeNavIcons && typeof window.initializeNavIcons === 'function') {
+    console.log('[APP] Inicializando navegação com ícones');
+    window.initializeNavIcons();
+  } else {
+    console.warn('[APP] initializeNavIcons não disponível');
+  }
 }
 
 init();

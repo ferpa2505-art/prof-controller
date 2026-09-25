@@ -1,0 +1,355 @@
+/* ============================================================
+   🧭 NAVIGATION WITH ICONS - ProF Controller
+   Navegação vertical com ícones temáticos
+   ============================================================ */
+
+/* Wrapper da navegação principal */
+.app-head {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border-color, rgba(0, 153, 255, 0.2));
+  padding-bottom: 12px;
+}
+
+/* Topbar com logo */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px;
+  background: var(--bg-primary);
+}
+
+.topbar .brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.topbar .brand-logo-img {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+}
+
+.topbar .brand-name {
+  color: var(--text-primary);
+  letter-spacing: 0.5px;
+}
+
+/* Ícones de ação no topbar */
+.topbar-actions {
+  display: flex;
+  gap: 12px;
+}
+
+/* ============================================================
+   TABS NAVIGATION - Horizontal Icon Tabs
+   ============================================================ */
+
+.tabs {
+  display: flex;
+  gap: 0;
+  padding: 8px 16px;
+  background: var(--bg-secondary, rgba(0, 153, 255, 0.05));
+  overflow-x: auto;
+  overflow-y: hidden;
+  border-top: 1px solid var(--border-color, rgba(0, 153, 255, 0.1));
+  border-bottom: 1px solid var(--border-color, rgba(0, 153, 255, 0.1));
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.tabs .tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 12px 16px;
+  min-width: 70px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 500;
+  text-align: center;
+  position: relative;
+  white-space: nowrap;
+}
+
+/* SVG ícone dentro do tab */
+.tabs .tab svg {
+  width: 28px;
+  height: 28px;
+  stroke-width: 1.5;
+  color: var(--text-secondary);
+  transition: all 0.3s ease;
+  display: block;
+}
+
+/* Estado: Tab ativo */
+.tabs .tab.active {
+  background: linear-gradient(135deg, rgba(0, 153, 255, 0.15), rgba(0, 212, 255, 0.1));
+  color: var(--accent-primary, #00D4FF);
+  border: 1px solid rgba(0, 153, 255, 0.3);
+  box-shadow: 0 0 12px rgba(0, 153, 255, 0.2);
+}
+
+.tabs .tab.active svg {
+  color: var(--accent-primary, #00D4FF);
+  filter: drop-shadow(0 0 4px rgba(0, 153, 255, 0.4));
+}
+
+/* Hover state */
+.tabs .tab:hover {
+  background: rgba(0, 153, 255, 0.08);
+  color: var(--text-primary);
+  transform: translateY(-2px);
+}
+
+.tabs .tab:hover svg {
+  color: var(--text-primary);
+}
+
+/* Indicador visual embaixo do tab ativo */
+.tabs .tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -9px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-primary, #00D4FF), transparent);
+  border-radius: 3px;
+}
+
+/* ============================================================
+   SUBTABS - Título e descrição da seção
+   ============================================================ */
+
+.subtabs {
+  padding: 16px 24px;
+  background: var(--bg-secondary, rgba(0, 153, 255, 0.02));
+  border-bottom: 1px solid var(--border-color, rgba(0, 153, 255, 0.1));
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.subtabs.hidden {
+  display: none;
+}
+
+.subtabs h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.subtabs p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+/* ============================================================
+   TEMA: Profit C (Cinza Metálico)
+   ============================================================ */
+
+[data-theme="profit-c"] .tabs {
+  background: linear-gradient(180deg, rgba(60, 80, 110, 0.3), rgba(40, 60, 90, 0.2));
+  border-top-color: rgba(0, 212, 255, 0.15);
+  border-bottom-color: rgba(0, 212, 255, 0.15);
+}
+
+[data-theme="profit-c"] .tab {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+[data-theme="profit-c"] .tab svg {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+[data-theme="profit-c"] .tab.active {
+  background: linear-gradient(135deg, rgba(0, 153, 255, 0.2), rgba(0, 212, 255, 0.15));
+  color: #00D4FF;
+  border-color: rgba(0, 153, 255, 0.4);
+}
+
+[data-theme="profit-c"] .tab.active svg {
+  color: #00D4FF;
+}
+
+[data-theme="profit-c"] .subtabs {
+  background: linear-gradient(180deg, rgba(60, 80, 110, 0.2), rgba(40, 60, 90, 0.1));
+  border-bottom-color: rgba(0, 212, 255, 0.15);
+}
+
+/* ============================================================
+   TEMA: Light (Claro)
+   ============================================================ */
+
+[data-theme="light"] .tabs {
+  background: linear-gradient(180deg, rgba(230, 240, 250, 0.6), rgba(220, 235, 250, 0.4));
+  border-top-color: rgba(100, 150, 200, 0.2);
+  border-bottom-color: rgba(100, 150, 200, 0.2);
+}
+
+[data-theme="light"] .tab {
+  color: rgba(60, 80, 110, 0.7);
+}
+
+[data-theme="light"] .tab svg {
+  color: rgba(60, 80, 110, 0.6);
+}
+
+[data-theme="light"] .tab.active {
+  background: linear-gradient(135deg, rgba(100, 180, 255, 0.15), rgba(100, 200, 255, 0.1));
+  color: #0066FF;
+  border-color: rgba(100, 150, 200, 0.3);
+}
+
+[data-theme="light"] .tab.active svg {
+  color: #0066FF;
+}
+
+[data-theme="light"] .subtabs {
+  background: linear-gradient(180deg, rgba(240, 245, 250, 0.6), rgba(230, 240, 250, 0.3));
+  border-bottom-color: rgba(100, 150, 200, 0.2);
+}
+
+[data-theme="light"] .subtabs h3 {
+  color: #1a2a3a;
+}
+
+[data-theme="light"] .subtabs p {
+  color: rgba(60, 80, 110, 0.7);
+}
+
+/* ============================================================
+   TEMA: Dark (Escuro)
+   ============================================================ */
+
+[data-theme="dark"] .tabs {
+  background: linear-gradient(180deg, rgba(20, 35, 60, 0.4), rgba(15, 25, 45, 0.3));
+  border-top-color: rgba(0, 180, 255, 0.2);
+  border-bottom-color: rgba(0, 180, 255, 0.2);
+}
+
+[data-theme="dark"] .tab {
+  color: rgba(200, 220, 240, 0.6);
+}
+
+[data-theme="dark"] .tab svg {
+  color: rgba(200, 220, 240, 0.5);
+}
+
+[data-theme="dark"] .tab.active {
+  background: linear-gradient(135deg, rgba(0, 160, 255, 0.2), rgba(0, 200, 255, 0.15));
+  color: #00FFFF;
+  border-color: rgba(0, 160, 255, 0.4);
+}
+
+[data-theme="dark"] .tab.active svg {
+  color: #00FFFF;
+}
+
+[data-theme="dark"] .subtabs {
+  background: linear-gradient(180deg, rgba(25, 40, 65, 0.3), rgba(15, 30, 50, 0.2));
+  border-bottom-color: rgba(0, 180, 255, 0.2);
+}
+
+/* ============================================================
+   RESPONSIVO
+   ============================================================ */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .tabs .tab {
+    min-width: 65px;
+    padding: 10px 12px;
+  }
+
+  .tabs .tab svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .tabs .tab {
+    font-size: 10px;
+  }
+
+  .subtabs {
+    padding: 12px 16px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .subtabs h3 {
+    font-size: 18px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .topbar {
+    padding: 8px 12px;
+  }
+
+  .topbar .brand {
+    gap: 8px;
+  }
+
+  .topbar .brand-logo-img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .topbar .brand-name {
+    font-size: 16px;
+  }
+
+  .tabs {
+    padding: 8px 8px;
+    gap: 4px;
+    border-radius: 0;
+  }
+
+  .tabs .tab {
+    min-width: 60px;
+    padding: 8px 10px;
+  }
+
+  .tabs .tab svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .tabs .tab {
+    font-size: 9px;
+  }
+
+  .subtabs {
+    padding: 10px 12px;
+  }
+
+  .subtabs h3 {
+    font-size: 16px;
+  }
+
+  .subtabs p {
+    font-size: 12px;
+  }
+}
