@@ -80,15 +80,17 @@ header.topbar {
 
 
 .brand-logo-img {
-  width: 48px;
-  height: 48px;
-  object-fit: contain;
-  filter: drop-shadow(0 0 8px rgba(0, 153, 255, 0.3));
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 8px;
+  filter: drop-shadow(0 0 8px rgba(0, 153, 255, 0.4));
   transition: filter 0.3s ease;
+  flex-shrink: 0;
 }
 
 .brand:hover .brand-logo-img {
-  filter: drop-shadow(0 0 12px rgba(0, 153, 255, 0.6)) drop-shadow(0 0 20px rgba(0, 215, 126, 0.3));
+  filter: drop-shadow(0 0 12px rgba(0, 153, 255, 0.7)) drop-shadow(0 0 24px rgba(0, 215, 126, 0.4));
 }
 
 .brand-name {
