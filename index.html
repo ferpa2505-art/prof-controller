@@ -551,14 +551,8 @@
   <footer class="app-footer">
     <small id="appVersion">ProF Controller v1.1.0</small>
   </footer>
-  <script src="app.js?v=38"></script>
-  <script src="modern-dashboard.js?v=1"></script>
-  <script src="ui-cleanup.js?v=1"></script>
-  <!-- Charts Scripts -->
-  <script src="src/charts-data.js?v=1"></script>
-  <script src="src/charts.js?v=1"></script>
   <script>
-    // Theme Management - Profit C Default
+    // Theme Management - Profit C Default (load BEFORE app.js)
     (function() {
       const themes = [
         { id: 'profit-c', name: '⭐ Profit C (Padrão)', default: true },
@@ -567,12 +561,11 @@
       ];
 
       function initializeTheme() {
-        // Load saved theme from localStorage, default to 'profit-c'
         const savedTheme = localStorage.getItem('app-theme') || 'profit-c';
         const themeSelect = document.getElementById('themeSelect');
         
-        if (themeSelect) {
-          // Populate theme options
+        if (themeSelect && themeSelect.options.length === 0) {
+          // Populate theme options only if empty
           themes.forEach(theme => {
             const option = document.createElement('option');
             option.value = theme.id;
@@ -581,9 +574,6 @@
             themeSelect.appendChild(option);
           });
           
-          // Apply saved theme
-          applyTheme(savedTheme);
-          
           // Listen for theme changes
           themeSelect.addEventListener('change', function() {
             const selectedTheme = this.value;
@@ -591,30 +581,29 @@
             localStorage.setItem('app-theme', selectedTheme);
           });
         }
+        applyTheme(savedTheme);
       }
 
       function applyTheme(themeId) {
         const body = document.body;
-        
-        // Remove all theme classes/attributes
-        body.removeAttribute('data-theme');
-        themes.forEach(t => body.classList.remove(`theme-${t.id}`));
-        
-        // Apply new theme
         body.setAttribute('data-theme', themeId);
-        body.classList.add(`theme-${themeId}`);
-        
         console.log(`Tema aplicado: ${themeId}`);
       }
 
-      // Initialize when DOM is ready
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', initializeTheme);
       } else {
         initializeTheme();
       }
     })();
-
+  </script>
+  <script src="app.js?v=38"></script>
+  <script src="modern-dashboard.js?v=1"></script>
+  <script src="ui-cleanup.js?v=1"></script>
+  <!-- Charts Scripts -->
+  <script src="src/charts-data.js?v=1"></script>
+  <script src="src/charts.js?v=1"></script>
+  <script>
     // Inicializar gráficos quando o DOM estiver pronto
     document.addEventListener('DOMContentLoaded', function() {
       setTimeout(function() {
