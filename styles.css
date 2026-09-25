@@ -588,7 +588,17 @@ body.hide-help .tab-intro { display: none; }
 .sec-overlay {
   position: fixed; inset: 0; z-index: 1000; overflow-y: auto;
   display: flex; align-items: center; justify-content: center; padding: 24px 16px;
-  background: radial-gradient(1200px 600px at 50% -10%, color-mix(in srgb, var(--accent) 22%, var(--primary)) 0%, var(--primary) 60%);
+  background: linear-gradient(180deg, #5A6A7A 0%, #4A5A6A 40%, #3A4A5A 100%);
+}
+.sec-overlay::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: 
+    repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(255,255,255,0.02) 1px, rgba(255,255,255,0.02) 2px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(100,150,200,0.04) 2px, rgba(100,150,200,0.04) 4px);
+  pointer-events: none;
+  z-index: -1;
 }
 .sec-overlay.hidden { display: none; }
 body.sec-open { overflow: hidden; }
