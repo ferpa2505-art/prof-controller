@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test Nav Icons</title>
+  <link rel="stylesheet" href="nav-icons.css?v=2">
+  <style>
+    body { font-family: sans-serif; margin: 20px; }
+    .test-result { padding: 10px; margin: 10px 0; border-left: 4px solid #999; }
+    .test-result.pass { border-left-color: #0f0; background: #0f01; }
+    .test-result.fail { border-left-color: #f00; background: #f001; }
+  </style>
+</head>
+<body>
+  <h1>🧪 Teste de Nav Icons</h1>
+  
+  <nav class="tabs" id="mainTabs" aria-label="Menu principal">
+    <button class="tab active" type="button" data-group="dashboard" data-i18n="tabs.dashboard">Dashboard</button>
+    <button class="tab" type="button" data-group="investments" data-i18n="tabs.investments">Investimentos</button>
+  </nav>
+  
+  <nav class="subtabs hidden" id="subTabs" aria-label="Submenu"></nav>
+
+  <div id="testResults"></div>
+
+  <script>
+    console.log('[TEST] Iniciando teste de nav-icons.js');
+    console.log('[TEST] Definindo função t() e estado antes de carregar nav-icons');
+    
+    // Simular função t() para tradução
+    window.t = function(key) {
+      const translations = {
+        'tabs.dashboard': 'Dashboard',
+        'tabs.investments': 'Investimentos',
+        'dashboard.subtitle': 'Visão geral financeira do seu portfólio'
+      };
+      console.log('[TEST] t(' + key + ') = ' + (translations[key] || key));
+      return translations[key] || key;
+    };
+    
+    // Simular estado
+    window.state = {
+      settings: { lang: 'pt-BR' }
+    };
+    
+    console.log('[TEST] t() e state definidos');
+    console.log('[TEST] typeof t = ' + typeof window.t);
+    console.log('[TEST] typeof state = ' + typeof window.state);
+  </script>
+
+  <script>console.log('[TEST] Carregando nav-icons.js');</script>
+  <script src="nav-icons.js?v=2"></script>
+  <script>console.log('[TEST] nav-icons.js carregado');</script>
+
+  <script>
+    // Chamar initializeNavIcons diretamente
+    console.log('[TEST] Aguardando 1 segundo...');
+    setTimeout(() => {
+      console.log('[TEST] Verificando se initializeNavIcons está disponível');
+      console.log('[TEST] typeof window.initializeNavIcons = ' + typeof window.initializeNavIcons);
+      if (typeof window.initializeNavIcons === 'function') {
+        console.log('[TEST] Chamando initializeNavIcons() diretamente');
+        window.initializeNavIcons();
+      } else {
+        console.log('[TEST] initializeNavIcons não encontrada');
+      }
+      const resultsDiv = document.getElementById('testResults');
+      let results = '';
+
+      // Teste 1: Verificar se nav-icons.js carregou
+      results += '<div class="test-result ' + (typeof window.initializeNavIcons === 'function' ? 'pass' : 'fail') + '">';
+      results += '✓ window.initializeNavIcons disponível: ' + (typeof window.initializeNavIcons === 'function');
+      results += '</div>';
+
+      // Teste 2: Verificar se os ícones foram renderizados
+      const tabsContainer = document.getElementById('mainTabs');
+      const iconElements = tabsContainer.querySelectorAll('.tab-icon');
+      results += '<div class="test-result ' + (iconElements.length > 0 ? 'pass' : 'fail') + '">';
+      results += '✓ Ícones renderizados: ' + iconElements.length + ' (esperado: 2)';
+      results += '</div>';
+
+      // Teste 3: Verificar se labels foram renderizados
+      const labelElements = tabsContainer.querySelectorAll('.tab-label');
+      results += '<div class="test-result ' + (labelElements.length > 0 ? 'pass' : 'fail') + '">';
+      results += '✓ Labels renderizados: ' + labelElements.length + ' (esperado: 2)';
+      results += '</div>';
+
+      // Teste 4: Verificar se subtabs foi atualizado
+      const subtabsContainer = document.getElementById('subTabs');
+      results += '<div class="test-result ' + (!subtabsContainer.classList.contains('hidden') ? 'pass' : 'fail') + '">';
+      results += '✓ Subtabs container visível: ' + !subtabsContainer.classList.contains('hidden');
+      results += '</div>';
+
+      // Teste 5: Verificar conteúdo do subtabs
+      const subtabTitle = subtabsContainer.querySelector('h3');
+      results += '<div class="test-result ' + (subtabTitle ? 'pass' : 'fail') + '">';
+      results += '✓ Subtabs tem título: ' + (subtabTitle ? subtabTitle.textContent : 'NÃO');
+      results += '</div>';
+
+      // Mostrar console logs
+      results += '<pre style="background: #eee; padding: 10px; border-radius: 4px; max-height: 300px; overflow-y: auto;">';
+      results += '[Ver browser DevTools (F12) para mais detalhes]';
+      results += '</pre>';
+
+      resultsDiv.innerHTML = results;
+    }, 1000);
+  </script>
+</body>
+</html>

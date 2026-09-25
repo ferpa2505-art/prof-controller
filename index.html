@@ -46,11 +46,26 @@
     </div>
   </header>
   <nav class="tabs" id="mainTabs" aria-label="Menu principal">
-    <button class="tab active" type="button" data-group="dashboard" data-i18n="tabs.dashboard">Dashboard</button>
-    <button class="tab" type="button" data-group="investments" data-i18n="tabs.investments">Investimentos</button>
-    <button class="tab" type="button" data-group="registry" data-i18n="tabs.registry">Cadastros</button>
-    <button class="tab" type="button" data-group="flows" data-i18n="tabs.flows">Entradas e Saídas</button>
-    <button class="tab" type="button" data-group="news" data-i18n="tabs.news">Notícias</button>
+    <button class="tab active" type="button" data-group="dashboard" data-i18n="tabs.dashboard">
+      <span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h7v7H3V3z"/><path d="M14 3h7v7h-7V3z"/><path d="M3 14h7v7H3v-7z"/><path d="M14 14h7v7h-7v-7z"/></svg></span>
+      <span class="tab-label" data-i18n="tabs.dashboard">Dashboard</span>
+    </button>
+    <button class="tab" type="button" data-group="investments" data-i18n="tabs.investments">
+      <span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h2M9 6h2m-2 12h2m6-10h2"/><polyline points="3 19 3 5 21 5 21 19"/><line x1="3" y1="9" x2="21" y2="9"/></svg></span>
+      <span class="tab-label" data-i18n="tabs.investments">Investimentos</span>
+    </button>
+    <button class="tab" type="button" data-group="registry" data-i18n="tabs.registry">
+      <span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M12 6v6l4 2"/></svg></span>
+      <span class="tab-label" data-i18n="tabs.registry">Cadastros</span>
+    </button>
+    <button class="tab" type="button" data-group="flows" data-i18n="tabs.flows">
+      <span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 10"/><path d="M16 5l-5.5-2.5L5 5M16 5h2a2 2 0 0 1 2 2v2"/><path d="M3 11h6v2H3z"/><path d="M15 11h6v2h-6z"/></svg></span>
+      <span class="tab-label" data-i18n="tabs.flows">Entradas e Saídas</span>
+    </button>
+    <button class="tab" type="button" data-group="news" data-i18n="tabs.news">
+      <span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4V4z"/><line x1="4" y1="8" x2="20" y2="8"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="16" x2="20" y2="16"/></svg></span>
+      <span class="tab-label" data-i18n="tabs.news">Notícias</span>
+    </button>
   </nav>
   <nav class="subtabs hidden" id="subTabs" aria-label="Submenu"></nav>
   </div>
