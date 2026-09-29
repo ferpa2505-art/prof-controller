@@ -726,22 +726,26 @@
 
 /* Gráfico de Linha (Evolução) - mais espaço vertical */
 .chart-card[data-chart="patrimonio-chart"] canvas {
-  height: 450px !important;
+  height: 400px !important;
+  max-height: 400px !important;
 }
 
-/* Gráfico de Barras com Linhas (Distribuição) - MUITO mais altura para labels não conflitarem */
+/* Gráfico de Barras com Linhas (Distribuição) - altura adequada */
 .chart-card[data-chart="investimentos-chart"] canvas {
-  height: 580px !important;
+  height: 400px !important;
+  max-height: 400px !important;
 }
 
 /* Gráfico de Barras (Fluxo) - altura normal */
 .chart-card[data-chart="receitas-despesas-chart"] canvas {
-  height: 420px !important;
+  height: 350px !important;
+  max-height: 350px !important;
 }
 
-/* Gráfico de Rosca/Donut (Ativos) - tamanho generoso */
+/* Gráfico de Rosca/Donut (Ativos) - tamanho adequado */
 .chart-card[data-chart="ativos-chart"] canvas {
-  height: 520px !important;
+  height: 380px !important;
+  max-height: 380px !important;
 }
 
 

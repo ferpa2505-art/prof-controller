@@ -86,49 +86,28 @@ function getInvestimentosData() {
   return {
     labels: labels,
     datasets: [
-      // Dataset 1: Barras verticais com efeito 3D
       {
         type: 'bar',
         label: 'Percentual Real (%)',
         data: percentuais,
-        backgroundColor: colors.map(color => {
-          // Criar gradiente para efeito 3D
-          return color;
-        }),
-        borderColor: colors.map(color => adjustBrightness(color, -40)),
-        borderWidth: 2,
+        backgroundColor: colors,
+        borderColor: colors.map(color => adjustBrightness(color, -30)),
+        borderWidth: 1,
         borderSkipped: false,
-        barPercentage: 0.7,
-        categoryPercentage: 0.8,
+        barPercentage: 0.6,
+        categoryPercentage: 0.7,
         datalabels: {
           anchor: 'end',
           align: 'top',
           color: '#FFFFFF',
           font: {
             weight: 'bold',
-            size: 12
+            size: 11
           },
           formatter: function(value) {
             return value.toFixed(1) + '%';
           }
         }
-      },
-      // Dataset 2: Linha de média sugerida
-      {
-        type: 'line',
-        label: 'Percentual Real (%)',
-        data: percentuais,
-        borderColor: '#00D4FF',
-        backgroundColor: 'rgba(0, 212, 255, 0.05)',
-        borderWidth: 2,
-        fill: false,
-        pointRadius: 4,
-        pointBackgroundColor: '#00D4FF',
-        pointBorderColor: '#FFFFFF',
-        pointBorderWidth: 2,
-        pointHoverRadius: 6,
-        tension: 0.4,
-        yAxisID: 'y'
       }
     ]
   };
