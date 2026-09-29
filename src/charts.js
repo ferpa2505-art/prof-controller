@@ -25,6 +25,12 @@ function initPatrimonioChart() {
     return null;
   }
 
+  // Verificar se função de dados existe
+  if (typeof getPatrimonioData !== 'function') {
+    console.error('getPatrimonioData() não está disponível. Verifique se charts-data.js foi carregado');
+    return null;
+  }
+
   // Destruir gráfico anterior se existir
   if (chartInstances.patrimonio) {
     chartInstances.patrimonio.destroy();
@@ -90,6 +96,11 @@ function initInvestimentosChart() {
   const ctx = document.getElementById('investimentos-chart');
   if (!ctx) {
     console.warn('Canvas #investimentos-chart não encontrado');
+    return null;
+  }
+
+  if (typeof getInvestimentosData !== 'function') {
+    console.error('getInvestimentosData() não está disponível');
     return null;
   }
 
@@ -203,6 +214,11 @@ function initReceitasDespesasChart() {
     return null;
   }
 
+  if (typeof getReceitasDespesasData !== 'function') {
+    console.error('getReceitasDespesasData() não está disponível');
+    return null;
+  }
+
   // Destruir gráfico anterior se existir
   if (chartInstances.receitasDespesas) {
     chartInstances.receitasDespesas.destroy();
@@ -270,6 +286,11 @@ function initAtivosChart() {
     return null;
   }
 
+  if (typeof getAtivosData !== 'function') {
+    console.error('getAtivosData() não está disponível');
+    return null;
+  }
+
   // Destruir gráfico anterior se existir
   if (chartInstances.ativos) {
     chartInstances.ativos.destroy();
@@ -321,6 +342,13 @@ function initAllCharts() {
     // Esperar que o Chart.js esteja carregado
     if (typeof Chart === 'undefined') {
       console.error('Chart.js não foi carregado. Verifique o CDN.');
+      return null;
+    }
+
+    // Verificar se dados estão disponíveis
+    if (typeof getPatrimonioData === 'undefined') {
+      console.error('❌ charts-data.js não foi carregado ou não definiu as funções');
+      console.log('Funções disponíveis:', Object.keys(window).filter(k => k.startsWith('get')));
       return null;
     }
 
