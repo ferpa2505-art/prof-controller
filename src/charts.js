@@ -122,10 +122,10 @@ function initInvestimentosChart() {
       maintainAspectRatio: true,
       layout: {
         padding: {
-          top: 20,
-          right: 20,
-          bottom: 20,
-          left: 20
+          top: 30,
+          right: 30,
+          bottom: 50,
+          left: 30
         }
       },
       plugins: {
@@ -136,12 +136,23 @@ function initInvestimentosChart() {
           labels: {
             ...defaults.plugins.legend.labels,
             font: {
-              size: 11,
+              size: 10,
               weight: '500'
             },
-            padding: 20,
-            boxWidth: 14,
-            boxHeight: 14
+            padding: 25,
+            boxWidth: 12,
+            boxHeight: 12,
+            generateLabels: function(chart) {
+              const data = chart.data;
+              return data.datasets.map((dataset, i) => ({
+                text: dataset.label,
+                fillStyle: dataset.borderColor || dataset.backgroundColor,
+                strokeStyle: dataset.borderColor,
+                lineWidth: 0,
+                hidden: !chart.isDatasetVisible(i),
+                index: i
+              }));
+            }
           }
         },
         tooltip: {
@@ -149,14 +160,16 @@ function initInvestimentosChart() {
           enabled: true,
           displayColors: true,
           backgroundColor: 'rgba(15, 23, 41, 0.95)',
-          padding: 14,
+          padding: 12,
           titleFont: {
-            size: 12,
+            size: 11,
             weight: 'bold'
           },
           bodyFont: {
-            size: 11
+            size: 10
           },
+          maxWidth: 200,
+          yAlign: 'top',
           callbacks: {
             label: function(context) {
               let label = context.dataset.label || '';
@@ -174,7 +187,7 @@ function initInvestimentosChart() {
       scales: {
         y: {
           beginAtZero: true,
-          max: 35, // Máximo de 35% para melhor visualização
+          max: 35,
           grid: {
             color: 'rgba(255, 255, 255, 0.05)',
             drawBorder: false
@@ -182,9 +195,9 @@ function initInvestimentosChart() {
           ticks: {
             color: 'rgba(255, 255, 255, 0.7)',
             font: {
-              size: 11
+              size: 10
             },
-            padding: 8,
+            padding: 10,
             callback: function(value) {
               return value.toFixed(0) + '%';
             }
@@ -194,7 +207,7 @@ function initInvestimentosChart() {
             text: 'Percentual (%)',
             color: 'rgba(255, 255, 255, 0.8)',
             font: {
-              size: 11,
+              size: 10,
               weight: 'bold'
             }
           }
@@ -207,16 +220,16 @@ function initInvestimentosChart() {
           ticks: {
             color: 'rgba(255, 255, 255, 0.7)',
             font: {
-              size: 11
+              size: 10
             },
-            padding: 10
+            padding: 12
           },
           title: {
             display: true,
             text: 'Tipo de Investimento',
             color: 'rgba(255, 255, 255, 0.8)',
             font: {
-              size: 11,
+              size: 10,
               weight: 'bold'
             }
           }
@@ -339,10 +352,10 @@ function initAtivosChart() {
       maintainAspectRatio: true,
       layout: {
         padding: {
-          top: 30,
-          right: 30,
-          bottom: 30,
-          left: 30
+          top: 40,
+          right: 20,
+          bottom: 50,
+          left: 20
         }
       },
       plugins: {
@@ -353,12 +366,12 @@ function initAtivosChart() {
           labels: {
             ...defaults.plugins.legend.labels,
             font: {
-              size: 11,
-              weight: '500'
+              size: 9,
+              weight: '400'
             },
-            padding: 18,
-            boxWidth: 12,
-            boxHeight: 12
+            padding: 12,
+            boxWidth: 11,
+            boxHeight: 11
           }
         },
         tooltip: {

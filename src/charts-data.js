@@ -116,35 +116,17 @@ function getInvestimentosData() {
       // Dataset 2: Linha de média sugerida
       {
         type: 'line',
-        label: 'Média Sugerida (25%)',
-        data: mediasugerida,
-        borderColor: '#FFD700',
-        backgroundColor: 'rgba(255, 215, 0, 0.1)',
+        label: 'Percentual Real (%)',
+        data: percentuais,
+        borderColor: '#00D4FF',
+        backgroundColor: 'rgba(0, 212, 255, 0.05)',
         borderWidth: 2,
-        borderDash: [5, 5],
         fill: false,
         pointRadius: 4,
-        pointBackgroundColor: '#FFD700',
+        pointBackgroundColor: '#00D4FF',
         pointBorderColor: '#FFFFFF',
         pointBorderWidth: 2,
         pointHoverRadius: 6,
-        tension: 0.4,
-        yAxisID: 'y'
-      },
-      // Dataset 3: Linha de investimento real (suavizada)
-      {
-        type: 'line',
-        label: 'Tendência Real',
-        data: percentuais,
-        borderColor: '#00FF88',
-        backgroundColor: 'rgba(0, 255, 136, 0.1)',
-        borderWidth: 2,
-        fill: false,
-        pointRadius: 3,
-        pointBackgroundColor: '#00FF88',
-        pointBorderColor: '#FFFFFF',
-        pointBorderWidth: 2,
-        pointHoverRadius: 5,
         tension: 0.4,
         yAxisID: 'y'
       }

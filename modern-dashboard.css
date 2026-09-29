@@ -726,22 +726,22 @@
 
 /* Gráfico de Linha (Evolução) - mais espaço vertical */
 .chart-card[data-chart="patrimonio-chart"] canvas {
-  height: 500px !important;
+  height: 450px !important;
 }
 
-/* Gráfico de Barras com Linhas (Distribuição) - maior para acomodar legendas */
+/* Gráfico de Barras com Linhas (Distribuição) - MUITO mais altura para labels não conflitarem */
 .chart-card[data-chart="investimentos-chart"] canvas {
-  height: 520px !important;
+  height: 580px !important;
 }
 
-/* Gráfico de Barras (Fluxo) - altura maior */
+/* Gráfico de Barras (Fluxo) - altura normal */
 .chart-card[data-chart="receitas-despesas-chart"] canvas {
-  height: 480px !important;
+  height: 420px !important;
 }
 
-/* Gráfico de Rosca/Donut (Ativos) - aumentado para ocupar bem o espaço */
+/* Gráfico de Rosca/Donut (Ativos) - tamanho generoso */
 .chart-card[data-chart="ativos-chart"] canvas {
-  height: 500px !important;
+  height: 520px !important;
 }
 
 
