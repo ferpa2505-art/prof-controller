@@ -670,26 +670,28 @@
 .charts-stack {
   position: relative;
   width: 100%;
-  height: 700px;
+  min-height: 700px;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: 16px;
-  overflow: visible;
+  overflow: hidden;
   backdrop-filter: var(--glass-blur);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
   margin: 20px auto;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-  justify-content: stretch;
-  padding: 16px;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
 }
 
 .chart-card {
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  padding: 0;
+  padding: 24px;
   background: transparent;
   border-radius: 0;
   opacity: 0;
@@ -698,8 +700,8 @@
   transition: opacity 0.4s ease, z-index 0.4s step-end;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-  justify-content: stretch;
+  align-items: center;
+  justify-content: center;
   visibility: hidden;
 }
 
@@ -712,39 +714,44 @@
 }
 
 .chart-card h3 {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
-  margin: 0 0 16px 0;
+  margin: 0 0 12px 0;
   color: var(--text-primary);
   flex-shrink: 0;
   width: 100%;
   text-align: center;
-  display: none;
+  position: absolute;
+  top: 12px;
+  left: 24px;
+  right: 24px;
 }
 
 .chart-card canvas {
-  width: 100% !important;
-  height: 100% !important;
+  width: calc(100% - 48px) !important;
+  height: 550px !important;
   max-width: 100% !important;
-  max-height: 100% !important;
   display: block !important;
+  margin-top: 40px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* Sem transforms - deixar gráfico em paz */
+/* Efeito de "fichário" - sobreposição visual */
 .chart-card:nth-child(2) {
-  display: none;
+  transform: translateX(2px) translateY(2px);
 }
 
 .chart-card:nth-child(3) {
-  display: none;
+  transform: translateX(4px) translateY(4px);
 }
 
 .chart-card:nth-child(4) {
-  display: none;
+  transform: translateX(6px) translateY(6px);
 }
 
 .chart-card.active {
-  display: flex;
+  transform: translateX(0) translateY(0);
 }
 
 /* Shadow efeito de profundidade */
