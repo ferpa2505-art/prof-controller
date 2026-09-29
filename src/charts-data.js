@@ -262,7 +262,7 @@ function getAtivosData() {
 function getChartDefaults() {
   return {
     responsive: true,
-    maintainAspectRatio: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         display: true,

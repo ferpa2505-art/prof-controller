@@ -670,7 +670,7 @@
 .charts-stack {
   position: relative;
   width: 100%;
-  height: 600px;
+  height: 700px;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: 16px;
@@ -680,16 +680,16 @@
   margin: 20px auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
+  align-items: stretch;
+  justify-content: stretch;
+  padding: 16px;
 }
 
 .chart-card {
   position: relative;
   width: 100%;
   height: 100%;
-  padding: 20px;
+  padding: 0;
   background: transparent;
   border-radius: 0;
   opacity: 0;
@@ -698,8 +698,8 @@
   transition: opacity 0.4s ease, z-index 0.4s step-end;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  align-items: stretch;
+  justify-content: stretch;
   visibility: hidden;
 }
 
@@ -724,9 +724,10 @@
 
 .chart-card canvas {
   width: 100% !important;
-  height: 450px !important;
-  min-height: 450px;
-  max-width: 100%;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  display: block !important;
 }
 
 /* Sem transforms - deixar gráfico em paz */
