@@ -8,19 +8,24 @@
  * @returns {Object} Dados formatados para Chart.js Line
  */
 function getPatrimonioData() {
-  // Tentar puxar dados reais do app
+  // Buscar dados reais do DOM/localStorage do app
   let patrimonio = [125000, 128500, 131200, 129800, 135400, 140200];
   let months = ['Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro'];
   
   try {
-    // Procura por dados reais no localStorage ou window.app
-    if (window.financialData && window.financialData.patrimonio) {
-      const realData = window.financialData.patrimonio;
-      patrimonio = realData.values || patrimonio;
-      months = realData.labels || months;
+    // Buscar valor total do patrimônio do card "Patrimônio Líquido"
+    const equityElement = document.getElementById('totalEquity');
+    if (equityElement && equityElement.textContent) {
+      const totalText = equityElement.textContent.trim();
+      console.log('Total Patrimônio encontrado:', totalText);
+      // Usar como valor inicial do gráfico
+      const lastValue = parseFloat(totalText.replace(/[^0-9.,]/g, '').replace(/\./g, '').replace(',', '.')) || 0;
+      if (lastValue > 0) {
+        patrimonio[patrimonio.length - 1] = lastValue;
+      }
     }
   } catch (e) {
-    console.log('Usando dados de demonstração para patrimônio');
+    console.log('Usando dados de demonstração para patrimônio:', e.message);
   }
   
   return {
@@ -314,16 +319,19 @@ function formatPercent(value) {
 }
 
 /**
- * Exporta todas as funções
+ * Exporta todas as funções para window global
  */
+window.chartsData = {
+  getPatrimonioData,
+  getInvestimentosData,
+  getReceitasDespesasData,
+  getAtivosData,
+  getChartDefaults,
+  formatCurrency,
+  formatPercent
+};
+
+// Também para CommonJS se estiver em ambiente Node
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = {
-    getPatrimonioData,
-    getInvestimentosData,
-    getReceitasDespesasData,
-    getAtivosData,
-    getChartDefaults,
-    formatCurrency,
-    formatPercent
-  };
+  module.exports = window.chartsData;
 }
