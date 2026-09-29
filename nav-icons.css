@@ -49,7 +49,7 @@
 }
 
 /* ============================================================
-   TABS NAVIGATION - Horizontal Icon Tabs
+   TABS NAVIGATION - Horizontal Icon Tabs com Dropdown
    ============================================================ */
 
 .tabs {
@@ -58,11 +58,13 @@
   padding: 8px 16px;
   background: var(--bg-secondary, rgba(0, 153, 255, 0.05));
   overflow-x: auto;
-  overflow-y: hidden;
+  overflow-y: visible;
   border-top: 1px solid var(--border-color, rgba(0, 153, 255, 0.1));
   border-bottom: 1px solid var(--border-color, rgba(0, 153, 255, 0.1));
   align-items: center;
   justify-content: flex-start;
+  position: relative;
+  z-index: 100;
 }
 
 .tabs .tab {
@@ -319,6 +321,69 @@
   background: #00FFFF;
   border-color: #00FFFF;
   color: #0a0e27;
+}
+
+/* ============================================================
+   DROPDOWN MENUS - Tab com submenu
+   ============================================================ */
+
+.tab-with-dropdown {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tab-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  background: var(--surface, rgba(20, 35, 60, 0.95));
+  border: 1px solid rgba(0, 153, 255, 0.3);
+  border-radius: 8px;
+  min-width: 150px;
+  padding: 8px 0;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: all 0.2s ease;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+}
+
+.tab-with-dropdown:hover .tab-dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.tab-dropdown button {
+  width: 100%;
+  padding: 10px 16px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 13px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tab-dropdown button:hover {
+  background: rgba(0, 153, 255, 0.15);
+  color: var(--text-primary);
+  padding-left: 20px;
+}
+
+.tab-dropdown button.active {
+  background: rgba(0, 153, 255, 0.25);
+  color: #00D4FF;
+  font-weight: 600;
 }
 
 /* ============================================================
