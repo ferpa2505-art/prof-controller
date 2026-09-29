@@ -645,11 +645,8 @@
   <script src="forex-widget.js?v=1"></script>
   <script src="nav-icons.js?v=3"></script>
   <script src="tab-dropdown-menu.js?v=1"></script>
-  <!-- Charts Scripts -->
-  <script src="src/charts-data.js?v=1"></script>
-  <script src="src/charts-3d-plugin.js?v=1"></script>
-  <script src="src/charts.js?v=1"></script>
-  <script src="src/charts-api.js?v=1"></script>
+  <!-- Charts Scripts - NEW: Real Data Only -->
+  <script src="src/charts-manager.js?v=1"></script>
   <!-- Financial Forms -->
   <script src="src/investment-form.js?v=1"></script>
   <script src="src/income-form.js?v=1"></script>
@@ -658,21 +655,5 @@
   <script src="src/vehicle-form.js?v=1"></script>
   <!-- FAB Buttons -->
   <script src="src/fab-buttons.js?v=1"></script>
-  <script>
-    // Inicializar gráficos quando o DOM estiver pronto
-    document.addEventListener('DOMContentLoaded', function() {
-      setTimeout(function() {
-        console.log('Iniciando gráficos com dados reais...');
-        // Primeiro inicializar estrutura básica dos gráficos
-        initAllCharts();
-        // Depois buscar dados reais da API
-        if (typeof initializeChartsWithData === 'function') {
-          initializeChartsWithData();
-          // Atualizar a cada 30 segundos
-          startChartsAutoRefresh(30000);
-        }
-      }, 100);
-    });
-  </script>
 </body>
 </html>
