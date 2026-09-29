@@ -330,35 +330,54 @@
 .tab-with-dropdown {
   position: relative;
   display: flex;
-  flex-direction: column;
   align-items: center;
+}
+
+.tab-dropdown-trigger {
+  position: relative;
+}
+
+.tab-dropdown-trigger::after {
+  content: '▼';
+  font-size: 9px;
+  margin-left: 4px;
+  opacity: 0.6;
+  transition: all 0.2s ease;
+}
+
+.tab-dropdown-trigger.visible::after {
+  opacity: 1;
+  transform: rotateZ(180deg);
 }
 
 .tab-dropdown {
   position: absolute;
-  top: calc(100% + 4px);
-  left: 0;
-  background: var(--surface, rgba(20, 35, 60, 0.95));
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-primary, rgba(20, 35, 60, 0.98));
   border: 1px solid rgba(0, 153, 255, 0.3);
   border-radius: 8px;
-  min-width: 150px;
-  padding: 8px 0;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  min-width: 160px;
+  padding: 6px 0;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 153, 255, 0.1);
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-8px);
+  transform: translateX(-50%) translateY(-8px);
   transition: all 0.2s ease;
-  z-index: 1000;
-  backdrop-filter: blur(10px);
+  z-index: 1001;
+  backdrop-filter: blur(8px);
+  pointer-events: none;
 }
 
-.tab-with-dropdown:hover .tab-dropdown {
+.tab-dropdown.visible {
   opacity: 1;
   visibility: visible;
-  transform: translateY(0);
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
 }
 
-.tab-dropdown button {
+.tab-dropdown-item {
   width: 100%;
   padding: 10px 16px;
   border: none;
@@ -367,23 +386,29 @@
   font-size: 13px;
   cursor: pointer;
   text-align: left;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
   white-space: nowrap;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  display: block;
+  font-family: inherit;
 }
 
-.tab-dropdown button:hover {
-  background: rgba(0, 153, 255, 0.15);
+.tab-dropdown-item:first-child {
+  border-radius: 6px 6px 0 0;
+}
+
+.tab-dropdown-item:last-child {
+  border-radius: 0 0 6px 6px;
+}
+
+.tab-dropdown-item:hover {
+  background: rgba(0, 153, 255, 0.2);
   color: var(--text-primary);
   padding-left: 20px;
 }
 
-.tab-dropdown button.active {
-  background: rgba(0, 153, 255, 0.25);
+.tab-dropdown-item:active {
+  background: rgba(0, 153, 255, 0.3);
   color: #00D4FF;
-  font-weight: 600;
 }
 
 /* ============================================================

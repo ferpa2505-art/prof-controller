@@ -77,8 +77,17 @@ function switchChart(chartId, tabs, cards) {
 
   // Redraw dos gráficos Chart.js
   setTimeout(() => {
-    if (window.chartInstances && window.chartInstances[chartId]) {
-      const chart = window.chartInstances[chartId];
+    // Extrair nome do gráfico removendo sufixo "-chart"
+    const chartName = chartId.replace('-chart', '');
+    
+    // Converter receitas-despesas para receitasDespesas (camelCase)
+    let normalizedName = chartName;
+    if (chartName === 'receitas-despesas') {
+      normalizedName = 'receitasDespesas';
+    }
+    
+    if (window.chartInstances && window.chartInstances[normalizedName]) {
+      const chart = window.chartInstances[normalizedName];
       if (chart && typeof chart.resize === 'function') {
         chart.resize();
         chart.update();
