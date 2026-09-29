@@ -319,7 +319,7 @@ function formatPercent(value) {
 }
 
 /**
- * Exporta todas as funções para window global
+ * Exporta todas as funções para window global (diretamente e via namespace)
  */
 window.chartsData = {
   getPatrimonioData,
@@ -331,7 +331,16 @@ window.chartsData = {
   formatPercent
 };
 
-// Também para CommonJS se estiver em ambiente Node
+// Também expor funções diretamente na window para acesso global
+window.getPatrimonioData = getPatrimonioData;
+window.getInvestimentosData = getInvestimentosData;
+window.getReceitasDespesasData = getReceitasDespesasData;
+window.getAtivosData = getAtivosData;
+window.getChartDefaults = getChartDefaults;
+window.formatCurrency = formatCurrency;
+window.formatPercent = formatPercent;
+
+// CommonJS export
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = window.chartsData;
 }
