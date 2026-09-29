@@ -1,0 +1,176 @@
+/* ============================================================
+   FLOATING ACTION BUTTONS (FAB)
+   ============================================================ */
+
+.fab-container {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.fab-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.fab-label {
+  background: rgba(0, 0, 0, 0.8);
+  color: #FFFFFF;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(8px);
+  transition: all 0.2s ease;
+  pointer-events: none;
+}
+
+.fab-button {
+  width: 56px;
+  height: 56px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.fab-button svg {
+  width: 28px;
+  height: 28px;
+  fill: currentColor;
+}
+
+/* Primary FAB (Main button) */
+.fab-button.fab-primary {
+  background: linear-gradient(135deg, #0099FF 0%, #0073CC 100%);
+  color: #FFFFFF;
+}
+
+.fab-button.fab-primary:hover {
+  background: linear-gradient(135deg, #00AAFF 0%, #0088DD 100%);
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 153, 255, 0.4);
+}
+
+.fab-button.fab-primary:active {
+  transform: scale(0.95);
+}
+
+/* Secondary FAB (Sub-buttons) */
+.fab-button.fab-secondary {
+  background: rgba(255, 255, 255, 0.95);
+  color: #0099FF;
+  font-weight: 600;
+  font-size: 20px;
+  width: 48px;
+  height: 48px;
+}
+
+.fab-button.fab-secondary:hover {
+  background: #FFFFFF;
+  transform: scale(1.08);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.fab-button.fab-secondary:active {
+  transform: scale(0.95);
+}
+
+/* Hidden state */
+.fab-group.hidden .fab-button.fab-secondary,
+.fab-group.hidden .fab-label {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0) translateX(8px);
+}
+
+/* Show on hover/focus */
+.fab-container:hover .fab-group.hidden .fab-button.fab-secondary,
+.fab-container:hover .fab-group.hidden .fab-label {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1) translateX(0);
+}
+
+/* Labels visible on hover */
+.fab-container:hover .fab-label {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Ripple effect */
+.fab-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.fab-button:active::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .fab-container {
+    bottom: 24px;
+    right: 24px;
+  }
+
+  .fab-button {
+    width: 48px;
+    height: 48px;
+  }
+
+  .fab-button svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .fab-button.fab-secondary {
+    width: 44px;
+    height: 44px;
+  }
+
+  .fab-label {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .fab-container {
+    bottom: 20px;
+    right: 20px;
+  }
+
+  .fab-button {
+    width: 44px;
+    height: 44px;
+  }
+
+  .fab-button svg {
+    width: 22px;
+    height: 22px;
+  }
+}
