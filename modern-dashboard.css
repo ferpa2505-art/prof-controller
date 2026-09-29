@@ -729,12 +729,34 @@
 
 .chart-card canvas {
   width: calc(100% - 48px) !important;
-  height: 550px !important;
+  height: 480px !important;
   max-width: 100% !important;
+  max-height: 480px !important;
   display: block !important;
   margin-top: 40px;
   margin-left: auto;
   margin-right: auto;
+}
+
+/* Gráfico de Linha (Evolução) - mais espaço vertical */
+.chart-card[data-chart="patrimonio-chart"] canvas {
+  height: 480px !important;
+}
+
+/* Gráfico de Barras com Linhas (Distribuição) - altura média */
+.chart-card[data-chart="investimentos-chart"] canvas {
+  height: 420px !important;
+}
+
+/* Gráfico de Barras (Fluxo) - altura média */
+.chart-card[data-chart="receitas-despesas-chart"] canvas {
+  height: 420px !important;
+}
+
+/* Gráfico de Rosca/Donut (Ativos) - reduzido para caber */
+.chart-card[data-chart="ativos-chart"] canvas {
+  height: 360px !important;
+  width: calc(100% - 120px) !important;
 }
 
 /* Efeito de "fichário" - sobreposição visual */
