@@ -780,9 +780,14 @@
   }
 
   .chart-card canvas {
-    height: 340px !important;
-    min-height: 340px;
+    height: 360px !important;
+    min-height: 360px;
     max-width: 100%;
+  }
+
+  /* Melhorar legenda em tablet */
+  .chart-card[data-chart="ativos-chart"] canvas {
+    height: 380px !important;
   }
 }
 

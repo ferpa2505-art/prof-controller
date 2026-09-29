@@ -354,7 +354,7 @@ function initAtivosChart() {
         padding: {
           top: 40,
           right: 20,
-          bottom: 50,
+          bottom: 60,
           left: 20
         }
       },
@@ -366,12 +366,12 @@ function initAtivosChart() {
           labels: {
             ...defaults.plugins.legend.labels,
             font: {
-              size: 9,
-              weight: '400'
+              size: 13,
+              weight: '600'
             },
-            padding: 12,
-            boxWidth: 11,
-            boxHeight: 11
+            padding: 16,
+            boxWidth: 14,
+            boxHeight: 14
           }
         },
         tooltip: {
@@ -389,7 +389,7 @@ function initAtivosChart() {
         datalabels: {
           color: '#FFFFFF',
           font: {
-            size: 10,
+            size: 13,
             weight: 'bold'
           },
           formatter: function(value, context) {
