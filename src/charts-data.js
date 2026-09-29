@@ -120,15 +120,16 @@ function getInvestimentosData() {
         data: mediasugerida,
         borderColor: '#FFD700',
         backgroundColor: 'rgba(255, 215, 0, 0.1)',
-        borderWidth: 3,
+        borderWidth: 2,
         borderDash: [5, 5],
         fill: false,
-        pointRadius: 5,
+        pointRadius: 4,
         pointBackgroundColor: '#FFD700',
         pointBorderColor: '#FFFFFF',
         pointBorderWidth: 2,
-        pointHoverRadius: 7,
-        tension: 0.4
+        pointHoverRadius: 6,
+        tension: 0.4,
+        yAxisID: 'y'
       },
       // Dataset 3: Linha de investimento real (suavizada)
       {
@@ -139,12 +140,13 @@ function getInvestimentosData() {
         backgroundColor: 'rgba(0, 255, 136, 0.1)',
         borderWidth: 2,
         fill: false,
-        pointRadius: 4,
+        pointRadius: 3,
         pointBackgroundColor: '#00FF88',
         pointBorderColor: '#FFFFFF',
         pointBorderWidth: 2,
-        pointHoverRadius: 6,
-        tension: 0.4
+        pointHoverRadius: 5,
+        tension: 0.4,
+        yAxisID: 'y'
       }
     ]
   };

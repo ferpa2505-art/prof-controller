@@ -120,14 +120,43 @@ function initInvestimentosChart() {
       indexAxis: undefined, // Manter como vertical
       responsive: true,
       maintainAspectRatio: true,
+      layout: {
+        padding: {
+          top: 20,
+          right: 20,
+          bottom: 20,
+          left: 20
+        }
+      },
       plugins: {
         ...defaults.plugins,
         legend: {
           ...defaults.plugins.legend,
-          position: 'bottom'
+          position: 'bottom',
+          labels: {
+            ...defaults.plugins.legend.labels,
+            font: {
+              size: 11,
+              weight: '500'
+            },
+            padding: 20,
+            boxWidth: 14,
+            boxHeight: 14
+          }
         },
         tooltip: {
           ...defaults.plugins.tooltip,
+          enabled: true,
+          displayColors: true,
+          backgroundColor: 'rgba(15, 23, 41, 0.95)',
+          padding: 14,
+          titleFont: {
+            size: 12,
+            weight: 'bold'
+          },
+          bodyFont: {
+            size: 11
+          },
           callbacks: {
             label: function(context) {
               let label = context.dataset.label || '';
@@ -155,6 +184,7 @@ function initInvestimentosChart() {
             font: {
               size: 11
             },
+            padding: 8,
             callback: function(value) {
               return value.toFixed(0) + '%';
             }
@@ -164,7 +194,7 @@ function initInvestimentosChart() {
             text: 'Percentual (%)',
             color: 'rgba(255, 255, 255, 0.8)',
             font: {
-              size: 12,
+              size: 11,
               weight: 'bold'
             }
           }
@@ -177,15 +207,16 @@ function initInvestimentosChart() {
           ticks: {
             color: 'rgba(255, 255, 255, 0.7)',
             font: {
-              size: 12
-            }
+              size: 11
+            },
+            padding: 10
           },
           title: {
             display: true,
             text: 'Tipo de Investimento',
             color: 'rgba(255, 255, 255, 0.8)',
             font: {
-              size: 12,
+              size: 11,
               weight: 'bold'
             }
           }
@@ -304,12 +335,48 @@ function initAtivosChart() {
     data: data,
     options: {
       ...defaults,
+      responsive: true,
+      maintainAspectRatio: true,
+      layout: {
+        padding: {
+          top: 30,
+          right: 30,
+          bottom: 30,
+          left: 30
+        }
+      },
       plugins: {
         ...defaults.plugins,
+        legend: {
+          ...defaults.plugins.legend,
+          position: 'bottom',
+          labels: {
+            ...defaults.plugins.legend.labels,
+            font: {
+              size: 11,
+              weight: '500'
+            },
+            padding: 18,
+            boxWidth: 12,
+            boxHeight: 12
+          }
+        },
+        tooltip: {
+          ...defaults.plugins.tooltip,
+          callbacks: {
+            label: function(context) {
+              const label = context.label || '';
+              const value = context.parsed || 0;
+              const sum = context.dataset.data.reduce((a, b) => a + b, 0);
+              const percentage = ((value * 100) / sum).toFixed(1);
+              return label + ': ' + percentage + '%';
+            }
+          }
+        },
         datalabels: {
           color: '#FFFFFF',
           font: {
-            size: 11,
+            size: 10,
             weight: 'bold'
           },
           formatter: function(value, context) {
