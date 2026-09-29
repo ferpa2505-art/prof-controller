@@ -379,6 +379,21 @@ function redrawAllCharts() {
 }
 
 /**
+ * Inicialização automática quando o DOM estiver pronto
+ */
+if (document.readyState === 'loading') {
+  // Document ainda está carregando
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM Content Loaded - Inicializando gráficos...');
+    setTimeout(initAllCharts, 100);
+  });
+} else {
+  // Document já foi carregado (carregado via defer ou end of body)
+  console.log('Document already loaded - Inicializando gráficos...');
+  setTimeout(initAllCharts, 100);
+}
+
+/**
  * Exporta funções públicas
  */
 if (typeof module !== 'undefined' && module.exports) {
