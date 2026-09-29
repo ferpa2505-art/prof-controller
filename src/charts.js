@@ -3,13 +3,16 @@
    Inicialização e gerenciamento de gráficos Chart.js
    ============================================================ */
 
-// Registro de instâncias dos gráficos
+// Registro de instâncias dos gráficos (global para acesso externo)
 const chartInstances = {
   patrimonio: null,
   investimentos: null,
   receitasDespesas: null,
   ativos: null
 };
+
+// Exponha globalmente
+window.chartInstances = chartInstances;
 
 /**
  * Inicializa o gráfico de evolução do patrimônio
