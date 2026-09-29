@@ -9,6 +9,7 @@ import authRoutes from './routes/auth.js';
 import subscriptionRoutes from './routes/subscription.js';
 import userRoutes from './routes/user.js';
 import webhookRoutes from './routes/webhook.js';
+import financialRoutes from './routes/financial.js';
 
 // Middleware
 import { verifyToken } from './middleware/auth.js';
@@ -39,6 +40,7 @@ app.use('/webhook', webhookRoutes);
 // Routes (com autenticação)
 app.use('/subscription', verifyToken, subscriptionRoutes);
 app.use('/user', verifyToken, userRoutes);
+app.use('/api/financial', verifyToken, financialRoutes);
 
 // 404 handler
 app.use((req, res) => {

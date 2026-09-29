@@ -962,3 +962,39 @@
 /* ============================================================
    FIM - MODERN DASHBOARD STYLES
    ============================================================ */
+
+/* ============================================================
+   NO DATA MESSAGE
+   ============================================================ */
+
+.no-data-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 380px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 16px;
+  text-align: center;
+  padding: 24px;
+  background: linear-gradient(135deg, rgba(0, 153, 255, 0.05), rgba(255, 107, 53, 0.02));
+  border-radius: 12px;
+  border: 1px solid rgba(0, 153, 255, 0.1);
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.no-data-message svg {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 16px;
+  opacity: 0.4;
+  color: rgba(0, 153, 255, 0.5);
+}
+
+.no-data-message p {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.6;
+}

@@ -646,12 +646,20 @@
   <script src="src/charts-data.js?v=1"></script>
   <script src="src/charts-3d-plugin.js?v=1"></script>
   <script src="src/charts.js?v=1"></script>
+  <script src="src/charts-api.js?v=1"></script>
   <script>
     // Inicializar gráficos quando o DOM estiver pronto
     document.addEventListener('DOMContentLoaded', function() {
       setTimeout(function() {
-        console.log('Iniciando gráficos...');
+        console.log('Iniciando gráficos com dados reais...');
+        // Primeiro inicializar estrutura básica dos gráficos
         initAllCharts();
+        // Depois buscar dados reais da API
+        if (typeof initializeChartsWithData === 'function') {
+          initializeChartsWithData();
+          // Atualizar a cada 30 segundos
+          startChartsAutoRefresh(30000);
+        }
       }, 100);
     });
   </script>
