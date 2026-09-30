@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="640" height="440" viewBox="0 0 640 440">
+  <!-- Trilhas de circuito gravadas no metal (tema escuro). Tile repetido pelo body. -->
+  <defs>
+    <g id="c" fill="none" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+      <!-- canto superior esquerdo: entram pela esquerda e descem em 45° -->
+      <path d="M0 36 H52 L80 64"/><circle cx="82.5" cy="66.5" r="2.6"/>
+      <path d="M0 46 H44 L66 68 V84"/><circle cx="66" cy="87" r="2.6"/>
+      <path d="M0 56 H36 L52 72 V100"/><circle cx="52" cy="103" r="2.6"/>
+      <path d="M0 66 H28 L40 78 V118"/><circle cx="40" cy="121" r="2.6"/>
+
+      <!-- topo central: descem do alto e abrem para os lados -->
+      <path d="M226 0 V34 L208 52"/><circle cx="206" cy="54" r="2.6"/>
+      <path d="M238 0 V44 L226 56 V64"/><circle cx="226" cy="67" r="2.6"/>
+      <path d="M250 0 V58"/><circle cx="250" cy="61" r="2.6"/>
+      <path d="M284 0 V40 L296 52 V66"/><circle cx="296" cy="69" r="2.6"/>
+      <path d="M296 0 V30 L314 48"/><circle cx="316" cy="50" r="2.6"/>
+      <path d="M308 0 V22 L330 44 V56"/><circle cx="330" cy="59" r="2.6"/>
+
+      <!-- lado direito: entram pela direita e sobem -->
+      <path d="M640 150 H588 L566 128"/><circle cx="564" cy="126" r="2.6"/>
+      <path d="M640 162 H578 L552 136 V124"/><circle cx="552" cy="121" r="2.6"/>
+      <path d="M640 174 H566 L544 196"/><circle cx="542" cy="198" r="2.6"/>
+      <path d="M640 186 H594 L610 202 V214"/><circle cx="610" cy="217" r="2.6"/>
+
+      <!-- meio: bloco de trilhas paralelas -->
+      <path d="M392 236 V262 L376 278"/><circle cx="374" cy="280" r="2.6"/>
+      <path d="M404 230 V270 L394 280 V290"/><circle cx="394" cy="293" r="2.6"/>
+      <path d="M416 236 V296"/><circle cx="416" cy="299" r="2.6"/>
+      <path d="M440 236 V270 L452 282 V290"/><circle cx="452" cy="293" r="2.6"/>
+      <path d="M452 230 V260 L470 278"/><circle cx="472" cy="280" r="2.6"/>
+
+      <!-- lado esquerdo, meio: gancho em U -->
+      <path d="M0 262 H40 L62 240 H104"/><circle cx="107" cy="240" r="2.6"/>
+      <path d="M0 274 H46 L68 252 H96"/><circle cx="99" cy="252" r="2.6"/>
+      <path d="M0 286 H52 L74 264 H88"/><circle cx="91" cy="264" r="2.6"/>
+
+      <!-- base: sobem de baixo -->
+      <path d="M120 440 V402 L142 380 V364"/><circle cx="142" cy="361" r="2.6"/>
+      <path d="M132 440 V408 L156 384 V372"/><circle cx="156" cy="369" r="2.6"/>
+      <path d="M144 440 V414 L170 388"/><circle cx="172" cy="386" r="2.6"/>
+      <path d="M520 440 V410 L500 390"/><circle cx="498" cy="388" r="2.6"/>
+      <path d="M532 440 V400 L520 388 V376"/><circle cx="520" cy="373" r="2.6"/>
+      <path d="M544 440 V392"/><circle cx="544" cy="389" r="2.6"/>
+    </g>
+  </defs>
+  <!-- efeito gravado: sombra escura + fio de luz 1px abaixo -->
+  <use xlink:href="#c" href="#c" stroke="rgba(255,255,255,0.07)" transform="translate(0 1)"/>
+  <use xlink:href="#c" href="#c" stroke="rgba(8,10,12,0.55)"/>
+</svg>
