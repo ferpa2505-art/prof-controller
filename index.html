@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="styles/investment-form.css?v=1">
   <link rel="stylesheet" href="styles/fab-buttons.css?v=1">
   <link rel="stylesheet" href="styles/financial-form.css?v=1">
+  <link rel="stylesheet" href="styles/charts-filing.css?v=1">
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=3">
   <link rel="apple-touch-icon" href="icon-192.png?v=3">
   <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png?v=3">
@@ -110,36 +111,36 @@
       <div class="charts-filing-system">
         <!-- Abas dos gráficos -->
         <div class="charts-tabs">
-          <button class="chart-tab active" data-chart="patrimonio-chart" title="Evolução do Patrimônio">
-            📈 Evolução
+          <button class="chart-tab active" data-chart="patrimonio-chart" title="Evolução do Patrimônio" data-i18n-title="charts.title.evolution">
+            📈 <span data-i18n="charts.tab.evolution">Evolução</span>
           </button>
-          <button class="chart-tab" data-chart="investimentos-chart" title="Distribuição de Investimentos">
-            🎯 Distribuição
+          <button class="chart-tab" data-chart="investimentos-chart" title="Distribuição de Investimentos" data-i18n-title="charts.title.distribution">
+            🎯 <span data-i18n="charts.tab.distribution">Distribuição</span>
           </button>
-          <button class="chart-tab" data-chart="receitas-despesas-chart" title="Receitas vs Despesas">
-            💰 Fluxo
+          <button class="chart-tab" data-chart="receitas-despesas-chart" title="Receitas vs Despesas" data-i18n-title="charts.title.flow">
+            💰 <span data-i18n="charts.tab.flow">Fluxo</span>
           </button>
-          <button class="chart-tab" data-chart="ativos-chart" title="Composição de Ativos">
-            🏆 Ativos
+          <button class="chart-tab" data-chart="ativos-chart" title="Composição de Ativos" data-i18n-title="charts.title.assets">
+            🏆 <span data-i18n="charts.tab.assets">Ativos</span>
           </button>
         </div>
 
         <!-- Stack de gráficos sobrepostos -->
         <div class="charts-stack">
           <div class="chart-card active" data-chart="patrimonio-chart">
-            <h3>Evolução do Patrimônio</h3>
+            <h3 data-i18n="charts.title.evolution">Evolução do Patrimônio</h3>
             <canvas id="patrimonio-chart"></canvas>
           </div>
           <div class="chart-card" data-chart="investimentos-chart">
-            <h3>Distribuição de Investimentos</h3>
+            <h3 data-i18n="charts.title.distribution">Distribuição de Investimentos</h3>
             <canvas id="investimentos-chart"></canvas>
           </div>
           <div class="chart-card" data-chart="receitas-despesas-chart">
-            <h3>Receitas vs Despesas</h3>
+            <h3 data-i18n="charts.title.flow">Receitas vs Despesas</h3>
             <canvas id="receitas-despesas-chart"></canvas>
           </div>
           <div class="chart-card" data-chart="ativos-chart">
-            <h3>Composição de Ativos</h3>
+            <h3 data-i18n="charts.title.assets">Composição de Ativos</h3>
             <canvas id="ativos-chart"></canvas>
           </div>
         </div>
@@ -639,14 +640,14 @@
       }
     })();
   </script>
-  <script src="app.js?v=42"></script>
+  <script src="app.js?v=43"></script>
   <script src="ui-cleanup.js?v=1"></script>
   <script src="charts-filing-system.js?v=1"></script>
   <script src="forex-widget.js?v=1"></script>
   <script src="nav-icons.js?v=3"></script>
   <script src="tab-dropdown-menu.js?v=1"></script>
   <!-- Charts Scripts - NEW: Real Data Only -->
-  <script src="src/charts-manager.js?v=1"></script>
+  <script src="src/charts-manager.js?v=2"></script>
   <!-- Financial Forms -->
   <script src="src/investment-form.js?v=1"></script>
   <script src="src/income-form.js?v=1"></script>

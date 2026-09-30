@@ -1,46 +1,49 @@
 /**
  * Charts Manager - Real Data Only
  * Gerencia TODOS os gráficos com dados 100% do banco de dados
- * Sem dados fake, sem mistura de dados
- * 
- * Dashboard é único por usuário:
- * - Cada usuário vê apenas seus dados financeiros
- * - Autenticação via token em localStorage
+ *
+ * Os textos vêm do I18N do app.js (função global t()). Como o Chart.js
+ * desenha no canvas, trocar o idioma exige redesenhar: applyLang() chama
+ * window.chartsManager.initialize().
  */
+
+// Tradução com fallback: funciona mesmo se o app.js ainda não tiver carregado
+function chartT(key, fallback) {
+  if (typeof t === 'function') {
+    const v = t(key);
+    if (v && v !== key) return v;
+  }
+  return fallback;
+}
+
+function chartLang() {
+  try {
+    return (typeof state !== 'undefined' && state.settings && state.settings.lang) || 'pt-BR';
+  } catch (e) {
+    return 'pt-BR';
+  }
+}
 
 class ChartsManager {
   constructor() {
     this.charts = {};
     this.autoRefreshInterval = null;
-    this.userId = this.getUserId();
-  }
-
-  /**
-   * Get user ID from auth token
-   */
-  getUserId() {
-    const token = localStorage.getItem('auth_token') || sessionStorage.getItem('auth_token');
-    if (token) {
-      try {
-        const decoded = JSON.parse(atob(token.split('.')[1]));
-        return decoded.userId || decoded.sub || null;
-      } catch (e) {
-        console.warn('Could not decode token:', e);
-      }
-    }
-    return null;
   }
 
   /**
    * Initialize all charts with real data
    */
   async initialize() {
-    console.log('📊 Inicializando gráficos com dados reais (usuário:', this.userId, ')');
-    
-    await this.loadPatrimonyChart();
-    await this.loadDistributionChart();
-    await this.loadCashFlowChart();
-    await this.loadAssetsChart();
+    console.log('📊 Inicializando gráficos com dados reais...');
+
+    try {
+      await this.loadPatrimonyChart();
+      await this.loadDistributionChart();
+      await this.loadCashFlowChart();
+      await this.loadAssetsChart();
+    } catch (error) {
+      console.error('Erro ao inicializar gráficos:', error);
+    }
   }
 
   /**
@@ -48,18 +51,21 @@ class ChartsManager {
    */
   async loadPatrimonyChart() {
     try {
-      const response = await fetch('/api/financial/patrimony', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('auth_token') || sessionStorage.getItem('auth_token')}`
-        }
-      });
+      const response = await fetch('/api/financial/patrimony');
+
+      if (!response.ok) {
+        console.warn('Erro ao buscar patrimony:', response.status);
+        this.showEmptyState('patrimonio-chart');
+        return;
+      }
+
       const result = await response.json();
 
       const chartCanvas = document.getElementById('patrimonio-chart');
       const chartCard = chartCanvas ? chartCanvas.closest('.chart-card') : null;
 
       if (!result.hasData || !result.data || result.data.length === 0) {
-        this.showEmptyState(chartCanvas, chartCard, 'Patrimônio');
+        this.showEmptyState('patrimonio-chart', chartCard);
         return;
       }
 
@@ -73,7 +79,7 @@ class ChartsManager {
         labels: result.data.map(d => this.formatMonth(d.month)),
         datasets: [
           {
-            label: 'Patrimônio Líquido (R$)',
+            label: chartT('charts.ds.netWorth', 'Patrimônio Líquido'),
             data: result.data.map(d => d.netWorth),
             borderColor: '#0099FF',
             backgroundColor: 'rgba(0, 153, 255, 0.1)',
@@ -98,16 +104,9 @@ class ChartsManager {
           }
         }
       });
-
-      console.log('✅ Gráfico de patrimônio carregado');
-
     } catch (error) {
-      console.error('❌ Erro ao carregar gráfico de patrimônio:', error);
-      this.showEmptyState(
-        document.getElementById('patrimonio-chart'),
-        document.querySelector('[data-chart="patrimonio-chart"]'),
-        'Patrimônio'
-      );
+      console.error('Erro ao carregar gráfico de patrimônio:', error);
+      this.showEmptyState('patrimonio-chart');
     }
   }
 
@@ -116,18 +115,21 @@ class ChartsManager {
    */
   async loadDistributionChart() {
     try {
-      const response = await fetch('/api/financial/distribution', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('auth_token') || sessionStorage.getItem('auth_token')}`
-        }
-      });
+      const response = await fetch('/api/financial/distribution');
+
+      if (!response.ok) {
+        console.warn('Erro ao buscar distribution:', response.status);
+        this.showEmptyState('investimentos-chart');
+        return;
+      }
+
       const result = await response.json();
 
       const chartCanvas = document.getElementById('investimentos-chart');
       const chartCard = chartCanvas ? chartCanvas.closest('.chart-card') : null;
 
       if (!result.hasData || !result.data || result.data.length === 0) {
-        this.showEmptyState(chartCanvas, chartCard, 'Distribuição');
+        this.showEmptyState('investimentos-chart', chartCard);
         return;
       }
 
@@ -137,65 +139,55 @@ class ChartsManager {
       if (chartCanvas) chartCanvas.style.display = 'block';
 
       const chartData = {
-        labels: result.data.map(d => d.name),
-        datasets: [
-          {
-            label: 'Percentual Real (%)',
-            data: result.data.map(d => d.percentage),
-            backgroundColor: [
-              '#0099FF',  // Ações
-              '#00D77E',  // Fundos
-              '#00D4FF',  // Cripto
-              '#FFB800',  // Renda Fixa
-              '#FF6B35',  // Imóveis
-              '#9D4EDD'   // Veículos
-            ],
-            borderColor: 'rgba(255, 255, 255, 0.2)',
-            borderWidth: 2
-          }
-        ]
+        labels: result.data.map(d => this.typeLabel(d.type)),
+        datasets: [{
+          label: chartT('charts.ds.distribution', 'Distribuição (%)'),
+          data: result.data.map(d => d.percentage),
+          backgroundColor: [
+            '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4',
+            '#FFEAA7', '#DDA15E', '#BC6C25', '#D4A574'
+          ],
+          borderWidth: 2,
+          borderColor: '#FFF'
+        }]
       };
 
-      this.createOrUpdateChart('investimentos-chart', 'bar', chartData, {
+      this.createOrUpdateChart('investimentos-chart', 'doughnut', chartData, {
         responsive: true,
         maintainAspectRatio: true,
         plugins: {
           legend: {
             display: true,
-            position: 'bottom'
+            position: 'right'
           }
         }
       });
-
-      console.log('✅ Gráfico de distribuição carregado');
-
     } catch (error) {
-      console.error('❌ Erro ao carregar gráfico de distribuição:', error);
-      this.showEmptyState(
-        document.getElementById('investimentos-chart'),
-        document.querySelector('[data-chart="investimentos-chart"]'),
-        'Distribuição'
-      );
+      console.error('Erro ao carregar gráfico de distribuição:', error);
+      this.showEmptyState('investimentos-chart');
     }
   }
 
   /**
-   * Load Cash Flow Chart (Receitas vs Despesas)
+   * Load Cash Flow Chart (Fluxo de Caixa)
    */
   async loadCashFlowChart() {
     try {
-      const response = await fetch('/api/financial/cash-flow', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('auth_token') || sessionStorage.getItem('auth_token')}`
-        }
-      });
+      const response = await fetch('/api/financial/cashflow');
+
+      if (!response.ok) {
+        console.warn('Erro ao buscar cashflow:', response.status);
+        this.showEmptyState('receitas-despesas-chart');
+        return;
+      }
+
       const result = await response.json();
 
       const chartCanvas = document.getElementById('receitas-despesas-chart');
       const chartCard = chartCanvas ? chartCanvas.closest('.chart-card') : null;
 
       if (!result.hasData || !result.data || result.data.length === 0) {
-        this.showEmptyState(chartCanvas, chartCard, 'Fluxo');
+        this.showEmptyState('receitas-despesas-chart', chartCard);
         return;
       }
 
@@ -208,18 +200,16 @@ class ChartsManager {
         labels: result.data.map(d => this.formatMonth(d.month)),
         datasets: [
           {
-            label: 'Receitas (R$)',
+            label: chartT('charts.ds.income', 'Receitas'),
             data: result.data.map(d => d.income),
-            backgroundColor: '#00D77E',
-            borderColor: '#00D77E',
-            borderWidth: 1
+            backgroundColor: '#52B788',
+            barPercentage: 0.7
           },
           {
-            label: 'Despesas (R$)',
-            data: result.data.map(d => d.expenses),
-            backgroundColor: '#FF6B35',
-            borderColor: '#FF6B35',
-            borderWidth: 1
+            label: chartT('charts.ds.expense', 'Despesas'),
+            data: result.data.map(d => d.expense),
+            backgroundColor: '#E63946',
+            barPercentage: 0.7
           }
         ]
       };
@@ -227,6 +217,14 @@ class ChartsManager {
       this.createOrUpdateChart('receitas-despesas-chart', 'bar', chartData, {
         responsive: true,
         maintainAspectRatio: true,
+        scales: {
+          x: {
+            stacked: false
+          },
+          y: {
+            stacked: false
+          }
+        },
         plugins: {
           legend: {
             display: true,
@@ -234,36 +232,32 @@ class ChartsManager {
           }
         }
       });
-
-      console.log('✅ Gráfico de fluxo carregado');
-
     } catch (error) {
-      console.error('❌ Erro ao carregar gráfico de fluxo:', error);
-      this.showEmptyState(
-        document.getElementById('receitas-despesas-chart'),
-        document.querySelector('[data-chart="receitas-despesas-chart"]'),
-        'Fluxo'
-      );
+      console.error('Erro ao carregar gráfico de fluxo:', error);
+      this.showEmptyState('receitas-despesas-chart');
     }
   }
 
   /**
-   * Load Assets Chart (Composição de Ativos - Doughnut)
+   * Load Assets Composition Chart (Composição de Ativos)
    */
   async loadAssetsChart() {
     try {
-      const response = await fetch('/api/financial/assets', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('auth_token') || sessionStorage.getItem('auth_token')}`
-        }
-      });
+      const response = await fetch('/api/financial/assets');
+
+      if (!response.ok) {
+        console.warn('Erro ao buscar assets:', response.status);
+        this.showEmptyState('ativos-chart');
+        return;
+      }
+
       const result = await response.json();
 
       const chartCanvas = document.getElementById('ativos-chart');
       const chartCard = chartCanvas ? chartCanvas.closest('.chart-card') : null;
 
       if (!result.hasData || !result.data || result.data.length === 0) {
-        this.showEmptyState(chartCanvas, chartCard, 'Ativos');
+        this.showEmptyState('ativos-chart', chartCard);
         return;
       }
 
@@ -273,24 +267,20 @@ class ChartsManager {
       if (chartCanvas) chartCanvas.style.display = 'block';
 
       const chartData = {
-        labels: result.data.map(d => d.type),
-        datasets: [
-          {
-            data: result.data.map(d => d.percentage),
-            backgroundColor: [
-              '#0099FF',  // Ações
-              '#00D77E',  // ETFs
-              '#FF6B35',  // Criptos
-              '#FFB800',  // Fundos
-              '#9D4EDD'   // Renda Fixa
-            ],
-            borderColor: 'rgba(255, 255, 255, 0.2)',
-            borderWidth: 2
-          }
-        ]
+        labels: result.data.map(d => this.typeLabel(d.type)),
+        datasets: [{
+          label: chartT('charts.ds.value', 'Valor'),
+          data: result.data.map(d => d.value),
+          backgroundColor: [
+            '#1abc9c', '#3498db', '#9b59b6', '#e74c3c',
+            '#f39c12', '#16a085', '#2980b9', '#8e44ad'
+          ],
+          borderWidth: 2,
+          borderColor: '#FFF'
+        }]
       };
 
-      this.createOrUpdateChart('ativos-chart', 'doughnut', chartData, {
+      this.createOrUpdateChart('ativos-chart', 'pie', chartData, {
         responsive: true,
         maintainAspectRatio: true,
         plugins: {
@@ -300,164 +290,107 @@ class ChartsManager {
           }
         }
       });
-
-      console.log('✅ Gráfico de ativos carregado');
-
     } catch (error) {
-      console.error('❌ Erro ao carregar gráfico de ativos:', error);
-      this.showEmptyState(
-        document.getElementById('ativos-chart'),
-        document.querySelector('[data-chart="ativos-chart"]'),
-        'Ativos'
-      );
+      console.error('Erro ao carregar gráfico de ativos:', error);
+      this.showEmptyState('ativos-chart');
     }
   }
 
   /**
-   * Create or update chart instance
+   * Create or update a chart
    */
-  createOrUpdateChart(elementId, type, data, options) {
-    const ctx = document.getElementById(elementId);
-    if (!ctx) {
-      console.warn(`Canvas element #${elementId} not found`);
+  createOrUpdateChart(canvasId, type, data, options = {}) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) {
+      console.warn(`Canvas ${canvasId} não encontrado`);
       return;
     }
 
-    // Destroy existing chart
-    if (this.charts[elementId]) {
-      this.charts[elementId].destroy();
+    // Destroy existing chart if it exists
+    if (this.charts[canvasId]) {
+      this.charts[canvasId].destroy();
     }
 
-    this.charts[elementId] = new Chart(ctx, {
-      type: type,
-      data: data,
+    const ctx = canvas.getContext('2d');
+    this.charts[canvasId] = new Chart(ctx, {
+      type,
+      data,
       options: {
+        // Números dos eixos e tooltips no formato do idioma escolhido
+        locale: chartLang(),
         ...options,
-        plugins: {
-          ...options.plugins,
-          datalabels: {
-            display: false
-          }
-        }
+        responsive: true,
+        maintainAspectRatio: false
       }
     });
+
+    console.log(`✅ Gráfico ${canvasId} criado com sucesso`);
   }
 
   /**
    * Show empty state message
    */
-  showEmptyState(chartCanvas, chartCard, chartName) {
-    if (chartCanvas) {
-      chartCanvas.style.display = 'none';
-    }
+  showEmptyState(canvasOrId, chartCard) {
+    const canvas = typeof canvasOrId === 'string'
+      ? document.getElementById(canvasOrId)
+      : canvasOrId;
 
-    if (chartCard) {
-      // Remove existing no-data message
-      const existingMsg = chartCard.querySelector('.no-data-message');
-      if (existingMsg) existingMsg.remove();
+    if (!canvas) return;
 
-      // Create and insert no-data message
-      const noDataDiv = document.createElement('div');
-      noDataDiv.className = 'no-data-message';
-      noDataDiv.style.cssText = `
+    canvas.style.display = 'none';
+
+    const card = chartCard || canvas.closest('.chart-card');
+    if (!card) return;
+
+    let noDataMsg = card.querySelector('.no-data-message');
+    if (!noDataMsg) {
+      noDataMsg = document.createElement('div');
+      noDataMsg.className = 'no-data-message';
+      noDataMsg.style.cssText = `
         display: flex;
-        flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 16px;
-        padding: 60px 20px;
-        text-align: center;
-        min-height: 400px;
+        height: 300px;
+        font-size: 16px;
+        color: #999;
+        background: #f5f5f5;
+        border-radius: 8px;
+        margin-top: 10px;
       `;
-      noDataDiv.innerHTML = `
-        <svg style="width: 64px; height: 64px; color: rgba(255, 255, 255, 0.3);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
-          <polyline points="13 2 13 9 20 9"></polyline>
-        </svg>
-        <p style="color: rgba(255, 255, 255, 0.6); font-size: 14px; margin: 0;">
-          Ainda Sem Dados Para Confecção dos Gráficos
-        </p>
-        <p style="color: rgba(255, 255, 255, 0.4); font-size: 12px; margin: 0;">
-          Adicione dados de ${chartName.toLowerCase()} para visualizar este gráfico
-        </p>
-      `;
-
-      chartCard.appendChild(noDataDiv);
+      card.appendChild(noDataMsg);
     }
+    // Atualiza sempre, para acompanhar a troca de idioma
+    noDataMsg.textContent = chartT('charts.empty', 'Ainda sem dados para montar os gráficos');
   }
 
   /**
-   * Format month name (2024-09 -> Setembro)
+   * Traduz o tipo vindo da API ("Acoes", "Renda Fixa"...). Tipos sem
+   * tradução aparecem como vieram.
+   */
+  typeLabel(type) {
+    return chartT('charts.type.' + String(type || '').toLowerCase(), type);
+  }
+
+  /**
+   * Format month for display ("Abr '24", "Apr '24", "Abr '24")
    */
   formatMonth(monthStr) {
-    if (!monthStr) return '';
-    
-    const months = [
-      'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
-      'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
-    ];
-
     const [year, month] = monthStr.split('-');
-    const monthIndex = parseInt(month) - 1;
-    return `${months[monthIndex]}`;
-  }
-
-  /**
-   * Start auto-refresh (a cada 30 segundos)
-   */
-  startAutoRefresh(interval = 30000) {
-    if (this.autoRefreshInterval) {
-      clearInterval(this.autoRefreshInterval);
-    }
-
-    this.autoRefreshInterval = setInterval(async () => {
-      console.log('🔄 Atualizando gráficos...');
-      await this.initialize();
-    }, interval);
-
-    console.log(`✅ Auto-refresh configurado a cada ${interval / 1000}s`);
-  }
-
-  /**
-   * Stop auto-refresh
-   */
-  stopAutoRefresh() {
-    if (this.autoRefreshInterval) {
-      clearInterval(this.autoRefreshInterval);
-      this.autoRefreshInterval = null;
-    }
-  }
-
-  /**
-   * Refresh charts immediately
-   */
-  async refresh() {
-    console.log('🔄 Atualizando gráficos manualmente');
-    await this.initialize();
-  }
-
-  /**
-   * Destroy all charts
-   */
-  destroy() {
-    Object.values(this.charts).forEach(chart => {
-      if (chart) chart.destroy();
-    });
-    this.charts = {};
-    this.stopAutoRefresh();
+    const name = new Date(Number(year), Number(month) - 1, 1)
+      .toLocaleDateString(chartLang(), { month: 'short' })
+      .replace('.', '');
+    return `${name.charAt(0).toUpperCase()}${name.slice(1)} '${year.slice(-2)}`;
   }
 }
 
-// Create global instance
-window.chartsManager = new ChartsManager();
-
-// Initialize when DOM is ready
+// Initialize charts when DOM is ready
+// Exposto em window para o applyLang() redesenhar ao trocar de idioma
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', async () => {
-    await window.chartsManager.initialize();
-    window.chartsManager.startAutoRefresh(30000);
+  document.addEventListener('DOMContentLoaded', () => {
+    window.chartsManager = new ChartsManager();
+    window.chartsManager.initialize();
   });
 } else {
+  window.chartsManager = new ChartsManager();
   window.chartsManager.initialize();
-  window.chartsManager.startAutoRefresh(30000);
 }
