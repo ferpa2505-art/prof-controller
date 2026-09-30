@@ -1,0 +1,7 @@
+# Dependências: instalar com npm install, nunca commitar
+node_modules/
+
+# Segredos: só o .env.example vai para o repositório
+.env
+.env.local
+.env.*.local
