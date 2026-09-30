@@ -440,7 +440,9 @@ th { background: var(--surface); color: var(--muted); font-weight: 600; white-sp
 
 
 /* ===== Fase 10 — Navegação, engrenagem, explicações, ranking e notícias ===== */
-.topbar { position: relative; }
+/* z-index acima de #mainTabs (100): o backdrop-filter do cabeçalho cria um
+   contexto de empilhamento, e sem isto a barra de abas cobre o painel da engrenagem */
+.topbar { position: relative; z-index: 110; }
 .topbar-actions { position: relative; }
 .gear-btn {
   display: inline-flex; align-items: center; justify-content: center;

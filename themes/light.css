@@ -30,16 +30,33 @@
   --border-color-light: rgba(0, 99, 255, 0.25);
   --glass-blur: blur(10px);
   --glass-backdrop: rgba(255, 255, 255, 0.8);
+
+  /* Variáveis base do styles.css: fundo no cinza do cabeçalho e
+     superfícies (tabelas, dicas, modais) em branco-acinzentado */
+  --bg: #C4C8D0;
+  --surface: #EEF0F4;
 }
 
 /* ============================================================
-   BACKGROUND - LIGHT GRADIENT
+   BACKGROUND - GRAY (mesmo tom do cabeçalho)
    ============================================================ */
 
 body[data-theme="light"],
 body.theme-light {
-  background: linear-gradient(135deg, #FFFFFF 0%, #F5F7FA 100%);
+  background: linear-gradient(135deg, #BDC1CA 0%, #CFD2D9 100%);
   color: #1F2937;
+}
+
+/* Faixa do cabeçalho fixo (usa --bg-primary, que é branco neste tema) */
+[data-theme="light"] .app-head {
+  background: #C4C8D0;
+}
+
+/* Valores em destaque: o gradiente ciano do tema escuro some no fundo claro */
+[data-theme="light"] .big-number {
+  background: linear-gradient(135deg, #0077CC, #0055AA);
+  -webkit-background-clip: text;
+  background-clip: text;
 }
 
 body[data-theme="light"]::before,

@@ -230,13 +230,14 @@
    ============================================================ */
 
 [data-theme="light"] .tabs {
-  background: linear-gradient(180deg, rgba(230, 240, 250, 0.6), rgba(220, 235, 250, 0.4));
+  /* mesmo cinza do cabeçalho: o branco ficava claro demais */
+  background: linear-gradient(180deg, #C8CCD4, #BFC3CB);
   border-top-color: rgba(100, 150, 200, 0.2);
   border-bottom-color: rgba(100, 150, 200, 0.2);
 }
 
 [data-theme="light"] .tab {
-  color: rgba(60, 80, 110, 0.7);
+  color: #334155;
 }
 
 [data-theme="light"] .tab svg {
@@ -254,13 +255,13 @@
 }
 
 [data-theme="light"] .subtabs {
-  background: linear-gradient(180deg, rgba(240, 245, 250, 0.6), rgba(230, 240, 250, 0.3));
+  background: linear-gradient(180deg, #CDD0D7, #C4C8D0);
   border-bottom-color: rgba(100, 150, 200, 0.2);
 }
 
 [data-theme="light"] .subtabs .subtab {
   border-color: rgba(100, 150, 200, 0.2);
-  color: rgba(60, 80, 110, 0.7);
+  color: #334155;
 }
 
 [data-theme="light"] .subtabs .subtab:hover {
