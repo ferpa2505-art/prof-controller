@@ -11595,5 +11595,167 @@ async function init() {
 
 }
 
+/* ========== OMNIROUTE INTEGRAÇÃO ========== */
+// Integração com OmniRoute para usar Claude via Gateway local
+// Carrega o cliente OmniRoute e torna disponível globalmente
 
+let claudeAvailable = false;
+
+function initOmniRoute() {
+  try {
+    // Verifica se o cliente OmniRoute está disponível
+    if (typeof OmniRouteClient !== 'undefined') {
+      window.claude = new OmniRouteClient();
+      claudeAvailable = true;
+      console.log('✅ OmniRoute Client inicializado com sucesso');
+      
+      // Testa conexão com OmniRoute
+      window.claude.checkConnection().then(() => {
+        if (window.claude.isOnline) {
+          console.log('🟢 OmniRoute está online e pronto para usar');
+          
+          // Adiciona botão de análise por IA no dashboard
+          addClaudeFeatures();
+        }
+      });
+    } else {
+      console.warn('⚠️ OmniRoute Client não carregado. Verifique se omniroute-client.js está incluído');
+    }
+  } catch (error) {
+    console.error('Erro ao inicializar OmniRoute:', error);
+  }
+}
+
+/**
+ * Adiciona funcionalidades de Claude (análise por IA) na interface
+ */
+function addClaudeFeatures() {
+  // Adiciona botão de análise automática no dashboard
+  const dashboardAnalysisBtn = document.getElementById('btn-ai-analysis');
+  if (dashboardAnalysisBtn) {
+    dashboardAnalysisBtn.addEventListener('click', async () => {
+      await analisarPatrimonioCom Claude();
+    });
+  }
+  
+  // Adiciona sugestões de economia na seção de despesas
+  const suggestEconomyBtn = document.getElementById('btn-suggest-economy');
+  if (suggestEconomyBtn) {
+    suggestEconomyBtn.addEventListener('click', async () => {
+      await sugerirEconomiaComClaude();
+    });
+  }
+}
+
+/**
+ * Analisa o patrimônio atual usando Claude/OmniRoute
+ */
+async function analisarPatrimonioCom Claude() {
+  if (!claudeAvailable || !window.claude.isOnline) {
+    console.warn('Claude não está disponível. Certifique-se que OmniRoute está rodando em localhost:20128');
+    return;
+  }
+
+  try {
+    // Coleta dados do patrimônio atual
+    const patrimonio = {
+      totalEquity: state.eq.amount || 0,
+      contas: Object.values(state.accs || {}).length,
+      transacoes: Object.values(state.txs || {}).length,
+      moedas: Object.values(state.curs || {}).length,
+      investimentos: state.eq.brk || 0,
+      imoveis: state.eq.real || 0,
+      veiculo: state.eq.vehicle || 0,
+      dividas: state.eq.liab || 0
+    };
+
+    const resposta = await window.claude.analisarDados(patrimonio, 'portfolio');
+    
+    console.log('📊 Análise de Claude:', resposta);
+    
+    // Mostra resultado em modal ou seção dedicada
+    showAnalysisResult('Análise de Patrimônio', resposta);
+  } catch (error) {
+    console.error('Erro ao analisar patrimônio:', error);
+    showFatal('Erro ao analisar patrimônio com Claude: ' + error.message);
+  }
+}
+
+/**
+ * Sugere formas de economia usando Claude/OmniRoute
+ */
+async function sugerirEconomiaComClaude() {
+  if (!claudeAvailable || !window.claude.isOnline) {
+    console.warn('Claude não está disponível');
+    return;
+  }
+
+  try {
+    // Coleta gastos do mês atual
+    const mesAtual = currentMonth();
+    const gastos = {};
+    
+    Object.values(state.txs || {}).forEach(tx => {
+      if (tx.type === 'expense' && tx.date && tx.date.startsWith(mesAtual)) {
+        const cat = tx.cat || 'Outros';
+        gastos[cat] = (gastos[cat] || 0) + (tx.val || 0);
+      }
+    });
+
+    const resposta = await window.claude.sugerirEconomia(gastos);
+    
+    console.log('💰 Sugestões de Economia:', resposta);
+    
+    showAnalysisResult('Sugestões de Economia', resposta);
+  } catch (error) {
+    console.error('Erro ao sugerir economia:', error);
+  }
+}
+
+/**
+ * Mostra resultado da análise em um modal
+ */
+function showAnalysisResult(titulo, conteudo) {
+  const modal = document.createElement('div');
+  modal.className = 'modal-claude-analysis';
+  modal.innerHTML = `
+    <div style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:10000;">
+      <div style="background:white;padding:24px;border-radius:8px;max-width:600px;max-height:80vh;overflow-y:auto;box-shadow:0 10px 40px rgba(0,0,0,0.2);">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+          <h2 style="margin:0;color:#333;">🤖 ${titulo}</h2>
+          <button onclick="this.closest('div').parentElement.parentElement.remove()" style="background:none;border:none;font-size:24px;cursor:pointer;">×</button>
+        </div>
+        <div style="color:#555;line-height:1.6;white-space:pre-wrap;font-size:14px;">
+          ${conteudo.replace(/</g, '&lt;').replace(/>/g, '&gt;')}
+        </div>
+        <div style="margin-top:16px;text-align:right;">
+          <button onclick="this.closest('div').parentElement.parentElement.remove()" style="background:#0066cc;color:white;border:none;padding:8px 16px;border-radius:4px;cursor:pointer;">Fechar</button>
+        </div>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+}
+
+// Inicializa OmniRoute após o app estar pronto
 init();
+
+// Carrega e inicializa OmniRoute (após init())
+setTimeout(() => {
+  // Cria e carrega o script do cliente OmniRoute se não estiver carregado
+  if (typeof OmniRouteClient === 'undefined') {
+    const script = document.createElement('script');
+    script.src = './omniroute-client.js';
+    script.onload = () => {
+      console.log('📥 Script OmniRoute carregado');
+      initOmniRoute();
+    };
+    script.onerror = () => {
+      console.warn('⚠️ Não foi possível carregar omniroute-client.js');
+    };
+    document.head.appendChild(script);
+  } else {
+    initOmniRoute();
+  }
+}, 500);
+
