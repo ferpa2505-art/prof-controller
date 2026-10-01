@@ -1,15 +1,15 @@
 {
   "expo": {
-    "name": "pesos-app",
-    "slug": "pesos-app",
+    "name": "Leviá",
+    "slug": "levia",
     "version": "0.1.0",
     "orientation": "portrait",
     "platforms": ["ios", "android", "web"],
     "ios": {
-      "bundleIdentifier": "com.pesos.app"
+      "bundleIdentifier": "com.ferpa2505art.levia"
     },
     "android": {
-      "package": "com.pesos.app",
+      "package": "com.ferpa2505art.levia",
       "permissions": [
         "android.permission.CAMERA",
         "android.permission.READ_EXTERNAL_STORAGE",
