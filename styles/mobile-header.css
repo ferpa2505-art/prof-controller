@@ -150,3 +150,47 @@ header.topbar,
 @media (min-width: 769px) {
   .tabs { overflow: visible !important; flex-wrap: nowrap !important; }
 }
+
+/* ============================================================
+   Dashboard: cartões de patrimônio em 2 linhas
+   Linha 1: Investimentos, Imóveis, Veículos, Dívidas
+   Linha 2: Patrimônio Líquido na largura toda, detalhamento lado a lado
+   ============================================================ */
+.cards.cards-assets { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+.cards.cards-networth { grid-template-columns: 1fr !important; }
+/* Valor numa linha só: "€ 725.008,53" não pode quebrar o símbolo da moeda */
+.cards-assets .card .number-large {
+  white-space: nowrap;
+  font-size: clamp(16px, 2.1vw, 28px) !important;
+}
+
+@media (min-width: 769px) {
+  .cards-networth .nw-breakdown {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .cards-networth .nw-breakdown > div {
+    flex-direction: column;
+    justify-content: flex-start !important;
+    gap: 4px;
+    margin: 0 !important;
+    padding-top: 0 !important;
+    border-top: 0 !important;
+  }
+  .cards-networth .nw-breakdown > div > span:last-child {
+    font-size: 15px;
+    color: var(--text, #fff);
+  }
+}
+
+/* Celular: 2 cartões por linha (4 cartões = 2 linhas) */
+@media (max-width: 768px) {
+  .cards.cards-assets { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 10px !important; }
+  .cards-assets .card .number-large { font-size: clamp(14px, 4.6vw, 22px) !important; }
+  .cards-assets .card { padding: 14px !important; }
+}
+
+/* Topo fixo (sticky) com fundo sólido: os gradientes das abas e do topo são
+   translúcidos e deixavam gráficos e textos aparecerem por baixo ao rolar */
+.app-head { background-color: var(--bg, #0f1a36); }

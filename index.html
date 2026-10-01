@@ -18,7 +18,7 @@
   <link rel="stylesheet" href="styles/fab-buttons.css?v=1">
   <link rel="stylesheet" href="styles/charts-filing.css?v=1">
   <link rel="stylesheet" href="styles/responsive.css?v=1">
-  <link rel="stylesheet" href="styles/mobile-header.css?v=4">
+  <link rel="stylesheet" href="styles/mobile-header.css?v=7">
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=3">
   <link rel="apple-touch-icon" href="icon-192.png?v=3">
   <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png?v=3">
@@ -146,7 +146,7 @@
         </div>
       </div>
       
-      <div class="cards">
+      <div class="cards cards-assets">
         <div class="card card-success dashboard-interactive" data-card-type="investments">
           <h3 data-i18n="dashboard.investments">Investimentos</h3>
           <p id="invTotal" class="number-large">—</p>
@@ -173,11 +173,11 @@
         </div>
       </div>
       
-      <div class="cards cards-spaced">
+      <div class="cards cards-spaced cards-networth">
         <div class="card card-primary card-highlight">
           <h3 data-i18n="dashboard.nav">Patrimônio Líquido</h3>
           <p id="navTotal" class="number-large">—</p>
-          <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 12px; color: var(--muted);">
+          <div class="nw-breakdown" style="margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 12px; color: var(--muted);">
             <div style="display: flex; justify-content: space-between; margin: 4px 0;">
               <span><span data-i18n="nav.financial">Financeiro</span>:</span>
               <span id="navBreakdownFinancial">—</span>
