@@ -1,0 +1,620 @@
+/**
+ * RESPONSIVE DESIGN - Mobile First
+ * Breakpoints: 360px (mobile) → 480px (small) → 768px (tablet) → 1024px (desktop) → 1280px+ (large)
+ */
+
+/* ============================================================
+   MOBILE FIRST: Base styles for smallest screens (360px+)
+   ============================================================ */
+
+:root {
+  /* Responsive font sizes */
+  --font-size-xs: clamp(11px, 2.5vw, 13px);
+  --font-size-sm: clamp(13px, 2.8vw, 14px);
+  --font-size-base: clamp(14px, 3vw, 16px);
+  --font-size-lg: clamp(16px, 3.5vw, 18px);
+  --font-size-xl: clamp(18px, 4vw, 24px);
+  --font-size-2xl: clamp(20px, 5vw, 28px);
+  
+  /* Responsive spacing */
+  --spacing-xs: clamp(4px, 1vw, 8px);
+  --spacing-sm: clamp(8px, 2vw, 12px);
+  --spacing-md: clamp(12px, 2.5vw, 16px);
+  --spacing-lg: clamp(16px, 3vw, 20px);
+  --spacing-xl: clamp(20px, 3.5vw, 24px);
+  --spacing-2xl: clamp(24px, 4vw, 32px);
+  
+  /* Responsive padding */
+  --pad-mobile: clamp(12px, 3vw, 16px);
+  --pad-tablet: clamp(16px, 4vw, 20px);
+  --pad-desktop: clamp(24px, 5vw, 32px);
+}
+
+body {
+  font-size: var(--font-size-base);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================================
+   TOPBAR - Mobile optimized
+   ============================================================ */
+
+.topbar {
+  padding: var(--pad-mobile) !important;
+  flex-wrap: wrap;
+  gap: var(--spacing-md) !important;
+}
+
+.topbar h1 {
+  font-size: var(--font-size-lg) !important;
+  flex: 1 1 auto;
+}
+
+.topbar-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.topbar-actions select {
+  padding: 8px 10px !important;
+  font-size: var(--font-size-sm) !important;
+  min-height: 36px;
+  flex: 1;
+  min-width: 120px;
+}
+
+/* ============================================================
+   MAIN CONTENT - Responsive padding
+   ============================================================ */
+
+main {
+  padding: var(--pad-mobile) !important;
+  max-width: 100% !important;
+}
+
+/* ============================================================
+   CARDS & LAYOUT
+   ============================================================ */
+
+.cards {
+  gap: var(--spacing-md) !important;
+}
+
+.card {
+  padding: var(--pad-mobile) !important;
+  border-radius: 10px;
+}
+
+.card h3 {
+  font-size: var(--font-size-sm) !important;
+  margin-bottom: var(--spacing-md) !important;
+}
+
+.big-number {
+  font-size: var(--font-size-xl) !important;
+  line-height: 1.2;
+}
+
+/* ============================================================
+   BUTTONS - Touch-friendly (min 44px height)
+   ============================================================ */
+
+button, input[type="button"], input[type="submit"] {
+  min-height: 44px;
+  padding: 10px 16px !important;
+  font-size: var(--font-size-sm) !important;
+  border-radius: 8px;
+}
+
+.primary-btn {
+  padding: 12px 16px !important;
+  font-size: var(--font-size-sm) !important;
+}
+
+/* ============================================================
+   CHARTS FILING SYSTEM - Responsive
+   ============================================================ */
+
+.charts-filing-system {
+  margin: var(--spacing-lg) auto;
+  width: 100%;
+}
+
+.charts-tabs {
+  display: flex;
+  gap: var(--spacing-sm) !important;
+  margin-bottom: var(--spacing-lg) !important;
+  padding: var(--pad-mobile) !important;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  border-radius: 12px;
+}
+
+.chart-tab {
+  padding: 8px 12px !important;
+  font-size: var(--font-size-sm) !important;
+  border-radius: 8px;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  min-width: 70px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.chart-tab span {
+  display: none;
+}
+
+.chart-tab.active span {
+  display: inline;
+}
+
+.charts-stack {
+  padding: var(--pad-mobile) !important;
+  border-radius: 12px;
+  min-height: 350px;
+}
+
+.chart-card {
+  padding: var(--pad-mobile) !important;
+}
+
+.chart-card h3 {
+  font-size: var(--font-size-lg) !important;
+  margin-bottom: var(--spacing-lg) !important;
+  text-align: center;
+}
+
+.chart-card canvas {
+  height: 250px !important;
+  max-width: 100%;
+}
+
+.no-data-message {
+  font-size: var(--font-size-sm) !important;
+  padding: var(--pad-mobile) !important;
+  height: 250px !important;
+}
+
+/* ============================================================
+   FORMS - Mobile optimized
+   ============================================================ */
+
+input, textarea, select {
+  font-size: 16px !important; /* Prevents zoom on iOS */
+  min-height: 44px;
+  padding: 10px 12px !important;
+  border-radius: 8px;
+  width: 100%;
+}
+
+label {
+  font-size: var(--font-size-sm) !important;
+  margin-bottom: var(--spacing-sm) !important;
+  display: block;
+}
+
+.form-group {
+  margin-bottom: var(--spacing-lg) !important;
+}
+
+/* ============================================================
+   TABS NAVIGATION
+   ============================================================ */
+
+.tabs {
+  display: flex;
+  gap: var(--spacing-xs) !important;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 0 var(--pad-mobile) !important;
+  margin-bottom: var(--spacing-md) !important;
+}
+
+.tab {
+  padding: 8px 12px !important;
+  font-size: var(--font-size-sm) !important;
+  white-space: nowrap;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+/* ============================================================
+   TABLES - Responsive
+   ============================================================ */
+
+table {
+  font-size: var(--font-size-sm) !important;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: var(--spacing-sm) !important;
+}
+
+/* ============================================================
+   MODALS - Mobile optimized
+   ============================================================ */
+
+.modal {
+  padding: var(--pad-mobile) !important;
+  border-radius: 16px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-content {
+  padding: var(--pad-mobile) !important;
+}
+
+/* ============================================================
+   SMALL PHONES: 360px - 480px
+   ============================================================ */
+
+@media (max-width: 480px) {
+  :root {
+    --pad-mobile: clamp(10px, 2.5vw, 14px);
+  }
+
+  body {
+    font-size: 14px;
+  }
+
+  .topbar {
+    padding: 12px 14px !important;
+  }
+
+  .topbar h1 {
+    font-size: 16px !important;
+  }
+
+  .topbar-actions {
+    gap: 8px;
+  }
+
+  .topbar-actions select {
+    padding: 8px 8px !important;
+    font-size: 12px !important;
+    min-width: 100px;
+  }
+
+  main {
+    padding: 12px 14px !important;
+  }
+
+  .charts-tabs {
+    gap: 4px !important;
+    padding: 10px 12px !important;
+  }
+
+  .chart-tab {
+    padding: 6px 8px !important;
+    font-size: 11px !important;
+    min-width: 55px;
+    min-height: 36px;
+  }
+
+  .chart-tab:nth-child(n+3) {
+    display: none;
+  }
+
+  .chart-tab:nth-child(n+3).active {
+    display: flex;
+  }
+
+  .charts-stack {
+    padding: 12px 14px !important;
+    min-height: 300px;
+  }
+
+  .chart-card {
+    padding: 12px 14px !important;
+  }
+
+  .chart-card h3 {
+    font-size: 14px !important;
+    margin-bottom: 12px !important;
+  }
+
+  .chart-card canvas {
+    height: 200px !important;
+  }
+
+  .no-data-message {
+    height: 200px !important;
+    font-size: 12px !important;
+  }
+
+  button, input[type="button"], input[type="submit"] {
+    min-height: 40px;
+    padding: 10px 12px !important;
+    font-size: 12px !important;
+  }
+
+  .card {
+    padding: 12px !important;
+  }
+
+  input, textarea, select {
+    font-size: 16px !important;
+    min-height: 40px;
+    padding: 8px 10px !important;
+  }
+
+  label {
+    font-size: 12px !important;
+  }
+
+  .big-number {
+    font-size: 20px !important;
+  }
+}
+
+/* ============================================================
+   LARGE PHONES / SMALL TABLETS: 481px - 768px
+   ============================================================ */
+
+@media (min-width: 481px) and (max-width: 768px) {
+  :root {
+    --pad-mobile: 14px;
+    --pad-tablet: 16px;
+  }
+
+  main {
+    padding: var(--pad-tablet) !important;
+  }
+
+  .topbar {
+    padding: 14px 16px !important;
+  }
+
+  .charts-tabs {
+    padding: 14px 16px !important;
+    gap: 8px !important;
+  }
+
+  .chart-tab {
+    padding: 8px 12px !important;
+    font-size: 12px !important;
+    min-height: 40px;
+  }
+
+  .charts-stack {
+    padding: 14px 16px !important;
+    min-height: 380px;
+  }
+
+  .chart-card {
+    padding: 14px 16px !important;
+  }
+
+  .chart-card canvas {
+    height: 280px !important;
+  }
+
+  .no-data-message {
+    height: 280px !important;
+  }
+
+  .cards {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  button, input[type="button"], input[type="submit"] {
+    min-height: 42px;
+    padding: 10px 14px !important;
+    font-size: 13px !important;
+  }
+}
+
+/* ============================================================
+   TABLETS: 769px - 1023px
+   ============================================================ */
+
+@media (min-width: 769px) and (max-width: 1023px) {
+  :root {
+    --pad-tablet: 18px;
+  }
+
+  main {
+    padding: var(--pad-tablet) !important;
+    max-width: 900px !important;
+  }
+
+  .topbar {
+    padding: 16px 20px !important;
+  }
+
+  .charts-tabs {
+    padding: 16px 18px !important;
+    gap: 10px !important;
+  }
+
+  .chart-tab {
+    padding: 10px 14px !important;
+    font-size: 13px !important;
+  }
+
+  .charts-stack {
+    padding: 18px 20px !important;
+    min-height: 400px;
+  }
+
+  .chart-card {
+    padding: 18px 20px !important;
+  }
+
+  .chart-card canvas {
+    height: 320px !important;
+  }
+
+  .cards {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* ============================================================
+   DESKTOPS: 1024px - 1279px
+   ============================================================ */
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  main {
+    max-width: 980px !important;
+  }
+
+  .charts-tabs {
+    gap: 12px !important;
+  }
+
+  .chart-tab {
+    padding: 10px 16px !important;
+    font-size: 14px !important;
+    min-width: 120px;
+  }
+
+  .charts-stack {
+    padding: 24px !important;
+    min-height: 450px;
+  }
+
+  .chart-card canvas {
+    height: 360px !important;
+  }
+
+  .cards {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+
+/* ============================================================
+   LARGE DESKTOPS: 1280px+
+   ============================================================ */
+
+@media (min-width: 1280px) {
+  :root {
+    --pad-desktop: 32px;
+  }
+
+  main {
+    max-width: 1200px !important;
+    padding: var(--pad-desktop) !important;
+  }
+
+  .topbar {
+    padding: 18px 24px !important;
+  }
+
+  .charts-tabs {
+    padding: 20px 24px !important;
+    gap: 14px !important;
+    justify-content: flex-start;
+  }
+
+  .chart-tab {
+    padding: 11px 18px !important;
+    font-size: 14px !important;
+    min-width: 130px;
+    flex: 0 1 auto;
+  }
+
+  .chart-tab span {
+    display: inline !important;
+  }
+
+  .charts-stack {
+    padding: 24px 32px !important;
+    min-height: 500px;
+  }
+
+  .chart-card {
+    padding: 24px 32px !important;
+  }
+
+  .chart-card h3 {
+    font-size: 18px !important;
+  }
+
+  .chart-card canvas {
+    height: 400px !important;
+  }
+
+  .cards {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+    gap: 20px !important;
+  }
+
+  .card {
+    padding: 20px !important;
+  }
+}
+
+/* ============================================================
+   LANDSCAPE MODE - All screens
+   ============================================================ */
+
+@media (orientation: landscape) {
+  .chart-card canvas {
+    height: 300px !important;
+  }
+
+  .charts-stack {
+    min-height: 350px !important;
+  }
+}
+
+/* ============================================================
+   PRINT - Hide unnecessary elements
+   ============================================================ */
+
+@media print {
+  .topbar, .tabs, .modal, button, input {
+    display: none !important;
+  }
+
+  main {
+    padding: 0 !important;
+  }
+
+  .charts-stack {
+    box-shadow: none !important;
+    border: none !important;
+  }
+}
+
+/* ============================================================
+   ACCESSIBILITY - Respect user preferences
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+  }
+}
+
+/* ============================================================
+   HIGH DPI SCREENS - Crisp text
+   ============================================================ */
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  body {
+    -webkit-font-smoothing: subpixel-antialiased;
+  }
+}

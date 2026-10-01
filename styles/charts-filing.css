@@ -109,7 +109,7 @@
   margin: 0 auto;
 }
 
-/* Alturas específicas por tipo de gráfico */
+/* Alturas específicas por tipo de gráfico - Desktop */
 .chart-card[data-chart="patrimonio-chart"] canvas {
   height: 400px !important;
 }
@@ -140,7 +140,32 @@
   width: 100% !important;
 }
 
-@media (max-width: 768px) {
+/* ============================================================
+   TABLET RESPONSIVE: 769px - 1023px
+   ============================================================ */
+@media (min-width: 769px) and (max-width: 1023px) {
+  .charts-tabs {
+    gap: 10px;
+  }
+
+  .chart-tab {
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+
+  .chart-card canvas {
+    height: 320px !important;
+  }
+
+  .charts-stack {
+    min-height: 400px;
+  }
+}
+
+/* ============================================================
+   PHONE RESPONSIVE: 481px - 768px (large phone/small tablet)
+   ============================================================ */
+@media (min-width: 481px) and (max-width: 768px) {
   .charts-tabs {
     gap: 8px;
   }
@@ -148,9 +173,84 @@
   .chart-tab {
     padding: 8px 12px;
     font-size: 12px;
+    flex: 1;
   }
 
   .chart-card canvas {
-    height: 300px !important;
+    height: 280px !important;
+  }
+
+  .charts-stack {
+    min-height: 380px;
+  }
+
+  .no-data-message {
+    height: 280px !important;
+  }
+}
+
+/* ============================================================
+   MOBILE RESPONSIVE: 360px - 480px (small phone)
+   ============================================================ */
+@media (max-width: 480px) {
+  .charts-tabs {
+    gap: 4px;
+    padding: 10px 12px !important;
+  }
+
+  .chart-tab {
+    padding: 6px 8px;
+    font-size: 11px;
+    min-width: 50px;
+    flex: 1;
+  }
+
+  /* Hide tab text on very small screens, show only emoji */
+  .chart-tab span {
+    display: none;
+  }
+
+  .chart-tab.active span {
+    display: inline;
+  }
+
+  .chart-card {
+    padding: 12px 14px !important;
+  }
+
+  .chart-card h3 {
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+
+  .chart-card canvas {
+    height: 200px !important;
+  }
+
+  .charts-stack {
+    padding: 12px 14px !important;
+    min-height: 300px;
+  }
+
+  .no-data-message {
+    height: 200px !important;
+    font-size: 12px !important;
+  }
+}
+
+/* ============================================================
+   LANDSCAPE MODE - Adjust chart heights
+   ============================================================ */
+@media (orientation: landscape) and (max-height: 500px) {
+  .chart-card canvas {
+    height: 250px !important;
+  }
+
+  .charts-stack {
+    min-height: 300px;
+  }
+
+  .no-data-message {
+    height: 250px !important;
   }
 }
