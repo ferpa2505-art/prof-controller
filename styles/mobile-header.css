@@ -44,7 +44,6 @@ header.topbar,
    - Topo em UMA linha: logo pequeno + nome à esquerda, engrenagem à direita
    - Abas em uma linha com rolagem lateral (sem quebrar e sem barra vertical)
    - Sub-abas também em uma linha
-   - Sem o menu suspenso das abas: as sub-abas já fazem o mesmo papel
    ============================================================ */
 
 @media (max-width: 768px) {
@@ -120,8 +119,7 @@ header.topbar,
   .tabs::-webkit-scrollbar { display: none; }
 
   .tabs .tab,
-  .tabs > button,
-  .tab-with-dropdown {
+  .tabs > button {
     flex: 0 0 auto !important;
     white-space: nowrap;
   }
@@ -135,8 +133,6 @@ header.topbar,
   .subtabs::-webkit-scrollbar { display: none; }
   .subtabs .subtab { flex: 0 0 auto; white-space: nowrap; }
 
-  .tab-dropdown { display: none !important; }
-  .tab-dropdown-trigger::after { display: none !important; }
 }
 
 /* Painel Comparativo (Investimentos): itens da grade não podem crescer além da
@@ -146,7 +142,7 @@ header.topbar,
 .cmp-controls select { max-width: 100%; }
 
 /* Computador: as abas cabem numa linha. Sem rolagem, a setinha de scroll
-   ao lado das abas some e o menu suspenso de Investimentos não é cortado */
+   ao lado das abas some */
 @media (min-width: 769px) {
   .tabs { overflow: visible !important; flex-wrap: nowrap !important; }
 }

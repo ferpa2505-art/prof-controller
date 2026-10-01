@@ -147,6 +147,7 @@ const I18N = {
     'fx.fetched': '{n} taxas atualizadas.',
     'fx.fetchError': 'Não foi possível buscar as taxas online. Verifique a conexão ou cadastre manualmente.',
     'forex.title': 'Cotações em Tempo Real',
+    'calc.history': 'Histórico',
     'dashboard.clickMore': 'Clique para ver mais →',
     'dashboard.clickDetails': 'Clique para detalhes →',
     'fab.add': 'Adicionar dados',
@@ -1166,6 +1167,7 @@ const I18N = {
     'fx.fetched': '{n} rates updated.',
     'fx.fetchError': 'Could not fetch rates online. Check your connection or add them manually.',
     'forex.title': 'Live Exchange Rates',
+    'calc.history': 'History',
     'dashboard.clickMore': 'Click for more →',
     'dashboard.clickDetails': 'Click for details →',
     'fab.add': 'Add data',
@@ -2185,6 +2187,7 @@ const I18N = {
     'fx.fetched': '{n} tasas actualizadas.',
     'fx.fetchError': 'No se pudieron buscar las tasas en línea. Verifique la conexión o regístrelas manualmente.',
     'forex.title': 'Tipos de Cambio en Tiempo Real',
+    'calc.history': 'Historial',
     'dashboard.clickMore': 'Haz clic para ver más →',
     'dashboard.clickDetails': 'Haz clic para ver detalles →',
     'fab.add': 'Añadir datos',
@@ -8915,7 +8918,7 @@ function renderCalculator() {
           <button type="button" class="calc-key eq" onclick="calcRun()">=</button>
         </div>
         <div class="calc-history-header">
-          <h4>${t('calc.history') || 'Histórico'}</h4>
+          <h4>${t('calc.history')}</h4>
           ${calcUi.history.length > 0 ? '<button type="button" class="secondary-btn" onclick="calcClearHistory()" style="font-size:0.8em">Limpar</button>' : ''}
         </div>
         <ul id="calcHistory" class="calc-history"></ul>
