@@ -1,6 +1,9 @@
-import sgMail from '@sendgrid/mail';
+// import sgMail from '@sendgrid/mail';
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+// sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+// Modo teste - sem SendGrid
+const sgMail = null;
 
 export default sgMail;
 

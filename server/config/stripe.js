@@ -1,6 +1,9 @@
-import Stripe from 'stripe';
+// import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+// const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
+// Modo teste - sem Stripe
+const stripe = null;
 
 export default stripe;
 
