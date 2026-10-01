@@ -25,6 +25,7 @@ const FLAGS = {
   pt: `<svg viewBox="0 0 28 20" class="flag"><rect width="28" height="20" fill="#f00"/><rect width="11" height="20" fill="#006600"/><circle cx="11" cy="10" r="4.2" fill="#ffe900" stroke="#fff" stroke-width="0.6"/><circle cx="11" cy="10" r="2.4" fill="#fff" stroke="#003" stroke-width="0.7"/></svg>`,
   us: `<svg viewBox="0 0 28 20" class="flag"><rect width="28" height="20" fill="#fff"/><g fill="#b22234"><rect width="28" height="1.55"/><rect y="3.1" width="28" height="1.55"/><rect y="6.2" width="28" height="1.55"/><rect y="9.3" width="28" height="1.55"/><rect y="12.4" width="28" height="1.55"/><rect y="15.5" width="28" height="1.55"/><rect y="18.6" width="28" height="1.4"/></g><rect width="12" height="10.85" fill="#3c3b6e"/><g fill="#fff"><circle cx="2.4" cy="2.2" r="0.7"/><circle cx="6" cy="2.2" r="0.7"/><circle cx="9.6" cy="2.2" r="0.7"/><circle cx="4.2" cy="4.5" r="0.7"/><circle cx="7.8" cy="4.5" r="0.7"/><circle cx="2.4" cy="6.8" r="0.7"/><circle cx="6" cy="6.8" r="0.7"/><circle cx="9.6" cy="6.8" r="0.7"/><circle cx="4.2" cy="9.1" r="0.7"/><circle cx="7.8" cy="9.1" r="0.7"/></g></svg>`,
   gb: `<svg viewBox="0 0 28 20" class="flag"><rect width="28" height="20" fill="#012169"/><path d="M0 0 28 20M28 0 0 20" stroke="#fff" stroke-width="4"/><path d="M0 0 28 20M28 0 0 20" stroke="#c8102e" stroke-width="2.2"/><path d="M14 0v20M0 10h28" stroke="#fff" stroke-width="6.5"/><path d="M14 0v20M0 10h28" stroke="#c8102e" stroke-width="3.8"/></svg>`,
+  eu: `<svg viewBox="0 0 28 20" class="flag"><rect width="28" height="20" fill="#003399"/><g fill="#ffcc00"><circle cx="14.00" cy="4.40" r="0.9"/><circle cx="16.80" cy="5.15" r="0.9"/><circle cx="18.85" cy="7.20" r="0.9"/><circle cx="19.60" cy="10.00" r="0.9"/><circle cx="18.85" cy="12.80" r="0.9"/><circle cx="16.80" cy="14.85" r="0.9"/><circle cx="14.00" cy="15.60" r="0.9"/><circle cx="11.20" cy="14.85" r="0.9"/><circle cx="9.15" cy="12.80" r="0.9"/><circle cx="8.40" cy="10.00" r="0.9"/><circle cx="9.15" cy="7.20" r="0.9"/><circle cx="11.20" cy="5.15" r="0.9"/></g></svg>`,
   es: `<svg viewBox="0 0 28 20" class="flag"><rect width="28" height="20" fill="#c60b1e"/><rect y="5" width="28" height="10" fill="#ffc400"/><rect x="4.5" y="8" width="3.6" height="4.6" rx="0.5" fill="#c60b1e" stroke="#8a0715" stroke-width="0.4"/></svg>`
 };
 
@@ -880,7 +881,7 @@ const I18N = {
     'help.portfolio': 'Bens como imóveis e veículos, com valor de avaliação e dívidas ligadas a eles (financiamentos). Entram no patrimônio total.',
     'help.transactions': 'Dinheiro que já entrou ou saiu: receitas, despesas e transferências entre contas. Cada lançamento atualiza o saldo da conta.',
     'help.bills': 'Contas futuras a pagar e valores a receber, inclusive parcelados ou recorrentes. Ao quitar, o app gera o lançamento na conta.',
-    'help.news': 'Manchetes sobre os ativos da sua carteira, da watchlist e do mercado. Clique para ler no site original. Atualiza ao abrir o app e a cada 2 horas.',
+    'help.news': 'Manchetes sobre os ativos da sua carteira, da watchlist e do mercado do Brasil, dos EUA e da Europa. Clique para ler no site original. Atualiza ao abrir o app e a cada 2 horas.',
     'help.settings': 'Moeda base, chaves das fontes de cotação e notícias, backup e importação de dados.',
     'news.title': 'Notícias',
     'news.refresh': 'Atualizar',
@@ -904,6 +905,9 @@ const I18N = {
     'news.google': 'Google Notícias',
     'news.testOk': '{n} manchetes',
     'news.disclaimer': 'Mostramos apenas título, fonte e horário. O conteúdo pertence a cada site. Notícias não são recomendação de investimento.',
+    'news.region.br': 'Brasil',
+    'news.region.us': 'EUA',
+    'news.region.eu': 'Europa',
     'cmp.groupPct': 'Em percentual (recomendado)',
     'cmp.groupMoney': 'Em dinheiro',
     'cmp.m.ret': 'Ganho ou perda sobre o investido (%)',
@@ -1897,7 +1901,7 @@ const I18N = {
     'help.portfolio': 'Assets such as property and vehicles, with valuation and related debts (loans). They count toward total net worth.',
     'help.transactions': 'Money that has already come in or gone out: income, expenses and transfers. Each entry updates the account balance.',
     'help.bills': 'Future bills to pay and amounts to receive, including installments or recurring ones. When settled, the app creates the entry.',
-    'help.news': 'Headlines about your portfolio, watchlist and the market. Click to read on the original site. Refreshes when you open the app and every 2 hours.',
+    'help.news': 'Headlines about your portfolio, watchlist and the markets of Brazil, the US and Europe. Click to read on the original site. Refreshes when you open the app and every 2 hours.',
     'help.settings': 'Base currency, keys for price and news sources, backup and data import.',
     'news.title': 'News',
     'news.refresh': 'Refresh',
@@ -1921,6 +1925,9 @@ const I18N = {
     'news.google': 'Google News',
     'news.testOk': '{n} headlines',
     'news.disclaimer': 'We show only headline, source and time. Content belongs to each site. News is not investment advice.',
+    'news.region.br': 'Brazil',
+    'news.region.us': 'USA',
+    'news.region.eu': 'Europe',
     'cmp.groupPct': 'In percent (recommended)',
     'cmp.groupMoney': 'In money',
     'cmp.m.ret': 'Gain or loss on invested (%)',
@@ -2912,7 +2919,7 @@ const I18N = {
     'help.portfolio': 'Bienes como inmuebles y vehículos, con su valoración y deudas asociadas (financiaciones). Cuentan en el patrimonio total.',
     'help.transactions': 'Dinero que ya entró o salió: ingresos, gastos y transferencias. Cada movimiento actualiza el saldo de la cuenta.',
     'help.bills': 'Cuentas futuras por pagar e importes por cobrar, incluso a plazos o recurrentes. Al liquidar, la app crea el movimiento.',
-    'help.news': 'Titulares sobre tu cartera, tu watchlist y el mercado. Haz clic para leer en el sitio original. Se actualiza al abrir la app y cada 2 horas.',
+    'help.news': 'Titulares sobre tu cartera, tu watchlist y los mercados de Brasil, EE. UU. y Europa. Haz clic para leer en el sitio original. Se actualiza al abrir la app y cada 2 horas.',
     'help.settings': 'Moneda base, claves de las fuentes de cotización y noticias, copia de seguridad e importación.',
     'news.title': 'Noticias',
     'news.refresh': 'Actualizar',
@@ -2936,6 +2943,9 @@ const I18N = {
     'news.google': 'Google Noticias',
     'news.testOk': '{n} titulares',
     'news.disclaimer': 'Mostramos solo título, fuente y hora. El contenido pertenece a cada sitio. Las noticias no son recomendación de inversión.',
+    'news.region.br': 'Brasil',
+    'news.region.us': 'EE. UU.',
+    'news.region.eu': 'Europa',
     'cmp.groupPct': 'En porcentaje (recomendado)',
     'cmp.groupMoney': 'En dinero',
     'cmp.m.ret': 'Ganancia o pérdida sobre lo invertido (%)',
@@ -7348,14 +7358,32 @@ async function toggleCmpBench(chave) {
 /* ================= FASE 10 — Notícias (manchetes e links) =================
    Só título, fonte e horário: o clique abre a matéria no site original. Assim
    respeitamos o conteúdo de cada portal e não precisamos de servidor próprio.
-   - Português: busca do Google News (RSS) lida através do rss2json.
+   - Google News (RSS) lido através do rss2json, em três edições: Brasil
+     (português), EUA e Europa (inglês). As três aparecem sempre, seja qual
+     for o idioma do app, com pelo menos NEWS_MIN_REGION manchetes de cada.
    - Inglês: notícias por empresa da Finnhub (chave já cadastrada).
    Atualiza ao abrir o app e a cada 2 horas com ele aberto. */
 
 const NEWS_KEY = HIST_PREFIX + 'news';
 const NEWS_TTL = 2 * 60 * 60 * 1000;
 const NEWS_MAX = 200;
-const NEWS_MARKET_TOPICS = ['Ibovespa', 'dólar hoje', 'Selic Copom', 'S&P 500'];
+const NEWS_MIN_REGION = 10;   // manchetes garantidas por região, mesmo com muita notícia de outra
+const NEWS_VERSION = 2;       // v2: notícias com região; cache antigo é buscado de novo
+// Edições do Google News. O rss2json sem chave recusa muitas buscas novas em
+// sequência e devolve no máximo 10 itens por busca: por isso cada região é UMA
+// busca combinada (OR), feita antes das buscas por ativo. Com chave, pede 25.
+const NEWS_REGIONS = {
+  br: { hl: 'pt-BR', gl: 'BR', ceid: 'BR:pt-419', lang: 'pt' },
+  us: { hl: 'en-US', gl: 'US', ceid: 'US:en', lang: 'en' },
+  eu: { hl: 'en-GB', gl: 'GB', ceid: 'GB:en', lang: 'en' }
+};
+const NEWS_MARKET_TOPICS = {
+  br: 'Ibovespa OR "dólar hoje" OR Selic OR Copom',
+  us: '"Wall Street" OR "S&P 500" OR Nasdaq OR "Federal Reserve"',
+  eu: '"European stocks" OR "STOXX 600" OR ECB OR DAX OR "CAC 40" OR FTSE'
+};
+// Notícia antiga, gravada antes das regiões: português era Brasil, inglês era EUA
+function newsRegion(n) { return n.region || (n.lang === 'pt' ? 'br' : 'us'); }
 let newsCache = null;         // { fetchedAt, items }
 let newsLoading = false;
 let newsTimer = null;
@@ -7382,22 +7410,34 @@ function shortCompany(nome) {
   return String(nome || '').replace(/\b(S\.?A\.?|SA|Pfd|PN|ON|Inc\.?|Corp\.?|Holding|Ltd\.?|plc|Co\.?|Class [A-Z])\b/gi, '').replace(/\s+/g, ' ').trim().split(' ').slice(0, 2).join(' ');
 }
 
-async function fetchGoogleNews(query, tag) {
-  const rss = `https://news.google.com/rss/search?q=${encodeURIComponent(query)}&hl=pt-BR&gl=BR&ceid=BR:pt-419`;
+async function fetchGoogleNews(query, tag, region) {
+  const rg = NEWS_REGIONS[region] ? region : 'br';
+  const ed = NEWS_REGIONS[rg];
+  const rss = `https://news.google.com/rss/search?q=${encodeURIComponent(query)}&hl=${ed.hl}&gl=${ed.gl}&ceid=${ed.ceid}`;
   const chave = apiKey('apiRss2json');
-  const url = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rss)}${chave ? '&api_key=' + encodeURIComponent(chave) : ''}`;
+  const url = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rss)}${chave ? '&api_key=' + encodeURIComponent(chave) + '&count=25' : ''}`;
   const d = await getJSON(url);
   if (d.status && d.status !== 'ok') throw new Error(d.message || 'rss2json');
-  return (d.items || []).slice(0, 12).map((it) => {
+  return (d.items || []).slice(0, tag === 'market' ? 25 : 12).map((it) => {
     // O Google News coloca a fonte no fim do título: "Manchete - InfoMoney"
     const partes = decodeEntities(it.title).split(' - ');
     const fonte = partes.length > 1 ? partes.pop() : (it.author || 'Google News');
     return {
       title: partes.join(' - '), source: fonte, url: safeUrl(it.link),
       date: it.pubDate ? new Date(it.pubDate.replace(' ', 'T') + 'Z').toISOString() : new Date().toISOString(),
-      tag, lang: 'pt'
+      tag, lang: ed.lang, region: rg
     };
   });
+}
+
+async function fetchFinnhubMarketNews() {
+  const key = apiKey('apiFinnhub');
+  if (!key) return [];
+  const d = await getJSON(`https://finnhub.io/api/v1/news?category=general&token=${key}`);
+  return (Array.isArray(d) ? d : []).slice(0, 25).map((n) => ({
+    title: decodeEntities(n.headline), source: decodeEntities(n.source), url: safeUrl(n.url),
+    date: new Date((n.datetime || 0) * 1000).toISOString(), tag: 'market', lang: 'en', region: 'us'
+  }));
 }
 
 async function fetchFinnhubNews(ticker) {
@@ -7408,8 +7448,20 @@ async function fetchFinnhubNews(ticker) {
   const d = await getJSON(`https://finnhub.io/api/v1/company-news?symbol=${encodeURIComponent(ticker)}&from=${de.toISOString().slice(0, 10)}&to=${ate}&token=${key}`);
   return (Array.isArray(d) ? d : []).slice(0, 12).map((n) => ({
     title: decodeEntities(n.headline), source: decodeEntities(n.source), url: safeUrl(n.url),
-    date: new Date((n.datetime || 0) * 1000).toISOString(), tag: ticker, lang: 'en'
+    date: new Date((n.datetime || 0) * 1000).toISOString(), tag: ticker, lang: 'en', region: 'us'
   }));
+}
+
+function keepPerRegion(lista, min, max) {
+  const escolhidos = new Set();
+  Object.keys(NEWS_REGIONS).forEach((rg) => {
+    lista.filter((n) => newsRegion(n) === rg).slice(0, min).forEach((n) => escolhidos.add(n));
+  });
+  for (const n of lista) {
+    if (escolhidos.size >= max) break;
+    escolhidos.add(n);
+  }
+  return lista.filter((n) => escolhidos.has(n));
 }
 
 async function loadNewsCache() {
@@ -7426,23 +7478,25 @@ async function refreshNews(forcar) {
   // Ativo novo na carteira ou na watchlist busca na hora, sem esperar as 2 horas
   const atuais = newsTickers().map((a) => a.ticker);
   const temNovo = atuais.some((tk) => !(newsCache.tickers || []).includes(tk));
-  if (!forcar && idade < NEWS_TTL && !temNovo) return false;
+  const cacheAntigo = newsCache.v !== NEWS_VERSION;
+  if (!forcar && idade < NEWS_TTL && !temNovo && !cacheAntigo) return false;
   if (newsLoading) return false;
   newsLoading = true;
   renderNewsStatus();
 
-  const tarefas = [];
+  // Mercado de cada região primeiro: se o rss2json começar a recusar, as três já vieram
+  const tarefas = Object.entries(NEWS_MARKET_TOPICS).map(([rg, q]) => () => fetchGoogleNews(q, 'market', rg));
+  tarefas.push(() => fetchFinnhubMarketNews());
   newsTickers().forEach((a) => {
     if (a.market === 'us') {
       tarefas.push(() => fetchFinnhubNews(a.ticker));
-      tarefas.push(() => fetchGoogleNews(`${a.ticker} ${shortCompany(a.name)}`, a.ticker));
+      tarefas.push(() => fetchGoogleNews(`${a.ticker} ${shortCompany(a.name)}`, a.ticker, 'br'));
     } else if (a.market === 'crypto') {
-      tarefas.push(() => fetchGoogleNews(`${a.name || a.ticker} criptomoeda`, a.ticker));
+      tarefas.push(() => fetchGoogleNews(`${a.name || a.ticker} criptomoeda`, a.ticker, 'br'));
     } else {
-      tarefas.push(() => fetchGoogleNews(`${a.ticker} ${shortCompany(a.name)}`, a.ticker));
+      tarefas.push(() => fetchGoogleNews(`${a.ticker} ${shortCompany(a.name)}`, a.ticker, 'br'));
     }
   });
-  NEWS_MARKET_TOPICS.forEach((q) => tarefas.push(() => fetchGoogleNews(q, 'market')));
 
   const novos = [];
   let falhas = 0;
@@ -7459,19 +7513,18 @@ async function refreshNews(forcar) {
     const k = norm(n.title);
     const etiquetas = (n.tags || [n.tag]).filter(Boolean);
     const existente = porTitulo.get(k);
-    if (!existente) porTitulo.set(k, { ...n, title: decodeEntities(n.title), tags: [...new Set(etiquetas)] });
+    if (!existente) porTitulo.set(k, { ...n, title: decodeEntities(n.title), region: newsRegion(n), tags: [...new Set(etiquetas)] });
     else etiquetas.forEach((tg) => { if (!existente.tags.includes(tg)) existente.tags.push(tg); });
   });
   const limite = Date.now() - 14 * 86400000;
-  const itens = [...porTitulo.values()]
+  const recentes = [...porTitulo.values()]
     .filter((n) => new Date(n.date).getTime() >= limite)
-    .sort((a, b) => b.date.localeCompare(a.date))
-    .slice(0, NEWS_MAX)
-    .map(({ tag, ...resto }) => resto);
+    .sort((a, b) => b.date.localeCompare(a.date));
+  const itens = keepPerRegion(recentes, NEWS_MIN_REGION, NEWS_MAX).map(({ tag, ...resto }) => resto);
 
   newsLoading = false;
   if (novos.length || !newsCache.items.length) {
-    newsCache = { fetchedAt: new Date().toISOString(), items: itens, tickers: atuais, failed: falhas === tarefas.length };
+    newsCache = { v: NEWS_VERSION, fetchedAt: new Date().toISOString(), items: itens, tickers: atuais, failed: falhas === tarefas.length };
     await put('settings', { key: NEWS_KEY, value: newsCache });
   } else {
     newsCache.failed = true;
@@ -7530,10 +7583,11 @@ async function renderNews() {
 
   // Filtros
   const filtros = document.getElementById('newsFilters');
-  const chip = (valor, rotulo, cor) => `<button type="button" class="news-chip ${newsUi.filter === valor ? 'active' : ''}" style="--chip:${cor || 'var(--accent)'}" onclick="setNewsFilter('${valor}')">${cor ? colorDot(cor) : ''}${escapeHtml(rotulo)}</button>`;
+  const chip = (valor, rotulo, cor, icone) => `<button type="button" class="news-chip ${newsUi.filter === valor ? 'active' : ''}" style="--chip:${cor || 'var(--accent)'}" onclick="setNewsFilter('${valor}')">${cor ? colorDot(cor) : ''}${icone || ''}${escapeHtml(rotulo)}</button>`;
   filtros.innerHTML = `
     <div class="news-chips">
       ${chip('all', t('news.all'))}${chip('portfolio', t('news.portfolio'))}${chip('watch', t('news.watch'))}${chip('market', t('news.market'))}
+      ${Object.keys(NEWS_REGIONS).map((rg) => chip('rg:' + rg, t('news.region.' + rg), null, FLAGS[rg])).join('')}
       ${ativos.map((a) => chip('tk:' + a.ticker, a.ticker, tickerColor(a.ticker))).join('')}
     </div>
     <select id="newsLang" aria-label="${t('news.lang')}" onchange="setNewsLang(this.value)">
@@ -7551,19 +7605,22 @@ async function renderNews() {
     if (newsUi.filter === 'market') return tags.includes('market');
     if (newsUi.filter === 'portfolio') return tags.some((tg) => grupo[tg] === 'portfolio');
     if (newsUi.filter === 'watch') return tags.some((tg) => grupo[tg] === 'watch');
+    if (newsUi.filter.startsWith('rg:')) return newsRegion(n) === newsUi.filter.slice(3);
     return tags.includes(newsUi.filter.slice(3));
   });
+  // Até 80 na tela, sem deixar uma região sumir quando outra tem muita notícia
+  const visiveis = keepPerRegion(itens, NEWS_MIN_REGION, 80);
 
   if (!itens.length) {
     lista.innerHTML = `<p class="empty-state">${newsLoading ? t('news.loading') : (newsCache.items || []).length ? t('news.emptyFilter') : t('news.empty')}</p>`;
   } else {
-    lista.innerHTML = itens.slice(0, 80).map((n) => {
+    lista.innerHTML = visiveis.map((n) => {
       const tags = (n.tags || []).map((tg) => tg === 'market'
         ? `<span class="tag">${t('news.market')}</span>`
         : `<span class="tag news-tag" style="--chip:${tickerColor(tg) || 'var(--muted)'}">${colorDot(tickerColor(tg))}${escapeHtml(tg)}</span>`).join(' ');
       return `<article class="news-item">
         <a href="${escapeHtml(n.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(n.title)}</a>
-        <div class="news-meta">${tags} <span>${escapeHtml(n.source || '')}</span> <span>${timeAgo(n.date)}</span>${n.lang === 'en' ? ' <span class="tag">EN</span>' : ''}</div>
+        <div class="news-meta">${tags} <span>${escapeHtml(n.source || '')}</span> <span>${timeAgo(n.date)}</span> <span class="tag" title="${t('news.region.' + newsRegion(n))}">${FLAGS[newsRegion(n)]}${t('news.region.' + newsRegion(n))}</span>${n.lang === 'en' ? ' <span class="tag">EN</span>' : ''}</div>
       </article>`;
     }).join('');
   }
