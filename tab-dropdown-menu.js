@@ -55,6 +55,8 @@ function initTabDropdowns() {
 
     // Toggle dropdown
     button.addEventListener('click', (e) => {
+      // No celular o menu não abre: a aba troca normalmente e as sub-abas aparecem
+      if (window.matchMedia('(max-width: 768px)').matches) return;
       e.preventDefault();
       e.stopPropagation();
       dropdown.classList.toggle('visible');

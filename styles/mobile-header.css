@@ -1,0 +1,152 @@
+/* ============================================================
+   Cabeçalho em uma linha em qualquer tela: logo + nome à esquerda,
+   engrenagem à direita (antes ela caía numa linha sozinha)
+   ============================================================ */
+header.topbar,
+.topbar {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  gap: 16px;
+  min-height: 0 !important;
+  height: auto !important;
+  padding: 10px 24px !important;
+}
+.topbar .brand,
+.topbar h1.brand {
+  flex: 1 1 auto;
+  min-width: 0;
+  justify-content: flex-start !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.topbar .brand-logo-img {
+  width: 48px !important;
+  height: 48px !important;
+  padding: 0 !important;
+}
+.topbar-actions {
+  flex: 0 0 auto;
+  width: auto !important;
+  margin: 0 !important;
+  justify-content: flex-end !important;
+}
+.gear-menu {
+  right: 0 !important;
+  left: auto !important;
+}
+
+/* ============================================================
+   Cabeçalho compacto no celular e no tablet (até 768px)
+   Carregado por último: vários arquivos (styles, modern-ui, nav-icons,
+   responsive, temas) definem o topo; aqui fica a palavra final.
+   - Topo em UMA linha: logo pequeno + nome à esquerda, engrenagem à direita
+   - Abas em uma linha com rolagem lateral (sem quebrar e sem barra vertical)
+   - Sub-abas também em uma linha
+   - Sem o menu suspenso das abas: as sub-abas já fazem o mesmo papel
+   ============================================================ */
+
+@media (max-width: 768px) {
+  header.topbar,
+  .topbar {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 12px;
+    min-height: 0 !important;
+    height: auto !important;
+    padding: 8px 16px !important;
+  }
+
+  .topbar .brand,
+  .topbar h1.brand {
+    flex: 1 1 auto;
+    min-width: 0;
+    justify-content: flex-start !important;
+    gap: 10px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 17px !important;
+    line-height: 1.2;
+  }
+
+  .topbar .brand-logo-img {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px;
+    border-radius: 8px !important;
+    padding: 0 !important;
+  }
+
+  .topbar .brand-name {
+    font-size: 17px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .topbar-actions {
+    flex: 0 0 auto;
+    width: auto !important;
+    margin: 0 !important;
+    justify-content: flex-end !important;
+  }
+
+  .gear-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  /* Menu de preferências preso à direita, sem sair da tela */
+  .gear-menu {
+    right: 0 !important;
+    left: auto !important;
+    max-width: calc(100vw - 32px);
+  }
+
+  .tabs {
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    height: auto !important;
+    max-height: none !important;
+    padding: 6px 8px !important;
+    gap: 4px !important;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+
+  .tabs .tab,
+  .tabs > button,
+  .tab-with-dropdown {
+    flex: 0 0 auto !important;
+    white-space: nowrap;
+  }
+
+  .subtabs {
+    flex-wrap: nowrap !important;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 8px 16px !important;
+  }
+  .subtabs::-webkit-scrollbar { display: none; }
+  .subtabs .subtab { flex: 0 0 auto; white-space: nowrap; }
+
+  .tab-dropdown { display: none !important; }
+  .tab-dropdown-trigger::after { display: none !important; }
+}
+
+/* Painel Comparativo (Investimentos): itens da grade não podem crescer além da
+   tela por causa de um select com texto longo — isso alargava a página inteira */
+.cmp-controls > *,
+.cmp-row > label { min-width: 0; }
+.cmp-controls select { max-width: 100%; }
+
+/* Computador: as abas cabem numa linha. Sem rolagem, a setinha de scroll
+   ao lado das abas some e o menu suspenso de Investimentos não é cortado */
+@media (min-width: 769px) {
+  .tabs { overflow: visible !important; flex-wrap: nowrap !important; }
+}
