@@ -15,10 +15,10 @@
   <link rel="stylesheet" href="themes/light.css?v=3">
   <link rel="stylesheet" href="themes/dark.css?v=4">
   <link rel="stylesheet" href="forex-widget.css?v=1">
-  <link rel="stylesheet" href="styles/fab-buttons.css?v=1">
+  <link rel="stylesheet" href="styles/fab-buttons.css?v=2">
   <link rel="stylesheet" href="styles/charts-filing.css?v=1">
   <link rel="stylesheet" href="styles/responsive.css?v=1">
-  <link rel="stylesheet" href="styles/mobile-header.css?v=8">
+  <link rel="stylesheet" href="styles/mobile-header.css?v=9">
   <link rel="stylesheet" href="styles/dashboard-sections.css?v=2">
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=3">
   <link rel="apple-touch-icon" href="icon-192.png?v=3">
@@ -45,6 +45,9 @@
         <span class="gear-label" data-i18n="gear.lang">Idioma</span>
         <div id="langButtons" class="lang-buttons" role="group" aria-label="Idioma"></div>
         <label class="checkline"><input type="checkbox" id="helpToggle" checked> <span data-i18n="gear.help">Mostrar explicações das abas</span></label>
+        <label class="switchline" for="fabToggle"><span data-i18n="gear.fab">Menu Suspenso</span>
+          <input type="checkbox" id="fabToggle" role="switch"><span class="switch" aria-hidden="true"></span></label>
+        <p class="hint gear-hint" data-i18n="gear.fabHint">Botão "+" no Dashboard com atalhos de cadastro. Arraste para mudar de lugar.</p>
         <button id="btnLockNow" class="secondary-btn gear-advanced hidden" type="button" data-i18n="sec.lockNow">Bloquear agora</button>
         <button id="btnAdvanced" class="secondary-btn gear-advanced" type="button" data-i18n="gear.advanced">Configurações avançadas</button>
       </div>
@@ -641,7 +644,7 @@
       }
     })();
   </script>
-  <script src="app.js?v=52"></script>
+  <script src="app.js?v=53"></script>
   <script src="ui-cleanup.js?v=1"></script>
   <script src="charts-filing-system.js?v=1"></script>
   <script src="forex-widget.js?v=2"></script>
@@ -649,6 +652,6 @@
   <!-- Charts Scripts - NEW: Real Data Only -->
   <script src="src/charts-manager.js?v=3"></script>
   <!-- FAB Buttons -->
-  <script src="src/fab-buttons.js?v=3"></script>
+  <script src="src/fab-buttons.js?v=4"></script>
 </body>
 </html>

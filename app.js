@@ -867,6 +867,8 @@ const I18N = {
     'gear.theme': 'Tema',
     'gear.lang': 'Idioma',
     'gear.help': 'Mostrar explicações das abas',
+    'gear.fab': 'Menu Suspenso',
+    'gear.fabHint': 'Botão "+" no Dashboard com atalhos de cadastro. Arraste para mudar de lugar.',
     'gear.advanced': 'Configurações avançadas',
     'theme.default': 'Claro',
     'theme.dark': 'Escuro',
@@ -1887,6 +1889,8 @@ const I18N = {
     'gear.theme': 'Theme',
     'gear.lang': 'Language',
     'gear.help': 'Show tab explanations',
+    'gear.fab': 'Floating menu',
+    'gear.fabHint': '"+" button on the Dashboard with quick-add shortcuts. Drag it to move.',
     'gear.advanced': 'Advanced settings',
     'theme.default': 'Light',
     'theme.gray': 'Gray',
@@ -2907,6 +2911,8 @@ const I18N = {
     'gear.theme': 'Tema',
     'gear.lang': 'Idioma',
     'gear.help': 'Mostrar explicaciones de las pestañas',
+    'gear.fab': 'Menú flotante',
+    'gear.fabHint': 'Botón "+" en el Dashboard con atajos de registro. Arrástralo para moverlo.',
     'gear.advanced': 'Configuración avanzada',
     'theme.default': 'Claro',
     'theme.dark': 'Oscuro',
@@ -11069,6 +11075,7 @@ function showTab(tab) {
   if (tab === 'calculator') renderCalculator();
   if (tab === 'taxes') renderTaxes().catch((e) => console.warn('Impostos:', e));
   if (tab === 'news') { renderNews(); refreshNews(false).catch(() => {}); }
+  applyFab();
   window.scrollTo({ top: 0 });
 }
 
@@ -11096,6 +11103,14 @@ function applyHelp() {
   document.body.classList.toggle('hide-help', !mostrar);
   const chk = document.getElementById('helpToggle');
   if (chk) chk.checked = mostrar;
+}
+
+// Menu Suspenso (botão "+"): opcional, desligado por padrão, só no Dashboard
+function applyFab() {
+  const ligado = state.settings.fabMenu === true;
+  const chk = document.getElementById('fabToggle');
+  if (chk) chk.checked = ligado;
+  if (window.fabContainer) window.fabContainer.setVisible(ligado && state.ui.tab === 'dashboard');
 }
 
 // REMOVIDO: Opções de tema agora são criadas pelo novo sistema em index.html
@@ -11228,6 +11243,11 @@ function bindEvents() {
     state.settings.showHelp = e.target.checked;
     await put('settings', { key: 'showHelp', value: e.target.checked });
     applyHelp();
+  });
+  on('fabToggle', 'change', async (e) => {
+    state.settings.fabMenu = e.target.checked;
+    await put('settings', { key: 'fabMenu', value: e.target.checked });
+    applyFab();
   });
 
   // Notícias
@@ -11787,6 +11807,7 @@ async function init() {
   applyLang();
   applyTheme();
   applyHelp();
+  applyFab();
   renderAll();
   showTab('dashboard');
   renderSecuritySettings();

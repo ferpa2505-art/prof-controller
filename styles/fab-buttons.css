@@ -1,5 +1,5 @@
 /* ============================================================
-   FLOATING ACTION BUTTONS (FAB)
+   MENU SUSPENSO — botão flutuante "+" (opcional, arrastável)
    ============================================================ */
 
 .fab-container {
@@ -8,28 +8,56 @@
   right: 32px;
   z-index: 1000;
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+  flex-direction: column;      /* atalhos acima, botão principal embaixo */
+  align-items: center;
   gap: 12px;
+  touch-action: none;          /* arrastar no celular sem rolar a página */
+  --fab-half: 28px;            /* metade do botão principal */
 }
+
+/* Desligado nas Preferências ou fora do Dashboard */
+.fab-container.fab-off { display: none; }
+
+/* Posição escolhida pelo usuário: left/top apontam o centro do botão principal */
+.fab-container.fab-custom {
+  right: auto;
+  bottom: auto;
+  transform: translate(-50%, calc(-100% + var(--fab-half)));
+}
+/* Na metade de cima abre para baixo: botão principal em cima, atalhos embaixo */
+.fab-container.fab-open-down { flex-direction: column-reverse; }
+.fab-container.fab-custom.fab-open-down { transform: translate(-50%, calc(-1 * var(--fab-half))); }
+
+/* Perto das laterais: alinha pelo lado de dentro para os rótulos não saírem da tela */
+.fab-container.fab-custom.fab-edge-left { transform: translate(calc(-1 * var(--fab-half)), calc(-100% + var(--fab-half))); align-items: flex-start; }
+.fab-container.fab-custom.fab-edge-left.fab-open-down { transform: translate(calc(-1 * var(--fab-half)), calc(-1 * var(--fab-half))); }
+.fab-container.fab-custom.fab-edge-right { transform: translate(calc(-100% + var(--fab-half)), calc(-100% + var(--fab-half))); align-items: flex-end; }
+.fab-container.fab-custom.fab-edge-right.fab-open-down { transform: translate(calc(-100% + var(--fab-half)), calc(-1 * var(--fab-half))); }
+.fab-container:not(.fab-custom) { align-items: flex-end; }
+
+.fab-items {
+  display: none;
+  flex-direction: column;
+  align-items: inherit;
+  gap: 10px;
+}
+.fab-container.fab-expanded .fab-items { display: flex; animation: fab-in 0.18s ease-out; }
+@keyframes fab-in { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
 
 .fab-group {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
 }
 
 .fab-label {
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.82);
   color: #FFFFFF;
-  padding: 6px 12px;
+  padding: 4px 10px;
   border-radius: 6px;
   font-size: 12px;
   white-space: nowrap;
-  opacity: 0;
-  transform: translateX(8px);
-  transition: all 0.2s ease;
   pointer-events: none;
 }
 
@@ -42,10 +70,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  position: relative;
-  overflow: hidden;
+  flex: 0 0 auto;
 }
 
 .fab-button svg {
@@ -54,123 +81,37 @@
   fill: currentColor;
 }
 
-/* Primary FAB (Main button) */
+/* Botão principal */
 .fab-button.fab-primary {
   background: linear-gradient(135deg, #0099FF 0%, #0073CC 100%);
   color: #FFFFFF;
+  cursor: grab;
 }
+.fab-button.fab-primary:hover { box-shadow: 0 6px 20px rgba(0, 153, 255, 0.45); }
+.fab-container.fab-expanded .fab-button.fab-primary svg { transform: rotate(45deg); }
+.fab-button.fab-primary svg { transition: transform 0.2s ease; }
 
-.fab-button.fab-primary:hover {
-  background: linear-gradient(135deg, #00AAFF 0%, #0088DD 100%);
+/* Arrastando */
+.fab-container.fab-dragging .fab-button.fab-primary {
+  cursor: grabbing;
   transform: scale(1.1);
-  box-shadow: 0 6px 20px rgba(0, 153, 255, 0.4);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
 }
 
-.fab-button.fab-primary:active {
-  transform: scale(0.95);
-}
-
-/* Secondary FAB (Sub-buttons) */
+/* Atalhos */
 .fab-button.fab-secondary {
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.96);
   color: #0099FF;
-  font-weight: 600;
-  font-size: 20px;
-  width: 48px;
-  height: 48px;
+  width: 46px;
+  height: 46px;
 }
+.fab-button.fab-secondary svg { width: 22px; height: 22px; }
+.fab-button.fab-secondary:hover { background: #FFFFFF; transform: scale(1.08); }
 
-.fab-button.fab-secondary:hover {
-  background: #FFFFFF;
-  transform: scale(1.08);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-}
+.fab-button:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 
-.fab-button.fab-secondary:active {
-  transform: scale(0.95);
-}
-
-/* Hidden state */
-.fab-group.hidden .fab-button.fab-secondary,
-.fab-group.hidden .fab-label {
-  opacity: 0;
-  pointer-events: none;
-  transform: scale(0) translateX(8px);
-}
-
-/* Show on hover/focus */
-.fab-container:hover .fab-group.hidden .fab-button.fab-secondary,
-.fab-container:hover .fab-group.hidden .fab-label {
-  opacity: 1;
-  pointer-events: auto;
-  transform: scale(1) translateX(0);
-}
-
-/* Labels visible on hover */
-.fab-container:hover .fab-label {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-/* Ripple effect */
-.fab-button::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  transition: width 0.6s, height 0.6s;
-}
-
-.fab-button:active::before {
-  width: 300px;
-  height: 300px;
-}
-
-/* Mobile responsiveness */
 @media (max-width: 768px) {
-  .fab-container {
-    bottom: 24px;
-    right: 24px;
-  }
-
-  .fab-button {
-    width: 48px;
-    height: 48px;
-  }
-
-  .fab-button svg {
-    width: 24px;
-    height: 24px;
-  }
-
-  .fab-button.fab-secondary {
-    width: 44px;
-    height: 44px;
-  }
-
-  .fab-label {
-    display: none;
-  }
-}
-
-@media (max-width: 480px) {
-  .fab-container {
-    bottom: 20px;
-    right: 20px;
-  }
-
-  .fab-button {
-    width: 44px;
-    height: 44px;
-  }
-
-  .fab-button svg {
-    width: 22px;
-    height: 22px;
-  }
+  .fab-container { bottom: 24px; right: 20px; }
+  .fab-button { width: 52px; height: 52px; }
+  .fab-container { --fab-half: 26px; }
 }

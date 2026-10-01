@@ -190,3 +190,49 @@ header.topbar,
 /* Topo fixo (sticky) com fundo sólido: os gradientes das abas e do topo são
    translúcidos e deixavam gráficos e textos aparecerem por baixo ao rolar */
 .app-head { background-color: var(--bg, #0f1a36); }
+
+/* ============================================================
+   Preferências: interruptor liga/desliga (ex.: Menu Suspenso)
+   ============================================================ */
+.gear-menu label.switchline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 14px 0 2px;
+  font-size: 13px;
+  color: var(--text);
+  cursor: pointer;
+}
+.switchline input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+.switchline .switch {
+  position: relative;
+  flex: 0 0 auto;
+  width: 40px;
+  height: 22px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+  transition: background 0.2s ease;
+}
+.switchline .switch::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+  transition: transform 0.2s ease;
+}
+.switchline input:checked + .switch { background: #0099FF; }
+.switchline input:checked + .switch::after { transform: translateX(18px); }
+.switchline input:focus-visible + .switch { outline: 2px solid #fff; outline-offset: 2px; }
+[data-theme="light"] .switchline .switch { background: rgba(0, 0, 0, 0.2); }
+.gear-menu .gear-hint { margin: 0 0 6px; font-size: 11px; line-height: 1.4; }
