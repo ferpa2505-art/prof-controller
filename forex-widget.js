@@ -219,14 +219,14 @@ function getForexTrend(pair, currentRate) {
   const history = getForexHistory(pair);
   
   if (history.length < 2) {
-    return { arrow: '→', label: 'Sem histórico', color: '#FFB81C', direction: 'stable' };
+    return { arrow: '→', label: t('forex.noHistory'), color: '#FFB81C', direction: 'stable' };
   }
   
   // Comparar com taxa anterior (última do histórico)
   const previousRate = history[history.length - 2]?.rate || history[0]?.rate;
   
   if (!previousRate) {
-    return { arrow: '→', label: 'Sem histórico', color: '#FFB81C', direction: 'stable' };
+    return { arrow: '→', label: t('forex.noHistory'), color: '#FFB81C', direction: 'stable' };
   }
   
   const diff = currentRate - previousRate;
@@ -234,13 +234,13 @@ function getForexTrend(pair, currentRate) {
   
   if (Math.abs(diff) < threshold) {
     // Estável - seta horizontal
-    return { arrow: '↔', label: 'Estável', color: '#FFB81C', direction: 'stable' };
+    return { arrow: '↔', label: t('forex.stable'), color: '#FFB81C', direction: 'stable' };
   } else if (diff > 0) {
     // Subindo - seta diagonal verde
-    return { arrow: '↗', label: 'Subindo', color: '#00FF00', direction: 'up' };
+    return { arrow: '↗', label: t('forex.up'), color: '#00FF00', direction: 'up' };
   } else {
     // Caindo - seta diagonal vermelha
-    return { arrow: '↘', label: 'Caindo', color: '#FF4444', direction: 'down' };
+    return { arrow: '↘', label: t('forex.down'), color: '#FF4444', direction: 'down' };
   }
 }
 
@@ -258,7 +258,7 @@ function renderForexWidget(forceRefresh = false) {
     <div class="forex-widget">
       <div class="forex-header">
         <h3>${t('forex.title') || 'Cotações'}</h3>
-        <button id="forexRefreshBtn" class="forex-refresh-btn" type="button" aria-label="Atualizar cotações" title="Força atualização da API">
+        <button id="forexRefreshBtn" class="forex-refresh-btn" type="button" aria-label="${t('forex.refresh')}" title="${t('forex.refresh')}">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
           </svg>
@@ -266,7 +266,7 @@ function renderForexWidget(forceRefresh = false) {
       </div>
       <div class="forex-loading">
         <span class="loading-spinner"></span>
-        Carregando cotações...
+        ${t('forex.loading')}
       </div>
     </div>
   `;
@@ -276,7 +276,7 @@ function renderForexWidget(forceRefresh = false) {
     if (!rates) {
       container.innerHTML = `
         <div class="forex-widget">
-          <div class="forex-error">❌ Erro ao carregar cotações</div>
+          <div class="forex-error">${t('forex.error')}</div>
         </div>
       `;
       return;
@@ -320,13 +320,13 @@ function renderForexWidget(forceRefresh = false) {
     let statusClass = '';
     
     if (isStale) {
-      statusLabel = '⚠️ Usando cache expirado (sem conexão)';
+      statusLabel = t('forex.stale');
       statusClass = 'cache-stale';
     } else if (isUsingCache) {
-      statusLabel = '📦 Usando cache (próxima atualização em 24h)';
+      statusLabel = t('forex.cached');
       statusClass = 'cache-fresh';
     } else {
-      statusLabel = '✅ Cotações atualizadas agora';
+      statusLabel = t('forex.fresh');
       statusClass = 'fresh-api';
     }
     
@@ -334,7 +334,7 @@ function renderForexWidget(forceRefresh = false) {
       <div class="forex-widget">
         <div class="forex-header">
           <h3>${t('forex.title') || 'Cotações'}</h3>
-          <button id="forexRefreshBtn" class="forex-refresh-btn" type="button" aria-label="Atualizar cotações" title="Força atualização via API">
+          <button id="forexRefreshBtn" class="forex-refresh-btn" type="button" aria-label="${t('forex.refresh')}" title="${t('forex.refresh')}">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
             </svg>
@@ -347,7 +347,7 @@ function renderForexWidget(forceRefresh = false) {
           ${statusLabel}
         </div>
         <div class="forex-timestamp">
-          Atualizado em ${new Date().toLocaleTimeString('pt-BR')}
+          ${t('forex.updatedAt').replace('{h}', new Date().toLocaleTimeString(state.settings.lang || 'pt-BR'))}
         </div>
       </div>
     `;

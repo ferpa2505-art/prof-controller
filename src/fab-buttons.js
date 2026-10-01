@@ -18,56 +18,56 @@ class FABContainer {
     fab.innerHTML = `
       <!-- Investimentos -->
       <div class="fab-group hidden" id="fab-investments">
-        <button class="fab-button fab-secondary" id="fab-add-investment" title="Adicionar Investimento">
+        <button class="fab-button fab-secondary" id="fab-add-investment" title="Adicionar Investimento" data-i18n-title="fab.investment">
           <svg viewBox="0 0 24 24" fill="currentColor">
             <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
           </svg>
         </button>
-        <span class="fab-label">Investimento</span>
+        <span class="fab-label" data-i18n="fab.investment">Investimento</span>
       </div>
 
       <!-- Receitas -->
       <div class="fab-group hidden" id="fab-income">
-        <button class="fab-button fab-secondary" id="fab-add-income" title="Adicionar Receita">
+        <button class="fab-button fab-secondary" id="fab-add-income" title="Adicionar Receita" data-i18n-title="fab.income">
           <svg viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
           </svg>
         </button>
-        <span class="fab-label">Receita</span>
+        <span class="fab-label" data-i18n="fab.income">Receita</span>
       </div>
 
       <!-- Despesas -->
       <div class="fab-group hidden" id="fab-expenses">
-        <button class="fab-button fab-secondary" id="fab-add-expense" title="Adicionar Despesa">
+        <button class="fab-button fab-secondary" id="fab-add-expense" title="Adicionar Despesa" data-i18n-title="fab.expense">
           <svg viewBox="0 0 24 24" fill="currentColor">
             <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
           </svg>
         </button>
-        <span class="fab-label">Despesa</span>
+        <span class="fab-label" data-i18n="fab.expense">Despesa</span>
       </div>
 
       <!-- Imóveis -->
       <div class="fab-group hidden" id="fab-properties">
-        <button class="fab-button fab-secondary" id="fab-add-property" title="Adicionar Imóvel">
+        <button class="fab-button fab-secondary" id="fab-add-property" title="Adicionar Imóvel" data-i18n-title="fab.property">
           <svg viewBox="0 0 24 24" fill="currentColor">
             <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
           </svg>
         </button>
-        <span class="fab-label">Imóvel</span>
+        <span class="fab-label" data-i18n="fab.property">Imóvel</span>
       </div>
 
       <!-- Veículos -->
       <div class="fab-group hidden" id="fab-vehicles">
-        <button class="fab-button fab-secondary" id="fab-add-vehicle" title="Adicionar Veículo">
+        <button class="fab-button fab-secondary" id="fab-add-vehicle" title="Adicionar Veículo" data-i18n-title="fab.vehicle">
           <svg viewBox="0 0 24 24" fill="currentColor">
             <path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.22.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm11 0c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zM5 11l1.5-4.5h11L19 11H5z"/>
           </svg>
         </button>
-        <span class="fab-label">Veículo</span>
+        <span class="fab-label" data-i18n="fab.vehicle">Veículo</span>
       </div>
 
       <!-- Main button -->
-      <button class="fab-button fab-primary" id="fab-main" title="Adicionar dados">
+      <button class="fab-button fab-primary" id="fab-main" title="Adicionar dados" data-i18n-title="fab.add">
         <svg viewBox="0 0 24 24" fill="currentColor">
           <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
         </svg>

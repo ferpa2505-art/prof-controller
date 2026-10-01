@@ -9,9 +9,9 @@ function initTabDropdowns() {
       selector: '[data-group="investments"]',
       label: 'Investimentos',
       items: [
-        { label: 'Investimentos', action: () => switchTab('investments') },
-        { label: 'Calculadora', action: () => switchTab('calculator') },
-        { label: 'Impostos', action: () => switchTab('taxes') }
+        { label: 'Investimentos', key: 'tabs.investments', action: () => switchTab('investments') },
+        { label: 'Calculadora', key: 'tabs.calculator', action: () => switchTab('calculator') },
+        { label: 'Impostos', key: 'tabs.taxes', action: () => switchTab('taxes') }
       ]
     }
   ];
@@ -36,6 +36,11 @@ function initTabDropdowns() {
     config.items.forEach(item => {
       const itemBtn = document.createElement('button');
       itemBtn.textContent = item.label;
+      // applyLang() traduz todo elemento com data-i18n
+      if (item.key) {
+        itemBtn.dataset.i18n = item.key;
+        if (typeof t === 'function') itemBtn.textContent = t(item.key);
+      }
       itemBtn.className = 'tab-dropdown-item';
       itemBtn.addEventListener('click', (e) => {
         e.preventDefault();
