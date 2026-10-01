@@ -7369,19 +7369,24 @@ const NEWS_TTL = 2 * 60 * 60 * 1000;
 const NEWS_MAX = 200;
 const NEWS_MIN_REGION = 10;   // manchetes garantidas por região, mesmo com muita notícia de outra
 const NEWS_VERSION = 2;       // v2: notícias com região; cache antigo é buscado de novo
-// Edições do Google News. O rss2json sem chave recusa muitas buscas novas em
-// sequência e devolve no máximo 10 itens por busca: por isso cada região é UMA
-// busca combinada (OR), feita antes das buscas por ativo. Com chave, pede 25.
-const NEWS_REGIONS = {
+// Edições do Google News. Pelo rss2json, algumas buscas falham de forma
+// irregular ("Cannot download this RSS feed") e, sem chave, buscas novas em
+// sequência são recusadas. Por isso cada região tem mais de uma fonte, todas
+// com termos simples, e a primeira de cada região vai antes das buscas por ativo.
+const NEWS_EDITIONS = {
   br: { hl: 'pt-BR', gl: 'BR', ceid: 'BR:pt-419', lang: 'pt' },
   us: { hl: 'en-US', gl: 'US', ceid: 'US:en', lang: 'en' },
-  eu: { hl: 'en-GB', gl: 'GB', ceid: 'GB:en', lang: 'en' }
+  gb: { hl: 'en-GB', gl: 'GB', ceid: 'GB:en', lang: 'en' },
+  pt: { hl: 'pt-PT', gl: 'PT', ceid: 'PT:pt-150', lang: 'pt' }
 };
+const NEWS_REGIONS = { br: {}, us: {}, eu: {} };
 const NEWS_MARKET_TOPICS = {
-  br: 'Ibovespa OR "dólar hoje" OR Selic OR Copom',
-  us: '"Wall Street" OR "S&P 500" OR Nasdaq OR "Federal Reserve"',
-  eu: '"European stocks" OR "STOXX 600" OR ECB OR DAX OR "CAC 40" OR FTSE'
+  br: [{ q: 'Ibovespa OR "dólar hoje" OR Selic OR Copom', ed: 'br' }, { q: 'Ibovespa', ed: 'br' }],
+  us: [{ q: 'Wall Street stocks', ed: 'us' }, { q: 'stocks', ed: 'us' }],
+  eu: [{ q: 'STOXX 600', ed: 'gb' }, { q: 'DAX', ed: 'gb' }, { q: 'bolsas europeias', ed: 'pt' }]
 };
+const NEWS_RETRY = 10 * 60 * 1000;  // região sem manchetes: tenta de novo em 10 min
+let newsRetryTimer = null;
 // Notícia antiga, gravada antes das regiões: português era Brasil, inglês era EUA
 function newsRegion(n) { return n.region || (n.lang === 'pt' ? 'br' : 'us'); }
 let newsCache = null;         // { fetchedAt, items }
@@ -7410,9 +7415,9 @@ function shortCompany(nome) {
   return String(nome || '').replace(/\b(S\.?A\.?|SA|Pfd|PN|ON|Inc\.?|Corp\.?|Holding|Ltd\.?|plc|Co\.?|Class [A-Z])\b/gi, '').replace(/\s+/g, ' ').trim().split(' ').slice(0, 2).join(' ');
 }
 
-async function fetchGoogleNews(query, tag, region) {
+async function fetchGoogleNews(query, tag, region, edition) {
   const rg = NEWS_REGIONS[region] ? region : 'br';
-  const ed = NEWS_REGIONS[rg];
+  const ed = NEWS_EDITIONS[edition] || NEWS_EDITIONS[rg] || NEWS_EDITIONS.br;
   const rss = `https://news.google.com/rss/search?q=${encodeURIComponent(query)}&hl=${ed.hl}&gl=${ed.gl}&ceid=${ed.ceid}`;
   const chave = apiKey('apiRss2json');
   const url = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rss)}${chave ? '&api_key=' + encodeURIComponent(chave) + '&count=25' : ''}`;
@@ -7484,9 +7489,17 @@ async function refreshNews(forcar) {
   newsLoading = true;
   renderNewsStatus();
 
-  // Mercado de cada região primeiro: se o rss2json começar a recusar, as três já vieram
-  const tarefas = Object.entries(NEWS_MARKET_TOPICS).map(([rg, q]) => () => fetchGoogleNews(q, 'market', rg));
-  tarefas.push(() => fetchFinnhubMarketNews());
+  // Mercado primeiro, uma fonte de cada região por rodada: se o rss2json começar
+  // a recusar, as três regiões já tiveram sua primeira chance
+  const tarefas = [];
+  const rodadas = Math.max(...Object.values(NEWS_MARKET_TOPICS).map((l) => l.length));
+  for (let i = 0; i < rodadas; i++) {
+    Object.entries(NEWS_MARKET_TOPICS).forEach(([rg, fontes]) => {
+      const f = fontes[i];
+      if (f) tarefas.push(() => fetchGoogleNews(f.q, 'market', rg, f.ed));
+    });
+    if (i === 0) tarefas.push(() => fetchFinnhubMarketNews());
+  }
   newsTickers().forEach((a) => {
     if (a.market === 'us') {
       tarefas.push(() => fetchFinnhubNews(a.ticker));
@@ -7523,6 +7536,10 @@ async function refreshNews(forcar) {
   const itens = keepPerRegion(recentes, NEWS_MIN_REGION, NEWS_MAX).map(({ tag, ...resto }) => resto);
 
   newsLoading = false;
+  // Região que ficou sem manchetes (fonte instável) ganha nova tentativa logo
+  const faltando = Object.keys(NEWS_REGIONS).some((rg) => !itens.some((n) => newsRegion(n) === rg));
+  if (newsRetryTimer) clearTimeout(newsRetryTimer);
+  newsRetryTimer = faltando ? setTimeout(() => refreshNews(true).catch(() => {}), NEWS_RETRY) : null;
   if (novos.length || !newsCache.items.length) {
     newsCache = { v: NEWS_VERSION, fetchedAt: new Date().toISOString(), items: itens, tickers: atuais, failed: falhas === tarefas.length };
     await put('settings', { key: NEWS_KEY, value: newsCache });
