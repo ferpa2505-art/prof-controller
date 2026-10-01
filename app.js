@@ -11625,6 +11625,9 @@ function renderCashflow() {
   });
   svg += '</svg>';
   wrap.innerHTML = svg;
+  // No celular o gráfico rola para o lado: abre centralizado no mês atual,
+  // que fica no meio da série (meses passados à esquerda, previstos à direita)
+  if (wrap.scrollWidth > wrap.clientWidth) wrap.scrollLeft = (wrap.scrollWidth - wrap.clientWidth) / 2;
 }
 
 function renderNAVControls() {
