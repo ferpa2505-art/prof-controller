@@ -96,40 +96,17 @@ class FABContainer {
     // Event listeners
     this.mainBtn.addEventListener('click', () => this.toggleFAB());
     
-    this.investmentBtn.addEventListener('click', () => {
+    // Cada botão abre o formulário do próprio app.js, que grava no IndexedDB
+    // (criptografado quando a senha está ativa) e atualiza todas as telas.
+    const abrir = (btn, fn) => btn.addEventListener('click', () => {
       this.closeFAB();
-      if (window.investmentForm) {
-        window.investmentForm.open();
-      }
+      fn();
     });
-
-    this.incomeBtn.addEventListener('click', () => {
-      this.closeFAB();
-      if (window.incomeForm) {
-        window.incomeForm.open();
-      }
-    });
-
-    this.expenseBtn.addEventListener('click', () => {
-      this.closeFAB();
-      if (window.expenseForm) {
-        window.expenseForm.open();
-      }
-    });
-
-    this.propertyBtn.addEventListener('click', () => {
-      this.closeFAB();
-      if (window.propertyForm) {
-        window.propertyForm.open();
-      }
-    });
-
-    this.vehicleBtn.addEventListener('click', () => {
-      this.closeFAB();
-      if (window.vehicleForm) {
-        window.vehicleForm.open();
-      }
-    });
+    abrir(this.investmentBtn, () => openPositionModal());
+    abrir(this.incomeBtn, () => openTxModal(null, 'income'));
+    abrir(this.expenseBtn, () => openTxModal(null, 'expense'));
+    abrir(this.propertyBtn, () => openAssetModal('property'));
+    abrir(this.vehicleBtn, () => openAssetModal('vehicle'));
 
     // Fechar FAB quando clicar fora
     document.addEventListener('click', (e) => {

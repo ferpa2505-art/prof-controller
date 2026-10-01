@@ -4539,8 +4539,6 @@ function applyLang() {
   document.documentElement.lang = state.settings.lang;
   document.querySelectorAll('[data-i18n]').forEach((el) => { el.textContent = t(el.dataset.i18n); });
   document.querySelectorAll('[data-i18n-title]').forEach((el) => { el.title = t(el.dataset.i18nTitle); });
-  // Os gráficos do fichário são desenhados no canvas: só mudam de idioma se forem redesenhados
-  if (window.chartsManager) window.chartsManager.initialize();
   renderLangButtons();
   renderSubTabs();
   // renderThemeOptions(); // COMENTADO - Opções agora criadas pelo novo sistema em index.html
@@ -4576,6 +4574,8 @@ function renderAll() {
   etapas.forEach(([nome, fn]) => {
     try { fn(); } catch (e) { console.error('Falha ao renderizar ' + nome + ':', e); }
   });
+  // Os gráficos do fichário desenham no canvas: redesenha com os dados atuais
+  try { if (window.chartsManager) window.chartsManager.initialize(); } catch (e) { console.error('Falha ao renderizar gráficos:', e); }
   // Agendar os listeners para depois de todos os renders terminarem
   setTimeout(setupDashboardCardListeners, 0);
 }
@@ -10463,10 +10463,10 @@ function categoryOptions(type, selected) {
     </optgroup>`).join('');
 }
 
-function openTxModal(id) {
+function openTxModal(id, presetType) {
   if (!state.accounts.length) { showToast(t('tx.noAccounts')); return; }
   const trn = id ? state.transactions.find((x) => x.id === id) : null;
-  const type = trn ? trn.type : 'expense';
+  const type = trn ? trn.type : (presetType || 'expense');
   const accOptions = (selected) => state.accounts.map((a) =>
     `<option value="${a.id}" ${selected === a.id ? 'selected' : ''}>${escapeHtml(a.name)} (${a.currency})</option>`).join('');
 
@@ -11134,13 +11134,15 @@ function buildNAVSeries() {
   // acrescentava hoje como ponto solto, criando um salto na linha.
   const max = new Date(Math.max(Math.max(...valid), today.getTime()));
   let points = [];
+  const hojeISO = todayISO();
   const cur = new Date(min.getFullYear(), min.getMonth(), 1);
   while (cur <= max) {
     const end = new Date(cur.getFullYear(), cur.getMonth() + 1, 0);
-    if (end >= min) points.push(end.toISOString().slice(0, 10));
+    // O mês corrente termina hoje: o fim do mês ainda não aconteceu (e
+    // depreciaria veículos por dias que ainda não passaram)
+    if (end >= min) points.push(end.toISOString().slice(0, 10) > hojeISO ? hojeISO : end.toISOString().slice(0, 10));
     cur.setMonth(cur.getMonth() + 1);
   }
-  const hojeISO = todayISO();
   if (!points.length || points[points.length - 1] < hojeISO) points.push(hojeISO);
 
   // Um imóvel comprado em 2014 gera mais de 150 pontos mensais. Acima de 60,
