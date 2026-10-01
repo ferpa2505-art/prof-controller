@@ -1,0 +1,163 @@
+/* ============================================================
+   Tudo dentro da tela — celular, tablet e notebook
+   Carregado por último. Vale para todas as abas.
+   - Notebook (> 900px): tabelas compactas que cabem na largura
+   - Tablet e celular (<= 900px): cada linha da tabela vira um cartão
+     "Rótulo: valor" (rótulos copiados do cabeçalho por src/table-cards.js)
+   - Grades de cartões se ajustam à largura
+   ============================================================ */
+
+/* Rede de segurança: nada empurra a página para o lado */
+main { overflow-x: clip; max-width: 100%; }
+main img, main svg, main canvas { max-width: 100%; }
+
+/* ----- Grades de cartões: quantos couberem, sem sobrar um sozinho embaixo à toa ----- */
+main .cards {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr));
+}
+main .card { min-width: 0; }
+main .card .big-number,
+main .card .number-large {
+  font-size: clamp(18px, 2.2vw, 28px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.25;
+}
+main .card h3 { margin-top: 0; }
+.big-sub {
+  display: block;
+  font-size: 0.6em;
+  margin-top: 2px;
+}
+
+/* Cabeçalhos de painel e linhas de filtros/botões quebram em vez de vazar */
+.panel-header { flex-wrap: wrap; gap: 10px; }
+.panel-header > div { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* ----- Notebook: tabela compacta que cabe ----- */
+@media (min-width: 901px) {
+  main table.fit-table th {
+    padding: 10px 7px;
+    font-size: 11px;
+    letter-spacing: 0.2px;
+    white-space: normal !important;
+    vertical-align: bottom;
+  }
+  main table.fit-table td {
+    padding: 9px 7px;
+    font-size: 13px;
+    vertical-align: middle;
+  }
+  main table.fit-table td.c-name { min-width: 130px; }
+  .cell-sub { display: block; font-size: 11px; opacity: 0.8; }
+  main table.fit-table .action-circle-btn { width: 32px; height: 32px; font-size: 18px; }
+}
+
+/* ----- Linhas viram cartões: no tablet e no celular, e em qualquer tela
+   quando a tabela não cabe na largura (classe fit-cards, ligada pelo
+   src/table-cards.js) ----- */
+main .table-scroll:has(> table.fit-cards) { overflow: visible; }
+main table.fit-table.fit-cards,
+main table.fit-table.fit-cards tbody,
+main table.fit-table.fit-cards tfoot,
+main table.fit-table.fit-cards tr,
+main table.fit-table.fit-cards td {
+  display: block;
+  width: 100%;
+}
+main table.fit-table.fit-cards { background: transparent; border: 0; border-radius: 0; overflow: visible; }
+main table.fit-table.fit-cards thead { display: none; }
+
+main table.fit-table.fit-cards tr {
+  margin: 0 0 10px;
+  padding: 10px 14px;
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.12));
+  border-radius: 12px;
+  background: var(--surface, rgba(255, 255, 255, 0.04));
+}
+main table.fit-table.fit-cards tbody tr:hover { background: var(--surface, rgba(255, 255, 255, 0.04)); }
+
+main table.fit-table.fit-cards td {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding: 6px 0;
+  border: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 14px;
+  text-align: right;
+  white-space: normal;
+}
+main table.fit-table.fit-cards td:last-child { border-bottom: 0; }
+main table.fit-table.fit-cards td::before {
+  content: attr(data-label);
+  flex: 0 0 auto;
+  max-width: 50%;
+  text-align: left;
+  font-size: 12px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+main table.fit-table.fit-cards td:not([data-label])::before { content: none; }
+
+/* Primeira coluna (nome, mês, conta...) é o título do cartão */
+main table.fit-table.fit-cards td:first-child {
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  text-align: left;
+  font-weight: 600;
+  font-size: 15px;
+  padding-top: 2px;
+}
+main table.fit-table.fit-cards td:first-child::before { content: none; }
+
+/* Célula que ocupava várias colunas (avisos, totais) */
+main table.fit-table.fit-cards td.fit-span { display: block; text-align: left; }
+main table.fit-table.fit-cards td.fit-span::before { content: none; }
+
+/* Coluna de ações sem título: botões alinhados à direita */
+main table.fit-table.fit-cards td:not([data-label]):not(:first-child) { justify-content: flex-end; }
+
+.cell-sub { display: block; font-size: 12px; opacity: 0.8; }
+main table.fit-table.fit-cards td .cell-sub { margin-left: 8px; display: inline; }
+
+/* Inputs e selects dentro das linhas (ex.: prejuízo anterior) não estouram */
+main table.fit-table.fit-cards td input,
+main table.fit-table.fit-cards td select { max-width: 55%; }
+
+[data-theme="light"] main table.fit-table.fit-cards td { border-bottom-color: rgba(0, 0, 0, 0.08); }
+
+/* Cartões: rótulo à esquerda (float) e TODO o conteúdo junto à direita.
+   Com flex, valor e complemento (ex.: "R$ 0,00" e "0,0%") ficavam espalhados. */
+main table.fit-table.fit-cards td[data-label] {
+  display: block;
+  text-align: right;
+}
+main table.fit-table.fit-cards td[data-label]::after { content: ''; display: table; clear: both; }
+main table.fit-table.fit-cards td[data-label]::before {
+  float: left;
+  margin-right: 12px;
+  line-height: 1.7;
+}
+main table.fit-table.fit-cards td .cell-sub {
+  display: block;
+  margin-left: 0;
+  font-size: 12px;
+}
+main table.fit-table.fit-cards td.c-act { display: flex; justify-content: flex-end; }
+main table.fit-table.fit-cards td.c-act::before { content: none; }
+/* Título do cartão (primeira coluna) sempre à esquerda e sem rótulo */
+main table.fit-table.fit-cards td:first-child,
+main table.fit-table.fit-cards td[data-label]:first-child {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  text-align: left;
+  justify-content: flex-start;
+}
+main table.fit-table.fit-cards td[data-label]:first-child::before,
+main table.fit-table.fit-cards td[data-label]:first-child::after { content: none; }

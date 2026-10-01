@@ -4152,7 +4152,8 @@ function t(key) {
 function currency(code) { return CURRENCIES.find((c) => c.code === code) || { code, symbol: code + ' ', decimals: 2 }; }
 function fmtMoney(value, code) {
   const c = currency(code);
-  return c.symbol + ' ' + Number(value).toLocaleString('pt-BR', { minimumFractionDigits: c.decimals, maximumFractionDigits: c.decimals });
+  // Espaço não separável: "R$" nunca fica numa linha e o número na outra
+  return c.symbol.trimEnd() + ' ' + Number(value).toLocaleString('pt-BR', { minimumFractionDigits: c.decimals, maximumFractionDigits: c.decimals });
 }
 /* Lê um campo de dinheiro aceitando os dois formatos que um teclado
    brasileiro produz: "620.000,50", "620000.50", "620000,50" e "620.000".
@@ -5031,7 +5032,7 @@ function renderFx() {
         <span class="currency-arrow ${arrowClass}">${arrow}</span>
         ${percentage ? `<small style="color: var(--muted); font-size: 11px;">${percentage}</small>` : ''}
         <div class="action-menu-container" style="display: inline-block; margin-left: 8px;">
-          <button class="action-circle-btn" onclick="toggleActionMenu(event)">${String.fromCharCode(10133)}</button>
+          <button class="action-circle-btn" type="button" aria-label="${t('accounts.actions')}" title="${t('accounts.actions')}" onclick="toggleActionMenu(event)">⋯</button>
           <div class="action-dropdown-menu">
             <button class="action-menu-item" onclick="openFxModal('${r.id}')">${t('modal.edit')}</button>
             <button class="action-menu-item" onclick="deleteFx('${r.id}')">${t('modal.delete')}</button>
@@ -9907,17 +9908,17 @@ function renderInvestments() {
       const conta = accountById(pos.accountId);
       const classe = r.profit > 0.004 ? 'amount-in' : (r.profit < -0.004 ? 'amount-out' : 'amount-neutral');
       return `<tr>
-        <td>${colorDot(pos.color)}${escapeHtml(pos.name)}${pos.ticker ? ` <span class="tag">${escapeHtml(pos.ticker)}</span>` : ''}</td>
-        <td>${pos.assetType ? t('inv.ty.' + pos.assetType) : '—'}</td>
-        <td>${conta ? escapeHtml(conta.name) : '—'}</td>
-        <td>${pos.kind === 'quote' ? fmtQty(st.quantity) : '—'}</td>
-        <td>${cot ? fmtMoney(cot.value, pos.currency) : '—'}${pos.kind === 'quote' && st.quantity > 0 ? `<br><span class="hint">${t('mkt.avgPrice')}: ${fmtMoney(st.cost / st.quantity, pos.currency)}</span>` : ''}</td>
-        <td>${fmtMoney(r.cost, pos.currency)}</td>
-        <td><strong>${fmtMoney(r.value, pos.currency)}</strong></td>
-        <td class="${classe}">${fmtMoney(r.profit, pos.currency)} · ${r.pct.toFixed(1)}%</td>
-        <td>
+        <td class="c-name">${colorDot(pos.color)}<span class="inv-name">${escapeHtml(pos.name)}</span>${pos.ticker ? ` <span class="tag">${escapeHtml(pos.ticker)}</span>` : ''}</td>
+        <td class="c-type" data-label="${t('inv.type')}">${pos.assetType ? t('inv.ty.' + pos.assetType) : '—'}</td>
+        <td class="c-acc" data-label="${t('inv.account')}">${conta ? escapeHtml(conta.name) : '—'}</td>
+        <td class="c-num" data-label="${t('inv.quantity')}">${pos.kind === 'quote' ? fmtQty(st.quantity) : '—'}</td>
+        <td class="c-num" data-label="${t('inv.price')}">${cot ? fmtMoney(cot.value, pos.currency) : '—'}${pos.kind === 'quote' && st.quantity > 0 ? `<span class="hint cell-sub">${t('mkt.avgPrice')}: ${fmtMoney(st.cost / st.quantity, pos.currency)}</span>` : ''}</td>
+        <td class="c-num" data-label="${t('inv.cost')}">${fmtMoney(r.cost, pos.currency)}</td>
+        <td class="c-num" data-label="${t('inv.value')}"><strong>${fmtMoney(r.value, pos.currency)}</strong></td>
+        <td class="c-num ${classe}" data-label="${t('inv.return')}">${fmtMoney(r.profit, pos.currency)}<span class="cell-sub">${r.pct.toFixed(1)}%</span></td>
+        <td class="c-act">
           <div class="action-menu-container">
-            <button class="action-circle-btn" onclick="toggleActionMenu(event)">${String.fromCharCode(10133)}</button>
+            <button class="action-circle-btn" type="button" aria-label="${t('accounts.actions')}" title="${t('accounts.actions')}" onclick="toggleActionMenu(event)">⋯</button>
             <div class="action-dropdown-menu">
               <button class="action-menu-item" onclick="openPositionChart('${pos.id}')">${t('mkt.chart')}</button>
               <button class="action-menu-item" onclick="openMoveModal('${pos.id}')">${t('inv.move')}</button>
@@ -9964,7 +9965,7 @@ function renderInvestments() {
   if (elV) elV.textContent = fmtMoney(valor, base);
   if (elC) elC.textContent = fmtMoney(custo, base);
   if (elR) {
-    elR.textContent = fmtMoney(lucro, base) + (custo > 0 ? ' · ' + ((lucro / custo) * 100).toFixed(1) + '%' : '');
+    elR.innerHTML = escapeHtml(fmtMoney(lucro, base)) + (custo > 0 ? `<span class="big-sub">${((lucro / custo) * 100).toFixed(1)}%</span>` : '');
     elR.className = 'big-number ' + (lucro > 0.004 ? 'amount-in' : lucro < -0.004 ? 'amount-out' : '');
   }
   renderDividends();
@@ -10469,13 +10470,28 @@ function handleDashboardCardClick(e) {
 
 function toggleActionMenu(event) {
   event.stopPropagation();
-  const menu = event.target.parentElement.querySelector('.action-dropdown-menu');
-  const allMenus = document.querySelectorAll('.action-dropdown-menu');
-  allMenus.forEach(m => {
-    if (m !== menu) m.classList.remove('show');
-  });
-  menu.classList.toggle('show');
+  const botao = event.currentTarget || event.target;
+  const menu = botao.parentElement.querySelector('.action-dropdown-menu');
+  document.querySelectorAll('.action-dropdown-menu').forEach((m) => { if (m !== menu) m.classList.remove('show'); });
+  const abrir = !menu.classList.contains('show');
+  menu.classList.toggle('show', abrir);
+  if (!abrir) return;
+  // Fixo na tela: dentro da tabela com rolagem lateral o menu era cortado
+  const r = botao.getBoundingClientRect();
+  menu.style.position = 'fixed';
+  menu.style.right = 'auto';
+  menu.style.top = '0px';
+  menu.style.left = '0px';
+  const m = menu.getBoundingClientRect();
+  const embaixo = window.innerHeight - r.bottom;
+  const top = embaixo >= m.height + 8 ? r.bottom + 6 : Math.max(8, r.top - m.height - 6);
+  const left = Math.min(Math.max(8, r.right - m.width), window.innerWidth - m.width - 8);
+  menu.style.top = top + 'px';
+  menu.style.left = left + 'px';
+  menu.style.marginTop = '0';
 }
+// Rolar a página ou a tabela fecha o menu (ele está fixo na tela)
+window.addEventListener('scroll', () => document.querySelectorAll('.action-dropdown-menu.show').forEach((m) => m.classList.remove('show')), true);
 
 document.addEventListener('click', () => {
   document.querySelectorAll('.action-dropdown-menu').forEach(menu => {

@@ -100,9 +100,7 @@
   .ym-track { grid-column: 1 / -1; grid-row: 2; }
   .ym-headline { font-size: 14px; }
 
-  /* Gráficos em SVG (Entradas e Saídas, Composição): com 720px de largura
-     desenhada, no celular os textos ficavam minúsculos. Mantém legível e
-     deixa arrastar para o lado. */
-  .nav-chart { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  .nav-chart > svg { min-width: 560px; }
+  /* Gráficos em SVG cabem na largura da tela (sem rolagem lateral) */
+  .nav-chart { overflow: visible; }
+  .nav-chart > svg { width: 100%; height: auto; min-width: 0; }
 }
