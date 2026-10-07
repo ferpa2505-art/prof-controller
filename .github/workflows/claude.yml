@@ -1,0 +1,54 @@
+# @claude no GitHub: mencione "@claude" num issue, num comentário de pull request
+# ou numa revisão, e o Claude responde, analisa o código ou propõe mudanças numa
+# branch nova (nunca direto na main, que publica o site).
+#
+# Requisitos (feitos pelo dono do repositório, uma vez):
+#   1. App "Claude" instalado neste repositório: https://github.com/apps/claude
+#   2. Um destes segredos em Settings → Secrets and variables → Actions:
+#      - CLAUDE_CODE_OAUTH_TOKEN  (assinatura Claude; gerado com `claude setup-token`)
+#      - ANTHROPIC_API_KEY        (chave da API, cobrada por uso)
+#
+# Repositório público: além da regra da própria action (só quem tem permissão de
+# escrita aciona), o "if" abaixo aceita apenas o DONO. Ninguém de fora consegue
+# gastar a sua cota comentando "@claude".
+
+name: Claude
+
+on:
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+  pull_request_review:
+    types: [submitted]
+  issues:
+    types: [opened, assigned]
+
+jobs:
+  claude:
+    if: |
+      (
+        (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude') && github.event.comment.author_association == 'OWNER') ||
+        (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude') && github.event.comment.author_association == 'OWNER') ||
+        (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@claude') && github.event.review.author_association == 'OWNER') ||
+        (github.event_name == 'issues' && (contains(github.event.issue.body, '@claude') || contains(github.event.issue.title, '@claude')) && github.event.issue.author_association == 'OWNER')
+      )
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      id-token: write
+      actions: read
+    steps:
+      - name: Baixar o repositório
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Claude
+        uses: anthropics/claude-code-action@v1
+        with:
+          # Use UM dos dois (o que estiver cadastrado nos segredos do repositório)
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
