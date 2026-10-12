@@ -12,6 +12,9 @@ on:
     tags: ['v*']
     branches: ['loja/**']
 
+permissions:
+  contents: read
+
 concurrency:
   group: ios-${{ github.ref }}
   cancel-in-progress: true

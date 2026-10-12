@@ -25,6 +25,9 @@ on:
     tags: ['v*']
     branches: ['loja/**']
 
+permissions:
+  contents: read
+
 concurrency:
   group: android-${{ github.ref }}
   cancel-in-progress: true
