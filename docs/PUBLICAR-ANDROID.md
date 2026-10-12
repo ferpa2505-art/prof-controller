@@ -41,12 +41,18 @@ Em **GitHub → Settings → Secrets and variables → Actions → New repositor
 | `ANDROID_KEY_ALIAS` | `upload` |
 | `ANDROID_KEY_PASSWORD` | senha da chave |
 
-Depois: aba **Actions → App Android → Run workflow**. Ao terminar, baixe em *Artifacts*:
-- `prof-controller-debug.apk` — instale no seu celular para testar;
-- `prof-controller-release.aab` — é este que vai para a Play.
+Depois: aba **Actions → App Android → Run workflow** (ou crie uma tag `v*`, ex.: `v1.2.0`).
+O workflow possui duas etapas separadas:
+1. **Validação e APK de Debug** (roda em PRs, branches e tags):
+   - Valida os testes unitários (`npm test`) e a regra monotônica do `versionCode`.
+   - Gera `prof-controller-debug.apk` (disponível em *Artifacts* para instalar direto no celular).
+   - Não utiliza nem expõe segredos de assinatura.
+2. **Release AAB para Google Play** (roda apenas em tags `v*` ou disparo manual com `build_release: true`):
+   - Executa validação estrita de monotonicidade contra o histórico de releases (`scripts/validate-version-code.mjs --release`).
+   - Gera `prof-controller-release.aab` assinado (se os segredos estiverem cadastrados).
 
-O número de versão (`versionCode`) é o número da execução do workflow, então cresce sozinho.
-O nome da versão vem do `package.json` (`"version": "1.2.0"`).
+O nome de versão visível na Play Console (`versionName`) vem do `package.json` (`"version": "1.2.0"`).
+O código interno (`versionCode`) segue a estratégia monotônica calculada a partir do semver, explicada na seção 6.
 
 ## 4. Criar o app no Play Console
 
@@ -84,11 +90,71 @@ O nome da versão vem do `package.json` (`"version": "1.2.0"`).
 4. Depois: **Painel → Solicitar acesso à produção**. A Google pergunta como foi o teste; responda com
    o que os testadores relataram.
 
-## 6. Atualizações
+## 6. Atualizações e Estratégia Monotônica de versionCode
 
-1. Mude `"version"` no `package.json` (ex.: `1.2.1`).
-2. Faça push na `main` (o site atualiza sozinho) e rode o workflow **App Android**.
-3. Envie o novo `.aab` na faixa desejada.
+### Por que a regra de monotonicidade é obrigatória na Google Play
+A Google Play exige que cada novo pacote (`.aab` ou `.apk`) enviado para a Play Console tenha um `versionCode` **estritamente maior** que qualquer versão anteriormente carregada (em qualquer faixa: interna, fechada, aberta ou produção). Além disso:
+- O `versionCode` precisa ser um **número inteiro positivo** (entre `1` e `2.100.000.000`).
+- Reutilizar um `versionCode` já enviado ou tentar enviar um número menor gera rejeição imediata pela Play Console.
+- Usar `github.run_number` era inseguro porque o número de execuções é atrelado ao histórico do workflow do GitHub Actions (podendo reiniciar se o workflow for recriado, gerar conflitos entre branches/PRs ou não refletir as versões de fato enviadas à loja).
+
+### Mapeamento: `package.json` version ➔ Play Console (`versionName` e `versionCode`)
+
+| `package.json` (`version`) | `versionName` (loja) | BUILD | `versionCode` (Android) | Propósito |
+|---|---|---|---|---|
+| `1.0.0` | `1.0.0` | 0 | `1000000` | Lançamento inicial |
+| `1.1.0` | `1.1.0` | 0 | `1010000` | Atualização minor |
+| `1.2.0` | `1.2.0` | 0 | `1020000` | Versão atual |
+| `1.2.0` | `1.2.0` | 1 | `1020001` | Ressubmissão/correção interna de build (mesmo semver) |
+| `1.2.1` | `1.2.1` | 0 | `1020100` | Patch release |
+| `1.3.0` | `1.3.0` | 0 | `1030000` | Minor release |
+| `2.0.0` | `2.0.0` | 0 | `2000000` | Major release |
+
+### Fórmula de Cálculo
+Para cada versão SemVer `MAJOR.MINOR.PATCH` e revisão `BUILD` (0 a 99):
+```
+versionCode = (MAJOR * 1.000.000) + (MINOR * 10.000) + (PATCH * 100) + BUILD
+```
+- **MAJOR** (0 a 2.100): aloca dígitos superiores (até 2,1 bilhões, teto da Google Play).
+- **MINOR** (0 a 99): aloca 2 dígitos decimais.
+- **PATCH** (0 a 99): aloca 2 dígitos decimais.
+- **BUILD** (0 a 99): aloca 2 dígitos para rebuilds da mesma versão sem precisar alterar o `versionName` público.
+
+### Validação Local e no CI
+O repositório possui verificações automáticas para garantir a monotonicidade e rejeitar regressões:
+
+```bash
+# Executa a suite de testes unitários de versionamento
+npm test
+
+# Valida o versionCode atual contra o histórico do repositório
+npm run check:version
+
+# Validação estrita de release (exige estritamente > que todas as releases anteriores)
+npm run check:version:release
+```
+
+O arquivo `android/release-history.json` registra as versões lançadas e atua como livro-razão confiável para os workflows de CI.
+
+### Passo a passo para lançar uma nova versão
+
+1. **Atualize o SemVer no `package.json`**:
+   Exemplo: de `"version": "1.2.0"` para `"version": "1.2.1"`.
+2. **Execute as validações locais**:
+   ```bash
+   npm test
+   npm run check:version:release
+   ```
+3. **Commit e Tag**:
+   ```bash
+   git commit -am "chore: bump version to 1.2.1"
+   git tag v1.2.1
+   git push origin v1.2.1
+   ```
+4. **Build Automático**:
+   A criação da tag `v*` dispara o job `build-release` no GitHub Actions, que valida a monotonicidade estrita, monta o app, assina o `.aab` e disponibiliza o artefato para download seguro nos Artifacts da execução.
+5. **Envio para a Play Console**:
+   Baixe o arquivo `prof-controller-release.aab` gerado e faça o upload na faixa desejada no Play Console.
 
 ## Rodar no Android Studio (opcional)
 

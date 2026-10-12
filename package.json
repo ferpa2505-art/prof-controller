@@ -6,6 +6,9 @@
   "homepage": "https://ferpa2505-art.github.io/prof-controller/",
   "scripts": {
     "start": "npx http-server -p 8000 -c-1",
+    "test": "node --test tests/version-code.test.mjs",
+    "check:version": "node scripts/validate-version-code.mjs",
+    "check:version:release": "node scripts/validate-version-code.mjs --release",
     "build": "node scripts/build-www.mjs",
     "serve:www": "npm run build && npx http-server www -p 8001 -c-1",
     "cap:sync": "npm run build && npx cap sync",

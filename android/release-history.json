@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Ledger of Android releases and monotonic versionCode history for Google Play",
+  "strategy": {
+    "name": "monotonic-semver-v1",
+    "formula": "(MAJOR * 1000000) + (MINOR * 10000) + (PATCH * 100) + BUILD",
+    "description": "Computes a strictly monotonic positive integer from package.json semver and build revision",
+    "limits": {
+      "minVersionCode": 1,
+      "maxVersionCode": 2100000000,
+      "maxMajor": 2100,
+      "maxMinor": 99,
+      "maxPatch": 99,
+      "maxBuild": 99
+    }
+  },
+  "releases": [
+    {
+      "versionName": "1.0.0",
+      "versionCode": 1000000,
+      "tag": "v1.0.0"
+    },
+    {
+      "versionName": "1.1.0",
+      "versionCode": 1010000,
+      "tag": "v1.1.0"
+    }
+  ]
+}

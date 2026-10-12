@@ -1,11 +1,41 @@
 apply plugin: 'com.android.application'
 
-// Versão do app: vem do package.json (versionName) e de VERSION_CODE (número inteiro
-// que precisa crescer a cada envio para a Play). No GitHub Actions o VERSION_CODE é o
-// número da execução; localmente, passe -PversionCode=NN ou deixe o padrão.
+// Versão do app:
+// versionName vem do package.json (ex: "1.2.0").
+// versionCode é um número inteiro positivo (1 <= versionCode <= 2100000000)
+// estritamente crescente para publicações na Google Play Console.
+//
+// Estratégia monotônica calculada a partir do semver:
+//   versionCode = (MAJOR * 1000000) + (MINOR * 10000) + (PATCH * 100) + BUILD
+//   Exemplo: 1.2.0 build 0 -> 1020000; 1.2.1 build 0 -> 1020100.
+// É possível sobrescrever com -PversionCode=NN ou variável de ambiente VERSION_CODE.
 def pkg = new groovy.json.JsonSlurper().parse(file('../../package.json'))
-def appVersionName = pkg.version
-def appVersionCode = (project.findProperty('versionCode') ?: System.getenv('VERSION_CODE') ?: '1').toString().toInteger()
+def appVersionName = pkg.version?.toString() ?: '1.0.0'
+
+def defaultVersionCode = 1
+def semverMatcher = (appVersionName =~ /^(\d+)\.(\d+)\.(\d+)/)
+if (semverMatcher.find()) {
+    def major = semverMatcher.group(1).toInteger()
+    def minor = semverMatcher.group(2).toInteger()
+    def patch = semverMatcher.group(3).toInteger()
+    def buildNum = (project.findProperty('buildNumber') ?: System.getenv('BUILD_NUMBER') ?: '0').toString().toInteger()
+    defaultVersionCode = (major * 1000000) + (minor * 10000) + (patch * 100) + buildNum
+}
+
+def rawVersionCode = project.findProperty('versionCode') ?: System.getenv('VERSION_CODE') ?: defaultVersionCode
+def appVersionCode
+try {
+    appVersionCode = rawVersionCode.toString().toInteger()
+} catch (Exception e) {
+    throw new GradleException("Invalid versionCode '${rawVersionCode}': must be a valid integer.")
+}
+
+if (appVersionCode <= 0) {
+    throw new GradleException("Invalid versionCode ${appVersionCode}: Google Play requires a positive integer (>= 1).")
+}
+if (appVersionCode > 2100000000) {
+    throw new GradleException("Invalid versionCode ${appVersionCode}: exceeds Google Play maximum limit of 2100000000.")
+}
 
 // Assinatura de release: lida de android/keystore.properties (local, fora do git)
 // ou de variáveis de ambiente (GitHub Actions). Sem isso, gera release sem assinatura.

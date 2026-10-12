@@ -1,13 +1,12 @@
 # Gera o app Android (Google Play) no GitHub, sem precisar de Android Studio.
 #
-# Quando roda:
-#   - manualmente: aba Actions → "App Android" → Run workflow
-#   - ao criar uma tag de versão (ex.: v1.2.0)
-#   - em pushes nas branches loja/** (para conferir que continua compilando)
-#
-# O que sai (aba Actions → execução → Artifacts):
-#   - prof-controller-debug.apk    → instale direto no celular para testar
-#   - prof-controller-release.aab  → arquivo que vai para o Play Console
+# Estrutura dos Jobs:
+#   1. validate-and-debug: validação de código, testes unitários, checagem monotônica
+#      de versionCode e compilação do APK de debug (roda em PRs, branches e tags).
+#      Não utiliza nem expõe segredos de assinatura.
+#   2. build-release: compilação do AAB de release para Google Play.
+#      Roda apenas em tags de versão (ex.: v1.2.0) ou workflow_dispatch com build_release=true.
+#      Exige validação estrita de versionCode monotônico contra o histórico de releases.
 #
 # Para o .aab sair ASSINADO (obrigatório para a Play), cadastre em
 # Settings → Secrets and variables → Actions:
@@ -21,22 +20,38 @@ name: App Android
 
 on:
   workflow_dispatch:
+    inputs:
+      build_release:
+        description: 'Compilar AAB de release para Google Play'
+        type: boolean
+        default: false
+      build_number:
+        description: 'Revisão de build (0-99) para ressubmissões da mesma versão'
+        type: string
+        default: '0'
+  pull_request:
+    branches: ['main', 'loja/**']
   push:
     tags: ['v*']
-    branches: ['loja/**']
+    branches: ['main', 'loja/**']
+
+permissions:
+  contents: read
 
 concurrency:
-  group: android-${{ github.ref }}
+  group: android-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  build:
+  validate-and-debug:
+    name: Validar e Compilar Debug APK
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    env:
-      VERSION_CODE: ${{ github.run_number }}
     steps:
-      - uses: actions/checkout@v7
+      - name: Checkout com histórico e tags
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-node@v7
         with:
@@ -52,6 +67,67 @@ jobs:
       - name: Instalar dependências
         run: npm ci
 
+      - name: Executar testes de versionCode e validação
+        run: npm test
+
+      - name: Validar versionCode monotônico (modo checagem de build)
+        run: node scripts/validate-version-code.mjs
+
+      - name: Montar www/ e sincronizar com o projeto Android
+        run: |
+          node scripts/build-www.mjs
+          npx cap sync android
+
+      - name: Compilar APK de teste (Debug)
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon assembleDebug
+
+      - name: Preparar artefato de Debug
+        run: |
+          mkdir -p out
+          cp android/app/build/outputs/apk/debug/app-debug.apk out/prof-controller-debug.apk
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: prof-controller-debug-${{ github.sha }}
+          path: out/prof-controller-debug.apk
+          retention-days: 14
+
+  build-release:
+    name: Compilar Release AAB (Google Play)
+    needs: [validate-and-debug]
+    if: startsWith(github.ref, 'refs/tags/v') || (github.event_name == 'workflow_dispatch' && inputs.build_release == true)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout com histórico e tags
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: gradle
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Validar versionCode estritamente monotônico para release
+        run: |
+          BUILD_NUM="${{ inputs.build_number || 0 }}"
+          node scripts/validate-version-code.mjs --release --build-number "$BUILD_NUM"
+          CALCULATED_CODE=$(node scripts/validate-version-code.mjs --print --build-number "$BUILD_NUM")
+          echo "VERSION_CODE=$CALCULATED_CODE" >> "$GITHUB_ENV"
+
       - name: Montar www/ e sincronizar com o projeto Android
         run: |
           node scripts/build-www.mjs
@@ -64,12 +140,12 @@ jobs:
           if [ -n "$KEYSTORE_B64" ]; then
             echo "$KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/upload.jks"
             echo "ANDROID_KEYSTORE_PATH=$RUNNER_TEMP/upload.jks" >> "$GITHUB_ENV"
-            echo "Assinatura: chave encontrada, o .aab sai assinado."
+            echo "Assinatura: chave encontrada, o .aab sairá assinado."
           else
-            echo "::warning::Sem ANDROID_KEYSTORE_BASE64: o .aab sai SEM assinatura (serve para conferir o build, não para a Play)."
+            echo "::warning::Sem ANDROID_KEYSTORE_BASE64: o .aab sai SEM assinatura (serve para conferir o pacote, não para a Play)."
           fi
 
-      - name: Compilar APK de teste e AAB de release
+      - name: Compilar AAB de release
         working-directory: android
         env:
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
@@ -77,17 +153,15 @@ jobs:
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: |
           chmod +x gradlew
-          ./gradlew --no-daemon assembleDebug bundleRelease
+          ./gradlew --no-daemon bundleRelease -PversionCode="$VERSION_CODE"
 
-      - name: Renomear arquivos
+      - name: Preparar artefato de Release
         run: |
           mkdir -p out
-          cp android/app/build/outputs/apk/debug/app-debug.apk out/prof-controller-debug.apk
           cp android/app/build/outputs/bundle/release/app-release.aab out/prof-controller-release.aab
-          ls -la out
 
       - uses: actions/upload-artifact@v7
         with:
-          name: prof-controller-android-${{ github.run_number }}
-          path: out/*
+          name: prof-controller-release-${{ github.ref_name }}
+          path: out/prof-controller-release.aab
           retention-days: 30
