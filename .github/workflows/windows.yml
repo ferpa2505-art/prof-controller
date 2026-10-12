@@ -1,0 +1,37 @@
+# Gera o instalador Windows (.exe) da versão Electron.
+#
+# Rota recomendada para a Microsoft Store é o PWABuilder (ver docs/PUBLICAR-WINDOWS.md):
+# não precisa de certificado e se atualiza sozinho com o GitHub Pages.
+# Este workflow serve para quem quer distribuir um .exe fora da Store.
+# Sem certificado de assinatura de código, o Windows mostra o aviso do SmartScreen.
+
+name: App Windows (Electron)
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*']
+
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Montar www/ e gerar instalador
+        run: npm run electron:build:win -- --publish never
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: prof-controller-windows-${{ github.run_number }}
+          path: release/*.exe
+          retention-days: 30

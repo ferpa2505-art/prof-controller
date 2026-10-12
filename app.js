@@ -873,6 +873,10 @@ const I18N = {
     'gear.fabHint': 'Botão "+" no Dashboard com atalhos de cadastro. Arraste para mudar de lugar.',
     'gear.advanced': 'Configurações avançadas',
     'gear.privacy': 'Política de privacidade',
+    'notif.billsTitle': 'Vencimentos hoje',
+    'notif.payable': '{n} a pagar',
+    'notif.receivable': '{n} a receber',
+    'notif.openApp': 'abra o app para ver',
     'theme.default': 'Claro',
     'theme.dark': 'Escuro',
     'theme.gray': 'Cinza',
@@ -1898,6 +1902,10 @@ const I18N = {
     'gear.fabHint': '"+" button on the Dashboard with quick-add shortcuts. Drag it to move.',
     'gear.advanced': 'Advanced settings',
     'gear.privacy': 'Privacy policy',
+    'notif.billsTitle': 'Due today',
+    'notif.payable': '{n} to pay',
+    'notif.receivable': '{n} to receive',
+    'notif.openApp': 'open the app to see',
     'theme.default': 'Light',
     'theme.gray': 'Gray',
     'theme.dark': 'Dark',
@@ -2923,6 +2931,10 @@ const I18N = {
     'gear.fabHint': 'Botón "+" en el Dashboard con atajos de registro. Arrástralo para moverlo.',
     'gear.advanced': 'Configuración avanzada',
     'gear.privacy': 'Política de privacidad',
+    'notif.billsTitle': 'Vencimientos hoy',
+    'notif.payable': '{n} por pagar',
+    'notif.receivable': '{n} por cobrar',
+    'notif.openApp': 'abre la app para verlos',
     'theme.default': 'Claro',
     'theme.dark': 'Oscuro',
     'theme.gray': 'Gris',
@@ -4546,6 +4558,37 @@ function allInstallments(de, ate) {
   return out.sort((a, b) => a.dueDate.localeCompare(b.dueDate));
 }
 
+/* ---------- Lembretes de vencimento (app Android/iOS) ----------
+   Um aviso por dia com vencimentos, às 9h, nos próximos 60 dias. O texto não traz
+   nomes nem valores: a notificação aparece na tela de bloqueio, e dado financeiro
+   não deve ficar visível para quem pegar o celular. */
+let billRemindersTimer = null;
+function scheduleBillReminders(pedirPermissao) {
+  if (!(window.ProfNative && window.ProfNative.isNative && window.ProfNative.notifications)) return;
+  clearTimeout(billRemindersTimer);
+  billRemindersTimer = setTimeout(() => syncBillReminders(pedirPermissao).catch((e) => console.warn('Lembretes:', e)), pedirPermissao ? 0 : 2000);
+}
+async function syncBillReminders(pedirPermissao) {
+  const hoje = todayISO();
+  const abertas = allInstallments(hoje, addPeriod(hoje, 'monthly', 2)).filter((p) => p.status !== 'paid');
+  const porDia = {};
+  abertas.forEach((p) => {
+    const d = porDia[p.dueDate] || (porDia[p.dueDate] = { pagar: 0, receber: 0 });
+    if (p.schedule.kind === 'receivable') d.receber++; else d.pagar++;
+  });
+  const dias = Object.keys(porDia).sort();
+  if (!dias.length && !pedirPermissao) { await window.ProfNative.notifications.replaceAll([], false); return; }
+  const itens = dias.map((dia) => {
+    const [a, m, d] = dia.split('-').map(Number);
+    const c = porDia[dia];
+    const partes = [];
+    if (c.pagar) partes.push(t('notif.payable').replace('{n}', c.pagar));
+    if (c.receber) partes.push(t('notif.receivable').replace('{n}', c.receber));
+    return { title: t('notif.billsTitle'), body: partes.join(' · ') + ' — ' + t('notif.openApp'), at: new Date(a, m - 1, d, 9, 0, 0), tab: 'flows' };
+  });
+  await window.ProfNative.notifications.replaceAll(itens, !!pedirPermissao && itens.length > 0);
+}
+
 /* ---------- Ativos: imóveis e veículos (Fase 4) ----------
    O valor parte da avaliação mais recente até a data consultada — mesma
    lógica de âncora dos saldos e do câmbio. Para veículos, a depreciação
@@ -4708,6 +4751,8 @@ function renderAll() {
   etapas.forEach(([nome, fn]) => {
     try { fn(); } catch (e) { console.error('Falha ao renderizar ' + nome + ':', e); }
   });
+  // Lembretes de vencimento no app nativo (não pede permissão aqui; só reagenda)
+  scheduleBillReminders(false);
   // Os gráficos do fichário desenham no canvas: redesenha com os dados atuais
   try { if (window.chartsManager) window.chartsManager.initialize(); } catch (e) { console.error('Falha ao renderizar gráficos:', e); }
   // Agendar os listeners para depois de todos os renders terminarem
@@ -5718,6 +5763,8 @@ async function saveSchedule(id) {
   closeModal();
   renderAll();
   showToast(t('toast.saved'));
+  // Primeiro título cadastrado é o momento natural de pedir permissão para avisar.
+  scheduleBillReminders(true);
 }
 
 async function deleteSchedule(id) {

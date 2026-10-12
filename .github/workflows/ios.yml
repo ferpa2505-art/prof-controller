@@ -1,0 +1,54 @@
+# Confere que o app iOS compila, num Mac do próprio GitHub (você não precisa de Mac para isso).
+#
+# Este workflow compila para o simulador, sem assinatura. Ele NÃO envia para a App Store:
+# para isso é preciso a conta Apple Developer (US$ 99/ano) e os certificados — o passo a
+# passo está em docs/PUBLICAR-IOS.md (Mac na nuvem ou automação com as chaves da Apple).
+
+name: App iOS (verificação)
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*']
+    branches: ['loja/**']
+
+concurrency:
+  group: ios-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: macos-26
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Escolher Xcode 26
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '26'
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Montar www/ e sincronizar com o projeto iOS
+        run: |
+          node scripts/build-www.mjs
+          npx cap sync ios
+
+      - name: Compilar para o simulador (sem assinatura)
+        run: |
+          xcodebuild \
+            -project ios/App/App.xcodeproj \
+            -scheme App \
+            -configuration Debug \
+            -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO \
+            build | tail -40
+          exit ${PIPESTATUS[0]}
