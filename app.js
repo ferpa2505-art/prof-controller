@@ -15,7 +15,7 @@
    apenas cria uma âncora mais recente, sem duplicar valores.
    ============================================================ */
 
-const APP_VERSION = '1.1.0';
+const APP_VERSION = '1.2.0';
 
 /* ---------- Bandeiras (SVG) ----------
    Emoji de bandeira (🇧🇷) não é renderizado no Windows: o Chrome mostra as
@@ -808,6 +808,8 @@ const I18N = {
     'sec.bioRemove': 'Remover biometria',
     'sec.bioRemoveConfirm': 'Remover o desbloqueio por biometria deste aparelho?',
     'sec.bioNoPrf': 'Este aparelho ou navegador não permite usar a biometria junto com a criptografia. Continue usando a senha.',
+    'sec.bioChanged': 'A biometria do aparelho mudou (nova digital ou rosto). Por segurança, entre com a senha e ative a biometria de novo nas Configurações.',
+    'native.saveFail': 'Não foi possível salvar o arquivo. Tente de novo.',
     'sec.autoLock': 'Bloquear automaticamente após',
     'sec.minutes': '{n} min sem uso',
     'sec.never': 'Nunca',
@@ -870,6 +872,7 @@ const I18N = {
     'gear.fab': 'Menu Suspenso',
     'gear.fabHint': 'Botão "+" no Dashboard com atalhos de cadastro. Arraste para mudar de lugar.',
     'gear.advanced': 'Configurações avançadas',
+    'gear.privacy': 'Política de privacidade',
     'theme.default': 'Claro',
     'theme.dark': 'Escuro',
     'theme.gray': 'Cinza',
@@ -1830,6 +1833,8 @@ const I18N = {
     'sec.bioRemove': 'Remove biometrics',
     'sec.bioRemoveConfirm': 'Remove biometric unlock from this device?',
     'sec.bioNoPrf': 'This device or browser cannot combine biometrics with encryption. Keep using your PIN.',
+    'sec.bioChanged': 'Your device biometrics changed (new fingerprint or face). For safety, enter your PIN and turn biometrics on again in Settings.',
+    'native.saveFail': 'Could not save the file. Please try again.',
     'sec.autoLock': 'Lock automatically after',
     'sec.minutes': '{n} idle min',
     'sec.never': 'Never',
@@ -1892,6 +1897,7 @@ const I18N = {
     'gear.fab': 'Floating menu',
     'gear.fabHint': '"+" button on the Dashboard with quick-add shortcuts. Drag it to move.',
     'gear.advanced': 'Advanced settings',
+    'gear.privacy': 'Privacy policy',
     'theme.default': 'Light',
     'theme.gray': 'Gray',
     'theme.dark': 'Dark',
@@ -2852,6 +2858,8 @@ const I18N = {
     'sec.bioRemove': 'Quitar biometría',
     'sec.bioRemoveConfirm': '¿Quitar el desbloqueo por biometría de este dispositivo?',
     'sec.bioNoPrf': 'Este dispositivo o navegador no permite combinar la biometría con el cifrado. Sigue usando la contraseña.',
+    'sec.bioChanged': 'La biometría del dispositivo cambió (nueva huella o rostro). Por seguridad, entra con tu contraseña y vuelve a activar la biometría en Configuración.',
+    'native.saveFail': 'No se pudo guardar el archivo. Inténtalo de nuevo.',
     'sec.autoLock': 'Bloquear automáticamente tras',
     'sec.minutes': '{n} min sin uso',
     'sec.never': 'Nunca',
@@ -2914,6 +2922,7 @@ const I18N = {
     'gear.fab': 'Menú flotante',
     'gear.fabHint': 'Botón "+" en el Dashboard con atajos de registro. Arrástralo para moverlo.',
     'gear.advanced': 'Configuración avanzada',
+    'gear.privacy': 'Política de privacidad',
     'theme.default': 'Claro',
     'theme.dark': 'Oscuro',
     'theme.gray': 'Gris',
@@ -3487,6 +3496,12 @@ function rawBatch(store, puts, deletes) {
 }
 
 async function saveSecurityMeta(meta) {
+  // Biometria desligada (removida, senha redefinida, criptografia desativada):
+  // apaga também o segredo guardado no Keystore/Keychain.
+  const tinhaNativa = !!(VAULT.meta && VAULT.meta.bio && VAULT.meta.bio.native);
+  if (tinhaNativa && !(meta && meta.bio && meta.bio.native) && nativeBio()) {
+    await window.ProfNative.biometric.remove();
+  }
   VAULT.meta = meta;
   await rawPut('settings', { key: SEC_KEY, value: meta });
 }
@@ -3564,7 +3579,12 @@ async function openVault(dek) {
   VAULT.unlocked = true;
 }
 
+const nativeBio = () => !!(window.ProfNative && window.ProfNative.isNative && window.ProfNative.biometric);
+const bioTextos = () => ({ title: 'ProF Controller', reason: t('sec.useBio'), cancel: t('modal.cancel') || 'Cancelar' });
+
 async function biometricAvailable() {
+  // App Android/iOS: biometria do sistema (Keystore/Keychain). WebAuthn não funciona no WebView.
+  if (nativeBio()) return window.ProfNative.biometric.available();
   try {
     return !!(window.PublicKeyCredential && PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable
       && await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable());
@@ -3583,6 +3603,16 @@ async function prfSecret(credId, prfSalt) {
 // Cadastra a biometria do aparelho. Sem suporte a PRF, recusa: sem ela a biometria
 // seria só uma tela bonita, e a promessa de criptografia deixaria de valer.
 async function enrollBiometric() {
+  if (nativeBio()) {
+    // Segredo aleatório de 256 bits guardado no Keystore/Keychain, preso à biometria.
+    // Ele embrulha a chave de dados do mesmo jeito que a senha e o código de recuperação.
+    const segredo = rand(32);
+    await window.ProfNative.biometric.store(b64(segredo), bioTextos());
+    const kek = await crypto.subtle.importKey('raw', segredo, { name: 'AES-GCM' }, false, ['wrapKey', 'unwrapKey']);
+    segredo.fill(0);
+    await saveSecurityMeta({ ...VAULT.meta, bio: { native: true, platform: window.ProfNative.platform, ...(await wrapDek(kek, VAULT.key)) } });
+    return;
+  }
   const prfSalt = rand(32);
   const cred = await navigator.credentials.create({ publicKey: {
     rp: { name: 'ProF Controller' },
@@ -3607,6 +3637,21 @@ async function enrollBiometric() {
 }
 async function unlockWithBiometric() {
   const b = VAULT.meta.bio;
+  if (b.native) {
+    if (!nativeBio()) throw new Error('BIO_INVALIDATED'); // backup de app nativo aberto no navegador
+    let segredo;
+    try {
+      segredo = unb64(await window.ProfNative.biometric.retrieve(bioTextos()));
+    } catch (e) {
+      // Biometria do aparelho mudou (nova digital/rosto): o sistema apagou o segredo.
+      // Desliga a biometria aqui; a senha continua abrindo os dados.
+      if (e.message === 'BIO_INVALIDATED') await saveSecurityMeta({ ...VAULT.meta, bio: null });
+      throw e;
+    }
+    const kek = await crypto.subtle.importKey('raw', segredo, { name: 'AES-GCM' }, false, ['wrapKey', 'unwrapKey']);
+    segredo.fill(0);
+    return unwrapDek(kek, b);
+  }
   return unwrapDek(await prfSecret(b.credId, b.prfSalt), b);
 }
 
@@ -3744,7 +3789,11 @@ function showLockScreen() {
         const btn = document.getElementById('lockBio');
         busy(btn, true, t('sec.bioWaiting'));
         try { await abrir(await unlockWithBiometric()); }
-        catch (e) { busy(btn, false); setMsg('lockMsg', t('sec.bioFail'), 'amount-out'); }
+        catch (e) {
+          busy(btn, false);
+          if (e.message === 'BIO_INVALIDATED') { btn.classList.add('hidden'); setMsg('lockMsg', t('sec.bioChanged'), 'amount-out'); }
+          else setMsg('lockMsg', t('sec.bioFail'), 'amount-out');
+        }
       });
     }
     document.getElementById('lockForgot').addEventListener('click', () => showRecoveryScreen().then(resolve));
@@ -8275,11 +8324,7 @@ async function shareYouVsMarketImage() {
     canvas.width = W; canvas.height = H;
     canvas.getContext('2d').drawImage(img, 0, 0);
     canvas.toBlob((blob) => {
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `prof-controller-voce-x-mercado-${todayISO()}.png`;
-      a.click();
-      setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+      download(`prof-controller-voce-x-mercado-${todayISO()}.png`, blob, 'image/png');
       showToast(t('ym.imageDone'));
     }, 'image/png');
   } catch (e) { showToast(t('ym.imageFail')); }
@@ -10795,7 +10840,15 @@ async function deleteBudget(id) {
 
 /* ---------- Exportação / Importação ---------- */
 function download(filename, content, type) {
-  const blob = new Blob([content], { type });
+  // No app Android/iOS o WebView não baixa arquivos: grava e abre "Compartilhar/Salvar em".
+  if (window.ProfNative && window.ProfNative.isNative && window.ProfNative.saveFile) {
+    window.ProfNative.saveFile(filename, content, type).catch((e) => {
+      console.error('Salvar arquivo:', e);
+      showToast(t('native.saveFail'));
+    });
+    return;
+  }
+  const blob = content instanceof Blob ? content : new Blob([content], { type });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;

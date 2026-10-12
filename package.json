@@ -1,30 +1,22 @@
 {
   "name": "prof-controller",
-  "version": "1.1.0",
-  "description": "ProF Controller - Gestor de Patrimônio Offline 100% Privado",
+  "version": "1.2.0",
+  "description": "ProF Controller - Gestor de patrimônio multi-moeda, offline e 100% privado",
   "main": "electron/main.js",
-  "homepage": "./",
+  "homepage": "https://ferpa2505-art.github.io/prof-controller/",
   "scripts": {
-    "start": "python -m http.server 8000 || npx http-server -p 8000",
-    "build": "echo 'No build step - this is a static PWA'",
-    "serve": "npx http-server --cors -p 8000",
-    "lint": "echo 'Linting not required for vanilla JS'",
-    "test": "echo 'Manual testing required'",
-    "optimize": "node scripts/optimize-assets.js",
-    "capacitor:init": "npx cap init --web-dir . prof-controller com.profcontroller.app",
-    "capacitor:add-android": "npx cap add android",
-    "capacitor:add-ios": "npx cap add ios",
-    "capacitor:build-android": "npx cap build android",
-    "capacitor:build-ios": "npx cap build ios",
-    "capacitor:sync": "npx cap sync",
-    "capacitor:open-android": "npx cap open android",
-    "capacitor:open-ios": "npx cap open ios",
-    "electron-start": "cross-env REACT_APP_ENV=production electron .",
-    "electron-dev": "concurrently \"npm start\" \"wait-on http://localhost:8000 && electron .\"",
-    "electron-build": "npm run build && electron-builder",
-    "electron-build-win": "npm run electron-build -- --win",
-    "electron-build-mac": "npm run electron-build -- --mac",
-    "electron-build-linux": "npm run electron-build -- --linux"
+    "start": "npx http-server -p 8000 -c-1",
+    "build": "node scripts/build-www.mjs",
+    "serve:www": "npm run build && npx http-server www -p 8001 -c-1",
+    "cap:sync": "npm run build && npx cap sync",
+    "android:open": "npm run cap:sync && npx cap open android",
+    "android:run": "npm run cap:sync && npx cap run android",
+    "ios:open": "npm run cap:sync && npx cap open ios",
+    "ios:run": "npm run cap:sync && npx cap run ios",
+    "electron:start": "npm run build && electron .",
+    "electron:build:win": "npm run build && electron-builder --win",
+    "electron:build:mac": "npm run build && electron-builder --mac",
+    "electron:build:linux": "npm run build && electron-builder --linux"
   },
   "keywords": [
     "financial",
@@ -38,46 +30,46 @@
     "tracking"
   ],
   "author": {
-    "name": "ProF Controller",
-    "email": "contact@profcontroller.app"
+    "name": "Luís Fernando Paulino"
   },
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/ferpa2505-art/prof-controller.git"
   },
-  "homepage": "https://github.com/ferpa2505-art/prof-controller#readme",
   "bugs": {
     "url": "https://github.com/ferpa2505-art/prof-controller/issues"
   },
   "engines": {
-    "node": ">=12.0.0"
+    "node": ">=22"
   },
   "devDependencies": {
-    "http-server": "^14.1.1",
-    "electron": "^29.0.0",
-    "electron-builder": "^24.9.1",
-    "@capacitor/cli": "^5.0.0",
-    "@capacitor/core": "^5.0.0",
-    "@capacitor/android": "^5.0.0",
-    "@capacitor/ios": "^5.0.0",
-    "concurrently": "^8.0.0",
-    "wait-on": "^7.0.0",
-    "cross-env": "^7.0.0"
+    "@capacitor/assets": "^3.0.5",
+    "@capacitor/cli": "^8.5.3",
+    "electron": "^44.7.0",
+    "electron-builder": "^26.15.3",
+    "http-server": "^14.1.1"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@capacitor/android": "^8.5.3",
+    "@capacitor/app": "^8.1.2",
+    "@capacitor/browser": "^8.0.5",
+    "@capacitor/core": "^8.5.3",
+    "@capacitor/filesystem": "^8.1.4",
+    "@capacitor/ios": "^8.5.3",
+    "@capacitor/local-notifications": "^8.3.1",
+    "@capacitor/share": "^8.0.3",
+    "@capacitor/splash-screen": "^8.0.2",
+    "@capacitor/status-bar": "^8.0.4",
+    "@capgo/capacitor-native-biometric": "^8.8.1"
+  },
   "build": {
     "appId": "com.profcontroller.app",
     "productName": "ProF Controller",
     "files": [
-      "index.html",
-      "app.js",
-      "styles.css",
-      "service-worker.js",
-      "manifest.json",
-      "icon-192.png",
-      "icon-512.png",
-      "electron/main.js"
+      "www/**/*",
+      "electron/**/*",
+      "package.json"
     ],
     "win": {
       "target": [
@@ -85,18 +77,11 @@
           "target": "nsis",
           "arch": [
             "x64",
-            "ia32"
-          ]
-        },
-        {
-          "target": "portable",
-          "arch": [
-            "x64"
+            "arm64"
           ]
         }
       ],
-      "certificateFile": null,
-      "certificatePassword": null
+      "icon": "build-resources/icon.png"
     },
     "nsis": {
       "oneClick": false,
@@ -107,29 +92,22 @@
     },
     "mac": {
       "target": [
-        "dmg",
-        "zip"
+        "dmg"
       ],
-      "category": "public.app-category.finance"
+      "category": "public.app-category.finance",
+      "icon": "build-resources/icon.png"
     },
     "linux": {
       "target": [
-        "zip"
+        "AppImage"
       ],
-      "category": "Office"
+      "category": "Office",
+      "icon": "build-resources/icon.png"
     },
     "directories": {
-      "buildResources": "assets",
+      "buildResources": "build-resources",
       "output": "release"
-    }
-  },
-  "browserslist": [
-    "last 2 versions",
-    "> 1%",
-    "not dead",
-    "chrome >= 55",
-    "firefox >= 45",
-    "safari >= 11",
-    "edge >= 79"
-  ]
+    },
+    "copyright": "© 2026 Luís Fernando Paulino"
+  }
 }

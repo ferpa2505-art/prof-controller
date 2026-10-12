@@ -21,8 +21,10 @@
   <link rel="stylesheet" href="styles/mobile-header.css?v=9">
   <link rel="stylesheet" href="styles/dashboard-sections.css?v=3">
   <link rel="stylesheet" href="styles/fit-screen.css?v=4">
+  <link rel="stylesheet" href="styles/safe-area.css?v=1">
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=3">
   <link rel="apple-touch-icon" href="icon-192.png?v=3">
+  <link rel="privacy-policy" href="privacy.html">
   <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png?v=3">
   <!-- Chart.js Library -->
   <script src="vendor/chart.umd.js?v=4.4.0"></script>
@@ -51,6 +53,7 @@
         <p class="hint gear-hint" data-i18n="gear.fabHint">Botão "+" no Dashboard com atalhos de cadastro. Arraste para mudar de lugar.</p>
         <button id="btnLockNow" class="secondary-btn gear-advanced hidden" type="button" data-i18n="sec.lockNow">Bloquear agora</button>
         <button id="btnAdvanced" class="secondary-btn gear-advanced" type="button" data-i18n="gear.advanced">Configurações avançadas</button>
+        <a class="gear-privacy" href="https://ferpa2505-art.github.io/prof-controller/privacy.html" target="_blank" rel="noopener noreferrer" data-i18n="gear.privacy">Política de privacidade</a>
       </div>
     </div>
   </header>
@@ -597,7 +600,7 @@
   <div id="toast" class="toast hidden"></div>
   <div id="secOverlay" class="sec-overlay hidden" role="dialog" aria-modal="true"></div>
   <footer class="app-footer">
-    <small id="appVersion">ProF Controller v1.1.0</small>
+    <small id="appVersion">ProF Controller v1.2.0</small>
   </footer>
   <script>
     // Theme Management - Profit C Default (load BEFORE app.js)
@@ -645,7 +648,8 @@
       }
     })();
   </script>
-  <script src="app.js?v=54"></script>
+  <script src="native.js?v=1"></script>
+  <script src="app.js?v=55"></script>
   <script src="ui-cleanup.js?v=1"></script>
   <script src="charts-filing-system.js?v=1"></script>
   <script src="forex-widget.js?v=2"></script>
