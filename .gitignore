@@ -1,7 +1,9 @@
 node_modules/
 
-# Segredos: só o .env.example vai para o repositório
+# Segredos: mantenha arquivos de ambiente fora do repositório
 .env
+.env.*
+!.env.example
 .env.local
 .env.*.local
 

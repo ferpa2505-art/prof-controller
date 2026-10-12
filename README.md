@@ -46,6 +46,11 @@ npm run build        # monta www/ (o que vai para Pages, Android, iOS e Windows)
 Não é mais preciso incrementar a versão do cache do service worker à mão: o build calcula um `BUILD_ID`
 a partir do conteúdo dos arquivos e grava no `www/service-worker.js`.
 
+## Segurança
+
+Não versione credenciais ou chaves de assinatura. Consulte [docs/SEGURANCA.md](docs/SEGURANCA.md)
+para instruções sobre segredos e a configuração do GitHub Secret Scanning e push protection.
+
 ## Licença
 
 MIT.
