@@ -7,7 +7,7 @@
   "scripts": {
     "start": "npx http-server -p 8000 -c-1",
     "build": "node scripts/build-www.mjs",
-    "test": "node --test",
+    "test": "node --test scripts/*.test.mjs",
     "serve:www": "npm run build && npx http-server www -p 8001 -c-1",
     "cap:sync": "npm run build && npx cap sync",
     "android:open": "npm run cap:sync && npx cap open android",

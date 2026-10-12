@@ -19,7 +19,6 @@ async function fixture({ html, css = 'body { background: url("images/bg.svg"); }
   await fs.mkdir(path.join(dir, 'scripts'), { recursive: true });
   await fs.mkdir(path.join(dir, 'vendor'), { recursive: true });
   await fs.mkdir(path.join(dir, 'images'), { recursive: true });
-  await fs.mkdir(path.join(dir, 'scripts-assets'), { recursive: true });
   await fs.copyFile(SCRIPT, path.join(dir, 'scripts', 'build-www.mjs'));
   await fs.writeFile(path.join(dir, 'index.html'), html ?? '<link rel="stylesheet" href="site.css"><script src="app.js"></script>');
   await fs.writeFile(path.join(dir, 'site.css'), css);
@@ -72,12 +71,13 @@ test('build output contains only discovered and required artifacts', async () =>
 });
 
 test('rejects traversal and absolute HTML references', async (t) => {
-  for (const reference of ['../outside.html', '/outside.html']) {
+  for (const reference of ['../outside.html', '/outside.html', 'C:/outside.html', 'unquoted.html']) {
     await t.test(reference, async () => {
-      const dir = await fixture({ html: `<img src="${reference}">` });
+      const html = reference === 'unquoted.html' ? '<img src=unquoted.html>' : `<img src="${reference}">`;
+      const dir = await fixture({ html });
       const result = runBuild(dir);
       assert.notEqual(result.status, 0);
-      assert.match(result.stderr, /Travessia|inválido|limites/);
+      assert.match(result.stderr, /Travessia|malformada|inválido|limites/);
     });
   }
 });
@@ -94,8 +94,8 @@ test('rejects CSS traversal and malformed references', async (t) => {
 });
 
 test('rejects a source symlink that escapes the repository', async () => {
-  const dir = await fixture({ html: '<img src="outside.html">' , linkedFile: false });
-  const outside = path.join(path.dirname(dir), 'outside.html');
+  const dir = await fixture({ html: '<img src="outside.html">', linkedFile: false });
+  const outside = path.join(path.dirname(dir), `${path.basename(dir)}-outside.html`);
   await fs.writeFile(outside, '<p>outside</p>');
   tempDirs.push(outside);
   await fs.symlink(outside, path.join(dir, 'outside.html'));

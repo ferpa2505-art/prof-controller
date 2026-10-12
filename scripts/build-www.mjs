@@ -39,7 +39,7 @@ const isLocal = (u) => u && !/^(?:[a-z]+:)?\/\//i.test(u) && !/^(data|blob|mailt
 const semQuery = (u) => u.split('#')[0].split('?')[0];
 
 function assertWithin(base, rel, label) {
-  if (typeof rel !== 'string' || !rel || path.isAbsolute(rel) || path.posix.isAbsolute(rel) || rel.includes('\\') || rel.includes('\0')) {
+  if (typeof rel !== 'string' || !rel || path.isAbsolute(rel) || path.posix.isAbsolute(rel) || path.win32.isAbsolute(rel) || rel.includes('\\') || rel.includes('\0')) {
     throw new Error(`Caminho inválido em ${label}: ${JSON.stringify(rel)}`);
   }
   if (rel.split('/').includes('..')) throw new Error(`Travessia de diretório em ${label}: ${rel}`);
