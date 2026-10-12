@@ -3,6 +3,23 @@
 Tudo o que dá para automatizar já está no repositório. Falta o que só você pode fazer:
 conta, chave de assinatura, testadores e o formulário da loja.
 
+## Bloqueio de segurança do FileProvider
+
+O único compartilhamento nativo de arquivos usa `ProfNative.saveFile`: o app grava o arquivo escolhido pelo usuário em `CACHE/shared/` e passa somente essa URI ao Capacitor Share. O `FileProvider` só mapeia esse subdiretório privado (`cache-path`, `shared/`); não há `external-path` nem acesso à raiz do cache. Portanto, bancos de dados, arquivos de backup/chaves que não foram explicitamente exportados e arquivos externos não são endereçáveis pelo provider. Um backup exportado pelo usuário continua compartilhável como saída deliberada do fluxo de exportação.
+
+Antes de gerar qualquer AAB, valide o manifest e recurso de caminhos mesclados para a variante release:
+
+```bash
+cd android
+./gradlew --no-daemon :app:processReleaseManifest :app:processReleaseResources
+cd ..
+node scripts/verify-android-file-provider.mjs
+```
+
+O verificador falha se a configuração não tiver exatamente o caminho `cache-path` `shared/`, se houver um `external-path`, ou se o manifest/recurso mesclado do release não mantiver o provider não exportado com concessão de URI. O workflow Android executa o mesmo bloqueio antes da tarefa que gera o AAB. Registre e revise a saída do verificador antes de permitir essa tarefa.
+
+**Registro de verificação (2026-10-12):** a inspeção do código confirmou que `saveFile` grava e compartilha somente arquivos em `CACHE/shared/`; a configuração fonte removeu o `external-path`. O build local dos manifests/recursos release foi tentado, mas não pôde baixar `com.android.tools.build:gradle:8.13.0` e `com.google.gms:google-services:4.4.4` de `dl.google.com` (DNS indisponível neste ambiente). Assim, os artefatos mesclados não puderam ser inspecionados; **NO-GO para gerar AAB** até que o workflow passe pelo verificador e sua saída seja revisada.
+
 ## 0. Antes de tudo: o ID do app
 
 O ID está como `com.profcontroller.app` (em `capacitor.config.json` e `android/app/build.gradle`).

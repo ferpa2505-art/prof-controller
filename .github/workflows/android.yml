@@ -69,6 +69,13 @@ jobs:
             echo "::warning::Sem ANDROID_KEYSTORE_BASE64: o .aab sai SEM assinatura (serve para conferir o build, não para a Play)."
           fi
 
+      - name: Verificar FileProvider do release antes de gerar o AAB
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon :app:processReleaseManifest :app:processReleaseResources
+          node ../scripts/verify-android-file-provider.mjs
+
       - name: Compilar APK de teste e AAB de release
         working-directory: android
         env:
