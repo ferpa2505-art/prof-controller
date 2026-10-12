@@ -2,9 +2,13 @@
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability in prof-controller, please **do not** open a public GitHub issue. Instead, please report it responsibly by emailing the maintainers directly.
+If you discover a security vulnerability in prof-controller, please **do not** open a public GitHub issue. Instead, please report it responsibly using one of these methods:
 
-**Contact:** https://github.com/ferpa2505-art
+### Private Reporting Options
+1. **Email the maintainers directly:** ferpa2505@gmail.com
+2. **Use GitHub Security Advisory:** https://github.com/ferpa2505-art/prof-controller/security/advisories/new
+   - This creates a private security advisory that only maintainers can see
+   - GitHub provides coordinated disclosure workflow
 
 ## Security Controls
 
@@ -32,11 +36,14 @@ Code review requirements are defined in `.github/CODEOWNERS`:
 - Primary maintainer: @ferpa2505-art
 - All pull requests require approval from code owners before merging
 
-### 4. Secret Scanning
-GitHub's native secret scanning is enabled:
-- **Protection:** Prevents secrets from being committed to the repository
-- **Scanning:** All commits and pull requests are scanned
-- **Alerts:** Maintainers are notified of detected secrets
+### 4. Secret Scanning (Multi-Layer Protection)
+GitHub native scanning and TruffleHog provide comprehensive secret detection:
+- **CI/CD Layer (TruffleHog):** Scans every pull request via workflow for leaked secrets
+- **GitHub Native:** Requires manual enablement in Settings > Security > Secret scanning
+  - Prevents secrets from being committed to the repository
+  - All commits and pull requests are scanned
+  - Maintainers are notified of detected secrets
+- **Combined Protection:** Double-layer defense ensures secrets are caught early
 
 ### 5. Dependency Management
 - **Lock File:** `package-lock.json` is committed to ensure reproducible builds

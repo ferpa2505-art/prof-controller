@@ -95,7 +95,7 @@ Once branch protection and CI are active:
    - Be converted to draft (if work is incomplete)
    - Be updated to meet the new checks
 
-2. PrRepository maintainers should:
+2. Repository maintainers should:
    - Ensure all checks pass
    - Request CODEOWNERS review
    - Merge when all requirements are met
