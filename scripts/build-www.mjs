@@ -24,6 +24,54 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = path.join(ROOT, 'www');
 
+export function resolveWithin(base, rel) {
+  if (typeof rel !== 'string' || !rel || rel.includes('\0') || rel.includes('\\') || path.isAbsolute(rel)) {
+    throw new Error(`Caminho inválido: ${rel}`);
+  }
+  const resolved = path.resolve(base, rel);
+  const relative = path.relative(base, resolved);
+  if (relative === '..' || relative.startsWith(`..${path.sep}`) || path.isAbsolute(relative) || relative === '') {
+    throw new Error(`Caminho fora do diretório permitido: ${rel}`);
+  }
+  return resolved;
+}
+
+function sha256(content) {
+  return crypto.createHash('sha256').update(content).digest('hex');
+}
+
+async function listFiles(dir, prefix = '') {
+  const files = [];
+  for (const entry of await fs.readdir(dir, { withFileTypes: true })) {
+    const rel = prefix ? `${prefix}/${entry.name}` : entry.name;
+    if (entry.isSymbolicLink()) throw new Error(`Link simbólico inesperado no artefato: ${rel}`);
+    if (entry.isDirectory()) files.push(...await listFiles(path.join(dir, entry.name), rel));
+    else if (entry.isFile()) files.push(rel);
+  }
+  return files.sort();
+}
+
+export async function verifyIntegrity(directory) {
+  const manifestPath = resolveWithin(directory, 'asset-integrity.json');
+  const manifest = JSON.parse(await fs.readFile(manifestPath, 'utf8'));
+  if (!manifest || Array.isArray(manifest) || typeof manifest !== 'object') {
+    throw new Error('Manifesto de integridade inválido.');
+  }
+
+  const entries = Object.entries(manifest);
+  for (const [rel, expected] of entries) {
+    if (!/^[a-f0-9]{64}$/.test(expected)) throw new Error(`Hash inválido no manifesto: ${rel}`);
+    const actual = sha256(await fs.readFile(resolveWithin(directory, rel)));
+    if (actual !== expected) throw new Error(`Falha de integridade no artefato: ${rel}`);
+  }
+
+  const actualFiles = await listFiles(directory);
+  const expectedFiles = [...entries.map(([rel]) => rel), 'asset-integrity.json'].sort();
+  if (JSON.stringify(actualFiles) !== JSON.stringify(expectedFiles)) {
+    throw new Error('Arquivos do artefato não correspondem ao manifesto de integridade.');
+  }
+}
+
 // Arquivos que sempre entram, mesmo que o index.html não os cite diretamente.
 const SEMPRE = [
   'index.html',
@@ -38,7 +86,8 @@ const isLocal = (u) => u && !/^(?:[a-z]+:)?\/\//i.test(u) && !/^(data|blob|mailt
 const semQuery = (u) => u.split('#')[0].split('?')[0];
 
 async function existe(rel) {
-  try { await fs.access(path.join(ROOT, rel)); return true; } catch { return false; }
+  const file = resolveWithin(ROOT, rel);
+  try { await fs.access(file); return true; } catch { return false; }
 }
 
 function refsHtml(html) {
@@ -60,7 +109,7 @@ function refsCss(css, cssRel) {
   return out;
 }
 
-async function main() {
+export async function build() {
   const arquivos = new Set();
   const faltando = [];
 
@@ -101,9 +150,9 @@ async function main() {
   const lista = [...arquivos].sort();
 
   for (const f of lista) {
-    const dest = path.join(OUT, f);
+    const dest = resolveWithin(OUT, f);
     await fs.mkdir(path.dirname(dest), { recursive: true });
-    const buf = await fs.readFile(path.join(ROOT, f));
+    const buf = await fs.readFile(resolveWithin(ROOT, f));
     if (f !== 'service-worker.js') hash.update(f).update(buf);
     await fs.writeFile(dest, buf);
   }
@@ -124,11 +173,20 @@ async function main() {
   await fs.writeFile(swPath, sw);
 
   // Evita que o GitHub Pages ignore pastas/arquivos que começam com "_".
-  await fs.writeFile(path.join(OUT, '.nojekyll'), '');
+  await fs.writeFile(resolveWithin(OUT, '.nojekyll'), '');
+
+  const integrity = {};
+  for (const f of [...lista.filter((f) => f !== 'service-worker.js'), 'service-worker.js', '.nojekyll'].sort()) {
+    integrity[f] = sha256(await fs.readFile(resolveWithin(OUT, f)));
+  }
+  await fs.writeFile(resolveWithin(OUT, 'asset-integrity.json'), `${JSON.stringify(integrity, null, 2)}\n`);
+  await verifyIntegrity(OUT);
 
   let total = 0;
-  for (const f of lista) total += (await fs.stat(path.join(OUT, f))).size;
+  for (const f of lista) total += (await fs.stat(resolveWithin(OUT, f))).size;
   console.log(`✔ www/ montada: ${lista.length} arquivos, ${(total / 1024).toFixed(0)} KB, BUILD_ID ${buildId}`);
 }
 
-main().catch((err) => { console.error(err); process.exit(1); });
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  build().catch((err) => { console.error(err); process.exit(1); });
+}
