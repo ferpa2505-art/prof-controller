@@ -14,7 +14,7 @@ Configure a ruleset targeting the `main` branch with enforcement active and an e
 
 If using classic branch protection instead of a ruleset, enable **Include administrators** and configure the equivalent requirements, including required status checks and conversation resolution. Do not leave any bypass actors or teams configured. Avoid overlapping rulesets or rules whose combined behavior is unclear.
 
-`@ferpa2505-art` is the current code owner for sensitive paths. GitHub does not allow a pull request author to approve their own pull request. Before relying on this policy, ensure there is at least one other trusted reviewer with repository write access who can provide the required code-owner and independent approvals. A solo code owner cannot approve their own sensitive change; do not weaken the rules to work around that limitation.
+`@ferpa2505-art` is the current code owner for sensitive paths. GitHub does not allow a pull request author to approve their own pull request. Before relying on this policy, add at least one other trusted reviewer with repository write access as a code owner for these paths. A solo code owner cannot approve their own sensitive change; do not weaken the rules to work around that limitation.
 
 ## Safe verification
 
