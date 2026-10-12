@@ -2,8 +2,17 @@ import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const WORKFLOWS = fileURLToPath(new URL('../.github/workflows/', import.meta.url));
+// Uso: node scripts/check-workflow-security.mjs [pasta-de-workflows]
+const WORKFLOWS = process.argv[2]
+  ? path.resolve(process.argv[2])
+  : fileURLToPath(new URL('../.github/workflows/', import.meta.url));
 const errors = [];
+
+// Pega qualquer chave `uses`, com ou sem aspas, em lista (`- uses:`),
+// em mapa inline (`{ uses: ... }`) ou em linha normal.
+const USES = /(?:^|[\s{,\-])(["']?)uses\1\s*:\s*(["']?)([^\s"',}#]+)\2/g;
+const PINNED_ACTION = /^[^/\s]+\/[^@\s]+@[a-f0-9]{40}$/i;
+const PINNED_DOCKER = /^docker:\/\/[^@\s]+@sha256:[a-f0-9]{64}$/i;
 
 async function workflowFiles(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
@@ -18,15 +27,18 @@ async function workflowFiles(directory) {
 for (const file of await workflowFiles(WORKFLOWS)) {
   const name = path.relative(WORKFLOWS, file);
   const content = await readFile(file, 'utf8');
-  if (!/^permissions:/m.test(content)) {
+  if (!/^["']?permissions["']?\s*:/m.test(content)) {
     errors.push(`${name}: workflow must declare top-level permissions`);
   }
 
-  for (const [index, line] of content.split(/\r?\n/).entries()) {
-    const match = line.match(/^\s*-?\s*uses:\s*(['"]?)([^ \t'"#]+)\1/);
-    if (!match || match[2].startsWith('./')) continue;
-    if (!/^[^/\s]+\/[^@\s]+@[a-f0-9]{40}$/i.test(match[2])) {
-      errors.push(`${name}:${index + 1}: ${match[2]} is not pinned to a full commit SHA`);
+  for (const [index, rawLine] of content.split(/\r?\n/).entries()) {
+    const line = rawLine.replace(/\s+#.*$/, '');
+    if (/^\s*#/.test(line)) continue;
+    for (const match of line.matchAll(USES)) {
+      const ref = match[3];
+      if (ref.startsWith('./')) continue;
+      const ok = ref.startsWith('docker://') ? PINNED_DOCKER.test(ref) : PINNED_ACTION.test(ref);
+      if (!ok) errors.push(`${name}:${index + 1}: ${ref} is not pinned to a full commit SHA`);
     }
   }
 }

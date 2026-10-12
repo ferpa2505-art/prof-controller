@@ -10,6 +10,7 @@ import { safeAssetPath } from './build-www.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const BUILD_SCRIPT = path.join(ROOT, 'scripts', 'build-www.mjs');
+const POLICY_SCRIPT = path.join(ROOT, 'scripts', 'check-workflow-security.mjs');
 const tempDirs = [];
 
 afterEach(async () => {
@@ -38,7 +39,15 @@ function runBuild(dir) {
   return spawnSync(process.execPath, [path.join(dir, 'scripts', 'build-www.mjs')], { encoding: 'utf8' });
 }
 
+async function runPolicy(workflowYaml) {
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'prof-controller-wf-'));
+  tempDirs.push(dir);
+  await fs.writeFile(path.join(dir, 'test.yml'), workflowYaml);
+  return spawnSync(process.execPath, [POLICY_SCRIPT, dir], { encoding: 'utf8' });
+}
+
 const toPosix = (p) => p.split(path.sep).join('/');
+const SHA = '3d3c42e5aac5ba805825da76410c181273ba90b1';
 
 test('build asset paths stay within their source and output roots', () => {
   assert.equal(safeAssetPath('assets/icon.png'), 'assets/icon.png');
@@ -96,6 +105,35 @@ test('build rejects a source symlink that escapes the repository', { skip: proce
   const result = runBuild(dir);
   assert.notEqual(result.status, 0);
   assert.match(result.stderr, /Origem fora dos limites/);
+});
+
+test('workflow policy accepts SHA-pinned actions', async () => {
+  const result = await runPolicy(`permissions:\n  contents: read\njobs:\n  a:\n    steps:\n      - uses: actions/checkout@${SHA}\n      - uses: ./local-action\n`);
+  assert.equal(result.status, 0, result.stderr);
+});
+
+test('workflow policy rejects mutable refs in every YAML form', async (t) => {
+  const forms = {
+    'plain list item': '      - uses: actions/checkout@v4',
+    'quoted key': '      - "uses": actions/checkout@v4',
+    'single-quoted key and value': "      - 'uses': 'actions/checkout@v4'",
+    'inline mapping': '      - { uses: actions/checkout@v4 }',
+    'key not first in step': `      - name: x\n        uses: actions/checkout@v4`,
+    'unpinned docker image': '      - uses: docker://alpine:3',
+  };
+  for (const [label, step] of Object.entries(forms)) {
+    await t.test(label, async () => {
+      const result = await runPolicy(`permissions:\n  contents: read\njobs:\n  a:\n    steps:\n${step}\n`);
+      assert.notEqual(result.status, 0, `${label} should fail`);
+      assert.match(result.stderr, /not pinned/);
+    });
+  }
+});
+
+test('workflow policy requires top-level permissions', async () => {
+  const result = await runPolicy(`jobs:\n  a:\n    steps:\n      - uses: actions/checkout@${SHA}\n`);
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /top-level permissions/);
 });
 
 // O teste de CSP do index.html fica no PR separado de CSP (issue #5 / antigo PR #12).
