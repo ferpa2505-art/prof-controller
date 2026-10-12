@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: Build web app
+        run: npm run build
+
+      - name: Check JavaScript syntax
+        run: |
+          while IFS= read -r -d '' file; do
+            node --check "$file"
+          done < <(find www -name '*.js' -print0)

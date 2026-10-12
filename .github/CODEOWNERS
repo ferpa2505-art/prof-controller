@@ -1,0 +1,10 @@
+/.github/ @ferpa2505-art
+/scripts/ @ferpa2505-art
+/package.json @ferpa2505-art
+/package-lock.json @ferpa2505-art
+/capacitor.config.json @ferpa2505-art
+/android/ @ferpa2505-art
+/ios/ @ferpa2505-art
+/electron/ @ferpa2505-art
+/proxy/ @ferpa2505-art
+/service-worker.js @ferpa2505-art
