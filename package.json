@@ -45,7 +45,6 @@
     "node": ">=22"
   },
   "devDependencies": {
-    "@capacitor/assets": "^3.0.5",
     "@capacitor/cli": "^8.5.3",
     "electron": "^44.7.0",
     "electron-builder": "^26.15.3",
@@ -110,5 +109,8 @@
       "output": "release"
     },
     "copyright": "© 2026 Luís Fernando Paulino"
+  },
+  "overrides": {
+    "tar": "7.5.22"
   }
 }
