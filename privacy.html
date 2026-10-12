@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Política de Privacidade — ProF Controller</title>
+  <meta name="description" content="Política de privacidade do ProF Controller: seus dados financeiros ficam só no seu aparelho.">
+  <link rel="icon" type="image/png" href="icon-192.png">
+  <style>
+    :root { --bg:#0f1220; --card:#171b2e; --text:#e8eaf2; --muted:#a3a9c2; --accent:#00d4ff; --line:#2a2f4a; }
+    @media (prefers-color-scheme: light) { :root { --bg:#f5f7fb; --card:#fff; --text:#1a1d2b; --muted:#5a6078; --accent:#0077b6; --line:#dfe3ee; } }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+           padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left)); }
+    main { max-width:760px; margin:0 auto; }
+    header { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:16px; }
+    h1 { font-size:1.5rem; margin:0; }
+    h2 { font-size:1.1rem; margin:28px 0 8px; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:20px; }
+    .muted { color:var(--muted); font-size:.9rem; }
+    nav button { background:transparent; color:var(--muted); border:1px solid var(--line); border-radius:8px; padding:6px 10px; cursor:pointer; font:inherit; font-size:.85rem; }
+    nav button[aria-pressed="true"] { color:var(--text); border-color:var(--accent); }
+    a { color:var(--accent); }
+    table { width:100%; border-collapse:collapse; font-size:.9rem; }
+    th, td { text-align:left; padding:8px 6px; border-bottom:1px solid var(--line); vertical-align:top; }
+    [data-lang] { display:none; }
+    [data-lang].on { display:block; }
+    .highlight { border-left:3px solid var(--accent); padding-left:12px; }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>ProF Controller</h1>
+    <nav aria-label="Idioma / Language">
+      <button type="button" data-set="pt">Português</button>
+      <button type="button" data-set="en">English</button>
+      <button type="button" data-set="es">Español</button>
+    </nav>
+  </header>
+
+  <!-- ============================ PORTUGUÊS ============================ -->
+  <section class="card" data-lang="pt" lang="pt-BR">
+    <h1>Política de Privacidade</h1>
+    <p class="muted">Última atualização: 12 de outubro de 2026</p>
+
+    <p class="highlight"><strong>Resumo:</strong> o ProF Controller não tem servidor, não tem conta de usuário e não coleta seus dados.
+      Tudo o que você cadastra (contas, saldos, lançamentos, investimentos, imóveis, veículos) fica gravado só no seu aparelho.
+      Nós não vemos, não guardamos e não vendemos nenhuma informação sua.</p>
+
+    <h2>1. Quais dados o app guarda e onde</h2>
+    <p>Os dados que você digita ou importa ficam no armazenamento local do aparelho (IndexedDB do navegador ou do aplicativo).
+      Se você ativar o bloqueio com senha, esses dados são criptografados no próprio aparelho (AES-GCM 256, com chave derivada da sua senha por PBKDF2).
+      Sem a senha ou o código de recuperação, nem nós conseguiríamos ler os dados — e de fato não temos acesso a eles.</p>
+    <p>As chaves de API que você cadastra nas Configurações (Finnhub, Twelve Data, brapi.dev, rss2json) também ficam só no aparelho.</p>
+
+    <h2>2. O que sai do aparelho</h2>
+    <p>Para mostrar cotações, câmbio e notícias, o app consulta diretamente serviços de terceiros. Nesses pedidos vai apenas o necessário para a consulta
+      (por exemplo, o código de um ativo como "PETR4" ou de uma moeda como "EUR") e, quando o serviço exige, a sua própria chave de API.
+      <strong>Saldos, valores, nomes de contas e o restante dos seus dados financeiros nunca são enviados.</strong></p>
+    <table>
+      <thead><tr><th>Serviço</th><th>Para quê</th><th>O que é enviado</th></tr></thead>
+      <tbody>
+        <tr><td>Finnhub, Twelve Data, brapi.dev</td><td>Cotações, busca de ativos, dados de empresas, notícias</td><td>Código do ativo/ISIN e sua chave de API</td></tr>
+        <tr><td>Frankfurter, ExchangeRate-API, open.er-api.com, AwesomeAPI, Currency API (jsDelivr)</td><td>Taxas de câmbio</td><td>Códigos de moeda</td></tr>
+        <tr><td>Banco Central do Brasil (API SGS)</td><td>Índices como CDI para comparação</td><td>Período consultado</td></tr>
+        <tr><td>Google Notícias (via rss2json)</td><td>Aba de notícias</td><td>Termo de busca (código/nome do ativo) e sua chave rss2json, se houver</td></tr>
+        <tr><td>TradingView (widget de gráfico)</td><td>Gráfico avançado, quando você abre</td><td>Código do ativo; o widget é carregado do site da TradingView e segue a política deles</td></tr>
+      </tbody>
+    </table>
+    <p class="muted">Cada serviço recebe também os dados técnicos de qualquer acesso à internet (como o endereço IP) e os trata conforme a própria política de privacidade.
+      Links para sites externos (Investidor10, Yahoo Finance, InfoMoney, B3 etc.) só abrem quando você toca neles.</p>
+
+    <h2>3. O que o app não faz</h2>
+    <ul>
+      <li>Não tem anúncios nem rastreadores de publicidade.</li>
+      <li>Não usa ferramentas de analytics ou de coleta de uso.</li>
+      <li>Não pede acesso a contatos, localização, câmera, microfone ou fotos.</li>
+      <li>Não vende, aluga nem compartilha dados pessoais.</li>
+    </ul>
+
+    <h2>4. Biometria</h2>
+    <p>Quando você ativa o desbloqueio por digital ou Face ID, a verificação é feita pelo sistema do aparelho (Android ou iOS). O app nunca recebe nem guarda sua digital ou seu rosto;
+      ele só recebe a resposta "verificado" ou "não verificado".</p>
+
+    <h2>5. Notificações</h2>
+    <p>Lembretes (como vencimento de contas) são agendados e exibidos no próprio aparelho. Nenhum servidor nosso envia notificações.</p>
+
+    <h2>6. Backup e exclusão</h2>
+    <p>Você pode exportar seus dados (JSON ou CSV) a qualquer momento nas Configurações; o arquivo fica onde você escolher salvar.
+      Para apagar tudo, desinstale o aplicativo ou, na versão web, limpe os dados do site no navegador. Como não guardamos cópia, não há nada a excluir do nosso lado.</p>
+
+    <h2>7. Crianças</h2>
+    <p>O app é destinado a maiores de 18 anos e não coleta dados de ninguém, inclusive de crianças.</p>
+
+    <h2>8. Seus direitos (LGPD e GDPR)</h2>
+    <p>Como não coletamos nem tratamos seus dados pessoais em servidores próprios, você mantém controle total sobre eles no seu aparelho.
+      Para qualquer dúvida sobre privacidade, fale conosco pelo canal abaixo.</p>
+
+    <h2>9. Mudanças nesta política</h2>
+    <p>Se esta política mudar, a nova versão será publicada nesta página com a data atualizada.</p>
+
+    <h2>10. Contato</h2>
+    <p>Abra uma solicitação em <a href="https://github.com/ferpa2505-art/prof-controller/issues" rel="noopener noreferrer">github.com/ferpa2505-art/prof-controller/issues</a>.</p>
+  </section>
+
+  <!-- ============================ ENGLISH ============================ -->
+  <section class="card" data-lang="en" lang="en">
+    <h1>Privacy Policy</h1>
+    <p class="muted">Last updated: October 12, 2026</p>
+
+    <p class="highlight"><strong>Summary:</strong> ProF Controller has no server, no user accounts and does not collect your data.
+      Everything you enter (accounts, balances, transactions, investments, real estate, vehicles) is stored only on your device.
+      We do not see, keep or sell any of your information.</p>
+
+    <h2>1. What the app stores and where</h2>
+    <p>Data you type or import is kept in your device's local storage (the browser's or the app's IndexedDB).
+      If you turn on password lock, that data is encrypted on the device (AES-GCM 256, with a key derived from your password via PBKDF2).
+      Without the password or recovery code nobody can read it — and we have no access to it.</p>
+    <p>API keys you add in Settings (Finnhub, Twelve Data, brapi.dev, rss2json) are also stored only on the device.</p>
+
+    <h2>2. What leaves the device</h2>
+    <p>To show quotes, exchange rates and news, the app queries third-party services directly. Those requests carry only what the lookup needs
+      (for example a ticker such as "AAPL" or a currency code such as "EUR") and, when the service requires it, your own API key.
+      <strong>Balances, amounts, account names and the rest of your financial data are never sent.</strong></p>
+    <table>
+      <thead><tr><th>Service</th><th>Purpose</th><th>What is sent</th></tr></thead>
+      <tbody>
+        <tr><td>Finnhub, Twelve Data, brapi.dev</td><td>Quotes, asset search, company data, news</td><td>Ticker/ISIN and your API key</td></tr>
+        <tr><td>Frankfurter, ExchangeRate-API, open.er-api.com, AwesomeAPI, Currency API (jsDelivr)</td><td>Exchange rates</td><td>Currency codes</td></tr>
+        <tr><td>Central Bank of Brazil (SGS API)</td><td>Benchmarks such as CDI</td><td>Date range</td></tr>
+        <tr><td>Google News (via rss2json)</td><td>News tab</td><td>Search term (ticker/company) and your rss2json key, if any</td></tr>
+        <tr><td>TradingView (chart widget)</td><td>Advanced chart, when you open it</td><td>Ticker; the widget loads from TradingView and follows their policy</td></tr>
+      </tbody>
+    </table>
+    <p class="muted">Each service also receives the technical data that any internet request carries (such as your IP address) and handles it under its own privacy policy.
+      Links to external sites (Investidor10, Yahoo Finance, InfoMoney, B3, etc.) open only when you tap them.</p>
+
+    <h2>3. What the app does not do</h2>
+    <ul>
+      <li>No ads and no advertising trackers.</li>
+      <li>No analytics or usage tracking.</li>
+      <li>No access to contacts, location, camera, microphone or photos.</li>
+      <li>No selling, renting or sharing of personal data.</li>
+    </ul>
+
+    <h2>4. Biometrics</h2>
+    <p>When you enable fingerprint or Face ID unlock, verification is done by your device's operating system (Android or iOS). The app never receives or stores your fingerprint or face;
+      it only gets a "verified / not verified" answer.</p>
+
+    <h2>5. Notifications</h2>
+    <p>Reminders (such as bills due) are scheduled and shown on the device itself. No server of ours sends notifications.</p>
+
+    <h2>6. Backup and deletion</h2>
+    <p>You can export your data (JSON or CSV) at any time in Settings; the file stays wherever you save it.
+      To delete everything, uninstall the app or, on the web version, clear the site's data in your browser. Since we keep no copy, there is nothing to delete on our side.</p>
+
+    <h2>7. Children</h2>
+    <p>The app is intended for adults (18+) and collects no data from anyone, including children.</p>
+
+    <h2>8. Your rights (GDPR and LGPD)</h2>
+    <p>Because we do not collect or process your personal data on our own servers, you keep full control of it on your device.
+      For any privacy question, contact us through the channel below.</p>
+
+    <h2>9. Changes to this policy</h2>
+    <p>If this policy changes, the new version will be published on this page with an updated date.</p>
+
+    <h2>10. Contact</h2>
+    <p>Open a request at <a href="https://github.com/ferpa2505-art/prof-controller/issues" rel="noopener noreferrer">github.com/ferpa2505-art/prof-controller/issues</a>.</p>
+  </section>
+
+  <!-- ============================ ESPAÑOL ============================ -->
+  <section class="card" data-lang="es" lang="es">
+    <h1>Política de Privacidad</h1>
+    <p class="muted">Última actualización: 12 de octubre de 2026</p>
+
+    <p class="highlight"><strong>Resumen:</strong> ProF Controller no tiene servidor, no tiene cuentas de usuario y no recopila tus datos.
+      Todo lo que registras (cuentas, saldos, movimientos, inversiones, inmuebles, vehículos) se guarda solo en tu dispositivo.
+      No vemos, no guardamos ni vendemos ninguna información tuya.</p>
+
+    <h2>1. Qué datos guarda la app y dónde</h2>
+    <p>Los datos que escribes o importas quedan en el almacenamiento local del dispositivo (IndexedDB del navegador o de la app).
+      Si activas el bloqueo con contraseña, esos datos se cifran en el propio dispositivo (AES-GCM 256, con clave derivada de tu contraseña mediante PBKDF2).
+      Sin la contraseña o el código de recuperación nadie puede leerlos — y nosotros no tenemos acceso a ellos.</p>
+    <p>Las claves de API que registras en Configuración (Finnhub, Twelve Data, brapi.dev, rss2json) también quedan solo en el dispositivo.</p>
+
+    <h2>2. Qué sale del dispositivo</h2>
+    <p>Para mostrar cotizaciones, tipos de cambio y noticias, la app consulta directamente servicios de terceros. Esas consultas llevan solo lo necesario
+      (por ejemplo, el código de un activo como "AAPL" o de una moneda como "EUR") y, cuando el servicio lo exige, tu propia clave de API.
+      <strong>Saldos, importes, nombres de cuentas y el resto de tus datos financieros nunca se envían.</strong></p>
+    <table>
+      <thead><tr><th>Servicio</th><th>Para qué</th><th>Qué se envía</th></tr></thead>
+      <tbody>
+        <tr><td>Finnhub, Twelve Data, brapi.dev</td><td>Cotizaciones, búsqueda de activos, datos de empresas, noticias</td><td>Código del activo/ISIN y tu clave de API</td></tr>
+        <tr><td>Frankfurter, ExchangeRate-API, open.er-api.com, AwesomeAPI, Currency API (jsDelivr)</td><td>Tipos de cambio</td><td>Códigos de moneda</td></tr>
+        <tr><td>Banco Central de Brasil (API SGS)</td><td>Índices como el CDI</td><td>Período consultado</td></tr>
+        <tr><td>Google Noticias (vía rss2json)</td><td>Pestaña de noticias</td><td>Término de búsqueda (código/nombre del activo) y tu clave rss2json, si la hay</td></tr>
+        <tr><td>TradingView (widget de gráfico)</td><td>Gráfico avanzado, cuando lo abres</td><td>Código del activo; el widget se carga desde TradingView y sigue su política</td></tr>
+      </tbody>
+    </table>
+    <p class="muted">Cada servicio recibe además los datos técnicos de cualquier acceso a internet (como la dirección IP) y los trata según su propia política de privacidad.
+      Los enlaces a sitios externos (Investidor10, Yahoo Finance, InfoMoney, B3, etc.) solo se abren cuando los tocas.</p>
+
+    <h2>3. Qué no hace la app</h2>
+    <ul>
+      <li>Sin anuncios ni rastreadores publicitarios.</li>
+      <li>Sin herramientas de analítica ni seguimiento de uso.</li>
+      <li>Sin acceso a contactos, ubicación, cámara, micrófono ni fotos.</li>
+      <li>No vende, alquila ni comparte datos personales.</li>
+    </ul>
+
+    <h2>4. Biometría</h2>
+    <p>Cuando activas el desbloqueo con huella o Face ID, la verificación la hace el sistema del dispositivo (Android o iOS). La app nunca recibe ni guarda tu huella o tu rostro;
+      solo recibe la respuesta "verificado / no verificado".</p>
+
+    <h2>5. Notificaciones</h2>
+    <p>Los recordatorios (como vencimientos de cuentas) se programan y muestran en el propio dispositivo. Ningún servidor nuestro envía notificaciones.</p>
+
+    <h2>6. Copia de seguridad y eliminación</h2>
+    <p>Puedes exportar tus datos (JSON o CSV) en cualquier momento desde Configuración; el archivo queda donde elijas guardarlo.
+      Para borrarlo todo, desinstala la app o, en la versión web, borra los datos del sitio en el navegador. Como no guardamos copia, no hay nada que borrar de nuestro lado.</p>
+
+    <h2>7. Menores</h2>
+    <p>La app está destinada a mayores de 18 años y no recopila datos de nadie, incluidos menores.</p>
+
+    <h2>8. Tus derechos (RGPD y LGPD)</h2>
+    <p>Como no recopilamos ni tratamos tus datos personales en servidores propios, mantienes el control total sobre ellos en tu dispositivo.
+      Para cualquier duda sobre privacidad, contáctanos por el canal de abajo.</p>
+
+    <h2>9. Cambios en esta política</h2>
+    <p>Si esta política cambia, la nueva versión se publicará en esta página con la fecha actualizada.</p>
+
+    <h2>10. Contacto</h2>
+    <p>Abre una solicitud en <a href="https://github.com/ferpa2505-art/prof-controller/issues" rel="noopener noreferrer">github.com/ferpa2505-art/prof-controller/issues</a>.</p>
+  </section>
+</main>
+<script>
+  (function () {
+    var langs = ['pt', 'en', 'es'];
+    var q = new URLSearchParams(location.search).get('lang');
+    var nav = (navigator.language || 'pt').slice(0, 2).toLowerCase();
+    var atual = langs.indexOf(q) >= 0 ? q : (langs.indexOf(nav) >= 0 ? nav : 'en');
+    function mostrar(l) {
+      document.querySelectorAll('[data-lang]').forEach(function (s) { s.classList.toggle('on', s.getAttribute('data-lang') === l); });
+      document.querySelectorAll('[data-set]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-set') === l)); });
+      document.documentElement.lang = { pt: 'pt-BR', en: 'en', es: 'es' }[l];
+    }
+    document.querySelectorAll('[data-set]').forEach(function (b) { b.addEventListener('click', function () { mostrar(b.getAttribute('data-set')); }); });
+    mostrar(atual);
+  })();
+</script>
+</body>
+</html>

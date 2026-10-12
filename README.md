@@ -1,135 +1,51 @@
-# 💰 ProF Controller - Gestor de Carteira Financeira
+# ProF Controller
 
-[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](CHANGELOG.md)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![GitHub Pages](https://img.shields.io/badge/live-GitHub%20Pages-brightgreen.svg)](https://ferpa2505-art.github.io/prof-controller/)
+Gestor de patrimônio pessoal multi-moeda, **100% local e privado**: contas, saldos diários, lançamentos,
+orçamentos, câmbio, imóveis, veículos, carteira de investimentos e NAV consolidado. Sem servidor, sem conta
+de usuário — os dados ficam só no aparelho, com criptografia opcional (AES-GCM 256 + PBKDF2).
 
-Aplicação web moderna para gerenciar sua carteira financeira com suporte a notificações, transações recorrentes e sistema de assinatura integrado.
+- App web: https://ferpa2505-art.github.io/prof-controller/
+- Política de privacidade: https://ferpa2505-art.github.io/prof-controller/privacy.html
+- Idiomas: português (Brasil), inglês e espanhol
 
-## 🚀 Começar Rápido
+## Plataformas
 
-### Live Demo
-- **Website:** https://ferpa2505-art.github.io/prof-controller/
-- **Versão Atual:** 1.0.0
+| Plataforma | Como é gerado | Onde |
+|---|---|---|
+| Web (PWA) | `npm run build` → pasta `www/` | GitHub Pages (automático a cada push na `main`) |
+| Android | Capacitor 8 → `android/` | Google Play — veja `docs/PUBLICAR-ANDROID.md` |
+| iOS | Capacitor 8 → `ios/` | App Store — veja `docs/PUBLICAR-IOS.md` |
+| Windows | Microsoft Store via PWABuilder (recomendado) ou Electron | veja `docs/PUBLICAR-WINDOWS.md` |
 
-### Features Principais
-✅ Gestão de investimentos  
-✅ Notificações em tempo real  
-✅ Transações recorrentes automáticas  
-✅ Sistema de assinatura com Stripe  
-✅ Autenticação (Google OAuth + Apple Sign-In)  
-✅ Histórico completo de operações  
-
-## 📚 Documentação
-
-**Toda a documentação está na pasta `Prof Controller TXT/`**
-
-### 🎯 Onde Começar
-
-1. **[Prof Controller TXT/INDEX.md](Prof%20Controller%20TXT/INDEX.md)** ← **Comece aqui!**
-   - Guia de navegação de toda documentação
-   - Fluxos recomendados de leitura
-   - Busca rápida por assunto
-
-2. **[Prof Controller TXT/DELIVERY_SUMMARY.md](Prof%20Controller%20TXT/DELIVERY_SUMMARY.md)**
-   - Resumo do que foi entregue
-   - Métricas e checklist
-
-3. **[Prof Controller TXT/FRONTEND_INTEGRATION.md](Prof%20Controller%20TXT/FRONTEND_INTEGRATION.md)**
-   - Como integrar o sistema de assinatura
-   - Passo a passo detalhado
-
-## 📂 Estrutura do Projeto
+## Estrutura
 
 ```
-prof-controller/
-├── src/
-│   ├── subscription/          # Sistema de assinatura React
-│   ├── app.js                 # Lógica principal
-│   ├── index.html             # Interface web
-│   └── styles.css             # Estilos
-├── server/                    # Backend Node.js + Express
-├── electron/                  # Desktop app (Electron)
-├── .github/workflows/         # CI/CD
-├── Prof Controller TXT/       # 📚 Toda a documentação
-└── README.md                  # Este arquivo
+index.html, app.js, *.css, *.js   código do app (HTML/CSS/JS puro, sem framework)
+src/                              módulos de interface (gráficos, botões, tabelas)
+styles/, themes/                  estilos e temas
+vendor/                           bibliotecas embutidas (Chart.js) — o app funciona offline
+native.js                         ponte com recursos nativos (biometria, notificações, links) no Android/iOS
+privacy.html                      política de privacidade (pt/en/es)
+service-worker.js                 cache offline; versão preenchida automaticamente no build
+scripts/build-www.mjs             monta www/ só com o que o app usa
+android/, ios/                    projetos nativos (Capacitor)
+electron/                         versão desktop (Electron)
+docs/                             guias de publicação; docs/legacy guarda documentação antiga
+legacy/                           código antigo não usado pelo app (servidor Express/Stripe, React)
+tools/                            scripts auxiliares (ícones etc.)
 ```
 
-## 🛠️ Tech Stack
+## Desenvolvimento
 
-### Frontend
-- HTML5 / CSS3 / JavaScript (ES6+)
-- React 18+ (para sistema de assinatura)
-- Progressive Web App (PWA)
+```bash
+npm install          # uma vez
+npm start            # abre em http://localhost:8000 direto da raiz (sem cache agressivo)
+npm run build        # monta www/ (o que vai para Pages, Android, iOS e Windows)
+```
 
-### Backend
-- Node.js + Express
-- PostgreSQL
-- Stripe API
-- SendGrid API
+Não é mais preciso incrementar a versão do cache do service worker à mão: o build calcula um `BUILD_ID`
+a partir do conteúdo dos arquivos e grava no `www/service-worker.js`.
 
-### Platforms
-- Web (GitHub Pages)
-- Desktop (Electron - Windows/macOS/Linux)
-- Mobile (Capacitor - iOS/Android)
+## Licença
 
-## 🔐 Segurança
-
-- JWT tokens com expiração automática
-- HTTPS obrigatório
-- Validação de webhooks Stripe
-- SQL injection prevention
-- CORS configurado
-
-## 📞 Suporte
-
-### Precisa de Ajuda?
-
-1. **Consultando a documentação:**
-   - Abra `Prof Controller TXT/INDEX.md`
-   - Use Ctrl+F para buscar seu problema
-
-2. **Problemas comuns:**
-   - [Prof Controller TXT/TESTING_GUIDE.md](Prof%20Controller%20TXT/TESTING_GUIDE.md) → Seção "Troubleshooting"
-
-3. **Integração:**
-   - [Prof Controller TXT/FRONTEND_INTEGRATION.md](Prof%20Controller%20TXT/FRONTEND_INTEGRATION.md)
-
-## 🚀 Próximas Fases
-
-- **v1.1.0:** Mobile & App Stores (Google Play + App Store)
-- **v1.2.0:** Admin Dashboard com Analytics
-- **v1.3.0:** PIX, Cupons e Programa de Referência
-
-## 📝 Changelog
-
-- **1.0.0** (2026-09-19)
-  - ✅ Sistema de assinatura completo
-  - ✅ Backend Node.js + React frontend
-  - ✅ Integração Stripe
-  - ✅ Autenticação Google + Apple
-  - ✅ Email automático (SendGrid)
-
-## 📄 Licença
-
-MIT - Veja LICENSE para detalhes
-
----
-
-## 🎯 Quick Links
-
-| Tópico | Link |
-|--------|------|
-| **Documentação** | [`Prof Controller TXT/INDEX.md`](Prof%20Controller%20TXT/INDEX.md) |
-| **Como começar** | [`Prof Controller TXT/DELIVERY_SUMMARY.md`](Prof%20Controller%20TXT/DELIVERY_SUMMARY.md) |
-| **Integração React** | [`Prof Controller TXT/FRONTEND_INTEGRATION.md`](Prof%20Controller%20TXT/FRONTEND_INTEGRATION.md) |
-| **Testes e Setup** | [`Prof Controller TXT/TESTING_GUIDE.md`](Prof%20Controller%20TXT/TESTING_GUIDE.md) |
-| **Backend** | [`Prof Controller TXT/README_BACKEND.md`](Prof%20Controller%20TXT/README_BACKEND.md) |
-| **Frontend** | [`Prof Controller TXT/README_FRONTEND.md`](Prof%20Controller%20TXT/README_FRONTEND.md) |
-| **Roadmap** | [`Prof Controller TXT/IMPLEMENTATION_ROADMAP.md`](Prof%20Controller%20TXT/IMPLEMENTATION_ROADMAP.md) |
-
----
-
-**🎉 Bem-vindo ao ProF Controller!**
-
-Comece lendo [`Prof Controller TXT/INDEX.md`](Prof%20Controller%20TXT/INDEX.md) para ter uma visão geral completa.
+MIT.

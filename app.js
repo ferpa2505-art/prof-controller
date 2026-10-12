@@ -11842,10 +11842,6 @@ async function init() {
   renderYouVsMarket().catch((e) => console.warn('Você x Mercado:', e));
   askTaxPreference().catch(() => {});
 
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./service-worker.js').catch(() => {});
-  }
-
   // Atualizar versão no footer
   const versionEl = document.getElementById('appVersion');
   if (versionEl) {
@@ -11854,5 +11850,13 @@ async function init() {
 
 }
 
+
+// Service worker registrado logo no carregamento, sem esperar o init():
+// o init() pode ficar parado em telas de configuração inicial (senha, chaves de API)
+// e, antes, o app só ficava disponível offline depois que o usuário terminava essas telas.
+// No app nativo (Capacitor) e no Electron os arquivos já estão no aparelho: não precisa.
+if ('serviceWorker' in navigator && !window.Capacitor?.isNativePlatform?.() && location.protocol !== 'file:') {
+  navigator.serviceWorker.register('./service-worker.js').catch((e) => console.warn('Service worker:', e));
+}
 
 init();
