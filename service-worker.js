@@ -10,6 +10,7 @@
 
 const BUILD_ID = 'dev'; /*__BUILD_ID__*/
 const ASSETS = ['./', './index.html', './manifest.json']; /*__ASSETS__*/
+importScripts('./navigation-policy.js');
 
 const CACHE = 'prof-controller-' + BUILD_ID;
 
@@ -98,7 +99,10 @@ self.addEventListener('push', (e) => {
 
 self.addEventListener('notificationclick', (e) => {
   e.notification.close();
-  const url = (e.notification.data && e.notification.data.url) || './';
+  const url = self.ProfNavigationPolicy.sameOriginUrl(
+    e.notification.data && e.notification.data.url,
+    self.location.href
+  );
   e.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true }).then((list) => {
       for (const c of list) { if ('focus' in c) return c.focus(); }

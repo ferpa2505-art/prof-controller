@@ -65,29 +65,30 @@
   });
 
   /* ---------------- Links externos ---------------- */
-  // Dentro do app, um link comum trocaria a tela do app pelo site. Aqui todo link
-  // http(s) para fora do app abre no navegador do sistema (Chrome Custom Tab / Safari).
-  const ehExterno = (href) => {
-    try {
-      const u = new URL(href, location.href);
-      return /^https?:$/.test(u.protocol) && u.origin !== location.origin;
-    } catch (e) { return false; }
+  const policy = window.ProfNavigationPolicy;
+  const ehLocal = (href) => {
+    try { return new URL(href, location.href).origin === location.origin; } catch (e) { return false; }
   };
-  api.openExternal = (url) => (Browser ? Browser.open({ url }) : Promise.resolve(window.open(url, '_system')));
+  const ehAprovado = (href) => policy && policy.isApprovedExternalUrl(href, location.href);
+  api.openExternal = (url) => {
+    if (!ehAprovado(url)) return Promise.resolve(false);
+    return Browser ? Browser.open({ url: new URL(url, location.href).href }) : Promise.resolve(false);
+  };
 
   document.addEventListener('click', (ev) => {
     const a = ev.target && ev.target.closest ? ev.target.closest('a[href]') : null;
     if (!a) return;
     const href = a.getAttribute('href');
-    if (!href || !ehExterno(href)) return;
+    if (!href || ehLocal(href)) return;
     ev.preventDefault();
-    api.openExternal(new URL(href, location.href).href);
+    if (ehAprovado(href)) api.openExternal(href);
   }, true);
 
   const openOriginal = window.open ? window.open.bind(window) : null;
   window.open = function (url, target, features) {
-    if (url && ehExterno(String(url))) { api.openExternal(new URL(String(url), location.href).href); return null; }
-    return openOriginal ? openOriginal(url, target, features) : null;
+    if (!url || ehLocal(String(url))) return openOriginal ? openOriginal(url, target, features) : null;
+    if (ehAprovado(String(url))) { api.openExternal(String(url)); return null; }
+    return null;
   };
 
   /* ---------------- Botão "voltar" do Android ---------------- */

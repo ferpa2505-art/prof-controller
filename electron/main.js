@@ -6,8 +6,11 @@
 
 const { app, BrowserWindow, Menu, ipcMain, shell, session, net } = require('electron');
 const path = require('path');
+const { pathToFileURL } = require('url');
+const { isApprovedExternalUrl } = require(path.join(__dirname, '..', 'www', 'navigation-policy.js'));
 
 const WWW = path.join(__dirname, '..', 'www');
+const APP_URL = pathToFileURL(path.join(WWW, 'index.html'));
 let mainWindow = null;
 
 // Uma instância só: abrir de novo apenas traz a janela existente para frente.
@@ -20,7 +23,17 @@ app.on('second-instance', () => {
   mainWindow.focus();
 });
 
-const ehExterno = (url) => /^https?:\/\//i.test(url);
+const ehAppUrl = (value) => {
+  try {
+    const url = new URL(value);
+    return url.protocol === APP_URL.protocol && url.pathname === APP_URL.pathname;
+  } catch {
+    return false;
+  }
+};
+const abrirExterno = (url) => {
+  if (isApprovedExternalUrl(url, APP_URL.href)) shell.openExternal(url).catch(() => {});
+};
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -44,16 +57,15 @@ function createWindow() {
 
   // Links com target="_blank" ou window.open(): abrem no navegador padrão do sistema.
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
-    if (ehExterno(url)) shell.openExternal(url);
+    abrirExterno(url);
     return { action: 'deny' };
   });
 
-  // Clique comum num link externo também não troca a tela do app pelo site.
+  // Only the application document and approved HTTPS destinations may navigate.
   mainWindow.webContents.on('will-navigate', (event, url) => {
-    if (ehExterno(url)) {
-      event.preventDefault();
-      shell.openExternal(url);
-    }
+    if (ehAppUrl(url)) return;
+    event.preventDefault();
+    abrirExterno(url);
   });
 
   mainWindow.loadFile(path.join(WWW, 'index.html'));
