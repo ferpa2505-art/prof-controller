@@ -1,0 +1,29 @@
+# Code owners for prof-controller repository
+# See https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owners for everything in the repository
+* @ferpa2505-art
+
+# Electron-specific files
+/electron/ @ferpa2505-art
+
+# Mobile platform-specific code
+/android/ @ferpa2505-art
+/ios/ @ferpa2505-art
+
+# Build and configuration
+/scripts/ @ferpa2505-art
+/build-resources/ @ferpa2505-art
+*.config.* @ferpa2505-art
+package.json @ferpa2505-art
+package-lock.json @ferpa2505-art
+
+# GitHub configuration
+.github/ @ferpa2505-art
+.github/workflows/ @ferpa2505-art
+.github/CODEOWNERS @ferpa2505-art
+
+# Root configuration files
+.gitignore @ferpa2505-art
+README.md @ferpa2505-art
+SECURITY.md @ferpa2505-art
