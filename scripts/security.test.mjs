@@ -1,0 +1,147 @@
+import assert from 'node:assert/strict';
+import { afterEach, test } from 'node:test';
+import { promises as fs } from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { spawnSync } from 'node:child_process';
+import vm from 'node:vm';
+import { fileURLToPath } from 'node:url';
+import { safeAssetPath } from './build-www.mjs';
+
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const BUILD_SCRIPT = path.join(ROOT, 'scripts', 'build-www.mjs');
+const tempDirs = [];
+
+afterEach(async () => {
+  await Promise.all(tempDirs.splice(0).map((dir) => fs.rm(dir, { recursive: true, force: true })));
+});
+
+async function fixture({ html, css = 'body { background: url("images/bg.svg"); }' } = {}) {
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'prof-controller-build-'));
+  tempDirs.push(dir);
+  await fs.mkdir(path.join(dir, 'scripts'), { recursive: true });
+  await fs.mkdir(path.join(dir, 'images'));
+  await fs.copyFile(BUILD_SCRIPT, path.join(dir, 'scripts', 'build-www.mjs'));
+  await fs.writeFile(path.join(dir, 'index.html'), html ?? '<link rel="stylesheet" href="site.css"><script src="app.js"></script>');
+  await fs.writeFile(path.join(dir, 'site.css'), css);
+  await fs.writeFile(path.join(dir, 'app.js'), 'window.app = true;');
+  await fs.writeFile(path.join(dir, 'images', 'bg.svg'), '<svg/>');
+  await fs.writeFile(path.join(dir, 'icon.png'), 'icon');
+  await fs.writeFile(path.join(dir, 'privacy.html'), '<p>privacy</p>');
+  await fs.writeFile(path.join(dir, 'manifest.json'), JSON.stringify({ icons: [{ src: 'icon.png' }] }));
+  await fs.writeFile(path.join(dir, 'service-worker.js'), 'const BUILD_ID = "dev"; /*__BUILD_ID__*/\nconst ASSETS = []; /*__ASSETS__*/');
+  await fs.writeFile(path.join(dir, 'package.json'), JSON.stringify({ version: '1.0.0' }));
+  return dir;
+}
+
+function runBuild(dir) {
+  return spawnSync(process.execPath, [path.join(dir, 'scripts', 'build-www.mjs')], { encoding: 'utf8' });
+}
+
+test('build asset paths stay within their source and output roots', () => {
+  assert.equal(safeAssetPath('assets/icon.png'), 'assets/icon.png');
+  assert.equal(safeAssetPath('../image.svg', 'styles'), 'image.svg');
+  for (const unsafePath of ['../../outside.html', '/outside.html', 'C:/outside.html', '%2e%2e/%2e%2e/outside.html', '%252e%252e/outside.html', 'bad\\path']) {
+    assert.throws(() => safeAssetPath(unsafePath));
+  }
+});
+
+test('build output contains only required and discovered assets', async () => {
+  const dir = await fixture();
+  const result = runBuild(dir);
+  assert.equal(result.status, 0, result.stderr);
+
+  const output = path.join(dir, 'www');
+  const files = await fs.readdir(output, { recursive: true });
+  assert.deepEqual(files.sort(), [
+    '.nojekyll',
+    'app.js',
+    'icon.png',
+    'images',
+    'images/bg.svg',
+    'index.html',
+    'manifest.json',
+    'privacy.html',
+    'service-worker.js',
+    'site.css',
+  ].sort());
+  assert.equal(await fs.access(path.join(output, 'unreferenced.txt')).then(() => true, () => false), false);
+});
+
+test('build rejects traversal and absolute asset references', async (t) => {
+  for (const reference of ['../outside.html', '/outside.html', 'C:/outside.html', '%2e%2e/outside.html']) {
+    await t.test(reference, async () => {
+      const dir = await fixture({ html: `<img src="${reference}">` });
+      const result = runBuild(dir);
+      assert.notEqual(result.status, 0);
+      assert.match(result.stderr, /Caminho absoluto|Travessia/);
+    });
+  }
+
+  const dir = await fixture({ css: 'body { background: url("../../outside.svg"); }' });
+  const result = runBuild(dir);
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /Travessia/);
+});
+
+test('build rejects a source symlink that escapes the repository', async () => {
+  const dir = await fixture({ html: '<img src="outside.html">' });
+  const outside = path.join(os.tmpdir(), `${path.basename(dir)}-outside.html`);
+  tempDirs.push(outside);
+  await fs.writeFile(outside, '<p>outside</p>');
+  await fs.symlink(outside, path.join(dir, 'outside.html'));
+
+  const result = runBuild(dir);
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /Origem fora dos limites/);
+});
+
+test('CSP restricts scripts, frames, workers, objects, and base URLs', async () => {
+  const html = await fs.readFile(path.join(ROOT, 'index.html'), 'utf8');
+  const csp = html.match(/<meta http-equiv="Content-Security-Policy" content="([^"]+)"/i)?.[1];
+  assert.ok(csp, 'Content-Security-Policy meta tag is required');
+  for (const directive of [
+    "default-src 'self'",
+    "script-src 'self' 'unsafe-inline' https://s3.tradingview.com",
+    "worker-src 'self'",
+    'frame-src https://*.tradingview.com',
+    "object-src 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+  ]) assert.ok(csp.includes(directive), `Missing CSP directive: ${directive}`);
+});
+
+test('service worker only caches same-origin GETs and rejects external notification URLs', async () => {
+  const source = await fs.readFile(path.join(ROOT, 'service-worker.js'), 'utf8');
+  assert.match(source, /if \(e\.request\.method !== 'GET'\) return;/);
+  assert.match(source, /new URL\(e\.request\.url\)\.origin !== self\.location\.origin/);
+
+  const listeners = {};
+  let openedUrl;
+  const context = {
+    URL,
+    clients: {
+      matchAll: async () => [],
+      openWindow: async (url) => { openedUrl = url; },
+    },
+    self: {
+      location: { href: 'https://app.example/index.html', origin: 'https://app.example' },
+      addEventListener: (type, listener) => { listeners[type] = listener; },
+    },
+  };
+  vm.runInNewContext(source, context);
+  let completed;
+  listeners.notificationclick({
+    notification: { data: { url: 'https://attacker.example/' }, close() {} },
+    waitUntil: (promise) => { completed = promise; },
+  });
+  await completed;
+  assert.equal(openedUrl, './');
+
+  listeners.notificationclick({
+    notification: { data: { url: '/portfolio' }, close() {} },
+    waitUntil: (promise) => { completed = promise; },
+  });
+  await completed;
+  assert.equal(openedUrl, 'https://app.example/portfolio');
+});
