@@ -175,6 +175,23 @@
     },
   };
 
+  /* ---------------- Leitura de feeds (notícias) ---------------- */
+  // O Google Notícias não libera leitura direta pelo navegador (CORS) e recusa o
+  // rss2json ("Internal error"). No app nativo a requisição sai pelo HTTP do
+  // sistema, sem CORS, direto do aparelho — sem intermediário.
+  // Só para hosts de notícias conhecidos: não vira um "proxy" genérico.
+  const Http = plugin('CapacitorHttp');
+  const FEED_HOSTS = ['news.google.com'];
+  api.fetchText = async (url) => {
+    const u = new URL(url);
+    if (u.protocol !== 'https:' || !FEED_HOSTS.includes(u.hostname)) throw new Error('Host não permitido: ' + u.hostname);
+    if (!Http) throw new Error('HTTP nativo indisponível');
+    const r = await Http.get({ url: u.href, responseType: 'text', connectTimeout: 15000, readTimeout: 15000,
+      headers: { Accept: 'application/rss+xml, application/xml;q=0.9, */*;q=0.5' } });
+    if (!r || r.status >= 400) throw new Error('HTTP ' + (r && r.status));
+    return typeof r.data === 'string' ? r.data : String(r.data || '');
+  };
+
   /* ---------------- Lembretes locais ---------------- */
   // Recebe a lista de vencimentos [{id, title, body, at: Date}] e reagenda tudo.
   // Os IDs ficam numa faixa própria para não apagar outros avisos.

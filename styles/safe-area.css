@@ -46,3 +46,25 @@ html.native .topbar, html.native .tabs, html.native .subtabs { -webkit-user-sele
 
 /* Link da política de privacidade no menu de preferências */
 .gear-privacy { display: block; margin-top: 10px; font-size: 13px; color: var(--muted, #a3a9c2); text-align: center; text-decoration: underline; }
+
+/* Atalho de Notícias (jornal) ao lado da engrenagem.
+   No celular a aba "Notícias" sai do menu principal: o ícone já leva até ela,
+   e as outras abas cabem na tela sem precisar deslizar para o lado. */
+.topbar-actions { align-items: center; }
+.news-btn.active { background: rgba(255,255,255,.2); border-color: rgba(255,255,255,.35); }
+@media (max-width: 600px) {
+  #mainTabs .tab[data-group="news"] { display: none !important; }
+}
+@media (max-width: 600px) {
+  /* Com Notícias no ícone, as quatro abas dividem a largura da tela: nada fica escondido à direita. */
+  #mainTabs { overflow-x: visible !important; }
+  #mainTabs .tab:not([data-group="news"]) {
+    flex: 1 1 0 !important; min-width: 0 !important;
+    padding-left: 2px !important; padding-right: 2px !important;
+    justify-content: center !important; text-align: center;
+    font-size: 13px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+}
+@media (max-width: 360px) {
+  #mainTabs .tab:not([data-group="news"]) { font-size: 12px !important; letter-spacing: -0.2px; }
+}

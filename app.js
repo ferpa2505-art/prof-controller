@@ -4710,7 +4710,10 @@ function assetTotals(type, date) {
 function applyLang() {
   document.documentElement.lang = state.settings.lang;
   document.querySelectorAll('[data-i18n]').forEach((el) => { el.textContent = t(el.dataset.i18n); });
-  document.querySelectorAll('[data-i18n-title]').forEach((el) => { el.title = t(el.dataset.i18nTitle); });
+  document.querySelectorAll('[data-i18n-title]').forEach((el) => {
+    el.title = t(el.dataset.i18nTitle);
+    if (el.hasAttribute('aria-label')) el.setAttribute('aria-label', el.title); // botões só com ícone
+  });
   renderLangButtons();
   renderSubTabs();
   // Partes que não passam pelo renderAll(): redesenham no idioma novo
@@ -7521,21 +7524,57 @@ function shortCompany(nome) {
   return String(nome || '').replace(/\b(S\.?A\.?|SA|Pfd|PN|ON|Inc\.?|Corp\.?|Holding|Ltd\.?|plc|Co\.?|Class [A-Z])\b/gi, '').replace(/\s+/g, ' ').trim().split(' ').slice(0, 2).join(' ');
 }
 
-async function fetchGoogleNews(query, tag, region, edition) {
-  const rg = NEWS_REGIONS[region] ? region : 'br';
-  const ed = NEWS_EDITIONS[edition] || NEWS_EDITIONS[rg] || NEWS_EDITIONS.br;
-  const rss = `https://news.google.com/rss/search?q=${encodeURIComponent(query)}&hl=${ed.hl}&gl=${ed.gl}&ceid=${ed.ceid}`;
+// Leitura direta do RSS (app Android/iOS e Windows/Electron): sem CORS e sem intermediário.
+// No navegador comum não existe: lá o caminho é o rss2json.
+function directFeedReader() {
+  if (window.ProfNative && window.ProfNative.isNative && window.ProfNative.fetchText) return window.ProfNative.fetchText;
+  if (window.electronAPI && window.electronAPI.fetchText) return window.electronAPI.fetchText;
+  return null;
+}
+function parseRssXml(xml) {
+  const doc = new DOMParser().parseFromString(xml, 'text/xml');
+  if (doc.getElementsByTagName('parsererror').length) throw new Error('RSS inválido');
+  const txt = (el, tag) => { const x = el.getElementsByTagName(tag)[0]; return x ? x.textContent.trim() : ''; };
+  return [...doc.getElementsByTagName('item')].map((it) => {
+    const quando = new Date(txt(it, 'pubDate'));
+    return { title: txt(it, 'title'), link: txt(it, 'link'), source: txt(it, 'source'), date: isNaN(quando) ? new Date() : quando };
+  });
+}
+// Proxy próprio (Cloudflare Worker, ver docs/PROXY-NOTICIAS.md) para o navegador.
+// Vazio = não usa; o site cai no rss2json, que o Google às vezes recusa.
+const NEWS_PROXY_URL = '';
+
+async function readFeed(rss) {
+  const direto = directFeedReader();
+  if (direto) return parseRssXml(await direto(rss));
+  if (NEWS_PROXY_URL) {
+    try {
+      const res = await fetch(`${NEWS_PROXY_URL}/?url=${encodeURIComponent(rss)}`, { cache: 'no-store' });
+      if (res.ok) return parseRssXml(await res.text());
+    } catch (e) { /* cai no rss2json */ }
+  }
   const chave = apiKey('apiRss2json');
   const url = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rss)}${chave ? '&api_key=' + encodeURIComponent(chave) + '&count=25' : ''}`;
   const d = await getJSON(url);
   if (d.status && d.status !== 'ok') throw new Error(d.message || 'rss2json');
-  return (d.items || []).slice(0, tag === 'market' ? 25 : 12).map((it) => {
+  return (d.items || []).map((it) => ({
+    title: it.title || '', link: it.link || '', source: it.author || '',
+    date: it.pubDate ? new Date(it.pubDate.replace(' ', 'T') + 'Z') : new Date()
+  }));
+}
+
+async function fetchGoogleNews(query, tag, region, edition) {
+  const rg = NEWS_REGIONS[region] ? region : 'br';
+  const ed = NEWS_EDITIONS[edition] || NEWS_EDITIONS[rg] || NEWS_EDITIONS.br;
+  const rss = `https://news.google.com/rss/search?q=${encodeURIComponent(query)}&hl=${ed.hl}&gl=${ed.gl}&ceid=${ed.ceid}`;
+  const itens = await readFeed(rss);
+  return itens.slice(0, tag === 'market' ? 25 : 12).map((it) => {
     // O Google News coloca a fonte no fim do título: "Manchete - InfoMoney"
     const partes = decodeEntities(it.title).split(' - ');
-    const fonte = partes.length > 1 ? partes.pop() : (it.author || 'Google News');
+    const fonte = partes.length > 1 ? partes.pop() : (decodeEntities(it.source) || 'Google News');
     return {
       title: partes.join(' - '), source: fonte, url: safeUrl(it.link),
-      date: it.pubDate ? new Date(it.pubDate.replace(' ', 'T') + 'Z').toISOString() : new Date().toISOString(),
+      date: (isNaN(it.date) ? new Date() : it.date).toISOString(),
       tag, lang: ed.lang, region: rg
     };
   });
@@ -11185,6 +11224,8 @@ function showTab(tab) {
   document.querySelectorAll('.tab-panel').forEach((p) => p.classList.toggle('active', p.id === 'tab-' + (VIRTUAL_TABS[tab] ? VIRTUAL_TABS[tab].panel : tab)));
   const gear = document.getElementById('btnGear');
   if (gear) gear.classList.toggle('active', grupo === 'settings');
+  const btnNews = document.getElementById('btnNews');
+  if (btnNews) { btnNews.classList.toggle('active', grupo === 'news'); btnNews.setAttribute('aria-pressed', String(grupo === 'news')); }
   renderSubTabs();
   if (tab === 'dashboard') { renderNAV(); renderYouVsMarket().catch((e) => console.warn('Você x Mercado:', e)); }
   if (tab === 'investments') renderCompare();
@@ -11348,6 +11389,9 @@ function bindEvents() {
     const btn = e.target.closest('[data-tab]');
     if (btn) showTab(btn.dataset.tab);
   });
+
+  // Atalho de Notícias ao lado da engrenagem (no celular a aba ficava escondida no fim do menu)
+  on('btnNews', 'click', (e) => { e.stopPropagation(); toggleGear(false); showTab(state.ui.lastSub.news || NAV_GROUPS.news[0]); });
 
   // Engrenagem: tema, idioma, explicações e configurações avançadas
   on('btnGear', 'click', (e) => { e.stopPropagation(); toggleGear(); });

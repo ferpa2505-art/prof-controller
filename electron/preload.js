@@ -5,4 +5,6 @@ const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('electronAPI', {
   getAppVersion: () => ipcRenderer.invoke('get-app-version'),
+  // Lê feeds de notícias pelo processo principal (sem CORS). Só hosts liberados no main.js.
+  fetchText: (url) => ipcRenderer.invoke('fetch-text', url),
 });

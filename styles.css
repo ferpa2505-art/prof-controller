@@ -448,7 +448,9 @@ th { background: var(--surface); color: var(--muted); font-weight: 600; white-sp
   display: inline-flex; align-items: center; justify-content: center;
   width: 40px; height: 40px; border-radius: 10px; border: 1px solid rgba(255,255,255,.18);
   background: rgba(255,255,255,.08); color: #fff; cursor: pointer;
+  padding: 0; flex: 0 0 auto; /* sem isto o padding global dos botões espremia o ícone no desktop */
 }
+.gear-btn svg { flex: none; width: 22px; height: 22px; }
 .gear-btn:hover, .gear-btn.active, .gear-btn[aria-expanded="true"] { background: rgba(255,255,255,.2); }
 .gear-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 .gear-btn svg { transition: transform .3s ease; }

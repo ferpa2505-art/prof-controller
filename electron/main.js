@@ -4,7 +4,7 @@
 // Os dados ficam no IndexedDB do perfil do Electron, na pasta de dados do usuário
 // (Windows: %APPDATA%\ProF Controller), separados do navegador.
 
-const { app, BrowserWindow, Menu, ipcMain, shell, session } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain, shell, session, net } = require('electron');
 const path = require('path');
 
 const WWW = path.join(__dirname, '..', 'www');
@@ -126,3 +126,21 @@ Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 
 // IPC
 ipcMain.handle('get-app-version', () => app.getVersion());
+
+// Feeds de notícias: o Google Notícias não libera leitura direta pela página (CORS)
+// e recusa o rss2json. O processo principal busca direto, só nos hosts abaixo.
+const FEED_HOSTS = ['news.google.com'];
+ipcMain.handle('fetch-text', async (_evt, url) => {
+  const u = new URL(String(url));
+  if (u.protocol !== 'https:' || !FEED_HOSTS.includes(u.hostname)) throw new Error('Host não permitido: ' + u.hostname);
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 15000);
+  try {
+    const res = await net.fetch(u.href, { signal: ctrl.signal, headers: { Accept: 'application/rss+xml, application/xml;q=0.9, */*;q=0.5' } });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const texto = await res.text();
+    return texto.slice(0, 2 * 1024 * 1024); // limite de 2 MB por feed
+  } finally {
+    clearTimeout(timer);
+  }
+});
