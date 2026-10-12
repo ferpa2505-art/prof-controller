@@ -49,3 +49,6 @@ a partir do conteúdo dos arquivos e grava no `www/service-worker.js`.
 ## Licença
 
 MIT.
+
+# Security Validation Test
+This PR validates the security workflow and branch protection rules.
