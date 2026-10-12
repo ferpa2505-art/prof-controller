@@ -24,12 +24,16 @@ This repository implements the following security measures:
   - Output validation (www/ directory and index.html)
   - Secret scanning with TruffleHog
 
-### 2. Branch Protection
-The `main` branch is protected with the following rules:
-- ✅ All status checks must pass before merging
-- ✅ Code review from code owners required
-- ✅ Stale review dismissal on new commits enabled
-- ✅ Enforce for administrators enabled
+### 2. Branch Protection (PENDING MANUAL ACTIVATION)
+The `main` branch is **configured to require** (but NOT YET ACTIVE):
+- ⏳ Status checks required: `build` workflow must pass
+- ⏳ Code owner review: Must be approved by @ferpa2505-art
+- ⏳ Stale review dismissal on new commits enabled
+- ⏳ Enforce for administrators enabled
+
+**Current Status:** NOT ACTIVE — Requires manual GitHub UI setup  
+**Setup Instructions:** See `.github/CONFIGURE_BRANCH_PROTECTION.md`  
+**Timeline:** Must be activated BEFORE this PR is merged
 
 ### 3. Code Owners
 Code review requirements are defined in `.github/CODEOWNERS`:
@@ -37,13 +41,21 @@ Code review requirements are defined in `.github/CODEOWNERS`:
 - All pull requests require approval from code owners before merging
 
 ### 4. Secret Scanning (Multi-Layer Protection)
-GitHub native scanning and TruffleHog provide comprehensive secret detection:
-- **CI/CD Layer (TruffleHog):** Scans every pull request via workflow for leaked secrets
-- **GitHub Native:** Requires manual enablement in Settings > Security > Secret scanning
-  - Prevents secrets from being committed to the repository
-  - All commits and pull requests are scanned
-  - Maintainers are notified of detected secrets
-- **Combined Protection:** Double-layer defense ensures secrets are caught early
+
+#### Layer 1: GitHub Native (PENDING MANUAL ACTIVATION)
+⏳ Prevents secrets from being committed to the repository  
+⏳ Scans all commits and pull requests  
+⏳ Notifies maintainers of detected secrets  
+**Status:** NOT YET ACTIVATED — Requires manual GitHub UI setup
+
+#### Layer 2: CI/CD (ACTIVE VIA WORKFLOW)
+✅ TruffleHog v3.63.0 integrated in `.github/workflows/checks.yml`  
+✅ Scans every PR for leaked secrets using pattern matching  
+✅ Uses structured output for detection results  
+**Status:** ACTIVE on all pull requests and main branch commits
+
+**Current Implementation:** Partial (TruffleHog active, GitHub native pending)  
+**Setup Instructions:** See `.github/CONFIGURE_BRANCH_PROTECTION.md`
 
 ### 5. Dependency Management
 - **Lock File:** `package-lock.json` is committed to ensure reproducible builds
@@ -84,6 +96,29 @@ If you discover a vulnerability in a dependency:
 - **Required:** Node.js 22 or later
 - **CI/CD:** Tests run on Node.js 22.x
 - **EOL:** When Node.js version reaches end-of-life, we'll migrate to the next LTS version
+
+## Versioning and Updates
+
+### TruffleHog Version Management
+- **Current Version:** v3.63.0 (pinned for stability)
+- **Update Frequency:** Monthly review for new versions
+- **Testing:** New versions tested in a separate branch before merging
+- **Automation:** Manual updates to `.github/workflows/checks.yml` after testing
+- **EOL Strategy:** Monitor TruffleHog releases for security patches and critical updates
+
+### npm Audit Policy
+- **Tool:** npm audit (runs on all PRs)
+- **Severity Level:** Fails on moderate-level vulnerabilities or higher
+- **Manual Review:** Use `npm audit --full` for detailed analysis of vulnerabilities
+- **Updates:** Review and test security patches immediately
+- **Exceptions:** Document any deliberate vulnerabilities not addressed in Pull Request descriptions
+
+### Dependency Update Strategy
+- **Review Cycle:** Check for updates monthly
+- **Critical Updates:** Apply immediately if security-related
+- **Major Updates:** Schedule testing in dedicated branch before merging
+- **Lock File:** `package-lock.json` is committed for reproducible builds
+- **Notification:** Enable GitHub Dependabot alerts (optional, requires manual activation in Settings)
 
 ## Repository Health
 
