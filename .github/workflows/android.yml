@@ -1,0 +1,93 @@
+# Gera o app Android (Google Play) no GitHub, sem precisar de Android Studio.
+#
+# Quando roda:
+#   - manualmente: aba Actions → "App Android" → Run workflow
+#   - ao criar uma tag de versão (ex.: v1.2.0)
+#   - em pushes nas branches loja/** (para conferir que continua compilando)
+#
+# O que sai (aba Actions → execução → Artifacts):
+#   - prof-controller-debug.apk    → instale direto no celular para testar
+#   - prof-controller-release.aab  → arquivo que vai para o Play Console
+#
+# Para o .aab sair ASSINADO (obrigatório para a Play), cadastre em
+# Settings → Secrets and variables → Actions:
+#   ANDROID_KEYSTORE_BASE64   o arquivo .jks convertido em base64
+#   ANDROID_KEYSTORE_PASSWORD senha do keystore
+#   ANDROID_KEY_ALIAS         alias da chave (ex.: upload)
+#   ANDROID_KEY_PASSWORD      senha da chave
+# O passo a passo está em docs/PUBLICAR-ANDROID.md.
+
+name: App Android
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*']
+    branches: ['loja/**']
+
+concurrency:
+  group: android-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      VERSION_CODE: ${{ github.run_number }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: gradle
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Montar www/ e sincronizar com o projeto Android
+        run: |
+          node scripts/build-www.mjs
+          npx cap sync android
+
+      - name: Preparar chave de assinatura (se cadastrada)
+        env:
+          KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: |
+          if [ -n "$KEYSTORE_B64" ]; then
+            echo "$KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/upload.jks"
+            echo "ANDROID_KEYSTORE_PATH=$RUNNER_TEMP/upload.jks" >> "$GITHUB_ENV"
+            echo "Assinatura: chave encontrada, o .aab sai assinado."
+          else
+            echo "::warning::Sem ANDROID_KEYSTORE_BASE64: o .aab sai SEM assinatura (serve para conferir o build, não para a Play)."
+          fi
+
+      - name: Compilar APK de teste e AAB de release
+        working-directory: android
+        env:
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon assembleDebug bundleRelease
+
+      - name: Renomear arquivos
+        run: |
+          mkdir -p out
+          cp android/app/build/outputs/apk/debug/app-debug.apk out/prof-controller-debug.apk
+          cp android/app/build/outputs/bundle/release/app-release.aab out/prof-controller-release.aab
+          ls -la out
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: prof-controller-android-${{ github.run_number }}
+          path: out/*
+          retention-days: 30

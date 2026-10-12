@@ -1,7 +1,22 @@
-# Dependências: instalar com npm install, nunca commitar
 node_modules/
 
 # Segredos: só o .env.example vai para o repositório
 .env
 .env.local
 .env.*.local
+
+# Saídas de build (geradas, nunca commitar)
+www/
+release/
+dist/
+
+# Chaves de assinatura dos apps: NUNCA commitar
+*.jks
+*.keystore
+*.p12
+*.mobileprovision
+keystore.properties
+
+# Sistema
+.DS_Store
+Thumbs.db

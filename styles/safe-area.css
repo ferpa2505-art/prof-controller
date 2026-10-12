@@ -1,0 +1,70 @@
+/* ============================================================
+   Área segura (notch, relógio, barra de gestos)
+   ------------------------------------------------------------
+   No app Android/iOS o conteúdo passa por baixo da barra de status
+   (viewport-fit=cover + StatusBar overlay). Estas regras empurram o
+   cabeçalho, os botões flutuantes e as janelas para dentro da área
+   visível. No navegador comum env(...) vale 0 e nada muda.
+   ============================================================ */
+
+.app-head {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+body {
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.fab-container:not(.fab-custom) {
+  bottom: calc(32px + env(safe-area-inset-bottom, 0px));
+  right: calc(32px + env(safe-area-inset-right, 0px));
+}
+
+.toast {
+  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+}
+
+.sec-overlay {
+  padding-top: calc(24px + env(safe-area-inset-top, 0px));
+  padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+}
+
+.modal {
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@media (max-width: 600px) {
+  .gear-menu { top: calc(64px + env(safe-area-inset-top, 0px)); }
+}
+
+/* App nativo: sem o "puxar para atualizar" e sem seleção acidental de texto da interface. */
+html.native body { overscroll-behavior-y: none; }
+html.native .topbar, html.native .tabs, html.native .subtabs { -webkit-user-select: none; user-select: none; }
+
+/* Link da política de privacidade no menu de preferências */
+.gear-privacy { display: block; margin-top: 10px; font-size: 13px; color: var(--muted, #a3a9c2); text-align: center; text-decoration: underline; }
+
+/* Atalho de Notícias (jornal) ao lado da engrenagem.
+   No celular a aba "Notícias" sai do menu principal: o ícone já leva até ela,
+   e as outras abas cabem na tela sem precisar deslizar para o lado. */
+.topbar-actions { align-items: center; }
+.news-btn.active { background: rgba(255,255,255,.2); border-color: rgba(255,255,255,.35); }
+@media (max-width: 600px) {
+  #mainTabs .tab[data-group="news"] { display: none !important; }
+}
+@media (max-width: 600px) {
+  /* Com Notícias no ícone, as quatro abas dividem a largura da tela: nada fica escondido à direita. */
+  #mainTabs { overflow-x: visible !important; }
+  #mainTabs .tab:not([data-group="news"]) {
+    flex: 1 1 0 !important; min-width: 0 !important;
+    padding-left: 2px !important; padding-right: 2px !important;
+    justify-content: center !important; text-align: center;
+    font-size: 13px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+}
+@media (max-width: 360px) {
+  #mainTabs .tab:not([data-group="news"]) { font-size: 12px !important; letter-spacing: -0.2px; }
+}

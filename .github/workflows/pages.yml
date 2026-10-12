@@ -1,0 +1,52 @@
+# Publica o app no GitHub Pages a cada push na main.
+#
+# Antes publicava a raiz inteira do repositório (documentação, scripts, código de
+# servidor). Agora monta a pasta www/ com scripts/build-www.mjs e publica só ela.
+# O build também grava a versão do cache no service worker automaticamente.
+
+name: Publicar no GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: Montar www/
+        run: node scripts/build-www.mjs
+
+      - name: Conferir sintaxe do JavaScript
+        run: |
+          for f in $(find www -name '*.js'); do node --check "$f"; done
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: www
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5
