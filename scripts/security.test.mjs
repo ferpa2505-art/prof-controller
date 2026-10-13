@@ -136,6 +136,22 @@ test('workflow policy requires top-level permissions', async () => {
   assert.match(result.stderr, /top-level permissions/);
 });
 
+test('workflow policy decodes unicode-escaped keys', async () => {
+  // A chave "u\0073es" decodifica para "uses" no YAML: o parser precisa enxerga-la.
+  const result = await runPolicy(`permissions:\n  contents: read\njobs:\n  a:\n    steps:\n      - "u\\u0073es": actions/checkout@v4\n`);
+  assert.notEqual(result.status, 0, 'unicode-escaped uses key should fail');
+  assert.match(result.stderr, /not pinned/);
+});
+
+test('workflow policy ignores permissions text inside multiline scalars', async () => {
+  // A linha fisica "permissions: read" esta dentro do scalar `name`, nao no mapa raiz.
+  // Parsers estritos rejeitam o documento; parsers lenientes nao veem chave raiz.
+  // Nos dois casos o gate falha (fail-closed) em vez de aceitar o bypass textual.
+  const result = await runPolicy(`name: "build\npermissions: read\ncontinue"\njobs:\n  a:\n    steps:\n      - uses: actions/checkout@${SHA}\n`);
+  assert.notEqual(result.status, 0, 'multiline scalar must not satisfy root permissions');
+  assert.match(result.stderr, /top-level permissions|invalid YAML/);
+});
+
 // O teste de CSP do index.html fica no PR separado de CSP (issue #5 / antigo PR #12).
 
 test('service worker only caches same-origin GETs and rejects external notification URLs', async () => {
