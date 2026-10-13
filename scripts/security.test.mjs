@@ -180,25 +180,7 @@ test('Android FileProvider only exposes CACHE/shared/', async () => {
   assert.match(native, /path: `\$\{SHARE_DIRECTORY\}\/\$\{nome\}`, data, directory: 'CACHE', recursive: true/);
 });
 
-test('CSP restricts scripts, frames, workers, objects, and base URLs', async () => {
-  const html = await fs.readFile(path.join(ROOT, 'index.html'), 'utf8');
-  const metas = [...html.matchAll(/<meta http-equiv="Content-Security-Policy" content="([^"]+)"/gi)];
-  assert.equal(metas.length, 1, 'exactly one Content-Security-Policy meta tag is required');
-  const csp = metas[0][1];
-  for (const directive of [
-    "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' https://s3.tradingview.com",
-    "worker-src 'self'",
-    'frame-src https://*.tradingview.com',
-    "object-src 'none'",
-    "base-uri 'self'",
-    "form-action 'self'",
-  ]) assert.ok(csp.includes(directive), `Missing CSP directive: ${directive}`);
-  assert.doesNotMatch(csp, /'unsafe-eval'/, 'unsafe-eval must not be allowed');
-  assert.doesNotMatch(csp, /script-src[^;]*\shttps:(?:\s|;|$)/, 'script-src must not allow any https origin');
-  // A meta precisa vir antes de qualquer <script> para valer para todos eles.
-  assert.ok(html.indexOf('Content-Security-Policy') < html.indexOf('<script'), 'CSP meta must precede scripts');
-});
+// O teste de CSP do index.html fica no PR separado de CSP (issue #5 / antigo PR #12).
 
 test('service worker only caches same-origin GETs and rejects external notification URLs', async () => {
   const source = await fs.readFile(path.join(ROOT, 'service-worker.js'), 'utf8');
