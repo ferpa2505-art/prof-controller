@@ -6,6 +6,7 @@ import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
+import { parse } from 'yaml';
 import { safeAssetPath } from './build-www.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -149,6 +150,39 @@ test('workflow policy ignores permissions text inside multiline scalars', async 
   const result = await runPolicy(`name: "build\npermissions: read\ncontinue"\njobs:\n  a:\n    steps:\n      - uses: actions/checkout@${SHA}\n`);
   assert.notEqual(result.status, 0, 'multiline scalar must not satisfy root permissions');
   assert.match(result.stderr, /top-level permissions|invalid YAML/);
+});
+
+test('Android signing setup handles valid and malformed keystore secrets', { skip: process.platform === 'win32' }, async (t) => {
+  const workflow = parse(await fs.readFile(path.join(ROOT, '.github/workflows/android.yml'), 'utf8'));
+  const script = workflow.jobs.build.steps.find(({ name }) => name === 'Preparar chave de assinatura (se cadastrada)').run;
+
+  for (const { label, secret, signed } of [
+    { label: 'valid Base64', secret: 'a2V5', signed: true },
+    { label: 'malformed Base64', secret: 'not valid base64', signed: false },
+  ]) {
+    await t.test(label, async () => {
+      const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'prof-controller-signing-'));
+      tempDirs.push(dir);
+      const envFile = path.join(dir, 'github-env');
+      await fs.writeFile(envFile, '');
+
+      const result = spawnSync('bash', ['-e', '-c', script], {
+        encoding: 'utf8',
+        env: { ...process.env, KEYSTORE_B64: secret, RUNNER_TEMP: dir, GITHUB_ENV: envFile },
+      });
+      assert.equal(result.status, 0, result.stderr);
+      const exportedEnv = await fs.readFile(envFile, 'utf8');
+
+      if (signed) {
+        assert.match(exportedEnv, new RegExp(`ANDROID_KEYSTORE_PATH=${dir}/upload\\.jks`));
+        assert.equal(await fs.readFile(path.join(dir, 'upload.jks'), 'utf8'), 'key');
+      } else {
+        assert.equal(exportedEnv, '');
+        assert.equal(await fs.access(path.join(dir, 'upload.jks')).then(() => true, () => false), false);
+        assert.match(result.stdout, /ANDROID_KEYSTORE_BASE64 inválido/);
+      }
+    });
+  }
 });
 
 test('workflow policy resolves YAML aliases and merge keys', async (t) => {
