@@ -166,6 +166,20 @@ test('workflow policy resolves YAML aliases and merge keys', async (t) => {
   }
 });
 
+test('Android FileProvider only exposes CACHE/shared/', async () => {
+  const xml = await fs.readFile(path.join(ROOT, 'android/app/src/main/res/xml/file_paths.xml'), 'utf8');
+  const body = xml.replace(/<!--[\s\S]*?-->/g, '');
+  const entries = [...body.matchAll(/<([\w-]+)\b([^>]*)\/>/g)].map(([, tag, attrs]) => ({ tag, attrs }));
+  assert.equal(entries.length, 1, 'file_paths.xml must declare exactly one path');
+  assert.equal(entries[0].tag, 'cache-path', 'only cache-path is allowed (no external/files/root paths)');
+  assert.match(entries[0].attrs, /\bpath="shared\/"/);
+  assert.doesNotMatch(body, /<(external|external-files|external-cache|files|root|external-media)-path\b/);
+
+  const native = await fs.readFile(path.join(ROOT, 'native.js'), 'utf8');
+  assert.match(native, /const SHARE_DIRECTORY = 'shared';/);
+  assert.match(native, /path: `\$\{SHARE_DIRECTORY\}\/\$\{nome\}`, data, directory: 'CACHE', recursive: true/);
+});
+
 // O teste de CSP do index.html fica no PR separado de CSP (issue #5 / antigo PR #12).
 
 test('service worker only caches same-origin GETs and rejects external notification URLs', async () => {
