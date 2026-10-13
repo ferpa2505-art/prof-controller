@@ -1,11 +1,35 @@
 apply plugin: 'com.android.application'
 
-// Versão do app: vem do package.json (versionName) e de VERSION_CODE (número inteiro
-// que precisa crescer a cada envio para a Play). No GitHub Actions o VERSION_CODE é o
-// número da execução; localmente, passe -PversionCode=NN ou deixe o padrão.
+// Versão do app (Google Play):
+//   versionName = "version" do package.json (ex.: 1.2.0)
+//   versionCode = MAJOR*1000000 + MINOR*10000 + PATCH*100 + BUILD
+//     1.2.0 → 1020000 · 1.2.1 → 1020100 · 1.3.0 → 1030000 · 2.0.0 → 2000000
+//   BUILD (0–99) serve para reenviar a MESMA versão: -PbuildNumber=1 ou BUILD_NUMBER=1.
+//   Só cresce quando a versão do package.json sobe, então nunca repete nem diminui.
+//   Não usa mais o número da execução do GitHub Actions (VERSION_CODE), que muda a
+//   cada build e não tem relação com o que foi enviado à loja.
+//   Sobrescrever manualmente (só se souber o que está fazendo): -PversionCode=NN.
 def pkg = new groovy.json.JsonSlurper().parse(file('../../package.json'))
-def appVersionName = pkg.version
-def appVersionCode = (project.findProperty('versionCode') ?: System.getenv('VERSION_CODE') ?: '1').toString().toInteger()
+def appVersionName = pkg.version.toString()
+def semver = (appVersionName =~ /^(\d+)\.(\d+)\.(\d+)/)
+if (!semver.find()) {
+    throw new GradleException("package.json version '${appVersionName}' não é MAJOR.MINOR.PATCH")
+}
+def vMajor = semver.group(1).toInteger()
+def vMinor = semver.group(2).toInteger()
+def vPatch = semver.group(3).toInteger()
+def vBuild = (project.findProperty('buildNumber') ?: System.getenv('BUILD_NUMBER') ?: '0').toString().toInteger()
+if (vMinor > 99 || vPatch > 99 || vBuild < 0 || vBuild > 99) {
+    throw new GradleException("versionCode: MINOR, PATCH e BUILD precisam estar entre 0 e 99 (${appVersionName} build ${vBuild})")
+}
+def versionCodeOverride = project.findProperty('versionCode')
+def appVersionCode = versionCodeOverride
+    ? versionCodeOverride.toString().toInteger()
+    : (vMajor * 1000000) + (vMinor * 10000) + (vPatch * 100) + vBuild
+if (appVersionCode < 1 || appVersionCode > 2100000000) {
+    throw new GradleException("versionCode ${appVersionCode} fora do intervalo aceito pela Google Play (1..2100000000)")
+}
+logger.lifecycle("ProF Controller: versionName ${appVersionName}, versionCode ${appVersionCode}")
 
 // Assinatura de release: lida de android/keystore.properties (local, fora do git)
 // ou de variáveis de ambiente (GitHub Actions). Sem isso, gera release sem assinatura.
@@ -79,4 +103,50 @@ try {
     }
 } catch(Exception e) {
     logger.info("google-services.json not found, google-services plugin not applied. Push Notifications won't work")
+}
+
+// Trava de segurança: depois de mesclar o manifest de release (app + plugins), confere
+// que o FileProvider continua NÃO exportado, com permissão só por URI e usando o
+// @xml/file_paths restrito do app. Se algum plugin mudar isso, o build de release falha.
+afterEvaluate {
+    tasks.matching { it.name == 'processReleaseManifest' }.configureEach { manifestTask ->
+        manifestTask.doLast {
+            def intermediates = new File(project.layout.buildDirectory.get().asFile, 'intermediates')
+            def merged = []
+            if (intermediates.exists()) {
+                intermediates.eachFileRecurse(groovy.io.FileType.FILES) { f ->
+                    def p = f.path.replace('\\', '/')
+                    if (f.name == 'AndroidManifest.xml' && p.contains('/merged_manifest') && p.contains('/release/')) {
+                        merged << f
+                    }
+                }
+            }
+            if (merged.isEmpty()) {
+                throw new GradleException('FileProvider check: manifest mesclado de release não encontrado')
+            }
+            merged.each { f ->
+                def text = f.getText('UTF-8')
+                def providers = text.split('<provider').drop(1).collect { chunk ->
+                    def end = chunk.indexOf('</provider>')
+                    end >= 0 ? chunk.substring(0, end) : chunk
+                }
+                def fileProviders = providers.findAll { it.contains('androidx.core.content.FileProvider') }
+                if (fileProviders.isEmpty()) {
+                    throw new GradleException("FileProvider check: nenhum FileProvider em ${f}")
+                }
+                fileProviders.each { prov ->
+                    if (!prov.contains('android:exported="false"')) {
+                        throw new GradleException("FileProvider check: provider exportado em ${f}")
+                    }
+                    if (!prov.contains('android:grantUriPermissions="true"')) {
+                        throw new GradleException("FileProvider check: grantUriPermissions ausente em ${f}")
+                    }
+                    if (!prov.contains('android:resource="@xml/file_paths"')) {
+                        throw new GradleException("FileProvider check: provider não usa @xml/file_paths em ${f}")
+                    }
+                }
+                logger.lifecycle("FileProvider check OK: ${fileProviders.size()} provider(s), não exportado, @xml/file_paths (${f.path})")
+            }
+        }
+    }
 }

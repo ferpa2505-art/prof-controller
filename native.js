@@ -111,14 +111,17 @@
     r.readAsDataURL(blob);
   });
 
-  // Grava o arquivo na pasta de cache do app e abre a folha de compartilhamento do
-  // sistema: a pessoa escolhe salvar em Arquivos/Drive, mandar por e-mail etc.
+  // Única pasta que o FileProvider expõe (android/app/src/main/res/xml/file_paths.xml).
+  const SHARE_DIRECTORY = 'shared';
+
+  // Grava o arquivo em CACHE/shared/ e abre a folha de compartilhamento do sistema:
+  // a pessoa escolhe salvar em Arquivos/Drive, mandar por e-mail etc.
   api.saveFile = async (filename, content, type) => {
     if (!Filesystem || !Share) throw new Error('Plugins de arquivo indisponíveis');
     const blob = content instanceof Blob ? content : new Blob([content], { type: type || 'application/octet-stream' });
     const nome = String(filename).replace(/[\\/:*?"<>|]+/g, '_');
     const data = await blobToBase64(blob);
-    const res = await Filesystem.writeFile({ path: nome, data, directory: 'CACHE' });
+    const res = await Filesystem.writeFile({ path: `${SHARE_DIRECTORY}/${nome}`, data, directory: 'CACHE', recursive: true });
     try {
       await Share.share({ title: nome, files: [res.uri], dialogTitle: nome });
     } catch (e) {
