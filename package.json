@@ -7,6 +7,7 @@
   "scripts": {
     "start": "npx http-server -p 8000 -c-1",
     "build": "node scripts/build-www.mjs",
+    "test": "node --test scripts/security.test.mjs",
     "serve:www": "npm run build && npx http-server www -p 8001 -c-1",
     "cap:sync": "npm run build && npx cap sync",
     "android:open": "npm run cap:sync && npx cap open android",
@@ -44,11 +45,11 @@
     "node": ">=22"
   },
   "devDependencies": {
-    "@capacitor/assets": "^3.0.5",
     "@capacitor/cli": "^8.5.3",
     "electron": "^44.7.0",
     "electron-builder": "^26.15.3",
-    "http-server": "^14.1.1"
+    "http-server": "^14.1.1",
+    "yaml": "^2.9.1"
   },
   "dependencies": {
     "@capacitor/android": "^8.5.3",
@@ -109,5 +110,8 @@
       "output": "release"
     },
     "copyright": "© 2026 Luís Fernando Paulino"
+  },
+  "overrides": {
+    "tar": "7.5.22"
   }
 }

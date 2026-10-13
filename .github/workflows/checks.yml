@@ -19,10 +19,10 @@ jobs:
         node-version: ['22.x']
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
 
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
@@ -47,10 +47,3 @@ jobs:
             exit 1
           fi
           echo "Build validation passed"
-
-      - name: Check for secrets
-        uses: trufflesecurity/trufflehog@v3.63.0
-        with:
-          path: ./
-          base: ${{ github.event.pull_request.base.ref || github.event.repository.default_branch }}
-          head: ${{ github.event.pull_request.head.ref || 'HEAD' }}

@@ -98,7 +98,12 @@ self.addEventListener('push', (e) => {
 
 self.addEventListener('notificationclick', (e) => {
   e.notification.close();
-  const url = (e.notification.data && e.notification.data.url) || './';
+  const requestedUrl = (e.notification.data && e.notification.data.url) || './';
+  let url = './';
+  try {
+    const parsed = new URL(requestedUrl, self.location.href);
+    if (parsed.origin === self.location.origin) url = parsed.href;
+  } catch {}
   e.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true }).then((list) => {
       for (const c of list) { if ('focus' in c) return c.focus(); }
