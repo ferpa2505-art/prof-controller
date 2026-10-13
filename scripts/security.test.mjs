@@ -145,11 +145,25 @@ test('workflow policy decodes unicode-escaped keys', async () => {
 
 test('workflow policy ignores permissions text inside multiline scalars', async () => {
   // A linha fisica "permissions: read" esta dentro do scalar `name`, nao no mapa raiz.
-  // Parsers estritos rejeitam o documento; parsers lenientes nao veem chave raiz.
-  // Nos dois casos o gate falha (fail-closed) em vez de aceitar o bypass textual.
+  // Nos dois casos (parser estrito ou leniente) o gate falha (fail-closed).
   const result = await runPolicy(`name: "build\npermissions: read\ncontinue"\njobs:\n  a:\n    steps:\n      - uses: actions/checkout@${SHA}\n`);
   assert.notEqual(result.status, 0, 'multiline scalar must not satisfy root permissions');
   assert.match(result.stderr, /top-level permissions|invalid YAML/);
+});
+
+test('workflow policy resolves YAML aliases and merge keys', async (t) => {
+  const cases = {
+    'alias value': `permissions:\n  contents: read\nx-ref: &ref actions/checkout@v4\njobs:\n  a:\n    steps:\n      - uses: *ref\n`,
+    'merge key': `permissions:\n  contents: read\nx-step: &step\n  uses: actions/checkout@v4\njobs:\n  a:\n    steps:\n      - <<: *step\n        name: x\n`,
+    'non-string uses': `permissions:\n  contents: read\njobs:\n  a:\n    steps:\n      - uses: [actions/checkout@v4]\n`,
+  };
+  for (const [label, yaml] of Object.entries(cases)) {
+    await t.test(label, async () => {
+      const result = await runPolicy(yaml);
+      assert.notEqual(result.status, 0, `${label} should fail`);
+      assert.match(result.stderr, /not pinned/);
+    });
+  }
 });
 
 // O teste de CSP do index.html fica no PR separado de CSP (issue #5 / antigo PR #12).
