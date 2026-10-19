@@ -266,3 +266,150 @@
     padding: 12px;
   }
 }
+
+/* ============================================================
+   💱 SIMULADOR DE TROCA DE MOEDA
+   ============================================================ */
+
+.fxsim { margin: 16px 0 24px; }
+
+.fxsim-card {
+  background: linear-gradient(135deg, rgba(100, 150, 200, 0.15) 0%, rgba(60, 100, 150, 0.1) 100%);
+  border: 1px solid rgba(100, 150, 200, 0.25);
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.fxsim-card h3 { margin: 0 0 4px; font-size: 18px; font-weight: 600; }
+.fxsim-card .hint { margin: 4px 0 14px; }
+
+.fxsim-mode {
+  display: inline-flex;
+  border: 1px solid rgba(0, 212, 255, 0.35);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+.fxsim-mode button {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  padding: 9px 16px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.fxsim-mode button.active { background: #00D4FF; color: #06121c; font-weight: 700; }
+
+.fxsim-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr auto 1fr;
+  gap: 12px;
+  align-items: end;
+  margin-bottom: 12px;
+}
+.fxsim-grid-2 { grid-template-columns: 2fr 1fr; }
+
+.fxsim label { display: flex; flex-direction: column; gap: 6px; font-size: 14px; min-width: 0; }
+.fxsim label > span { color: var(--muted, rgba(232, 234, 237, 0.7)); }
+.fxsim input, .fxsim select { width: 100%; box-sizing: border-box; min-height: 42px; font-size: 16px; }
+
+.fxsim-swap {
+  min-height: 42px;
+  width: 42px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 212, 255, 0.35);
+  background: rgba(0, 212, 255, 0.12);
+  color: #00D4FF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.fxsim-rate {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px 12px;
+  align-items: end;
+  margin-bottom: 6px;
+}
+.fxsim-rate .secondary-btn { min-height: 42px; }
+.fxsim-rate-status { grid-column: 1 / -1; color: var(--muted, rgba(232, 234, 237, 0.6)); font-size: 13px; }
+
+.fxsim-sub { margin: 18px 0 10px; font-size: 15px; font-weight: 600; }
+
+.fxsim-results { display: flex; flex-direction: column; gap: 10px; }
+.fxsim-msg { margin: 0; padding: 14px; border-radius: 12px; background: rgba(127, 140, 160, 0.1); font-size: 14px; }
+
+.fxsim-row {
+  border: 1px solid rgba(100, 150, 200, 0.25);
+  border-radius: 12px;
+  background: rgba(10, 20, 50, 0.18);
+  overflow: hidden;
+}
+.fxsim-row.best { border-color: rgba(0, 215, 126, 0.6); box-shadow: 0 0 0 1px rgba(0, 215, 126, 0.25) inset; }
+
+.fxsim-row-head {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 4px 12px;
+  padding: 14px 16px;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+}
+.fxsim-row-name { font-weight: 700; font-size: 15px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.fxsim-row-main { text-align: right; grid-row: span 2; display: flex; flex-direction: column; justify-content: center; }
+.fxsim-row-main small { font-size: 12px; color: var(--muted, rgba(232, 234, 237, 0.6)); }
+.fxsim-row-main strong { font-size: 19px; color: #00D4FF; font-variant-numeric: tabular-nums; }
+.fxsim-row.best .fxsim-row-main strong { color: #00D77E; }
+.fxsim-row-meta { font-size: 13px; color: var(--muted, rgba(232, 234, 237, 0.6)); }
+
+.fxsim-badge {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(0, 215, 126, 0.18);
+  color: #00D77E;
+}
+
+.fxsim-detail { padding: 0 16px 14px; }
+.fxsim-detail dl {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 6px 12px;
+  margin: 0;
+  padding-top: 12px;
+  border-top: 1px solid rgba(100, 150, 200, 0.2);
+  font-size: 14px;
+}
+.fxsim-detail dt { color: var(--muted, rgba(232, 234, 237, 0.7)); }
+.fxsim-detail dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; }
+.fxsim-detail .fxsim-total { font-weight: 700; color: inherit; padding-top: 6px; border-top: 1px dashed rgba(100, 150, 200, 0.25); }
+
+.fxsim-note { margin-top: 14px; }
+
+.fxsim-edit { margin: 8px 0 4px; }
+.fxsim-edit summary { cursor: pointer; font-weight: 600; font-size: 14px; color: #00D4FF; padding: 8px 0; }
+.fxsim-table { width: 100%; font-size: 14px; }
+.fxsim-table td, .fxsim-table th { padding: 6px; vertical-align: middle; }
+.fxsim-table input { min-width: 72px; min-height: 38px; }
+.fxsim-edit .secondary-btn { margin-top: 8px; }
+
+.fxsim-disclaimer { font-size: 13px; opacity: 0.85; }
+
+@media (max-width: 640px) {
+  .fxsim-card { padding: 16px; }
+  .fxsim-grid { grid-template-columns: 1fr auto 1fr; }
+  .fxsim-grid .fxsim-amount { grid-column: 1 / -1; }
+  .fxsim-grid-2 { grid-template-columns: 1fr; }
+  .fxsim-mode { display: flex; }
+  .fxsim-mode button { flex: 1; }
+}
