@@ -619,8 +619,15 @@ function initForexWidget() {
     return s;
   }
   function esc(s) {
-    return String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
   }
+  // Só aceita valores conhecidos vindos dos campos da tela.
+  function pickCurrency(v, fallback) { return FXSIM_CURRENCIES.includes(v) ? v : fallback; }
   function money(v, cur) {
     try { return new Intl.NumberFormat(lang(), { style: 'currency', currency: cur, maximumFractionDigits: cur === 'JPY' ? 0 : 2 }).format(v); }
     catch (e) { return cur + ' ' + Number(v).toFixed(2); }
@@ -715,7 +722,7 @@ function initForexWidget() {
   /* ---------- Interface ---------- */
 
   function options(list, cur) {
-    return list.map((c) => `<option value="${c}"${c === cur ? ' selected' : ''}>${c}</option>`).join('');
+    return list.map((c) => `<option value="${esc(c)}"${c === cur ? ' selected' : ''}>${esc(c)}</option>`).join('');
   }
 
   function results() {
@@ -765,11 +772,11 @@ function initForexWidget() {
               <dt>${esc(T('fee'))}</dt><dd>− ${esc(money(r.fee, sim.from))}</dd>
               ${side === 'from' ? `<dt>${esc(taxLabel)} (${esc(num(tax, 2))}%)</dt><dd>− ${esc(taxAmt)}</dd>` : ''}
               <dt>${esc(T('converted'))}</dt><dd>${esc(money(r.converted, sim.from))}</dd>
-              <dt>${esc(T('applied'))}</dt><dd>1 ${rv.a} = ${esc(num(rv.v, 4))} ${rv.b}</dd>
+              <dt>${esc(T('applied'))}</dt><dd>1 ${esc(rv.a)} = ${esc(num(rv.v, 4))} ${esc(rv.b)}</dd>
               <dt>${esc(T('spreadLine'))}</dt><dd>− ${esc(money(r.spreadCost, sim.to))}</dd>
               ${side === 'to' ? `<dt>${esc(taxLabel)} (${esc(num(tax, 2))}%)</dt><dd>− ${esc(taxAmt)}</dd>` : ''}
               <dt class="fxsim-total">${esc(T('received'))}</dt><dd class="fxsim-total">${esc(money(r.received, sim.to))}</dd>
-              <dt>${esc(T('vet'))}</dt><dd>1 ${vet.a} = ${esc(num(vet.v, 4))} ${vet.b}</dd>
+              <dt>${esc(T('vet'))}</dt><dd>1 ${esc(vet.a)} = ${esc(num(vet.v, 4))} ${esc(vet.b)}</dd>
             </dl>
           </div>
         </div>`;
@@ -828,7 +835,7 @@ function initForexWidget() {
         </div>
 
         <div class="fxsim-grid">
-          <label class="fxsim-amount"><span>${esc(T('amount'))} (${sim.mode === 'send' ? sim.from : sim.to})</span>
+          <label class="fxsim-amount"><span>${esc(T('amount'))} (${esc(sim.mode === 'send' ? sim.from : sim.to)})</span>
             <input type="text" inputmode="decimal" autocomplete="off" data-fxsim-focus="amount" id="fxsimAmount" value="${esc(sim.amount)}" placeholder="1.000,00"></label>
           <label><span>${esc(T('from'))}</span><select id="fxsimFrom">${options(FXSIM_CURRENCIES, sim.from)}</select></label>
           <button type="button" class="fxsim-swap" id="fxsimSwap" aria-label="${esc(T('swap'))}" title="${esc(T('swap'))}">
@@ -838,7 +845,7 @@ function initForexWidget() {
         </div>
 
         <div class="fxsim-grid fxsim-grid-2">
-          <label><span>${esc(T('op'))}</span><select id="fxsimOp">${ops.map((k) => `<option value="${k}"${k === sim.op ? ' selected' : ''}>${esc(T('op.' + k))}</option>`).join('')}</select></label>
+          <label><span>${esc(T('op'))}</span><select id="fxsimOp">${ops.map((k) => `<option value="${esc(k)}"${k === sim.op ? ' selected' : ''}>${esc(T('op.' + k))}</option>`).join('')}</select></label>
           <label><span>${esc(isBrl ? T('iof') : T('tax'))}</span>
             <input type="text" inputmode="decimal" autocomplete="off" data-fxsim-focus="tax" id="fxsimTax" value="${esc(num(taxPct(), 2))}"></label>
         </div>
@@ -904,11 +911,12 @@ function initForexWidget() {
     box.addEventListener('change', (e) => {
       const el = e.target;
       if (el.id === 'fxsimFrom' || el.id === 'fxsimTo') {
-        if (el.id === 'fxsimFrom') sim.from = el.value; else sim.to = el.value;
+        if (el.id === 'fxsimFrom') sim.from = pickCurrency(el.value, sim.from); else sim.to = pickCurrency(el.value, sim.to);
         sim.rate = null; sim.rateAt = null; sim.rateManual = false;
         fixOp(); save(); render(); loadRate(false);
       } else if (el.id === 'fxsimOp') {
-        sim.op = el.value; sim.tax = null; save(); render();
+        if (FXSIM_OPS[el.value] && FXSIM_OPS[el.value].dir === direction()) sim.op = el.value;
+        sim.tax = null; save(); render();
       }
     });
 
@@ -926,9 +934,10 @@ function initForexWidget() {
       } else if (t.id === 'fxsimRefresh') {
         sim.rateManual = false; loadRate(true);
       } else if (t.dataset.fxsimMode) {
-        sim.mode = t.dataset.fxsimMode; save(); render();
+        sim.mode = t.dataset.fxsimMode === 'receive' ? 'receive' : 'send'; save(); render();
       } else if (t.dataset.fxsimOpen) {
-        sim.open = sim.open === t.dataset.fxsimOpen ? null : t.dataset.fxsimOpen; renderResults();
+        const id = sim.providers.some((p) => p.id === t.dataset.fxsimOpen) ? t.dataset.fxsimOpen : null;
+        sim.open = sim.open === id ? null : id; renderResults();
       } else if (t.hasAttribute('data-fxsim-reset')) {
         sim.providers = FXSIM_DEFAULT_PROVIDERS.map((p) => ({ ...p })); save(); render();
       }
