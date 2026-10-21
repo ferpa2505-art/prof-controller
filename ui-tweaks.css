@@ -1,0 +1,174 @@
+/* ============================================================
+   ProF Controller 1.3.2 — ajustes de interface
+   (carregado depois dos temas para prevalecer sem mexer neles)
+   ============================================================ */
+
+/* Título "ProF Controller" no topo: gelo azulado (temas escuros) */
+body:not([data-theme="light"]) .topbar .brand-name {
+  color: #D6E6F0 !important;
+  -webkit-text-fill-color: #D6E6F0;
+  opacity: 1;
+}
+
+/* X dos formulários um pouco mais baixo (~3 mm) */
+#modal .modal-close {
+  top: 23px;
+  z-index: 2;
+  line-height: 1;
+}
+
+/* ---------- Botão X padrão dos painéis ---------- */
+.panel-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.14));
+  background: transparent;
+  color: var(--text-primary, var(--text, currentColor));
+  cursor: pointer;
+  flex: 0 0 auto;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+.panel-close:hover,
+.panel-close:focus-visible { background: rgba(127, 127, 127, 0.18); }
+.panel-close:active { transform: scale(0.94); }
+.panel-close svg { display: block; }
+
+.panel-close-row {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0 0 6px;
+}
+
+/* Preferências (engrenagem) */
+#gearMenu .gear-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+}
+#gearMenu > h3 { padding-right: 40px; }
+
+/* ---------- Dashboard: título + Atualizar tudo ---------- */
+.dash-head-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.dash-head-row h2 { margin: 0; }
+.dash-update-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.dash-update-btn svg { flex: 0 0 auto; }
+.dash-update-btn.is-busy svg { animation: dashSpin 0.9s linear infinite; }
+.dash-update-btn:disabled { opacity: 0.7; cursor: progress; }
+@keyframes dashSpin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .dash-update-btn.is-busy svg { animation: none; }
+}
+
+.dash-update-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin: 10px 0 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  background: rgba(0, 212, 255, 0.08);
+  border: 1px solid rgba(0, 212, 255, 0.25);
+}
+.dash-update-status.hidden { display: none !important; }
+.dash-update-status small { flex-basis: 100%; opacity: 0.8; font-size: 13px; }
+.dash-update-action { padding: 6px 12px; }
+
+/* ---------- Gráficos recolhidos enquanto não há dados ---------- */
+.charts-filing-system.charts-all-empty,
+.section-title.charts-all-empty { display: none !important; }
+.charts-filing-system .chart-tab.is-empty,
+.charts-filing-system .chart-card.is-empty { display: none !important; }
+
+/* ---------- Simulador em painel próprio ---------- */
+.fxsim-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 1500;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: max(12px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom));
+  background: rgba(4, 8, 14, 0.72);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.fxsim-panel.hidden { display: none !important; }
+body.fxsim-panel-open { overflow: hidden; }
+
+.fxsim-panel-inner {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  margin: auto 0;
+  padding: 14px 16px 18px;
+  border-radius: 16px;
+  background: var(--card, var(--bg-secondary, #161B22));
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.12));
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
+}
+.fxsim-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+.fxsim-panel-head h2 { margin: 0; font-size: 18px; }
+.fxsim-panel .fxsim-card {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.fxsim-panel .fxsim-card > h3 { display: none; }
+
+/* Destaque do mais barato */
+.fxsim-winner {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2px 12px;
+  align-items: baseline;
+  margin: 0 0 10px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(67, 178, 132, 0.14);
+  border: 1px solid rgba(67, 178, 132, 0.55);
+}
+.fxsim-winner-tag {
+  grid-column: 1 / -1;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #43B284;
+}
+.fxsim-winner-name { font-size: 18px; }
+.fxsim-winner-cost { font-size: 14px; opacity: 0.85; text-align: right; }
+.fxsim-winner-save {
+  grid-column: 1 / -1;
+  font-size: 14px;
+  margin-top: 2px;
+}
+.fxsim-winner-save strong { color: #43B284; }
+.fxsim-row.best { border-color: rgba(67, 178, 132, 0.7) !important; }
