@@ -389,11 +389,13 @@ function initForexWidget() {
 }
 
 /* ============================================================
-   💱 SIMULADOR DE TROCA DE MOEDA (Cadastros → Câmbio)
+   💱 SIMULADOR DE TROCA DE MOEDA (painel próprio, ícone de moedas no topo)
 
    Mostra quanto chega no destino depois do imposto (IOF, quando a
    operação envolve o real) e das tarifas/spread de cada empresa,
-   e compara Remessa Online, Wise, Nomad e "Outro".
+   e compara Remessa Online, Wise, Nomad e "Outro". Destaca a opção
+   mais barata no total (tarifa + spread + IOF) e quanto ela economiza
+   em relação à mais cara.
 
    - Cotação comercial: api.exchangerate-api.com (cache de 6 h),
      sempre editável à mão.
@@ -453,9 +455,12 @@ function initForexWidget() {
       refresh: 'Atualizar cotação', loading: 'Buscando cotação…',
       rateFail: 'Sem cotação online. Digite a cotação manualmente.',
       rateAt: 'Atualizada em {t}', rateManual: 'Cotação digitada por você',
-      results: 'Comparativo', best: 'Melhor opção', receives: 'Chega', pays: 'Você paga',
+      results: 'Comparativo', best: 'Mais barato', receives: 'Chega', pays: 'Você paga',
       vsBest: '{v} a menos que a melhor', vsBestPay: '{v} a mais que a melhor',
       cost: 'Custo total', vet: 'VET',
+      cheapest: 'Mais barato no total', sumOf: 'tarifa + spread + {tax}',
+      saveSend: 'Chegam {v} a mais em comparação com {w}, a opção mais cara.',
+      saveRecv: 'Você paga {v} a menos em comparação com {w}, a opção mais cara.',
       details: 'Detalhes', sent: 'Valor enviado', fee: 'Tarifa da empresa', taxLine: 'Imposto',
       iofLine: 'IOF', spreadLine: 'Spread embutido na cotação', applied: 'Cotação aplicada',
       converted: 'Valor convertido', received: 'Valor que chega',
@@ -487,9 +492,12 @@ function initForexWidget() {
       refresh: 'Refresh rate', loading: 'Fetching rate…',
       rateFail: 'No online rate. Type the rate manually.',
       rateAt: 'Updated at {t}', rateManual: 'Rate typed by you',
-      results: 'Comparison', best: 'Best option', receives: 'Arrives', pays: 'You pay',
+      results: 'Comparison', best: 'Cheapest', receives: 'Arrives', pays: 'You pay',
       vsBest: '{v} less than the best', vsBestPay: '{v} more than the best',
       cost: 'Total cost', vet: 'Effective rate',
+      cheapest: 'Cheapest overall', sumOf: 'fee + spread + {tax}',
+      saveSend: '{v} more arrives than with {w}, the most expensive option.',
+      saveRecv: 'You pay {v} less than with {w}, the most expensive option.',
       details: 'Details', sent: 'Amount sent', fee: 'Company fee', taxLine: 'Tax',
       iofLine: 'IOF', spreadLine: 'Spread built into the rate', applied: 'Applied rate',
       converted: 'Converted amount', received: 'Amount that arrives',
@@ -521,9 +529,12 @@ function initForexWidget() {
       refresh: 'Actualizar cotización', loading: 'Buscando cotización…',
       rateFail: 'Sin cotización en línea. Escribe la cotización manualmente.',
       rateAt: 'Actualizada a las {t}', rateManual: 'Cotización escrita por ti',
-      results: 'Comparativo', best: 'Mejor opción', receives: 'Llega', pays: 'Pagas',
+      results: 'Comparativo', best: 'Más barato', receives: 'Llega', pays: 'Pagas',
       vsBest: '{v} menos que la mejor', vsBestPay: '{v} más que la mejor',
       cost: 'Costo total', vet: 'Tipo efectivo',
+      cheapest: 'Más barato en total', sumOf: 'comisión + spread + {tax}',
+      saveSend: 'Llegan {v} más que con {w}, la opción más cara.',
+      saveRecv: 'Pagas {v} menos que con {w}, la opción más cara.',
       details: 'Detalles', sent: 'Monto enviado', fee: 'Comisión de la empresa', taxLine: 'Impuesto',
       iofLine: 'IOF', spreadLine: 'Spread incluido en la cotización', applied: 'Cotización aplicada',
       converted: 'Monto convertido', received: 'Monto que llega',
@@ -582,6 +593,17 @@ function initForexWidget() {
     return fxsimForward(amount, p);
   }
 
+  // Economia da opção mais barata em relação à mais cara.
+  // rows já ordenadas da melhor para a pior. Envio: diferença no que chega (TO);
+  // recebimento: diferença no que se paga (FROM).
+  function fxsimSaving(rows, mode) {
+    if (!rows || rows.length < 2) return null;
+    const best = rows[0].r;
+    const worst = rows[rows.length - 1].r;
+    const v = mode === 'send' ? best.received - worst.received : worst.paid - best.paid;
+    return v > 0.005 ? v : null;
+  }
+
   function fxsimParse(v) {
     let s = String(v == null ? '' : v).trim().replace(/[\s\u00a0]/g, '').replace(/[^\d.,-]/g, '');
     if (!s) return NaN;
@@ -599,7 +621,7 @@ function initForexWidget() {
 
   // Exposto para testes em Node; no navegador não polui o escopo global.
   if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { fxsimForward, fxsimInverse, fxsimParse, FXSIM_OPS, FXSIM_DEFAULT_PROVIDERS };
+    module.exports = { fxsimForward, fxsimInverse, fxsimParse, fxsimSaving, FXSIM_OPS, FXSIM_DEFAULT_PROVIDERS };
   }
   if (typeof document === 'undefined') return;
 
@@ -636,6 +658,7 @@ function initForexWidget() {
     return new Intl.NumberFormat(lang(), { minimumFractionDigits: d, maximumFractionDigits: d }).format(v);
   }
   function pct(v) { return num(v * 100, 2) + '%'; }
+  function providerName(p) { return p.id === 'other' ? (p.name || T('otherName')) : p.name; }
 
   function load() {
     let saved = {};
@@ -745,8 +768,25 @@ function initForexWidget() {
     const isBrl = sim.from === 'BRL' || sim.to === 'BRL';
     const taxLabel = isBrl ? T('iofLine') : T('taxLine');
 
-    return rows.map(({ p, r }, i) => {
-      const name = p.id === 'other' ? (p.name || T('otherName')) : p.name;
+    // Destaque: a mais barata no total e quanto economiza frente à mais cara.
+    let winner = '';
+    const saving = fxsimSaving(rows, sim.mode);
+    if (saving) {
+      const worst = rows[rows.length - 1];
+      const savingTxt = money(saving, sim.mode === 'send' ? sim.to : sim.from);
+      const sentence = esc(T(sim.mode === 'send' ? 'saveSend' : 'saveRecv', { v: '', w: providerName(worst.p) }))
+        .split('').join(`<strong>${esc(savingTxt)}</strong>`);
+      winner = `
+        <div class="fxsim-winner" role="status">
+          <span class="fxsim-winner-tag">${esc(T('cheapest'))}</span>
+          <strong class="fxsim-winner-name">${esc(providerName(rows[0].p))}</strong>
+          <span class="fxsim-winner-cost">${esc(T('cost'))} ${esc(pct(best.costPct))}<br><small>${esc(T('sumOf', { tax: taxLabel }))}</small></span>
+          <span class="fxsim-winner-save">${sentence}</span>
+        </div>`;
+    }
+
+    return winner + rows.map(({ p, r }, i) => {
+      const name = providerName(p);
       const main = sim.mode === 'send' ? money(r.received, sim.to) : money(r.paid, sim.from);
       const mainLabel = sim.mode === 'send' ? T('receives') : T('pays');
       let diff = '';
@@ -807,9 +847,18 @@ function initForexWidget() {
       </details>`;
   }
 
+  // Título do painel e rótulo do botão do topo seguem o idioma.
+  function panelTexts() {
+    const ttl = document.getElementById('fxSimPanelTitle');
+    if (ttl) ttl.textContent = T('title');
+    const btn = document.getElementById('btnFxSim');
+    if (btn) { btn.title = T('title'); btn.setAttribute('aria-label', T('title')); }
+  }
+
   function render() {
     const box = document.getElementById('fxSimulator');
     if (!box) return;
+    panelTexts();
     const active = document.activeElement;
     const focusKey = active && box.contains(active) ? (active.getAttribute('data-fxsim-focus') || null) : null;
     const selStart = focusKey && active.selectionStart != null ? active.selectionStart : null;
@@ -945,13 +994,20 @@ function initForexWidget() {
   }
 
   function initFxSimulator() {
-    const panel = document.getElementById('tab-fx');
-    if (!panel || document.getElementById('fxSimulator')) return;
-    const box = document.createElement('div');
-    box.id = 'fxSimulator';
-    box.className = 'fxsim';
-    const anchor = panel.querySelector('.hint');
-    if (anchor && anchor.nextSibling) panel.insertBefore(box, anchor.nextSibling); else panel.appendChild(box);
+    // Desde a 1.3.2 o simulador fica no painel próprio (#fxSimPanel, ícone de
+    // moedas no topo). Se o painel não existir, volta para Cadastros → Câmbio.
+    let box = document.getElementById('fxSimulator');
+    if (box && box.dataset.fxsimReady) return;
+    if (!box) {
+      const panel = document.getElementById('tab-fx');
+      if (!panel) return;
+      box = document.createElement('div');
+      box.id = 'fxSimulator';
+      const anchor = panel.querySelector('.hint');
+      if (anchor && anchor.nextSibling) panel.insertBefore(box, anchor.nextSibling); else panel.appendChild(box);
+    }
+    box.classList.add('fxsim');
+    box.dataset.fxsimReady = '1';
     load();
     bind(box);
     render();
