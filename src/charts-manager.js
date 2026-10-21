@@ -9,7 +9,13 @@
  * Os textos vêm do I18N do app.js (função global t()). Como o Chart.js
  * desenha no canvas, trocar o idioma ou os dados exige redesenhar: o renderAll()
  * do app.js chama window.chartsManager.initialize() ao final.
+ *
+ * Desde a 1.3.2: gráfico sem dados fica recolhido (aba e espaço escondidos).
+ * Sem nenhum dado, a seção "Análise de Patrimônio" inteira some e volta
+ * sozinha quando aparecerem contas, lançamentos ou investimentos.
  */
+
+const PROF_CHART_IDS = ['patrimonio-chart', 'investimentos-chart', 'receitas-despesas-chart', 'ativos-chart'];
 
 // Tradução com fallback: funciona mesmo se o app.js ainda não tiver carregado
 function chartT(key, fallback) {
@@ -57,6 +63,7 @@ class ChartsManager {
     this.safe(() => this.loadDistributionChart());
     this.safe(() => this.loadCashFlowChart());
     this.safe(() => this.loadAssetsChart(points));
+    this.safe(() => this.syncVisibility());
   }
 
   safe(fn, fallback) {
@@ -66,6 +73,49 @@ class ChartsManager {
       console.error('Erro ao montar gráfico:', error);
       return fallback;
     }
+  }
+
+  /**
+   * Esconde abas/espaços de gráficos sem dados. Sem nenhum gráfico com dados,
+   * recolhe a seção inteira (título "Análise de Patrimônio" + fichário).
+   */
+  syncVisibility() {
+    const system = document.querySelector('.charts-filing-system');
+    if (!system) return;
+    const cheios = PROF_CHART_IDS.filter((id) => !!this.charts[id]);
+    const vazio = cheios.length === 0;
+
+    system.classList.toggle('charts-all-empty', vazio);
+    let title = system.previousElementSibling;
+    while (title && !title.classList.contains('section-title')) title = title.previousElementSibling;
+    if (title) title.classList.toggle('charts-all-empty', vazio);
+
+    PROF_CHART_IDS.forEach((id) => {
+      const semDado = !cheios.includes(id);
+      system.querySelectorAll(`[data-chart="${id}"]`).forEach((el) => el.classList.toggle('is-empty', semDado));
+    });
+    if (vazio) return;
+
+    // Se a aba aberta ficou sem dados, abre a primeira que tem.
+    const ativa = system.querySelector('.chart-tab.active');
+    const ativaId = ativa && ativa.getAttribute('data-chart');
+    if (!ativaId || !cheios.includes(ativaId)) {
+      const tabs = system.querySelectorAll('.chart-tab');
+      const cards = system.querySelectorAll('.chart-card');
+      if (typeof switchChart === 'function') {
+        switchChart(cheios[0], tabs, cards);
+      } else {
+        tabs.forEach((tb) => tb.classList.toggle('active', tb.getAttribute('data-chart') === cheios[0]));
+        cards.forEach((cd) => cd.classList.toggle('active', cd.getAttribute('data-chart') === cheios[0]));
+      }
+    }
+
+    // O fichário pode ter acabado de aparecer: ajusta o tamanho dos canvas.
+    const ajustar = () => cheios.forEach((id) => {
+      const c = this.charts[id];
+      if (c && typeof c.resize === 'function') c.resize();
+    });
+    if (typeof requestAnimationFrame === 'function') requestAnimationFrame(ajustar); else ajustar();
   }
 
   /**
@@ -226,7 +276,8 @@ class ChartsManager {
   }
 
   /**
-   * Show empty state message
+   * Gráfico sem dados: some com o canvas (o syncVisibility recolhe a aba).
+   * A mensagem fica como reserva, discreta, caso o CSS novo não carregue.
    */
   showEmptyState(canvasId) {
     const canvas = document.getElementById(canvasId);
@@ -249,10 +300,9 @@ class ChartsManager {
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 300px;
-        font-size: 16px;
-        color: #999;
-        background: #f5f5f5;
+        min-height: 64px;
+        font-size: 14px;
+        color: var(--muted, #999);
         border-radius: 8px;
         margin-top: 10px;
       `;
