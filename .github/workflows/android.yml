@@ -65,9 +65,13 @@ jobs:
           KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
         run: |
           if [ -n "$KEYSTORE_B64" ]; then
-            echo "$KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/upload.jks"
-            echo "ANDROID_KEYSTORE_PATH=$RUNNER_TEMP/upload.jks" >> "$GITHUB_ENV"
-            echo "Assinatura: chave encontrada, o .aab sai assinado."
+            if printf '%s' "$KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/upload.jks" 2>/dev/null; then
+              echo "ANDROID_KEYSTORE_PATH=$RUNNER_TEMP/upload.jks" >> "$GITHUB_ENV"
+              echo "Assinatura: chave encontrada, o .aab sai assinado."
+            else
+              rm -f "$RUNNER_TEMP/upload.jks"
+              echo "::warning::ANDROID_KEYSTORE_BASE64 inválido: o .aab sai SEM assinatura (serve para conferir o build, não para a Play)."
+            fi
           else
             echo "::warning::Sem ANDROID_KEYSTORE_BASE64: o .aab sai SEM assinatura (serve para conferir o build, não para a Play)."
           fi
