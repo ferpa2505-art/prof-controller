@@ -234,3 +234,47 @@ test('service worker only caches same-origin GETs and rejects external notificat
   await completed;
   assert.equal(openedUrl, 'https://app.example/portfolio');
 });
+
+test('service worker caches runtime responses in dev mode so offline works before a build', async () => {
+  // Sem BUILD_ID de build (raiz do repositório, BUILD_ID = 'dev') o SW usava só
+  // rede e nada era guardado: a segunda abertura offline abria em branco.
+  const source = await fs.readFile(path.join(ROOT, 'service-worker.js'), 'utf8');
+  const store = new Map();
+  const cache = {
+    addAll: async () => {},
+    put: async (req, res) => { store.set(typeof req === 'string' ? req : req.url, res); },
+    keys: async () => [...store.keys()],
+  };
+  const listeners = {};
+  const okResponse = { ok: true, clone: () => ({ ok: true }) };
+  let online = true;
+
+  const context = {
+    URL,
+    caches: {
+      open: async () => cache,
+      match: async (req) => store.get(typeof req === 'string' ? req : req.url),
+      keys: async () => [],
+      delete: async () => true,
+    },
+    clients: { claim: async () => {}, matchAll: async () => [], openWindow: async () => {} },
+    fetch: async () => { if (!online) throw new Error('offline'); return okResponse; },
+    self: {
+      location: { href: 'https://app.example/index.html', origin: 'https://app.example' },
+      addEventListener: (type, listener) => { listeners[type] = listener; },
+      skipWaiting: async () => {},
+    },
+  };
+  vm.runInNewContext(source, context, { filename: 'service-worker.js' });
+
+  const request = { method: 'GET', url: 'https://app.example/app.js', mode: 'no-cors' };
+  let response;
+  listeners.fetch({ request, respondWith: (promise) => { response = promise; } });
+  await response;
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  assert.ok(store.has('https://app.example/app.js'), 'dev mode must cache the fetched file');
+
+  online = false;
+  listeners.fetch({ request, respondWith: (promise) => { response = promise; } });
+  assert.equal(await response, store.get('https://app.example/app.js'), 'offline must fall back to the cache');
+});

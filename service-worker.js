@@ -59,9 +59,21 @@ self.addEventListener('fetch', (e) => {
   }
 
   // Desenvolvimento (rodando da raiz, sem build): sempre rede primeiro, para
-  // nunca servir CSS/JS velho enquanto você edita.
+  // nunca servir CSS/JS velho enquanto você edita — mas guarda no cache cada
+  // resposta boa. Antes isto não guardava nada, então offline só funcionava
+  // depois do build; agora a segunda abertura já abre sem internet.
   if (BUILD_ID === 'dev') {
-    e.respondWith(fetch(e.request).catch(() => match(e.request)));
+    e.respondWith(
+      fetch(e.request)
+        .then((res) => {
+          if (res && res.ok) {
+            const clone = res.clone();
+            caches.open(CACHE).then((c) => c.put(e.request, clone));
+          }
+          return res;
+        })
+        .catch(() => match(e.request))
+    );
     return;
   }
 

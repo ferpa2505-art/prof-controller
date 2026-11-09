@@ -12,7 +12,7 @@ de usuário — os dados ficam só no aparelho, com criptografia opcional (AES-G
 
 | Plataforma | Como é gerado | Onde |
 |---|---|---|
-| Web (PWA) | `npm run build` → pasta `www/` | GitHub Pages (automático a cada push na `main`) |
+| Web (PWA) | `npm run build` → pasta `www/` | GitHub Pages (automático a cada push na `main`; configure conforme `docs/PUBLICAR-SITE.md`) |
 | Android | Capacitor 8 → `android/` | Google Play — veja `docs/PUBLICAR-ANDROID.md` |
 | iOS | Capacitor 8 → `ios/` | App Store — veja `docs/PUBLICAR-IOS.md` |
 | Windows | Microsoft Store via PWABuilder (recomendado) ou Electron | veja `docs/PUBLICAR-WINDOWS.md` |
