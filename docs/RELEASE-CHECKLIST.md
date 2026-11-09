@@ -23,6 +23,9 @@ mesclado deixar o FileProvider exportado ou sem `@xml/file_paths`.
 Espere o workflow **Publicar no GitHub Pages** terminar (aba Actions) e abra
 <https://ferpa2505-art.github.io/prof-controller/> numa aba anônima:
 
+0. O job **verificar** tem de estar verde: ele compara o `BUILD_ID` do build com o
+   que o site público está servindo. Se falhar, o Pages está publicando a raiz do
+   repositório em vez de `www/` — siga `docs/PUBLICAR-SITE.md`.
 1. A tela inicial (Dashboard) carrega, com logo e gráficos.
 2. Troque o tema em Preferências (⚙️): claro, escuro e Profit C.
 3. Crie uma conta de teste e um lançamento; recarregue a página e confira que continuam lá.
@@ -30,6 +33,8 @@ Espere o workflow **Publicar no GitHub Pages** terminar (aba Actions) e abra
    mensagens `Content-Security-Policy` – isso indica um domínio que precisa entrar na CSP.
 5. Exporte um backup (JSON) e importe de volta.
 6. Apague a conta de teste.
+7. Teste o offline: DevTools → Application → Service Workers → marque **Offline**
+   e recarregue. A tela tem de abrir sem rede (o pré-cache do build tem 41 arquivos).
 
 ## 3. Smoke test do Android (APK de debug)
 
