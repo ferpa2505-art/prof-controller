@@ -93,7 +93,9 @@
       // Teste 5: Verificar conteúdo do subtabs
       const subtabTitle = subtabsContainer.querySelector('h3');
       results += '<div class="test-result ' + (subtabTitle ? 'pass' : 'fail') + '">';
-      results += '✓ Subtabs tem título: ' + (subtabTitle ? subtabTitle.textContent : 'NÃO');
+      // textContent do DOM nunca vai direto para innerHTML: escapa antes
+      const esc = (s) => String(s).replace(/[&<>"']/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+      results += '✓ Subtabs tem título: ' + (subtabTitle ? esc(subtabTitle.textContent) : 'NÃO');
       results += '</div>';
 
       // Mostrar console logs
