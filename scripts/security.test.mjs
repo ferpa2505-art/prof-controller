@@ -3,10 +3,12 @@ import { afterEach, test } from 'node:test';
 import { promises as fs } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { spawnSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
 import { safeAssetPath } from './build-www.mjs';
+import { calcularVersionCode, validarSequencia } from './android-version.mjs';
+import { parseDocument } from 'yaml';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const BUILD_SCRIPT = path.join(ROOT, 'scripts', 'build-www.mjs');
@@ -164,6 +166,74 @@ test('workflow policy resolves YAML aliases and merge keys', async (t) => {
       assert.match(result.stderr, /not pinned/);
     });
   }
+});
+
+test('versionCode: formula e tabela documentada', () => {
+  const tabela = [['1.2.0', 0, 1020000], ['1.2.0', 1, 1020001], ['1.2.1', 0, 1020100], ['1.3.0', 0, 1030000], ['2.0.0', 0, 2000000], ['1.3.2', 0, 1030200], ['1.3.2', 99, 1030299]];
+  for (const [versao, build, esperado] of tabela) assert.equal(calcularVersionCode(versao, build), esperado, `${versao} build ${build}`);
+});
+
+test('versionCode: recusa versao fora de MAJOR.MINOR.PATCH e build fora de 0 a 99', async (t) => {
+  for (const v of ['1.2', '1.2.0-beta', '1.2.0+7', ' 1.2.0', '1.2.0 ', 'v1.2.0', '1.2.x', '1.100.0', '1.2.100', '10000.0.0', '2101.0.0', '']) {
+    await t.test(`versao '${v}'`, () => assert.throws(() => calcularVersionCode(v, 0)));
+  }
+  for (const b of [100, -1, '1e1', '0x1', '', ' 1', 1.5, 'abc']) {
+    await t.test(`build '${b}'`, () => assert.throws(() => calcularVersionCode('1.2.0', b), /buildNumber/));
+  }
+});
+
+test('versionCode: nunca diminui quando a versao sobe, nem entre builds da mesma versao', () => {
+  const versoes = ['1.0.0', '1.0.9', '1.0.99', '1.1.0', '1.2.99', '1.3.0', '1.3.2', '1.99.99', '2.0.0'];
+  let anterior = 0;
+  for (const v of versoes) {
+    const primeiro = calcularVersionCode(v, 0);
+    const ultimo = calcularVersionCode(v, 99);
+    assert.ok(primeiro > anterior, `${v} build 0 (${primeiro}) deve superar ${anterior}`);
+    assert.ok(ultimo > primeiro, 'build 99 supera build 0 da mesma versao');
+    anterior = ultimo;
+  }
+});
+
+test('versionCode: rejeita repeticao e reducao em relacao ao ultimo publicado', () => {
+  assert.doesNotThrow(() => validarSequencia(1030200, 1030100));
+  assert.doesNotThrow(() => validarSequencia(1030201, 1030200));
+  assert.doesNotThrow(() => validarSequencia(1030200, undefined)); // sem o ultimo publicado: nao confere (documentado)
+  assert.throws(() => validarSequencia(1030200, 1030200), /repete/);
+  assert.throws(() => validarSequencia(1030100, 1030200), /MENOR/);
+  assert.throws(() => validarSequencia(1030200, 0), /inválido/);
+  assert.throws(() => validarSequencia(1030200, 1.5), /inválido/);
+  assert.throws(() => validarSequencia(0, 5), /inválido/);
+});
+
+test('versionCode: a CLI falha em repeticao/reducao e aceita aumento', () => {
+  const rodar = (...args) => spawnSync(process.execPath, [path.join(ROOT, 'scripts', 'android-version.mjs'), ...args], { encoding: 'utf8' });
+  const atual = JSON.parse(execFileSync(process.execPath, ['-e', "console.log(JSON.stringify(require('./package.json').version))"], { cwd: ROOT, encoding: 'utf8' }));
+  const codigo = calcularVersionCode(atual, 0);
+  assert.equal(rodar('--ultimo', String(codigo)).status, 1, 'repeticao deve falhar');
+  assert.equal(rodar('--ultimo', String(codigo + 1)).status, 1, 'reducao deve falhar');
+  assert.equal(rodar('--ultimo', String(codigo - 1)).status, 0, 'aumento deve passar');
+  assert.equal(rodar('--ultimo', 'abc').status, 1);
+  assert.equal(rodar('--build', '100').status, 1);
+  assert.equal(rodar('--ultimo', String(codigo - 1)).stdout.includes(String(codigo)), true);
+});
+
+test('Android: build.gradle, workflow e docs descrevem o mesmo versionCode', async () => {
+  const gradle = await fs.readFile(path.join(ROOT, 'android/app/build.gradle'), 'utf8');
+  assert.match(gradle, /\(vMajor \* 1000000L\) \+ \(vMinor \* 10000L\) \+ \(vPatch \* 100L\) \+ vBuild/, 'a formula do Gradle mudou: atualize scripts/android-version.mjs e os docs');
+  assert.match(gradle, /System\.getenv\('BUILD_NUMBER'\)/, 'o Gradle precisa ler BUILD_NUMBER');
+  const wf = parseDocument(await fs.readFile(path.join(ROOT, '.github/workflows/android.yml'), 'utf8')).toJS();
+  assert.ok(wf.on.workflow_dispatch.inputs.build_number, 'o workflow precisa expor o input build_number');
+  assert.ok(wf.on.workflow_dispatch.inputs.ultimo_versioncode, 'o workflow precisa expor o input ultimo_versioncode');
+  const env = wf.jobs.build.env;
+  assert.match(String(env.BUILD_NUMBER), /inputs\.build_number/, 'BUILD_NUMBER vem do input');
+  assert.ok(!('VERSION_CODE' in env), 'VERSION_CODE (numero da execucao) nao pode voltar: o Gradle nao o usa');
+  assert.ok(wf.jobs.build.steps.some((s) => String(s.run ?? '').includes('scripts/android-version.mjs')), 'o workflow precisa conferir o versionCode');
+  // entradas do usuario nunca entram direto no shell: passam por variavel de ambiente
+  assert.ok(!/\$\{\{\s*inputs\./.test(wf.jobs.build.steps.map((s) => String(s.run ?? '')).join('\n')), 'inputs nao podem ser interpolados em run:');
+  const docs = await fs.readFile(path.join(ROOT, 'docs/PUBLICAR-ANDROID.md'), 'utf8');
+  assert.doesNotMatch(docs, /versionCode[^\n]*número da execução/i, 'o doc nao pode dizer que o versionCode e o numero da execucao');
+  const checklist = await fs.readFile(path.join(ROOT, 'docs/RELEASE-CHECKLIST.md'), 'utf8');
+  assert.doesNotMatch(checklist, /use `BUILD_NUMBER=1\.\.99`/, 'o checklist nao pode citar BUILD_NUMBER sem input no workflow');
 });
 
 test('Android FileProvider only exposes CACHE/shared/', async () => {
