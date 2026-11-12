@@ -8848,8 +8848,15 @@ function drawCalcChart(id, pontos, moeda, periodo) {
 }
 
 /* ----- 3. Resolver (PV, PMT, i, n, FV) ----- */
+// O alvo vem do valor de um <input type=radio> (texto do DOM) e monta chaves de traducao e HTML: so estes valores valem.
+const ALVOS_RESOLVER = ['fv', 'pv', 'pmt', 'n', 'i'];
+function alvoDoResolver() {
+  const marcado = document.querySelector('input[name="solveFor"]:checked');
+  const valor = marcado ? marcado.value : '';
+  return ALVOS_RESOLVER.includes(valor) ? valor : 'fv';
+}
 function runSolve() {
-  const alvo = document.querySelector('input[name="solveFor"]:checked').value;
+  const alvo = alvoDoResolver();
   const emprestimo = document.getElementById('slMode').value === 'loan';
   // No financiamento o dinheiro entra (PV) e as parcelas saem: sinais opostos
   const sinal = emprestimo ? -1 : 1;
@@ -8887,12 +8894,12 @@ function runSolve() {
   saida.innerHTML = !isFinite(valor)
     ? `<p class="amount-out">${t('calc.noSolution')}</p>`
     : `<div class="calc-cards">
-        <div><span>${t('calc.f.' + alvo)}</span><strong class="amount-in">${texto}</strong></div>
+        <div><span>${escapeHtml(t('calc.f.' + alvo))}</span><strong class="amount-in">${escapeHtml(texto)}</strong></div>
         ${alvo !== 'i' && alvo !== 'n' ? `<div><span>${t('calc.totalPaid')}</span><strong>${fmtMoney(Math.abs(pv) + Math.abs(total), moeda)}</strong></div>` : ''}
-      </div>${extra ? `<p class="hint">${extra}</p>` : ''}`;
+      </div>${extra ? `<p class="hint">${escapeHtml(extra)}</p>` : ''}`;
 }
 function onSolveTargetChange() {
-  const alvo = document.querySelector('input[name="solveFor"]:checked').value;
+  const alvo = alvoDoResolver();
   ['pv', 'pmt', 'rate', 'term', 'fv'].forEach((campo) => {
     const mapa = { pv: 'pv', pmt: 'pmt', rate: 'i', term: 'n', fv: 'fv' };
     const wrap = document.getElementById('slWrap-' + campo);

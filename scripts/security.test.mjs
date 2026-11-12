@@ -348,3 +348,33 @@ test('DOM XSS: os cinco pontos de innerHTML do alerta escapam o que vem do DOM o
   ];
   for (const trecho of exigidos) assert.ok(codigo.includes(trecho), `falta a protecao: ${trecho}`);
 });
+
+test('DOM XSS: o alvo do resolver (valor de <input radio>) so aceita a lista fechada e o HTML escapa', async () => {
+  const codigo = await fs.readFile(path.join(ROOT, 'app.js'), 'utf8');
+  const lista = codigo.match(/const ALVOS_RESOLVER = \[([^\]]+)\];/);
+  assert.ok(lista, 'ALVOS_RESOLVER precisa existir');
+  const alvos = lista[1].split(',').map((x) => x.trim().replace(/['"]/g, '')).sort();
+  assert.deepEqual(alvos, ['fv', 'i', 'n', 'pmt', 'pv'], 'lista fechada de alvos');
+  // os valores dos radios gerados na tela sao exatamente estes
+  const radios = codigo.match(/\{ pv: 'pv', pmt: 'pmt', rate: 'i', term: 'n', fv: 'fv' \}/);
+  assert.ok(radios, 'mapa dos radios do resolver mudou: atualize ALVOS_RESOLVER');
+  // as duas leituras do radio passam pela validacao; nenhuma le .value cru do radio marcado
+  assert.equal((codigo.match(/input\[name="solveFor"\]:checked'\)\.value/g) || []).length, 0, 'leitura crua do radio marcado');
+  assert.ok(codigo.includes('const alvo = alvoDoResolver();'));
+  // o sink escapa a chave de traducao montada com o alvo, o texto e o extra
+  for (const trecho of ["${escapeHtml(t('calc.f.' + alvo))}", '${escapeHtml(texto)}', '${escapeHtml(extra)}']) {
+    assert.ok(codigo.includes(trecho), `falta o escape: ${trecho}`);
+  }
+  // simulacao da validacao com entradas hostis
+  const valida = (v) => (['fv', 'pv', 'pmt', 'n', 'i'].includes(v) ? v : 'fv');
+  for (const hostil of ['<img src=x onerror=alert(1)>', '"><script>', '', 'FV', ' pv', '__proto__', 'constructor']) assert.equal(valida(hostil), 'fv');
+});
+
+test('DOM XSS: a pagina de teste legado escapa o textContent antes do innerHTML', async () => {
+  const html = await fs.readFile(path.join(ROOT, 'tools/legacy-tests/test-nav-icons.html'), 'utf8');
+  assert.ok(!html.includes("subtabTitle.textContent : 'NÃO'"), 'textContent cru em innerHTML');
+  assert.ok(html.includes('esc(subtabTitle.textContent)'), 'o titulo precisa passar por esc()');
+  // o escape da pagina trata os 5 caracteres
+  const esc = (s) => String(s).replace(/[&<>"']/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+  assert.equal(esc('<b onclick="x">&\'</b>'), '&lt;b onclick=&quot;x&quot;&gt;&amp;&#39;&lt;/b&gt;');
+});
