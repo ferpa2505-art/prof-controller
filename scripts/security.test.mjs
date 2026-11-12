@@ -232,6 +232,14 @@ test('CSP: o leitor acha metas em qualquer forma (ordem, aspas, caixa, quebra de
   assert.equal(extrairCspMetas(duas).length, 2);
   // nao conta: comentario, outra meta, report-only (o navegador nao aplica em meta), '>' dentro do valor nao fecha a tag
   assert.deepEqual(extrairCspMetas(`<!-- <meta http-equiv="Content-Security-Policy" content="${P}"> -->`), []);
+  // comentario: fechos que o HTML aceita (--!>, <!-->, <!--->), comentario sem fim e o primeiro --> que fecha de verdade
+  const meta = '<meta http-equiv="Content-Security-Policy" content="default-src \'self\'">';
+  assert.deepEqual(extrairCspMetas(`<!-- a --!> ${meta}`), ["default-src 'self'"], 'fecho --!> encerra o comentario e a meta seguinte vale');
+  assert.deepEqual(extrairCspMetas(`<!--> ${meta}`), ["default-src 'self'"], '<!--> e um comentario vazio');
+  assert.deepEqual(extrairCspMetas(`<!---> ${meta}`), ["default-src 'self'"], '<!---> e um comentario vazio');
+  assert.deepEqual(extrairCspMetas(`<!-- aberto sem fim ${meta}`), [], 'comentario sem fim engole o resto');
+  assert.deepEqual(extrairCspMetas(`<!-- <!-- x --> ${meta}`), ["default-src 'self'"], 'o primeiro --> fecha; nao ha comentario aninhado');
+  assert.deepEqual(extrairCspMetas(`<!-- ${meta} --> ${meta}`).length, 1, 'so a meta fora do comentario conta');
   assert.deepEqual(extrairCspMetas('<meta name="viewport" content="width=device-width">'), []);
   assert.deepEqual(extrairCspMetas(`<meta http-equiv="Content-Security-Policy-Report-Only" content="${P}">`), []);
   assert.deepEqual(extrairCspMetas('<meta http-equiv="Content-Security-Policy" content="img-src a>b">'), ['img-src a>b']);

@@ -7,8 +7,31 @@
 
 const CSP_EQUIV = 'content-security-policy';
 
-/** Remove comentários HTML: o navegador não os interpreta, então uma meta comentada não vale. */
-const semComentarios = (html) => html.replace(/<!--[\s\S]*?-->/g, '');
+/**
+ * Tira os comentários HTML lendo como o navegador lê (sem regex de substituição, que deixa passar formas como
+ * `--!>` e `<!-->`): o navegador não interpreta o que está em comentário, então uma meta comentada não vale.
+ * Comentário sem fim vai até o fim do documento.
+ */
+function semComentarios(html) {
+  let saida = '';
+  let i = 0;
+  while (i < html.length) {
+    const ini = html.indexOf('<!--', i);
+    if (ini === -1) { saida += html.slice(i); break; }
+    saida += html.slice(i, ini);
+    let j = ini + 4;
+    if (html.startsWith('>', j)) { i = j + 1; continue; } // <!--> : comentário vazio (fecho abrupto)
+    if (html.startsWith('->', j)) { i = j + 2; continue; } // <!---> : idem
+    let fim = -1;
+    for (; j < html.length; j++) {
+      if (html.startsWith('-->', j)) { fim = j + 3; break; }
+      if (html.startsWith('--!>', j)) { fim = j + 4; break; } // o HTML aceita --!> como fecho
+    }
+    if (fim === -1) break; // sem fim: o resto é comentário
+    i = fim;
+  }
+  return saida;
+}
 
 /** Lê os atributos de UMA tag a partir de `<meta ...>`; o primeiro valor de cada nome vale (como no HTML). */
 function lerAtributos(texto) {
