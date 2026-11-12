@@ -31,7 +31,9 @@ router.post('/stripe', express.raw({ type: 'application/json' }), async (req, re
     );
   } catch (err) {
     console.error('Erro ao verificar assinatura webhook:', err);
-    return res.status(400).send(`Webhook Error: ${err.message}`);
+    // Resposta generica em JSON: a mensagem do SDK do Stripe nao volta para quem chamou.
+    // Antes, res.send() com uma string saia como text/html e refletia o erro sem escape.
+    return res.status(400).json({ error: 'assinatura_invalida' });
   }
 
   try {
