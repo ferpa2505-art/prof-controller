@@ -166,6 +166,51 @@ test('workflow policy resolves YAML aliases and merge keys', async (t) => {
   }
 });
 
+const DEPLOY_STEP = `      - id: d\n        uses: actions/deploy-pages@${SHA}\n`;
+const pagesWorkflow = (jobExtra = '', env = '    environment:\n      name: github-pages\n') =>
+  `permissions:\n  contents: read\non:\n  workflow_dispatch:\njobs:\n  deploy:\n${jobExtra}${env}    runs-on: ubuntu-latest\n    steps:\n${DEPLOY_STEP}`;
+
+test('workflow policy requires the main-only guard on the Pages deploy job', async (t) => {
+  const ok = await runPolicy(pagesWorkflow("    if: github.ref == 'refs/heads/main'\n"));
+  assert.equal(ok.status, 0, ok.stderr);
+  const okExpr = await runPolicy(pagesWorkflow("    if: ${{ github.ref == 'refs/heads/main' }}\n"));
+  assert.equal(okExpr.status, 0, okExpr.stderr);
+  const ruins = {
+    'no guard': '',
+    'other branch': "    if: github.ref == 'refs/heads/develop'\n",
+    'negated': "    if: github.ref != 'refs/heads/main'\n",
+    'substring match': "    if: contains(github.ref, 'main')\n",
+    'always': '    if: always()\n',
+    'or with true': "    if: github.ref == 'refs/heads/main' || true\n",
+    'prefix trick': "    if: github.ref == 'refs/heads/main-evil'\n",
+    'non-string': '    if: true\n',
+  };
+  for (const [label, guard] of Object.entries(ruins)) {
+    await t.test(label, async () => {
+      const r = await runPolicy(pagesWorkflow(guard));
+      assert.notEqual(r.status, 0, `${label} should fail`);
+      assert.match(r.stderr, /must be guarded by if: github\.ref == 'refs\/heads\/main'/);
+    });
+  }
+});
+
+test('workflow policy finds the Pages deploy job by environment or by action, in any YAML form', async () => {
+  const porAcao = await runPolicy(`permissions:\n  contents: read\njobs:\n  publicar:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/deploy-pages@${SHA}\n`);
+  assert.notEqual(porAcao.status, 0, 'deploy-pages without guard should fail');
+  const porAmbienteTexto = await runPolicy(`permissions:\n  contents: read\njobs:\n  publicar:\n    environment: github-pages\n    runs-on: ubuntu-latest\n    steps:\n      - run: echo oi\n`);
+  assert.notEqual(porAmbienteTexto.status, 0, 'github-pages environment without guard should fail');
+  const outroJob = await runPolicy(`permissions:\n  contents: read\njobs:\n  testar:\n    runs-on: ubuntu-latest\n    steps:\n      - run: echo oi\n`);
+  assert.equal(outroJob.status, 0, outroJob.stderr);
+});
+
+test('the real workflows pass the policy and pages.yml guards every job to main', async () => {
+  const real = spawnSync(process.execPath, [POLICY_SCRIPT], { encoding: 'utf8' });
+  assert.equal(real.status, 0, real.stderr);
+  const yaml = await fs.readFile(path.join(ROOT, '.github', 'workflows', 'pages.yml'), 'utf8');
+  const guards = yaml.match(/if: github\.ref == 'refs\/heads\/main'/g) ?? [];
+  assert.equal(guards.length, 3, 'build, deploy e verificar devem ter a guarda de main');
+});
+
 test('Android FileProvider only exposes CACHE/shared/', async () => {
   const xml = await fs.readFile(path.join(ROOT, 'android/app/src/main/res/xml/file_paths.xml'), 'utf8');
   // Só elementos auto-fechados (<tag ... />) contam como caminho; comentários XML não casam.

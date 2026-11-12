@@ -11,6 +11,15 @@ const errors = [];
 
 const PINNED_ACTION = /^[^/\s]+\/[^@\s]+@[a-f0-9]{40}$/i;
 const PINNED_DOCKER = /^docker:\/\/[^@\s]+@sha256:[a-f0-9]{64}$/i;
+// Publicacao em producao so a partir da main: o job de deploy do Pages precisa de exatamente esta condicao.
+// Sem ela, um workflow_dispatch disparado em outra branch publicaria o site.
+const MAIN_ONLY = /^\s*(?:\$\{\{\s*)?github\.ref\s*==\s*['"]refs\/heads\/main['"]\s*(?:\}\})?\s*$/;
+const isDeployJob = (job) => {
+  const env = job?.environment;
+  const envName = typeof env === 'string' ? env : env?.name;
+  const steps = Array.isArray(job?.steps) ? job.steps : [];
+  return envName === 'github-pages' || steps.some((s) => typeof s?.uses === 'string' && /^actions\/deploy-pages@/i.test(s.uses));
+};
 
 async function workflowFiles(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
@@ -62,6 +71,12 @@ for (const file of await workflowFiles(WORKFLOWS)) {
   // permissions precisa ser chave do mapa raiz; texto dentro de scalars nao conta.
   if (!Object.prototype.hasOwnProperty.call(root, 'permissions')) {
     errors.push(`${name}: workflow must declare top-level permissions`);
+  }
+
+  for (const [jobName, job] of Object.entries(root.jobs ?? {})) {
+    if (isDeployJob(job) && !(typeof job.if === 'string' && MAIN_ONLY.test(job.if))) {
+      errors.push(`${name}: deploy job '${jobName}' must be guarded by if: github.ref == 'refs/heads/main' (workflow_dispatch must not publish from another branch)`);
+    }
   }
 
   for (const ref of usesValues(root)) {
