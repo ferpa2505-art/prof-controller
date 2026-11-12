@@ -29,8 +29,12 @@ Espere o workflow **Publicar no GitHub Pages** terminar (aba Actions) e abra
 1. A tela inicial (Dashboard) carrega, com logo e gráficos.
 2. Troque o tema em Preferências (⚙️): claro, escuro e Profit C.
 3. Crie uma conta de teste e um lançamento; recarregue a página e confira que continuam lá.
-4. Abra **Notícias** e **Cotações**: se algo não carregar, abra o console (F12) e procure
-   mensagens `Content-Security-Policy` – isso indica um domínio que precisa entrar na CSP.
+4. Abra **Notícias** e **Cotações**. Se algo não carregar, abra o console (F12) e **anote a mensagem exata**
+   `Content-Security-Policy` (a diretiva e a origem bloqueada). **Não amplie a CSP para fazer a tela funcionar.**
+   Primeiro descubra se a origem é necessária e confiável; se não for, corrija o recurso em vez de alargar a política.
+   Se for mesmo necessária: adicione **só aquela origem**, **só na diretiva citada**, nunca `https:`, `*`, `data:` em
+   `script-src` nem `'unsafe-eval'`; atualize `CSP_ESPERADA` em `scripts/security.test.mjs` com a justificativa no PR
+   (qual origem, qual diretiva, por quê) e peça revisão humana. O teste compara a política **exatamente**: fonte extra reprova.
 5. Exporte um backup (JSON) e importe de volta.
 6. Apague a conta de teste.
 7. Teste o offline: DevTools → Application → Service Workers → marque **Offline**
