@@ -60,8 +60,9 @@ router.post('/stripe', express.raw({ type: 'application/json' }), async (req, re
 
     res.json({ received: true });
   } catch (error) {
+    // Detalhe so no log: a resposta sai com codigo generico, sem mensagem interna do servidor.
     console.error('Erro ao processar webhook:', error);
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: 'erro_interno' });
   }
 });
 
