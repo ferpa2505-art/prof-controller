@@ -24,9 +24,16 @@ This repository implements the following security measures:
   - Output validation (www/ directory and index.html)
   - Secret scanning with TruffleHog
 
-### 2. Branch Protection (PENDING MANUAL ACTIVATION)
-The `main` branch is **configured to require** (but NOT YET ACTIVE):
-- ⏳ Status checks required: `build` workflow must pass
+### 2. Branch Protection (NOT VERIFIED — see evidence below)
+This section describes the **intended** configuration. Workflows cannot create or prove branch rules.
+
+**Evidence (read-only, 2026-11-12):** `GET /repos/ferpa2505-art/prof-controller/rules/branches/main` returned an empty list
+and `GET /repos/ferpa2505-art/prof-controller/rulesets` returned `[]`: **no rule is enforced on `main`**.
+Until an administrator activates one **and** attaches proof (see `docs/SECURITY-CHECKS.md`, "Proving the configuration"),
+treat branch protection as **absent**.
+
+Intended rule for `main`:
+- ⏳ Status checks required: the five `Security gates / …` checks plus `Checks / build` (see `docs/SECURITY-CHECKS.md`)
 - ⏳ Code owner review: Must be approved by @ferpa2505-art
 - ⏳ Stale review dismissal on new commits enabled
 - ⏳ Enforce for administrators enabled
@@ -123,11 +130,11 @@ If you discover a vulnerability in a dependency:
 ## Repository Health
 
 This repository maintains security through:
-- ✅ Automated testing on all PRs
-- ✅ Mandatory code review
-- ✅ Secret scanning protection
-- ✅ Dependency auditing
-- ✅ Branch protection policies
+- ✅ Automated testing on all PRs (workflows run; they cannot force a merge rule)
+- ✅ Secret scanning in CI (Gitleaks job); GitHub-native Secret Scanning/Push protection: not verified
+- ✅ Dependency auditing in CI (see the audit job for the current result; moderate dev-only advisories may remain)
+- ⏳ Mandatory code review: **not enforced** (no rule on `main`)
+- ⏳ Branch protection: **not active / not verified** (see section 2)
 
 ## Changelog
 
