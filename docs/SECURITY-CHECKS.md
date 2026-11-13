@@ -10,8 +10,7 @@ artifacts. The stable checks are:
 - `Security gates / Security regression tests`
 - `Security gates / Workflow policy`
 
-The audit job covers both the root `package-lock.json` and the retained
-`legacy/server/package-lock.json`. The workflow policy check requires explicit
+The audit job covers the root `package-lock.json`. The workflow policy check requires explicit
 top-level token permissions in every workflow and immutable full-SHA references
 for external actions.
 
