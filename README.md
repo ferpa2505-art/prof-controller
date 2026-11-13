@@ -31,7 +31,7 @@ scripts/build-www.mjs             monta www/ só com o que o app usa
 android/, ios/                    projetos nativos (Capacitor)
 electron/                         versão desktop (Electron)
 docs/                             guias de publicação; docs/legacy guarda documentação antiga
-legacy/                           código antigo não usado pelo app (servidor Express/Stripe, React)
+legacy/                           código antigo não usado pelo app (componentes React, scripts de seed)
 tools/                            scripts auxiliares (ícones etc.)
 ```
 
