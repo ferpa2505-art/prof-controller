@@ -45,7 +45,7 @@
     "node": ">=22"
   },
   "devDependencies": {
-    "@capacitor/cli": "^8.5.3",
+    "@capacitor/cli": "^8.6.2",
     "electron": "^44.10.2",
     "electron-builder": "^26.15.3",
     "http-server": "^14.1.1",
