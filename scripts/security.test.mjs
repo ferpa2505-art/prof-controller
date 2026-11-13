@@ -348,3 +348,103 @@ test('service worker caches runtime responses in dev mode so offline works befor
   listeners.fetch({ request, respondWith: (promise) => { response = promise; } });
   assert.equal(await response, store.get('https://app.example/app.js'), 'offline must fall back to the cache');
 });
+
+// ---- DOM XSS em app.js: texto do DOM ou de API nunca vira HTML (alertas CodeQL "DOM text reinterpreted as HTML") ----
+// app.js e um script de navegador (12 mil linhas, sem exports): as funcoes puras sao extraidas pelo nome e rodadas num vm.
+function extrairFuncao(codigo, nome) {
+  const ini = codigo.indexOf(`function ${nome}(`);
+  assert.notEqual(ini, -1, `funcao ${nome} nao encontrada em app.js`);
+  let i = codigo.indexOf('{', ini);
+  let fundo = 0;
+  for (let j = i; j < codigo.length; j++) {
+    if (codigo[j] === '{') fundo++;
+    else if (codigo[j] === '}' && --fundo === 0) return codigo.slice(ini, j + 1);
+  }
+  throw new Error(`funcao ${nome} sem fim`);
+}
+
+async function moedaDoApp() {
+  const codigo = await fs.readFile(path.join(ROOT, 'app.js'), 'utf8');
+  const tabela = codigo.match(/const CURRENCIES = \[[\s\S]*?\];/)[0];
+  const seguro = codigo.match(/const CODIGO_MOEDA_SEGURO = [^;]+;/)[0];
+  const contexto = vm.createContext({});
+  vm.runInContext([tabela, seguro, extrairFuncao(codigo, 'escapeHtml'), extrairFuncao(codigo, 'currency'), extrairFuncao(codigo, 'fmtMoney'),
+    'this.currency = currency; this.fmtMoney = fmtMoney; this.escapeHtml = escapeHtml;'].join('\n'), contexto);
+  return { contexto, codigo };
+}
+
+test('DOM XSS: moeda desconhecida (de <select> ou de API) nunca chega crua ao HTML', async () => {
+  const { contexto } = await moedaDoApp();
+  const hostis = ['<img src=x onerror=alert(1)>', '"><script>alert(1)</script>', "'+alert(1)+'", 'US$<b>', 'brl', 'USD ', '', null, undefined, '<svg/onload=alert(1)>'];
+  for (const h of hostis) {
+    const c = contexto.currency(h);
+    assert.doesNotMatch(c.symbol, /[<>"'&]/, `symbol com caractere de HTML para ${JSON.stringify(h)}`);
+    assert.match(contexto.fmtMoney(1234.5, h), /^[^<>"'&]*$/, `fmtMoney devolveu HTML para ${JSON.stringify(h)}`);
+    assert.ok(contexto.fmtMoney(1234.5, h).startsWith('¤'), 'codigo invalido vira o simbolo neutro');
+  }
+});
+
+test('DOM XSS: moedas conhecidas e codigos validos continuam formatando como antes', async () => {
+  const { contexto } = await moedaDoApp();
+  // o app separa o simbolo do numero com espaco NAO separavel (U+00A0), de proposito
+  assert.equal(contexto.fmtMoney(1234.5, 'BRL'), 'R$ 1.234,50');
+  assert.equal(contexto.fmtMoney(1234.5, 'USD'), 'US$ 1.234,50');
+  assert.equal(contexto.fmtMoney(1234, 'JPY'), '¥ 1.234');
+  assert.equal(contexto.fmtMoney(1234.5, 'USDT'), 'USDT 1.234,50', 'codigo de 4 letras (cripto) continua aceito');
+  assert.equal(contexto.currency('USDT').decimals, 2);
+});
+
+test('DOM XSS: escapeHtml cobre os cinco caracteres perigosos', async () => {
+  const { contexto } = await moedaDoApp();
+  assert.equal(contexto.escapeHtml('<a href="x" onclick=\'y\'>&</a>'), '&lt;a href=&quot;x&quot; onclick=&#39;y&#39;&gt;&amp;&lt;/a&gt;');
+});
+
+test('DOM XSS: os cinco pontos de innerHTML do alerta escapam o que vem do DOM ou de API (guarda de regressao)', async () => {
+  const { codigo } = await moedaDoApp();
+  const proibidos = [
+    ['erro da previa de compra', '<div class="amount-out">${r.error}</div>'],
+    ['data da cotacao na previa de compra', ".replace('{data}', r.priceDate || '')"],
+    ['chave de traducao montada com o <select>', ".replace('{b}', t('cmp.b.' + comparar))"],
+    ['data do <input> no historico', ".replace('{d}', data.split('-').reverse().join('/'))"],
+    ['codigo de moeda cru', "{ code, symbol: code + ' ', decimals: 2 }"],
+  ];
+  for (const [rotulo, trecho] of proibidos) assert.ok(!codigo.includes(trecho), `regrediu (${rotulo}): ${trecho}`);
+  const exigidos = [
+    '<div class="amount-out">${escapeHtml(r.error)}</div>',
+    ".replace('{data}', escapeHtml(r.priceDate || ''))",
+    ".replace('{b}', escapeHtml(t('cmp.b.' + comparar)))",
+    ".replace('{d}', escapeHtml(data.split('-').reverse().join('/')))",
+    'return escapeHtml(c.symbol.trimEnd())',
+  ];
+  for (const trecho of exigidos) assert.ok(codigo.includes(trecho), `falta a protecao: ${trecho}`);
+});
+
+test('DOM XSS: o alvo do resolver (valor de <input radio>) so aceita a lista fechada e o HTML escapa', async () => {
+  const codigo = await fs.readFile(path.join(ROOT, 'app.js'), 'utf8');
+  const lista = codigo.match(/const ALVOS_RESOLVER = \[([^\]]+)\];/);
+  assert.ok(lista, 'ALVOS_RESOLVER precisa existir');
+  const alvos = lista[1].split(',').map((x) => x.trim().replace(/['"]/g, '')).sort();
+  assert.deepEqual(alvos, ['fv', 'i', 'n', 'pmt', 'pv'], 'lista fechada de alvos');
+  // os valores dos radios gerados na tela sao exatamente estes
+  const radios = codigo.match(/\{ pv: 'pv', pmt: 'pmt', rate: 'i', term: 'n', fv: 'fv' \}/);
+  assert.ok(radios, 'mapa dos radios do resolver mudou: atualize ALVOS_RESOLVER');
+  // as duas leituras do radio passam pela validacao; nenhuma le .value cru do radio marcado
+  assert.equal((codigo.match(/input\[name="solveFor"\]:checked'\)\.value/g) || []).length, 0, 'leitura crua do radio marcado');
+  assert.ok(codigo.includes('const alvo = alvoDoResolver();'));
+  // o sink escapa a chave de traducao montada com o alvo, o texto e o extra
+  for (const trecho of ["${escapeHtml(t('calc.f.' + alvo))}", '${escapeHtml(texto)}', '${escapeHtml(extra)}']) {
+    assert.ok(codigo.includes(trecho), `falta o escape: ${trecho}`);
+  }
+  // simulacao da validacao com entradas hostis
+  const valida = (v) => (['fv', 'pv', 'pmt', 'n', 'i'].includes(v) ? v : 'fv');
+  for (const hostil of ['<img src=x onerror=alert(1)>', '"><script>', '', 'FV', ' pv', '__proto__', 'constructor']) assert.equal(valida(hostil), 'fv');
+});
+
+test('DOM XSS: a pagina de teste legado escapa o textContent antes do innerHTML', async () => {
+  const html = await fs.readFile(path.join(ROOT, 'tools/legacy-tests/test-nav-icons.html'), 'utf8');
+  assert.ok(!html.includes("subtabTitle.textContent : 'NÃO'"), 'textContent cru em innerHTML');
+  assert.ok(html.includes('esc(subtabTitle.textContent)'), 'o titulo precisa passar por esc()');
+  // o escape da pagina trata os 5 caracteres
+  const esc = (s) => String(s).replace(/[&<>"']/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+  assert.equal(esc('<b onclick="x">&\'</b>'), '&lt;b onclick=&quot;x&quot;&gt;&amp;&#39;&lt;/b&gt;');
+});
