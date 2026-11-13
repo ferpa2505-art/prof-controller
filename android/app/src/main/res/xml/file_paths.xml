@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- O app só compartilha arquivos que ele mesmo grava em CACHE/shared/ (native.js → saveFile).
+     Nada de external-path, files-path ou raiz do cache: o resto dos dados do app
+     (banco, chaves, preferências) nunca fica endereçável pelo FileProvider. -->
 <paths xmlns:android="http://schemas.android.com/apk/res/android">
-    <external-path name="my_images" path="." />
-    <cache-path name="my_cache_images" path="." />
+    <cache-path name="shared_files" path="shared/" />
 </paths>

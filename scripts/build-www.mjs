@@ -19,10 +19,11 @@
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = path.join(ROOT, 'www');
+const ROOT_REAL = await fs.realpath(ROOT);
 
 // Arquivos que sempre entram, mesmo que o index.html não os cite diretamente.
 const SEMPRE = [
@@ -37,15 +38,54 @@ const SEMPRE = [
 const isLocal = (u) => u && !/^(?:[a-z]+:)?\/\//i.test(u) && !/^(data|blob|mailto|tel|javascript):/i.test(u) && !u.startsWith('#');
 const semQuery = (u) => u.split('#')[0].split('?')[0];
 
+export function safeAssetPath(reference, base = '.') {
+  if (typeof reference !== 'string' || !reference || reference.includes('\0') || reference.includes('\\')) {
+    throw new Error(`Caminho inválido: ${JSON.stringify(reference)}`);
+  }
+
+  let decoded = semQuery(reference);
+  try {
+    for (let i = 0; i < 10; i++) {
+      const next = decodeURIComponent(decoded);
+      if (next === decoded) break;
+      decoded = next;
+      if (i === 9) throw new Error('Too many encodings');
+    }
+  } catch {
+    throw new Error(`Caminho inválido: ${JSON.stringify(reference)}`);
+  }
+  if (path.posix.isAbsolute(decoded) || path.win32.isAbsolute(decoded)) {
+    throw new Error(`Caminho absoluto não permitido: ${reference}`);
+  }
+
+  const resolved = path.posix.normalize(path.posix.join(base, decoded));
+  if (resolved === '.' || resolved === '..' || resolved.startsWith('../')) {
+    throw new Error(`Travessia de diretório não permitida: ${reference}`);
+  }
+  return resolved;
+}
+
 async function existe(rel) {
-  try { await fs.access(path.join(ROOT, rel)); return true; } catch { return false; }
+  const file = path.resolve(ROOT, safeAssetPath(rel));
+  try {
+    await fs.access(file);
+    const real = await fs.realpath(file);
+    const relative = path.relative(ROOT_REAL, real);
+    if (relative === '..' || relative.startsWith(`..${path.sep}`) || path.isAbsolute(relative)) {
+      throw new Error(`Origem fora dos limites do repositório: ${rel}`);
+    }
+    return true;
+  } catch (err) {
+    if (err.code === 'ENOENT' || err.code === 'ENOTDIR') return false;
+    throw err;
+  }
 }
 
 function refsHtml(html) {
   const out = new Set();
   const re = /<(?:link|script|img|source)\b[^>]*?\b(?:href|src)\s*=\s*["']([^"']+)["']/gi;
   let m;
-  while ((m = re.exec(html))) if (isLocal(m[1])) out.add(semQuery(m[1]));
+  while ((m = re.exec(html))) if (isLocal(m[1])) out.add(safeAssetPath(m[1]));
   return out;
 }
 
@@ -55,7 +95,7 @@ function refsCss(css, cssRel) {
   let m;
   while ((m = re.exec(css))) {
     if (!isLocal(m[1])) continue;
-    out.add(path.posix.normalize(path.posix.join(path.posix.dirname(cssRel), semQuery(m[1]))));
+    out.add(safeAssetPath(m[1], path.posix.dirname(cssRel)));
   }
   return out;
 }
@@ -70,8 +110,8 @@ async function main() {
   for (const r of refsHtml(html)) arquivos.add(r);
 
   const manifest = JSON.parse(await fs.readFile(path.join(ROOT, 'manifest.json'), 'utf8'));
-  for (const i of [...(manifest.icons || []), ...(manifest.screenshots || [])]) arquivos.add(semQuery(i.src));
-  for (const s of manifest.shortcuts || []) for (const i of s.icons || []) arquivos.add(semQuery(i.src));
+  for (const i of [...(manifest.icons || []), ...(manifest.screenshots || [])]) arquivos.add(safeAssetPath(i.src));
+  for (const s of manifest.shortcuts || []) for (const i of s.icons || []) arquivos.add(safeAssetPath(i.src));
 
   // CSS pode puxar imagens; repete até não aparecer nada novo.
   const cssVistos = new Set();
@@ -101,9 +141,19 @@ async function main() {
   const lista = [...arquivos].sort();
 
   for (const f of lista) {
-    const dest = path.join(OUT, f);
+    const dest = path.resolve(OUT, safeAssetPath(f));
+    const relativeDest = path.relative(OUT, dest);
+    if (relativeDest === '..' || relativeDest.startsWith(`..${path.sep}`) || path.isAbsolute(relativeDest)) {
+      throw new Error(`Destino fora dos limites de www/: ${f}`);
+    }
     await fs.mkdir(path.dirname(dest), { recursive: true });
-    const buf = await fs.readFile(path.join(ROOT, f));
+    const source = path.resolve(ROOT, safeAssetPath(f));
+    const realSource = await fs.realpath(source);
+    const relativeSource = path.relative(ROOT_REAL, realSource);
+    if (relativeSource === '..' || relativeSource.startsWith(`..${path.sep}`) || path.isAbsolute(relativeSource)) {
+      throw new Error(`Origem fora dos limites do repositório: ${f}`);
+    }
+    const buf = await fs.readFile(source);
     if (f !== 'service-worker.js') hash.update(f).update(buf);
     await fs.writeFile(dest, buf);
   }
@@ -131,4 +181,6 @@ async function main() {
   console.log(`✔ www/ montada: ${lista.length} arquivos, ${(total / 1024).toFixed(0)} KB, BUILD_ID ${buildId}`);
 }
 
-main().catch((err) => { console.error(err); process.exit(1); });
+if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
+  main().catch((err) => { console.error(err); process.exit(1); });
+}

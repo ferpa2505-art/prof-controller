@@ -19,8 +19,20 @@
 
 name: App Android
 
+permissions:
+  contents: read
+
 on:
   workflow_dispatch:
+    inputs:
+      build_number:
+        description: "BUILD de 0 a 99 para reenviar a MESMA versão do package.json (versionCode = MAJOR*1000000 + MINOR*10000 + PATCH*100 + BUILD)"
+        required: false
+        default: "0"
+      ultimo_versioncode:
+        description: "Último versionCode publicado na Play (veja no Play Console). Se informado, o build recusa um versionCode igual ou menor."
+        required: false
+        default: ""
   push:
     tags: ['v*']
     branches: ['loja/**']
@@ -34,20 +46,30 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
-      VERSION_CODE: ${{ github.run_number }}
+      # O Gradle lê BUILD_NUMBER (android/app/build.gradle). Só o disparo manual escolhe; tags e loja/** usam 0.
+      BUILD_NUMBER: ${{ inputs.build_number || '0' }}
+      ULTIMO_VERSIONCODE: ${{ inputs.ultimo_versioncode }}
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
 
-      - uses: actions/setup-node@v7
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
         with:
           node-version: 22
           cache: npm
 
-      - uses: actions/setup-java@v6
+      - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6
         with:
           distribution: temurin
           java-version: 21
           cache: gradle
+
+      - name: Conferir o versionCode
+        run: |
+          if [ -n "$ULTIMO_VERSIONCODE" ]; then
+            node scripts/android-version.mjs --build "$BUILD_NUMBER" --ultimo "$ULTIMO_VERSIONCODE"
+          else
+            node scripts/android-version.mjs --build "$BUILD_NUMBER"
+          fi
 
       - name: Instalar dependências
         run: npm ci
@@ -62,9 +84,13 @@ jobs:
           KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
         run: |
           if [ -n "$KEYSTORE_B64" ]; then
-            echo "$KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/upload.jks"
-            echo "ANDROID_KEYSTORE_PATH=$RUNNER_TEMP/upload.jks" >> "$GITHUB_ENV"
-            echo "Assinatura: chave encontrada, o .aab sai assinado."
+            if printf '%s' "$KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/upload.jks" 2>/dev/null; then
+              echo "ANDROID_KEYSTORE_PATH=$RUNNER_TEMP/upload.jks" >> "$GITHUB_ENV"
+              echo "Assinatura: chave encontrada, o .aab sai assinado."
+            else
+              rm -f "$RUNNER_TEMP/upload.jks"
+              echo "::warning::ANDROID_KEYSTORE_BASE64 inválido: o .aab sai SEM assinatura (serve para conferir o build, não para a Play)."
+            fi
           else
             echo "::warning::Sem ANDROID_KEYSTORE_BASE64: o .aab sai SEM assinatura (serve para conferir o build, não para a Play)."
           fi
@@ -86,7 +112,7 @@ jobs:
           cp android/app/build/outputs/bundle/release/app-release.aab out/prof-controller-release.aab
           ls -la out
 
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:
           name: prof-controller-android-${{ github.run_number }}
           path: out/*

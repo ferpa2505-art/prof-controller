@@ -15,7 +15,7 @@
    apenas cria uma âncora mais recente, sem duplicar valores.
    ============================================================ */
 
-const APP_VERSION = '1.2.0';
+const APP_VERSION = '1.3.2';
 
 /* ---------- Bandeiras (SVG) ----------
    Emoji de bandeira (🇧🇷) não é renderizado no Windows: o Chrome mostra as
@@ -4210,11 +4210,19 @@ function t(key) {
   const lang = state.settings.lang || 'pt-BR';
   return (I18N[lang] && I18N[lang][key]) || I18N['pt-BR'][key] || key;
 }
-function currency(code) { return CURRENCIES.find((c) => c.code === code) || { code, symbol: code + ' ', decimals: 2 }; }
+// Moeda fora da tabela (vem de <select>.value ou de cotacao de API): so letras/numeros maiusculos entram; qualquer outra
+// coisa vira o simbolo neutro. Isso impede que texto do DOM ou de uma API chegue como HTML nos innerHTML que usam fmtMoney.
+const CODIGO_MOEDA_SEGURO = /^[A-Z0-9]{2,10}$/;
+function currency(code) {
+  const conhecida = CURRENCIES.find((c) => c.code === code);
+  if (conhecida) return conhecida;
+  const seguro = CODIGO_MOEDA_SEGURO.test(String(code)) ? String(code) : '¤';
+  return { code: seguro, symbol: seguro + ' ', decimals: 2 };
+}
 function fmtMoney(value, code) {
   const c = currency(code);
   // Espaço não separável: "R$" nunca fica numa linha e o número na outra
-  return c.symbol.trimEnd() + ' ' + Number(value).toLocaleString('pt-BR', { minimumFractionDigits: c.decimals, maximumFractionDigits: c.decimals });
+  return escapeHtml(c.symbol.trimEnd()) + ' ' + Number(value).toLocaleString('pt-BR', { minimumFractionDigits: c.decimals, maximumFractionDigits: c.decimals });
 }
 /* Lê um campo de dinheiro aceitando os dois formatos que um teclado
    brasileiro produz: "620.000,50", "620000.50", "620000,50" e "620.000".
@@ -6225,10 +6233,10 @@ function updateBuyPreview(p) {
   const ctx = buyCtx[p] || {};
   const r = readBuyForm(p);
   const linhaPreco = r.price
-    ? `<div>${t(r.priceDate === todayISO() ? 'mkt.priceToday' : 'mkt.priceOn').replace('{data}', r.priceDate || '')}: <strong>${fmtMoney(r.price, cur)}</strong></div>`
+    ? `<div>${t(r.priceDate === todayISO() ? 'mkt.priceToday' : 'mkt.priceOn').replace('{data}', escapeHtml(r.priceDate || ''))}: <strong>${fmtMoney(r.price, cur)}</strong></div>`
     : (ctx.item && ctx.item.ticker ? `<div class="hint">${t('mkt.noPriceYet')}</div>` : '');
 
-  if (r.error && r.error !== 'empty') { prev.innerHTML = linhaPreco + `<div class="amount-out">${r.error}</div>`; return; }
+  if (r.error && r.error !== 'empty') { prev.innerHTML = linhaPreco + `<div class="amount-out">${escapeHtml(r.error)}</div>`; return; }
   if (r.error) { prev.innerHTML = linhaPreco; return; }
 
   let html = linhaPreco;
@@ -8840,8 +8848,15 @@ function drawCalcChart(id, pontos, moeda, periodo) {
 }
 
 /* ----- 3. Resolver (PV, PMT, i, n, FV) ----- */
+// O alvo vem do valor de um <input type=radio> (texto do DOM) e monta chaves de traducao e HTML: so estes valores valem.
+const ALVOS_RESOLVER = ['fv', 'pv', 'pmt', 'n', 'i'];
+function alvoDoResolver() {
+  const marcado = document.querySelector('input[name="solveFor"]:checked');
+  const valor = marcado ? marcado.value : '';
+  return ALVOS_RESOLVER.includes(valor) ? valor : 'fv';
+}
 function runSolve() {
-  const alvo = document.querySelector('input[name="solveFor"]:checked').value;
+  const alvo = alvoDoResolver();
   const emprestimo = document.getElementById('slMode').value === 'loan';
   // No financiamento o dinheiro entra (PV) e as parcelas saem: sinais opostos
   const sinal = emprestimo ? -1 : 1;
@@ -8879,12 +8894,12 @@ function runSolve() {
   saida.innerHTML = !isFinite(valor)
     ? `<p class="amount-out">${t('calc.noSolution')}</p>`
     : `<div class="calc-cards">
-        <div><span>${t('calc.f.' + alvo)}</span><strong class="amount-in">${texto}</strong></div>
+        <div><span>${escapeHtml(t('calc.f.' + alvo))}</span><strong class="amount-in">${escapeHtml(texto)}</strong></div>
         ${alvo !== 'i' && alvo !== 'n' ? `<div><span>${t('calc.totalPaid')}</span><strong>${fmtMoney(Math.abs(pv) + Math.abs(total), moeda)}</strong></div>` : ''}
-      </div>${extra ? `<p class="hint">${extra}</p>` : ''}`;
+      </div>${extra ? `<p class="hint">${escapeHtml(extra)}</p>` : ''}`;
 }
 function onSolveTargetChange() {
-  const alvo = document.querySelector('input[name="solveFor"]:checked').value;
+  const alvo = alvoDoResolver();
   ['pv', 'pmt', 'rate', 'term', 'fv'].forEach((campo) => {
     const mapa = { pv: 'pv', pmt: 'pmt', rate: 'i', term: 'n', fv: 'fv' };
     const wrap = document.getElementById('slWrap-' + campo);
@@ -8934,7 +8949,7 @@ async function runWhatIf() {
   catch (e) { /* segue sem histórico */ }
   const precoInicial = closeAt(hist, data);
   if (!precoInicial) {
-    saida.innerHTML = `<p class="amount-out">${t('calc.wiNoHistory').replace('{d}', data.split('-').reverse().join('/'))}</p>`;
+    saida.innerHTML = `<p class="amount-out">${t('calc.wiNoHistory').replace('{d}', escapeHtml(data.split('-').reverse().join('/')))}</p>`;
     return;
   }
   const precoHoje = closeAt(hist, todayISO()) || whatIfAsset.price;
@@ -8987,7 +9002,7 @@ async function runWhatIf() {
           <div><span>${t('calc.wiDiff')}</span><strong class="${difer >= 0 ? 'amount-in' : 'amount-out'}">${fmtMoney(difer, moedaAtivo)}</strong></div>
         </div>`;
       }
-    } catch (e) { compTexto = `<p class="hint">${t('cmp.benchFail').replace('{b}', t('cmp.b.' + comparar))}</p>`; }
+    } catch (e) { compTexto = `<p class="hint">${t('cmp.benchFail').replace('{b}', escapeHtml(t('cmp.b.' + comparar)))}</p>`; }
   }
 
   const pontos = [];

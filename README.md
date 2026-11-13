@@ -12,7 +12,7 @@ de usuário — os dados ficam só no aparelho, com criptografia opcional (AES-G
 
 | Plataforma | Como é gerado | Onde |
 |---|---|---|
-| Web (PWA) | `npm run build` → pasta `www/` | GitHub Pages (automático a cada push na `main`) |
+| Web (PWA) | `npm run build` → pasta `www/` | GitHub Pages (automático a cada push na `main`; configure conforme `docs/PUBLICAR-SITE.md`) |
 | Android | Capacitor 8 → `android/` | Google Play — veja `docs/PUBLICAR-ANDROID.md` |
 | iOS | Capacitor 8 → `ios/` | App Store — veja `docs/PUBLICAR-IOS.md` |
 | Windows | Microsoft Store via PWABuilder (recomendado) ou Electron | veja `docs/PUBLICAR-WINDOWS.md` |
@@ -31,7 +31,7 @@ scripts/build-www.mjs             monta www/ só com o que o app usa
 android/, ios/                    projetos nativos (Capacitor)
 electron/                         versão desktop (Electron)
 docs/                             guias de publicação; docs/legacy guarda documentação antiga
-legacy/                           código antigo não usado pelo app (servidor Express/Stripe, React)
+legacy/                           código antigo não usado pelo app (componentes React, scripts de seed)
 tools/                            scripts auxiliares (ícones etc.)
 ```
 
