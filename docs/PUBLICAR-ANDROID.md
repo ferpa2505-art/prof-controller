@@ -45,8 +45,14 @@ Depois: aba **Actions → App Android → Run workflow**. Ao terminar, baixe em 
 - `prof-controller-debug.apk` — instale no seu celular para testar;
 - `prof-controller-release.aab` — é este que vai para a Play.
 
-O número de versão (`versionCode`) é o número da execução do workflow, então cresce sozinho.
-O nome da versão vem do `package.json` (`"version": "1.2.0"`).
+O nome da versão (`versionName`) vem do `package.json` (`"version": "1.2.0"`) e o `versionCode` é calculado dele:
+`MAJOR*1000000 + MINOR*10000 + PATCH*100 + BUILD` (ex.: 1.3.2 build 0 → `1030200`). Ele **só cresce quando o `version` do
+`package.json` sobe**; não depende do número da execução do GitHub Actions.
+
+Para reenviar a **mesma** versão com outro build, use **Run workflow → `build_number`** (1 a 99). Para o build **recusar**
+um `versionCode` igual ou menor que o último enviado, preencha **`ultimo_versioncode`** com o valor que a Play mostra
+(Play Console → Versão → Produção). Você também pode conferir antes, na sua máquina:
+`node scripts/android-version.mjs --ultimo 1030100`.
 
 ## 4. Criar o app no Play Console
 
