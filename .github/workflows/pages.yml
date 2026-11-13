@@ -26,6 +26,8 @@ concurrency:
 
 jobs:
   build:
+    # disparo manual (workflow_dispatch) a partir de outra branch nao publica o site
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -47,6 +49,8 @@ jobs:
 
   deploy:
     needs: build
+    # guarda explicita no job que publica: nao depende so do 'needs'
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
       pages: write
@@ -60,6 +64,7 @@ jobs:
 
   verificar:
     needs: deploy
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
