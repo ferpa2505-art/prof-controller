@@ -24,6 +24,15 @@ permissions:
 
 on:
   workflow_dispatch:
+    inputs:
+      build_number:
+        description: "BUILD de 0 a 99 para reenviar a MESMA versão do package.json (versionCode = MAJOR*1000000 + MINOR*10000 + PATCH*100 + BUILD)"
+        required: false
+        default: "0"
+      ultimo_versioncode:
+        description: "Último versionCode publicado na Play (veja no Play Console). Se informado, o build recusa um versionCode igual ou menor."
+        required: false
+        default: ""
   push:
     tags: ['v*']
     branches: ['loja/**']
@@ -37,7 +46,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
-      VERSION_CODE: ${{ github.run_number }}
+      # O Gradle lê BUILD_NUMBER (android/app/build.gradle). Só o disparo manual escolhe; tags e loja/** usam 0.
+      BUILD_NUMBER: ${{ inputs.build_number || '0' }}
+      ULTIMO_VERSIONCODE: ${{ inputs.ultimo_versioncode }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
 
@@ -51,6 +62,14 @@ jobs:
           distribution: temurin
           java-version: 21
           cache: gradle
+
+      - name: Conferir o versionCode
+        run: |
+          if [ -n "$ULTIMO_VERSIONCODE" ]; then
+            node scripts/android-version.mjs --build "$BUILD_NUMBER" --ultimo "$ULTIMO_VERSIONCODE"
+          else
+            node scripts/android-version.mjs --build "$BUILD_NUMBER"
+          fi
 
       - name: Instalar dependências
         run: npm ci
