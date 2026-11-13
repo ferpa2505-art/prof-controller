@@ -75,7 +75,10 @@ A Play **não aceita** `versionCode` menor que um já enviado, então rollback n
    (Versão → Produção → Interromper lançamento). Quem não atualizou fica na versão antiga.
 2. Faça o revert do código como no site (passos 1–3).
 3. Suba o `version` do `package.json` (ex.: `1.2.1` → `1.2.2`), o que gera um `versionCode` maior.
-4. Gere o AAB e envie. Para reenviar a **mesma** versão com outro build, use `BUILD_NUMBER=1..99`.
+4. Gere o AAB (Actions → **App Android** → Run workflow) e envie. Para reenviar a **mesma** versão com outro build, preencha
+   `build_number` (1 a 99). Preencha também `ultimo_versioncode` com o valor que a Play mostra para o bundle ativo: o build
+   falha se o novo `versionCode` for igual ou menor. Sem esse valor a sequência **não é conferida** (a Play é a fonte da verdade;
+   este repositório não tem acesso a ela).
 
 ### Tabela de versionCode
 
