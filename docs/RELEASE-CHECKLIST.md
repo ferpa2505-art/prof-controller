@@ -23,13 +23,22 @@ mesclado deixar o FileProvider exportado ou sem `@xml/file_paths`.
 Espere o workflow **Publicar no GitHub Pages** terminar (aba Actions) e abra
 <https://ferpa2505-art.github.io/prof-controller/> numa aba anônima:
 
+0. O job **verificar** tem de estar verde: ele compara o `BUILD_ID` do build com o
+   que o site público está servindo. Se falhar, o Pages está publicando a raiz do
+   repositório em vez de `www/` — siga `docs/PUBLICAR-SITE.md`.
 1. A tela inicial (Dashboard) carrega, com logo e gráficos.
 2. Troque o tema em Preferências (⚙️): claro, escuro e Profit C.
 3. Crie uma conta de teste e um lançamento; recarregue a página e confira que continuam lá.
-4. Abra **Notícias** e **Cotações**: se algo não carregar, abra o console (F12) e procure
-   mensagens `Content-Security-Policy` – isso indica um domínio que precisa entrar na CSP.
+4. Abra **Notícias** e **Cotações**. Se algo não carregar, abra o console (F12) e **anote a mensagem exata**
+   `Content-Security-Policy` (a diretiva e a origem bloqueada). **Não amplie a CSP para fazer a tela funcionar.**
+   Primeiro descubra se a origem é necessária e confiável; se não for, corrija o recurso em vez de alargar a política.
+   Se for mesmo necessária: adicione **só aquela origem**, **só na diretiva citada**, nunca `https:`, `*`, `data:` em
+   `script-src` nem `'unsafe-eval'`; atualize `CSP_ESPERADA` em `scripts/security.test.mjs` com a justificativa no PR
+   (qual origem, qual diretiva, por quê) e peça revisão humana. O teste compara a política **exatamente**: fonte extra reprova.
 5. Exporte um backup (JSON) e importe de volta.
 6. Apague a conta de teste.
+7. Teste o offline: DevTools → Application → Service Workers → marque **Offline**
+   e recarregue. A tela tem de abrir sem rede (o pré-cache do build tem 41 arquivos).
 
 ## 3. Smoke test do Android (APK de debug)
 
@@ -70,7 +79,10 @@ A Play **não aceita** `versionCode` menor que um já enviado, então rollback n
    (Versão → Produção → Interromper lançamento). Quem não atualizou fica na versão antiga.
 2. Faça o revert do código como no site (passos 1–3).
 3. Suba o `version` do `package.json` (ex.: `1.2.1` → `1.2.2`), o que gera um `versionCode` maior.
-4. Gere o AAB e envie. Para reenviar a **mesma** versão com outro build, use `BUILD_NUMBER=1..99`.
+4. Gere o AAB (Actions → **App Android** → Run workflow) e envie. Para reenviar a **mesma** versão com outro build, preencha
+   `build_number` (1 a 99). Preencha também `ultimo_versioncode` com o valor que a Play mostra para o bundle ativo: o build
+   falha se o novo `versionCode` for igual ou menor. Sem esse valor a sequência **não é conferida** (a Play é a fonte da verdade;
+   este repositório não tem acesso a ela).
 
 ### Tabela de versionCode
 
