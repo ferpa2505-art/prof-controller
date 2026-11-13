@@ -25,6 +25,17 @@ Repository settings cannot be changed by workflow files. An administrator must:
    Push protection when those features are available. The `Secret scan` check
    runs Gitleaks independently; enabling GitHub's native controls adds
    server-side detection and push blocking.
-3. Confirm the checks have reported on the desired PR head commits before
+3. **Prove the configuration.** A description of the intended rule is not proof. After activating it, attach the
+   output of these read-only calls to the release record (no token is needed for public repositories; for private ones use
+   an authenticated `gh api`):
+
+   ```bash
+   gh api repos/ferpa2505-art/prof-controller/rules/branches/main
+   gh api repos/ferpa2505-art/prof-controller/rulesets
+   ```
+
+   The first must list `pull_request` and `required_status_checks` (with the check names above) and, for
+   protection against rewriting history, `non_fast_forward` and `deletion`. An empty list means **no protection**.
+4. Confirm the checks have reported on the desired PR head commits before
    requiring them. Open PRs that predate this workflow may need their head
    branch updated or a check rerun after the workflow is available on `main`.
