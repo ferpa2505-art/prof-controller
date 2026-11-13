@@ -7,6 +7,7 @@ import { execFileSync, spawnSync } from 'node:child_process';
 import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
 import { safeAssetPath } from './build-www.mjs';
+import { compararCsp, extrairCspMetas, lerCsp } from './csp.mjs';
 import { calcularVersionCode, validarSequencia } from './android-version.mjs';
 import { parseDocument } from 'yaml';
 
@@ -492,5 +493,89 @@ test('the real workflows pass the policy and pages.yml guards every job to main'
   const yaml = await fs.readFile(path.join(ROOT, '.github', 'workflows', 'pages.yml'), 'utf8');
   const guards = yaml.match(/if: github\.ref == 'refs\/heads\/main'/g) ?? [];
   assert.equal(guards.length, 3, 'build, deploy e verificar devem ter a guarda de main');
+});
+
+
+const CSP_ESPERADA = {
+  'default-src': ["'self'"],
+  'script-src': ["'self'", "'unsafe-inline'", 'https://s3.tradingview.com'],
+  'style-src': ["'self'", "'unsafe-inline'"],
+  'img-src': ["'self'", 'data:', 'blob:', 'https:'],
+  'font-src': ["'self'", 'data:'],
+  'connect-src': ["'self'", 'https:'],
+  'frame-src': ['https://*.tradingview.com'],
+  'worker-src': ["'self'"],
+  'manifest-src': ["'self'"],
+  'object-src': ["'none'"],
+  'base-uri': ["'self'"],
+  'form-action': ["'self'"],
+};
+
+test('CSP: uma unica meta, igual a politica aprovada (sem fontes ou diretivas extras)', async () => {
+  const html = await fs.readFile(path.join(ROOT, 'index.html'), 'utf8');
+  const metas = extrairCspMetas(html);
+  assert.equal(metas.length, 1, 'exatamente uma meta Content-Security-Policy (em qualquer ordem de atributos ou aspas)');
+  assert.deepEqual(compararCsp(metas[0], CSP_ESPERADA), []);
+  const { diretivas } = lerCsp(metas[0]);
+  assert.ok(!metas[0].includes("'unsafe-eval'"), 'unsafe-eval nao pode entrar');
+  assert.ok(!(diretivas.get('script-src') ?? []).some((f) => f === '*' || f === 'https:' || f === 'data:' || f === 'http:'), 'script-src nao pode aceitar curinga, https:, http: nem data:');
+  // A meta precisa vir antes de qualquer <script> para valer para todos eles.
+  assert.ok(html.indexOf('Content-Security-Policy') < html.indexOf('<script'), 'CSP meta must precede scripts');
+});
+
+test('CSP: o leitor acha metas em qualquer forma (ordem, aspas, caixa, quebra de linha) e ignora comentarios', () => {
+  const P = "default-src 'self'";
+  const formas = {
+    'ordem padrao': `<meta http-equiv="Content-Security-Policy" content="${P}">`,
+    'content antes de http-equiv': `<meta content="${P}" http-equiv="Content-Security-Policy">`,
+    // dentro de aspas simples a politica nao pode conter 'self': usa-se uma sem aspas internas
+    'caixa diferente': `<META HTTP-EQUIV="content-security-policy" CONTENT="${P}">`,
+    'quebra de linha entre atributos': `<meta\n  http-equiv="Content-Security-Policy"\n  content="${P}"\n>`,
+    'auto-fechada': `<meta http-equiv="Content-Security-Policy" content="${P}" />`,
+    'outros atributos no meio': `<meta name="x" http-equiv="Content-Security-Policy" data-a="1" content="${P}">`,
+    'http-equiv sem aspas': `<meta http-equiv=Content-Security-Policy content="${P}">`,
+  };
+  for (const [rotulo, tag] of Object.entries(formas)) {
+    assert.deepEqual(extrairCspMetas(`<head>${tag}</head>`), [P], rotulo);
+  }
+  assert.deepEqual(extrairCspMetas("<meta http-equiv='Content-Security-Policy' content='img-src data:'>"), ['img-src data:'], 'aspas simples');
+  // duas metas, a segunda disfarcada (ordem e aspas diferentes): as duas precisam ser vistas
+  const duas = `<meta http-equiv="Content-Security-Policy" content="${P}"><meta content='script-src *' HTTP-EQUIV='Content-Security-Policy'>`;
+  assert.equal(extrairCspMetas(duas).length, 2);
+  // nao conta: comentario, outra meta, report-only (o navegador nao aplica em meta), '>' dentro do valor nao fecha a tag
+  assert.deepEqual(extrairCspMetas(`<!-- <meta http-equiv="Content-Security-Policy" content="${P}"> -->`), []);
+  // comentario: fechos que o HTML aceita (--!>, <!-->, <!--->), comentario sem fim e o primeiro --> que fecha de verdade
+  const meta = '<meta http-equiv="Content-Security-Policy" content="default-src \'self\'">';
+  assert.deepEqual(extrairCspMetas(`<!-- a --!> ${meta}`), ["default-src 'self'"], 'fecho --!> encerra o comentario e a meta seguinte vale');
+  assert.deepEqual(extrairCspMetas(`<!--> ${meta}`), ["default-src 'self'"], '<!--> e um comentario vazio');
+  assert.deepEqual(extrairCspMetas(`<!---> ${meta}`), ["default-src 'self'"], '<!---> e um comentario vazio');
+  assert.deepEqual(extrairCspMetas(`<!-- aberto sem fim ${meta}`), [], 'comentario sem fim engole o resto');
+  assert.deepEqual(extrairCspMetas(`<!-- <!-- x --> ${meta}`), ["default-src 'self'"], 'o primeiro --> fecha; nao ha comentario aninhado');
+  assert.deepEqual(extrairCspMetas(`<!-- ${meta} --> ${meta}`).length, 1, 'so a meta fora do comentario conta');
+  assert.deepEqual(extrairCspMetas('<meta name="viewport" content="width=device-width">'), []);
+  assert.deepEqual(extrairCspMetas(`<meta http-equiv="Content-Security-Policy-Report-Only" content="${P}">`), []);
+  assert.deepEqual(extrairCspMetas('<meta http-equiv="Content-Security-Policy" content="img-src a>b">'), ['img-src a>b']);
+});
+
+test('CSP: a comparacao e exata e acusa fonte extra, diretiva extra, falta e repeticao', () => {
+  const base = "default-src 'self'; object-src 'none'";
+  const esperada = { 'default-src': ["'self'"], 'object-src': ["'none'"] };
+  assert.deepEqual(compararCsp(base, esperada), []);
+  assert.deepEqual(compararCsp("object-src 'none'; default-src 'self'", esperada), [], 'a ordem das diretivas nao importa');
+  assert.match(compararCsp("default-src 'self' https://evil.example; object-src 'none'", esperada).join(), /não autorizada.*evil\.example/);
+  // o caso que a checagem por substring deixava passar: a diretiva esperada continua la, com uma fonte a mais
+  assert.match(compararCsp("default-src 'self' *; object-src 'none'", esperada).join(), /não autorizada/);
+  assert.match(compararCsp("default-src 'self'; object-src 'none'; script-src https:", esperada).join(), /não prevista: script-src/);
+  assert.match(compararCsp("default-src 'self'", esperada).join(), /falta a diretiva object-src/);
+  assert.match(compararCsp("default-src 'self'; object-src 'none'; object-src *", esperada).join(), /repetida: object-src/);
+  assert.match(compararCsp("default-src; object-src 'none'", esperada).join(), /perdeu/);
+});
+
+test('CSP: o leitor e a comparacao funcionam sobre o index.html real e acusam um index.html enfraquecido', async () => {
+  const html = await fs.readFile(path.join(ROOT, 'index.html'), 'utf8');
+  const enfraquecido = html.replace("script-src 'self'", "script-src 'self' https://cdn.evil.example");
+  assert.notEqual(enfraquecido, html, 'o fixture precisa alterar o HTML');
+  const problemas = compararCsp(extrairCspMetas(enfraquecido)[0], CSP_ESPERADA);
+  assert.match(problemas.join(), /script-src permite fonte\(s\) não autorizada\(s\): https:\/\/cdn\.evil\.example/);
 });
 
