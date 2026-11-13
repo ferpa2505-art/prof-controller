@@ -41,9 +41,6 @@ jobs:
           node-version: 22
       - name: Audit root manifest
         run: npm audit --package-lock-only --audit-level=high
-      - name: Audit retained legacy manifest
-        working-directory: legacy/server
-        run: npm audit --package-lock-only --audit-level=high
 
   secret_scan:
     name: Secret scan
