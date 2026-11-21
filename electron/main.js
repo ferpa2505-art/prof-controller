@@ -6,9 +6,33 @@
 
 const { app, BrowserWindow, Menu, ipcMain, shell, session, net } = require('electron');
 const path = require('path');
+const fs = require('fs');
 
 const WWW = path.join(__dirname, '..', 'www');
 let mainWindow = null;
+
+// Persistência do diretório de backup automático
+const AUTO_BACKUP_DIR_FILE = path.join(app.getPath('userData'), 'auto-backup-dir.json');
+
+function loadAutoBackupDir() {
+  try {
+    if (fs.existsSync(AUTO_BACKUP_DIR_FILE)) {
+      const data = JSON.parse(fs.readFileSync(AUTO_BACKUP_DIR_FILE, 'utf8'));
+      return data.dirPath || null;
+    }
+  } catch (e) {
+    console.error('Erro ao ler diretório de backup:', e);
+  }
+  return null;
+}
+
+function saveAutoBackupDir(dirPath) {
+  try {
+    fs.writeFileSync(AUTO_BACKUP_DIR_FILE, JSON.stringify({ dirPath }), 'utf8');
+  } catch (e) {
+    console.error('Erro ao salvar diretório de backup:', e);
+  }
+}
 
 // Uma instância só: abrir de novo apenas traz a janela existente para frente.
 if (!app.requestSingleInstanceLock()) {
@@ -135,15 +159,29 @@ ipcMain.handle('show-directory-picker', async () => {
     title: 'Selecionar pasta para backups automáticos'
   });
   if (result.canceled || !result.filePaths.length) return null;
-  return result.filePaths[0];
+  const dirPath = result.filePaths[0];
+  global.autoBackupDir = dirPath;
+  saveAutoBackupDir(dirPath);
+  return dirPath;
 });
 
 ipcMain.handle('write-backup-file', async (_evt, fileName, content) => {
+  // Input validation
+  if (!fileName || typeof fileName !== 'string' || fileName.trim() === '') {
+    throw new Error('Nome do arquivo inválido');
+  }
+  if (!content || typeof content !== 'string') {
+    throw new Error('Conteúdo do arquivo inválido');
+  }
+
   const { dialog } = require('electron');
-  const fs = require('fs');
   const path = require('path');
 
-  // Try to use previously selected directory
+  // Try to use previously selected directory (from memory or persisted)
+  if (!global.autoBackupDir) {
+    global.autoBackupDir = loadAutoBackupDir();
+  }
+
   if (!global.autoBackupDir) {
     // Ask user to select directory first
     const result = await dialog.showOpenDialog(mainWindow, {
@@ -154,6 +192,7 @@ ipcMain.handle('write-backup-file', async (_evt, fileName, content) => {
       throw new Error('Nenhuma pasta selecionada para backup');
     }
     global.autoBackupDir = result.filePaths[0];
+    saveAutoBackupDir(global.autoBackupDir);
   }
 
   const filePath = path.join(global.autoBackupDir, fileName);
