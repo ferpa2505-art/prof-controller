@@ -4241,47 +4241,57 @@ async function exportEncryptedBackup() {
 
 /* ----- Backup automático ----- */
 let autoBackupTimer = null;
+let isBackupRunning = false;
 
 async function autoBackup() {
   if (!state.settings.autoBackupEnabled) return;
-  if (!vaultOn() || !VAULT.key) {
-    // Vault bloqueado: faz backup plano (sem criptografia) — apenas para desktop/web onde o usuário pode desbloquear depois
-    const payload = buildBackupData();
-    const arquivo = {
-      format: 'prof-controller-plain', v: 1, exportedAt: new Date().toISOString(),
-      data: payload
-    };
-    await writeAutoBackupFile(arquivo, false);
-    return;
+  if (isBackupRunning) return; // Debounce rapid toggles
+  isBackupRunning = true;
+
+  try {
+    let arquivo;
+    const criptografado = vaultOn() && VAULT.key;
+
+    if (criptografado) {
+      // Vault desbloqueado: reutiliza lógica existente de backup criptografado
+      const payload = buildBackupData();
+      arquivo = {
+        format: 'prof-controller-encrypted', v: 1, exportedAt: new Date().toISOString(),
+        pin: VAULT.meta.pin, rec: VAULT.meta.rec,
+        data: await sealObj(VAULT.key, payload)
+      };
+    } else {
+      // Vault bloqueado: backup plano — exige consentimento do usuário (segurança)
+      if (!confirm(t('sec.plainExportWarn'))) return;
+      const payload = buildBackupData();
+      arquivo = {
+        format: 'prof-controller-plain', v: 1, exportedAt: new Date().toISOString(),
+        data: payload
+      };
+    }
+    await writeAutoBackupFile(arquivo, criptografado);
+  } finally {
+    isBackupRunning = false;
   }
-  // Vault desbloqueado: faz backup criptografado
-  const payload = buildBackupData();
-  const arquivo = {
-    format: 'prof-controller-encrypted', v: 1, exportedAt: new Date().toISOString(),
-    pin: VAULT.meta.pin, rec: VAULT.meta.rec,
-    data: await sealObj(VAULT.key, payload)
-  };
-  await writeAutoBackupFile(arquivo, true);
 }
 
 async function writeAutoBackupFile(arquivo, criptografado) {
   const fileName = `prof-controller-auto-backup-${criptografado ? 'protegido' : 'plano'}-${todayISO()}.json`;
 
-  // Electron (desktop) — usa File System Access API via preload
-  if (window.electronAPI && window.electronAPI.writeBackupFile) {
+  // 1) Electron (desktop) — usa IPC para escrita nativa
+  if (window.electronAPI?.writeBackupFile) {
     try {
       const path = await window.electronAPI.writeBackupFile(fileName, JSON.stringify(arquivo));
       showToast(t('sec.autoBackupSaved', { path }));
       return;
     } catch (e) {
       console.error('Auto-backup Electron falhou:', e);
-      showToast(t('sec.autoBackupFail'));
+      // continua para fallback
     }
   }
 
-  // Navegador (Web/Capacitor) — salva no IndexedDB e/ou dispara download
+  // 2) File System Access API (Chrome/Edge desktop, Web)
   if ('showDirectoryPicker' in window) {
-    // File System Access API disponível (Chrome/Edge desktop)
     try {
       if (!state.autoBackupDirHandle) {
         state.autoBackupDirHandle = await window.showDirectoryPicker({ mode: 'readwrite' });
@@ -4295,13 +4305,13 @@ async function writeAutoBackupFile(arquivo, criptografado) {
       return;
     } catch (e) {
       console.error('Auto-backup File System Access falhou:', e);
+      // continua para fallback
     }
   }
 
-  // Fallback: salva no IndexedDB como 'autoBackup' e dispara download
+  // 3) Fallback: IndexedDB + download
   try {
     await put('autoBackup', { key: 'latest', value: arquivo, updatedAt: Date.now() });
-    // Tenta download (funciona na web, no Capacitor usa native.saveFile)
     download(fileName, JSON.stringify(arquivo), 'application/json');
     showToast(t('sec.autoBackupDownloaded'));
   } catch (e) {
@@ -4334,11 +4344,12 @@ async function setAutoBackupInterval(value) {
 }
 
 async function chooseBackupDir() {
-  if (window.electronAPI && window.electronAPI.showDirectoryPicker) {
+  // Electron (desktop)
+  if (window.electronAPI?.showDirectoryPicker) {
     try {
       const dirPath = await window.electronAPI.showDirectoryPicker();
       if (dirPath) {
-        global.autoBackupDir = dirPath; // armazenado no processo principal via IPC
+        global.autoBackupDir = dirPath;
         const statusEl = document.getElementById('autoBackupDirStatus');
         if (statusEl) statusEl.textContent = t('settings.autoBackup.folderSelected', { path: dirPath });
         showToast(t('sec.backupDirSet'));
@@ -4351,6 +4362,7 @@ async function chooseBackupDir() {
     }
   }
 
+  // File System Access API (Web/Capacitor)
   if ('showDirectoryPicker' in window) {
     try {
       state.autoBackupDirHandle = await window.showDirectoryPicker({ mode: 'readwrite' });
@@ -4368,7 +4380,7 @@ async function chooseBackupDir() {
 }
 
 function startAutoBackupTimer() {
-  stopAutoBackupTimer();
+  if (autoBackupTimer) stopAutoBackupTimer(); // Guard: evita chamada redundante
   const minutes = state.settings.autoBackupInterval || 0;
   if (minutes <= 0) return;
   const intervalMs = minutes * 60 * 1000;
