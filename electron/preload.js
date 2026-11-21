@@ -7,4 +7,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   getAppVersion: () => ipcRenderer.invoke('get-app-version'),
   // Lê feeds de notícias pelo processo principal (sem CORS). Só hosts liberados no main.js.
   fetchText: (url) => ipcRenderer.invoke('fetch-text', url),
+  // Backup automático — File System Access API
+  showDirectoryPicker: () => ipcRenderer.invoke('show-directory-picker'),
+  writeBackupFile: (fileName, content) => ipcRenderer.invoke('write-backup-file', fileName, content),
 });

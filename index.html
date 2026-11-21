@@ -611,6 +611,30 @@
         <button id="btnImportJSON" class="secondary-btn" data-i18n="settings.importJSON">Importar backup</button>
         <input type="file" id="importFile" accept=".json" hidden>
       </div>
+      <div class="settings-group" id="autoBackupGroup">
+        <h3 data-i18n="settings.autoBackup">Backup automático</h3>
+        <label class="checkline">
+          <input type="checkbox" id="autoBackupEnabled" onchange="toggleAutoBackup(this.checked)">
+          <span data-i18n="settings.autoBackup.enabled">Backup automático ativado</span>
+        </label>
+        <div id="autoBackupOptions" class="hidden">
+          <label for="autoBackupInterval" data-i18n="settings.autoBackup.interval">Intervalo (minutos)</label>
+          <select id="autoBackupInterval" onchange="setAutoBackupInterval(this.value)">
+            <option value="0" data-i18n="settings.autoBackup.intervalDesc">Desativado (0)</option>
+            <option value="15">15</option>
+            <option value="30">30</option>
+            <option value="60">60 (1 hora)</option>
+            <option value="240">240 (4 horas)</option>
+            <option value="720">720 (12 horas)</option>
+            <option value="1440">1440 (24 horas)</option>
+          </select>
+          <p class="hint" id="autoBackupIntervalHint" data-i18n="settings.autoBackup.intervalDesc">Frequência dos backups automáticos. 0 = desativado.</p>
+          <div id="autoBackupDirSection">
+            <button type="button" id="btnChooseBackupDir" class="secondary-btn" onclick="chooseBackupDir()" data-i18n="settings.autoBackup.chooseFolder">Selecionar pasta de backup</button>
+            <p id="autoBackupDirStatus" class="hint"></p>
+          </div>
+        </div>
+      </div>
       <div class="settings-group">
         <h3 data-i18n="settings.importCSV">Importar planilha (CSV)</h3>
         <p class="hint" data-i18n="settings.importCSVHint">Formato: Data;Conta;Moeda;Saldo (AAAA-MM-DD).</p>

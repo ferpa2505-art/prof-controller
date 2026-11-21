@@ -127,6 +127,40 @@ Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 // IPC
 ipcMain.handle('get-app-version', () => app.getVersion());
 
+// File System Access API para backup automático (desktop)
+ipcMain.handle('show-directory-picker', async () => {
+  const { dialog } = require('electron');
+  const result = await dialog.showOpenDialog(mainWindow, {
+    properties: ['openDirectory', 'createDirectory'],
+    title: 'Selecionar pasta para backups automáticos'
+  });
+  if (result.canceled || !result.filePaths.length) return null;
+  return result.filePaths[0];
+});
+
+ipcMain.handle('write-backup-file', async (_evt, fileName, content) => {
+  const { dialog } = require('electron');
+  const fs = require('fs');
+  const path = require('path');
+
+  // Try to use previously selected directory
+  if (!global.autoBackupDir) {
+    // Ask user to select directory first
+    const result = await dialog.showOpenDialog(mainWindow, {
+      properties: ['openDirectory', 'createDirectory'],
+      title: 'Selecionar pasta para backups automáticos'
+    });
+    if (result.canceled || !result.filePaths.length) {
+      throw new Error('Nenhuma pasta selecionada para backup');
+    }
+    global.autoBackupDir = result.filePaths[0];
+  }
+
+  const filePath = path.join(global.autoBackupDir, fileName);
+  await fs.promises.writeFile(filePath, content, 'utf8');
+  return filePath;
+});
+
 // Feeds de notícias: o Google Notícias não libera leitura direta pela página (CORS)
 // e recusa o rss2json. O processo principal busca direto, só nos hosts abaixo.
 const FEED_HOSTS = ['news.google.com'];
