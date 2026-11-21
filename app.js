@@ -229,6 +229,13 @@ const I18N = {
     'settings.importJSON': 'Importar backup',
     'settings.importCSV': 'Importar planilha (CSV)',
     'settings.importCSVHint': 'Formato: Data;Conta;Moeda;Saldo (AAAA-MM-DD).',
+    'settings.autoBackup': 'Backup automático',
+    'settings.autoBackup.enabled': 'Backup automático ativado',
+    'settings.autoBackup.interval': 'Intervalo (minutos)',
+    'settings.autoBackup.intervalDesc': 'Frequência dos backups automáticos. 0 = desativado.',
+    'settings.autoBackup.chooseFolder': 'Selecionar pasta de backup',
+    'settings.autoBackup.folderSelected': 'Pasta selecionada: {path}',
+    'settings.autoBackup.folderNotSupported': 'Seu navegador não suporta escolha de pasta. Backups serão salvos no armazenamento interno.',
     'toast.saved': 'Salvo com sucesso.',
     'toast.deleted': 'Excluído.',
     'toast.invalidValue': 'Informe um valor válido (ex.: 620.000,00).',
@@ -828,6 +835,12 @@ const I18N = {
     'sec.plainExportWarn': 'Este arquivo sai SEM criptografia: qualquer pessoa com ele verá seus dados. Continuar?',
     'sec.encImportTitle': 'Backup protegido',
     'sec.encImportHint': 'Digite a senha ou o código de recuperação que valiam quando este backup foi feito.',
+    'sec.autoBackupSaved': 'Backup automático salvo em {path}.',
+    'sec.autoBackupFail': 'Falha no backup automático.',
+    'sec.autoBackupDownloaded': 'Backup automático baixado.',
+    'sec.autoBackupOn': 'Backup automático ativado.',
+    'sec.autoBackupOff': 'Backup automático desativado.',
+    'sec.backupDirSet': 'Pasta de backup definida: {path}',
     'apiw.title': 'Configure as fontes de cotação',
     'apiw.intro': 'O ProF Controller usa três serviços gratuitos para buscar cotações. Cada um pede uma chave, criada em poucos minutos. Sem elas, o app funciona, mas sem preços automáticos.',
     'apiw.purpose.finnhub': 'Cotações de ações dos EUA e busca de ativos pelo ISIN.',
@@ -1258,6 +1271,13 @@ const I18N = {
     'settings.importJSON': 'Import backup',
     'settings.importCSV': 'Import spreadsheet (CSV)',
     'settings.importCSVHint': 'Format: Date;Account;Currency;Balance (YYYY-MM-DD).',
+    'settings.autoBackup': 'Automatic backup',
+    'settings.autoBackup.enabled': 'Automatic backup enabled',
+    'settings.autoBackup.interval': 'Interval (minutes)',
+    'settings.autoBackup.intervalDesc': 'Frequency of automatic backups. 0 = disabled.',
+    'settings.autoBackup.chooseFolder': 'Select backup folder',
+    'settings.autoBackup.folderSelected': 'Folder selected: {path}',
+    'settings.autoBackup.folderNotSupported': 'Your browser does not support folder selection. Backups will be saved to internal storage.',
     'toast.saved': 'Saved successfully.',
     'toast.deleted': 'Deleted.',
     'toast.invalidValue': 'Enter a valid amount (e.g. 620,000.00).',
@@ -1852,11 +1872,49 @@ const I18N = {
     'sec.disableConfirm': 'Turning off protection leaves your data unencrypted in this browser. Continue?',
     'sec.decrypting': 'Removing encryption…',
     'sec.disabled': 'Protection off.',
+    'autoBackup.enabled': 'Backup automático',
+    'autoBackup.enabled.pt-BR': 'Backup automático',
+    'autoBackup.enabled.en': 'Automatic backup',
+    'autoBackup.enabled.es': 'Copia de seguridad automática',
+    'autoBackup.interval': 'Intervalo',
+    'autoBackup.interval.pt-BR': 'Intervalo',
+    'autoBackup.interval.en': 'Interval',
+    'autoBackup.interval.es': 'Intervalo',
+    'autoBackup.interval.desc': 'Frequência dos backups automáticos (em minutos). 0 = desativado.',
+    'autoBackup.interval.desc.pt-BR': 'Frequência dos backups automáticos (em minutos). 0 = desativado.',
+    'autoBackup.interval.desc.en': 'Backup frequency in minutes. 0 = disabled.',
+    'autoBackup.interval.desc.es': 'Frecuencia de backups automáticos (en minutos). 0 = desactivado.',
+    'autoBackup.chooseFolder': 'Selecionar pasta de backup',
+    'autoBackup.chooseFolder.pt-BR': 'Selecionar pasta de backup',
+    'autoBackup.chooseFolder.en': 'Select backup folder',
+    'autoBackup.chooseFolder.es': 'Seleccionar carpeta de backup',
+    'autoBackup.folderSelected': 'Pasta selecionada: {path}',
+    'autoBackup.folderSelected.pt-BR': 'Pasta selecionada: {path}',
+    'autoBackup.folderSelected.en': 'Folder selected: {path}',
+    'autoBackup.folderSelected.es': 'Carpeta seleccionada: {path}',
+    'autoBackup.folderNotSupported': 'Seu navegador não suporta escolha de pasta. Backups serão salvos no armazenamento interno.',
+    'autoBackup.folderNotSupported.pt-BR': 'Seu navegador não suporta escolha de pasta. Backups serão salvos no armazenamento interno.',
+    'autoBackup.folderNotSupported.en': 'Your browser does not support folder selection. Backups will be saved to internal storage.',
+    'autoBackup.folderNotSupported.es': 'Su navegador no soporta selección de carpeta. Los backups se guardarán en almacenamiento interno.',
+    'autoBackup.saveBtn': 'Save',
+    'autoBackup.saveBtn.pt-BR': 'Salvar',
+    'autoBackup.saveBtn.en': 'Save',
+    'autoBackup.saveBtn.es': 'Guardar',
+    'autoBackup.cancelBtn': 'Cancel',
+    'autoBackup.cancelBtn.pt-BR': 'Cancelar',
+    'autoBackup.cancelBtn.en': 'Cancel',
+    'autoBackup.cancelBtn.es': 'Cancelar',
     'sec.exportEnc': 'Export protected backup (recommended)',
     'sec.encExported': 'Protected backup exported. It opens with your current PIN or recovery code.',
     'sec.plainExportWarn': 'This file is NOT encrypted: anyone who has it will see your data. Continue?',
     'sec.encImportTitle': 'Protected backup',
     'sec.encImportHint': 'Enter the PIN or recovery code that was valid when this backup was made.',
+    'sec.autoBackupSaved': 'Auto backup saved to {path}.',
+    'sec.autoBackupFail': 'Auto backup failed.',
+    'sec.autoBackupDownloaded': 'Auto backup downloaded.',
+    'sec.autoBackupOn': 'Auto backup enabled.',
+    'sec.autoBackupOff': 'Auto backup disabled.',
+    'sec.backupDirSet': 'Backup folder set: {path}',
     'apiw.title': 'Set up price sources',
     'apiw.intro': 'ProF Controller uses three free services to fetch prices. Each needs a key that takes a few minutes to create. Without them the app works, but without automatic prices.',
     'apiw.purpose.finnhub': 'US stock prices and asset search by ISIN.',
@@ -2287,6 +2345,13 @@ const I18N = {
     'settings.importJSON': 'Importar respaldo',
     'settings.importCSV': 'Importar hoja de cálculo (CSV)',
     'settings.importCSVHint': 'Formato: Fecha;Cuenta;Moneda;Saldo (AAAA-MM-DD).',
+    'settings.autoBackup': 'Copia de seguridad automática',
+    'settings.autoBackup.enabled': 'Copia de seguridad automática activada',
+    'settings.autoBackup.interval': 'Intervalo (minutos)',
+    'settings.autoBackup.intervalDesc': 'Frecuencia de las copias de seguridad automáticas. 0 = desactivado.',
+    'settings.autoBackup.chooseFolder': 'Seleccionar carpeta de backup',
+    'settings.autoBackup.folderSelected': 'Carpeta seleccionada: {path}',
+    'settings.autoBackup.folderNotSupported': 'Su navegador no soporta selección de carpeta. Los backups se guardarán en almacenamiento interno.',
     'toast.saved': 'Guardado correctamente.',
     'toast.deleted': 'Eliminado.',
     'toast.invalidValue': 'Introduzca un importe válido (ej.: 620.000,00).',
@@ -2886,6 +2951,12 @@ const I18N = {
     'sec.plainExportWarn': 'Este archivo sale SIN cifrar: cualquiera que lo tenga verá tus datos. ¿Continuar?',
     'sec.encImportTitle': 'Copia protegida',
     'sec.encImportHint': 'Introduce la contraseña o el código de recuperación válidos cuando se hizo esta copia.',
+    'sec.autoBackupSaved': 'Copia de seguridad automática guardada en {path}.',
+    'sec.autoBackupFail': 'Fallo en la copia de seguridad automática.',
+    'sec.autoBackupDownloaded': 'Copia de seguridad automática descargada.',
+    'sec.autoBackupOn': 'Copia de seguridad automática activada.',
+    'sec.autoBackupOff': 'Copia de seguridad automática desactivada.',
+    'sec.backupDirSet': 'Carpeta de backup definida: {path}',
     'apiw.title': 'Configura las fuentes de cotización',
     'apiw.intro': 'ProF Controller usa tres servicios gratuitos para obtener cotizaciones. Cada uno pide una clave que se crea en pocos minutos. Sin ellas la app funciona, pero sin precios automáticos.',
     'apiw.purpose.finnhub': 'Cotizaciones de acciones de EE. UU. y búsqueda por ISIN.',
@@ -3215,9 +3286,10 @@ let state = {
   dividends: [],
   assets: [],
   valuations: [],
-  settings: { lang: 'pt-BR', theme: 'profit-c', baseCurrency: 'EUR' },
+  settings: { lang: 'pt-BR', theme: 'profit-c', baseCurrency: 'EUR', autoBackupEnabled: false, autoBackupInterval: 0 },
   ui: { txType: 'all', txAccount: 'all', txMonth: '', budgetMonth: '', navView: 'pie', navBreak: 'account', cashGrain: 'monthly',
-        billKind: 'all', billStatus: 'open', billFrom: '', billTo: '', tab: 'dashboard', lastSub: {} }
+        billKind: 'all', billStatus: 'open', billFrom: '', billTo: '', tab: 'dashboard', lastSub: {} },
+  autoBackupDirHandle: null
 };
 
 const CURRENCIES = [
@@ -4165,6 +4237,151 @@ async function exportEncryptedBackup() {
   };
   download(`prof-controller-backup-protegido-${todayISO()}.json`, JSON.stringify(arquivo), 'application/json');
   showToast(t('sec.encExported'));
+}
+
+/* ----- Backup automático ----- */
+let autoBackupTimer = null;
+
+async function autoBackup() {
+  if (!state.settings.autoBackupEnabled) return;
+  if (!vaultOn() || !VAULT.key) {
+    // Vault bloqueado: faz backup plano (sem criptografia) — apenas para desktop/web onde o usuário pode desbloquear depois
+    const payload = buildBackupData();
+    const arquivo = {
+      format: 'prof-controller-plain', v: 1, exportedAt: new Date().toISOString(),
+      data: payload
+    };
+    await writeAutoBackupFile(arquivo, false);
+    return;
+  }
+  // Vault desbloqueado: faz backup criptografado
+  const payload = buildBackupData();
+  const arquivo = {
+    format: 'prof-controller-encrypted', v: 1, exportedAt: new Date().toISOString(),
+    pin: VAULT.meta.pin, rec: VAULT.meta.rec,
+    data: await sealObj(VAULT.key, payload)
+  };
+  await writeAutoBackupFile(arquivo, true);
+}
+
+async function writeAutoBackupFile(arquivo, criptografado) {
+  const fileName = `prof-controller-auto-backup-${criptografado ? 'protegido' : 'plano'}-${todayISO()}.json`;
+
+  // Electron (desktop) — usa File System Access API via preload
+  if (window.electronAPI && window.electronAPI.writeBackupFile) {
+    try {
+      const path = await window.electronAPI.writeBackupFile(fileName, JSON.stringify(arquivo));
+      showToast(t('sec.autoBackupSaved', { path }));
+      return;
+    } catch (e) {
+      console.error('Auto-backup Electron falhou:', e);
+      showToast(t('sec.autoBackupFail'));
+    }
+  }
+
+  // Navegador (Web/Capacitor) — salva no IndexedDB e/ou dispara download
+  if ('showDirectoryPicker' in window) {
+    // File System Access API disponível (Chrome/Edge desktop)
+    try {
+      if (!state.autoBackupDirHandle) {
+        state.autoBackupDirHandle = await window.showDirectoryPicker({ mode: 'readwrite' });
+        await put('settings', { key: 'autoBackupDirHandle', value: state.autoBackupDirHandle });
+      }
+      const fileHandle = await state.autoBackupDirHandle.getFileHandle(fileName, { create: true });
+      const writable = await fileHandle.createWritable();
+      await writable.write(JSON.stringify(arquivo));
+      await writable.close();
+      showToast(t('sec.autoBackupSaved', { path: state.autoBackupDirHandle.name }));
+      return;
+    } catch (e) {
+      console.error('Auto-backup File System Access falhou:', e);
+    }
+  }
+
+  // Fallback: salva no IndexedDB como 'autoBackup' e dispara download
+  try {
+    await put('autoBackup', { key: 'latest', value: arquivo, updatedAt: Date.now() });
+    // Tenta download (funciona na web, no Capacitor usa native.saveFile)
+    download(fileName, JSON.stringify(arquivo), 'application/json');
+    showToast(t('sec.autoBackupDownloaded'));
+  } catch (e) {
+    console.error('Auto-backup fallback falhou:', e);
+    showToast(t('sec.autoBackupFail'));
+  }
+}
+
+async function toggleAutoBackup(enabled) {
+  state.settings.autoBackupEnabled = enabled;
+  await put('settings', { key: 'autoBackupEnabled', value: enabled });
+  const optionsEl = document.getElementById('autoBackupOptions');
+  if (optionsEl) optionsEl.classList.toggle('hidden', !enabled);
+  if (enabled) {
+    startAutoBackupTimer();
+    showToast(t('sec.autoBackupOn'));
+  } else {
+    stopAutoBackupTimer();
+    showToast(t('sec.autoBackupOff'));
+  }
+}
+
+async function setAutoBackupInterval(value) {
+  const minutes = parseInt(value, 10) || 0;
+  state.settings.autoBackupInterval = minutes;
+  await put('settings', { key: 'autoBackupInterval', value: minutes });
+  if (state.settings.autoBackupEnabled) {
+    startAutoBackupTimer();
+  }
+}
+
+async function chooseBackupDir() {
+  if (window.electronAPI && window.electronAPI.showDirectoryPicker) {
+    try {
+      const dirPath = await window.electronAPI.showDirectoryPicker();
+      if (dirPath) {
+        global.autoBackupDir = dirPath; // armazenado no processo principal via IPC
+        const statusEl = document.getElementById('autoBackupDirStatus');
+        if (statusEl) statusEl.textContent = t('settings.autoBackup.folderSelected', { path: dirPath });
+        showToast(t('sec.backupDirSet'));
+      }
+      return;
+    } catch (e) {
+      console.error('Escolha de pasta falhou:', e);
+      showToast(t('sec.autoBackupFail'));
+      return;
+    }
+  }
+
+  if ('showDirectoryPicker' in window) {
+    try {
+      state.autoBackupDirHandle = await window.showDirectoryPicker({ mode: 'readwrite' });
+      await put('settings', { key: 'autoBackupDirHandle', value: state.autoBackupDirHandle });
+      const statusEl = document.getElementById('autoBackupDirStatus');
+      if (statusEl) statusEl.textContent = t('settings.autoBackup.folderSelected', { path: state.autoBackupDirHandle.name });
+      showToast(t('sec.backupDirSet'));
+    } catch (e) {
+      console.error('File System Access falhou:', e);
+      showToast(t('settings.autoBackup.folderNotSupported'));
+    }
+  } else {
+    showToast(t('settings.autoBackup.folderNotSupported'));
+  }
+}
+
+function startAutoBackupTimer() {
+  stopAutoBackupTimer();
+  const minutes = state.settings.autoBackupInterval || 0;
+  if (minutes <= 0) return;
+  const intervalMs = minutes * 60 * 1000;
+  autoBackupTimer = setInterval(autoBackup, intervalMs);
+  // Executa uma vez imediatamente ao ativar
+  autoBackup();
+}
+
+function stopAutoBackupTimer() {
+  if (autoBackupTimer) {
+    clearInterval(autoBackupTimer);
+    autoBackupTimer = null;
+  }
 }
 // Abre um backup criptografado com a senha OU o código de recuperação da época em que foi feito.
 function askBackupSecret(arquivo) {
@@ -11424,6 +11641,11 @@ function bindEvents() {
     await put('settings', { key: 'fabMenu', value: e.target.checked });
     applyFab();
   });
+
+  // Backup automático
+  on('autoBackupEnabled', 'change', (e) => { toggleAutoBackup(e.target.checked); });
+  on('autoBackupInterval', 'change', (e) => { setAutoBackupInterval(e.target.value); });
+  on('btnChooseBackupDir', 'click', chooseBackupDir);
 
   // Notícias
   on('btnNewsRefresh', 'click', () => refreshNews(true));
